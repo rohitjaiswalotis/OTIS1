@@ -1,0 +1,47 @@
+{
+	
+	"name": "My Test Template",
+	
+	"values": [
+		
+		{
+			"key": "version",
+			"value": "58.0",
+			"enabled": true
+		},
+		{
+			"key": "url",
+			"value": "https://test.salesforce.com",
+			"enabled": true
+		},
+		{
+			"key": "username",
+			"value": "",
+			"enabled": true
+		},
+		{
+			"key": "password",
+			"value": "",
+			"enabled": true
+		},
+		
+		{
+			"key": "endpoint",
+			"value": "",
+			"enabled": true
+		},
+		{
+			"key": "accessToken",
+			"value": "",
+			"enabled": true
+		},
+		
+		{
+			"key": "myTestVariable",
+			"value": "myTestValue",
+			"enabled": true
+		}
+		
+	]
+	
+}

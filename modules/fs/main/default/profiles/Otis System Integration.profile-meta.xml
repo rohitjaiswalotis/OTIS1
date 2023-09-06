@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Profile xmlns="http://soap.sforce.com/2006/04/metadata">
+    <custom>true</custom>
+    <description>This profile is only for integration purpose. Don&apos;t make any change to this profile and don&apos;t assign this profile to any user who need to access Salesforce UI.</description>
+    <userLicense>Salesforce</userLicense>
+</Profile>

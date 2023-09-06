@@ -1,0 +1,132 @@
+
+
+parameters:
+
+- name: localizationDomain
+  displayName: Localization Domain
+  type: string
+  default: none
+
+- name: versionToPushOrgAuthFiles
+  displayName: Auth Files for Orgs to upgrade (comma-separated)
+  type: string
+
+- name: versionToPushExpression
+  displayName: Package version expression to upgrade to
+  type: string
+
+- name: versionWhereCondition
+  displayName: Where Condition for version to upgrade
+  type: string
+  default: none
+
+
+stages:
+    
+    - stage: Install
+      
+      displayName: Install
+      dependsOn: []
+      
+      jobs:
+          
+          - job: BulkPushVersion
+            
+            displayName: 'Bulk Push Version'                         
+            
+            timeoutInMinutes: 0
+            
+            pool:
+                vmImage: 'ubuntu-latest'
+            
+            steps:
+            
+            - template: init.yml
+            
+            
+            - bash: |
+                    
+                    # enable exit on error
+                    set -e
+                    
+                    echo "Authorizing to dev hub..."
+                    
+                    DX_STATUS_CODE=$(sf org login jwt --client-id $(devHubClientId) --jwt-key-file $(devHubPrivateKey.secureFilePath) --username $(devHubUsername) -r $(devHubUrl) -a devHub --json | jq .status);
+                    
+                    # early exit - error when autorizing to dev hub
+                    if [[ "$DX_STATUS_CODE" != "0" ]]; then
+                      echo "Cannot log in to dev hub as '$(devHubUsername)'"
+                      exit 1
+                    fi
+                    
+                    echo "Successfully authorized to dev hub as '$(devHubUsername)'"
+                    
+                    # get access token and instance url
+                    sfOrgDetails=$(sf org display --target-org "devHub" --verbose --json);
+                    sfAccessToken=$(echo "$sfOrgDetails" | jq -r '.result.accessToken // empty');
+                    sfInstanceUrl=$(echo "$sfOrgDetails" | jq -r '.result.instanceUrl // empty');
+                    
+                    # evaluate version expression
+                    versionToPushExpression="${{parameters.versionToPushExpression}}"
+                    
+                    # evaluate version condition
+                    if [[ "${{parameters.versionWhereCondition}}" =~ ^none$ ]] ; then
+                      versionWhereCondition=""
+                    else
+                      versionWhereCondition="${{parameters.versionWhereCondition}}"
+                    fi
+                    
+                    # grab package version by expression
+                    FS_PACKAGE_VERSION_DETAILS=$(npx -q -p sf-package-version-evaluator@$(packageVersionEvaluator) sf-get-package-version --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --packageName="$(fsPackageName)" --packageNamespace="" --versionExpression="$versionToPushExpression" --versionWhereCondition="$versionWhereCondition" --json)
+                    
+                    FS_PACKAGE_VERSION_ID=$(echo $FS_PACKAGE_VERSION_DETAILS | jq -r ".versionId // empty")
+                    FS_PACKAGE_VERSION_NUMBER=$(echo $FS_PACKAGE_VERSION_DETAILS | jq -r ".versionNumber // empty")
+                    
+                    if [[ ! ${FS_PACKAGE_VERSION_ID:+1} || ! ${FS_PACKAGE_VERSION_NUMBER} ]]; then
+                      echo "Cannot find Field Service package version by expression: '$versionToPushExpression'"
+                      exit 1
+                    fi
+                    
+                    echo "Evaluated by Expression '$versionToPushExpression' Package Version: $FS_PACKAGE_VERSION_NUMBER ($FS_PACKAGE_VERSION_ID)"
+                    
+                    # set variable to pass package version to next steps
+                    echo "##vso[task.setvariable variable=FS_PACKAGE_VERSION_ID]${FS_PACKAGE_VERSION_ID}"
+                    
+              displayName: 'Evaluate Version by Expression'
+            
+            
+            - ${{ each targetOrgAuthFileName in split(parameters.versionToPushOrgAuthFiles, ',')}}:
+              
+              - task: DownloadSEcureFile@1
+                inputs:
+                    secureFile: ${{ targetOrgAuthFileName }}
+                displayName: 'Get Target Org auth file' 
+                
+              
+              - template: runTests.yml
+                parameters:
+                  targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
+                  concurrentExecution: true
+                  continueOnError: true
+                
+              
+              - template: installFSL.yml
+                parameters:
+                  targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
+                  versionId: default
+                  continueOnError: true
+                
+              
+              - template: installVersion.yml
+                parameters:
+                  localizationDomain: ${{ parameters.localizationDomain }}
+                  targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
+                
+              
+              - template: runTests.yml
+                parameters:
+                  targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
+                  concurrentExecution: true
+                  continueOnError: true
+
+

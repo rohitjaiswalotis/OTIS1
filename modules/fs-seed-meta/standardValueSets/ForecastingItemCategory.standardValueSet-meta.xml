@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sorted>false</sorted>
+    <standardValue>
+        <fullName>OmittedOnly</fullName>
+        <default>false</default>
+        <label>OmittedOnly</label>
+    </standardValue>
+    <standardValue>
+        <fullName>PipelineOnly</fullName>
+        <default>false</default>
+        <label>PipelineOnly</label>
+    </standardValue>
+    <standardValue>
+        <fullName>BestCaseOnly</fullName>
+        <default>false</default>
+        <label>BestCaseOnly</label>
+    </standardValue>
+    <standardValue>
+        <fullName>CommitOnly</fullName>
+        <default>false</default>
+        <label>CommitOnly</label>
+    </standardValue>
+    <standardValue>
+        <fullName>ClosedOnly</fullName>
+        <default>false</default>
+        <label>Closed Only</label>
+    </standardValue>
+    <standardValue>
+        <fullName>OpenPipeline</fullName>
+        <default>false</default>
+        <label>Open Pipeline</label>
+    </standardValue>
+    <standardValue>
+        <fullName>BestCaseForecast</fullName>
+        <default>false</default>
+        <label>Best Case Forecast</label>
+    </standardValue>
+    <standardValue>
+        <fullName>CommitForecast</fullName>
+        <default>false</default>
+        <label>Commit Forecast</label>
+    </standardValue>
+</StandardValueSet>

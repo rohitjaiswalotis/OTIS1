@@ -1,0 +1,4 @@
+robotframework==6.1.1
+robotframework-browser==17.2.0
+robotframework-seleniumlibrary==6.1.0
+QWeb==2.2.1

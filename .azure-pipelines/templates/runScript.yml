@@ -1,0 +1,284 @@
+
+parameters:
+
+- name: pathToFolder
+  displayName: Path to Folder with Steps
+  type: string
+
+- name: stepToRun
+  displayName: Step to run
+  type: string
+  default: all
+  
+- name: scriptParams
+  displayName: Script params (json)
+  type: string
+  default: none
+  
+- name: targetOrgUrl
+  displayName: Target Org Url
+  type: string
+  default: https://test.salesforce.com
+
+- name: targetOrgUsername
+  displayName: Target Org Username
+  type: string
+  default: none
+
+- name: targetOrgPassword
+  displayName: Target Org Password
+  type: string
+  default: none
+
+- name: targetOrgAuthFilePath
+  displayName: Target Org Auth File Path
+  type: string
+  default: none
+
+- name: targetOrg2Url
+  displayName: Target Org2 Url
+  type: string
+  default: https://test.salesforce.com
+
+- name: targetOrg2Username
+  displayName: Target Org2 Username
+  type: string
+  default: none
+
+- name: targetOrg2Password
+  displayName: Target Org2 Password
+  type: string
+  default: none
+
+- name: targetOrg2AuthFilePath
+  displayName: Target Org2 Auth File Path
+  type: string
+  default: none
+
+- name: saveFolderAsArtifact
+  displayName: Save Folder as Artifact?
+  type: boolean
+  default: false
+
+- name: folderArtifactName
+  displayName: Folder Artifact Name
+  type: string
+  default: ScriptFolder_$(Build.BuildId)
+
+- name: continueOnError
+  displayName: Continue on Error?
+  type: boolean
+  default: false
+
+- name: enableDebugMode
+  displayName: Debug Mode?
+  type: boolean
+  default: false
+
+
+steps:
+
+# get Target Org creds
+- ${{ if contains(parameters.targetOrgUsername, '@') }}:
+  
+  - bash: |
+          
+          # enable exit on error
+          set -e
+          
+          # set variable to pass target org auth info to next steps
+          echo "##vso[task.setvariable variable=TARGET_ORG_URL]${{ parameters.targetOrgUrl }}"
+          echo "##vso[task.setvariable variable=TARGET_ORG_USERNAME]${{ parameters.targetOrgUsername }}"
+          echo "##vso[task.setvariable variable=TARGET_ORG_PASSWORD]${{ parameters.targetOrgPassword }}"
+          
+    displayName: 'Assign Target Org creds'
+
+
+- ${{ if not( eq(parameters.targetOrgAuthFilePath, 'none') ) }}:
+  
+  - bash: |
+          
+          # enable exit on error
+          set -e
+          
+          # set variable to pass target org auth info to next steps
+          echo "##vso[task.setvariable variable=TARGET_ORG_AUTH_FILE]${{ parameters.targetOrgAuthFilePath }}"
+          
+    displayName: 'Assign Target Org auth file path'
+
+
+# get Target Org2 creds
+- ${{ if contains(parameters.targetOrg2Username, '@') }}:
+  
+  - bash: |
+          
+          # enable exit on error
+          set -e
+          
+          # set variable to pass target org2 auth info to next steps
+          echo "##vso[task.setvariable variable=TARGET_ORG2_URL]${{ parameters.targetOrg2Url }}"
+          echo "##vso[task.setvariable variable=TARGET_ORG2_USERNAME]${{ parameters.targetOrg2Username }}"
+          echo "##vso[task.setvariable variable=TARGET_ORG2_PASSWORD]${{ parameters.targetOrg2Password }}"
+          
+    displayName: 'Assign Target Org2 creds'
+
+
+- ${{ if not( eq(parameters.targetOrg2AuthFilePath, 'none') ) }}:
+  
+  - bash: |
+          
+          # enable exit on error
+          set -e
+          
+          # set variable to pass target org2 auth info to next steps
+          echo "##vso[task.setvariable variable=TARGET_ORG2_AUTH_FILE]${{ parameters.targetOrg2AuthFilePath }}"
+          
+    displayName: 'Assign Target Org2 auth file path'
+
+
+# actually execute script
+
+- bash: |
+        
+        # enable "debug" mode
+        if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
+          set -x
+        fi
+        
+        # check if target org creds provided
+        if [[ ${TARGET_ORG_USERNAME:+1} && ${TARGET_ORG_PASSWORD:+1} ]] ; then
+          
+          TARGET_ORG_ALIAS="targetOrg"
+          
+          # log in to target org by creds
+          
+          echo "Installing sfpowerkit plugin if no originally installed version is available ..."
+          (sf plugins | grep -i "sfpowerkit") || (echo "y" | sf plugins install sfpowerkit@$(sfPowerkitVersion))
+          
+          DX_STATUS_CODE=$(sf sfpowerkit:auth:login -a "$TARGET_ORG_ALIAS" -u "${TARGET_ORG_USERNAME,,}" -p "${TARGET_ORG_PASSWORD}" -r "${TARGET_ORG_URL}" --json | jq .status);
+          
+          # early exit - error when autorizing to target org by creds
+          if [[ "$DX_STATUS_CODE" != "0" ]]; then
+            echo "Error when logging in to target org by creds as user '$TARGET_ORG_USERNAME'!"
+            exit 1;
+          fi
+          
+          echo "Successfully logged into target org by creds as user '$TARGET_ORG_USERNAME'."
+          
+        elif [[ ${TARGET_ORG_AUTH_FILE:+1} ]] ; then
+          
+          TARGET_ORG_ALIAS="targetOrg"
+          
+          DX_AUTH_RESPONSE=$(sf org login sfdx-url -f "$TARGET_ORG_AUTH_FILE" -a "$TARGET_ORG_ALIAS" --json);
+          DX_STATUS_CODE=$(echo "$DX_AUTH_RESPONSE" | jq .status);
+          
+          # early exit - error when autorizing to target org by auth url
+          if [[ "$DX_STATUS_CODE" != "0" ]]; then
+            echo "Error when logging in to target org by auth url!"
+            exit 1;
+          fi
+          
+          TARGET_ORG_USERNAME=$(echo "$DX_AUTH_RESPONSE" | jq -r .result.username);
+          
+          echo "Successfully logged into target org by auth url as user '$TARGET_ORG_USERNAME'"
+          
+        fi
+        
+        
+        # check if target org2 creds provided
+        if [[ ${TARGET_ORG2_USERNAME:+1} && ${TARGET_ORG2_PASSWORD:+1} ]] ; then
+          
+          TARGET_ORG2_ALIAS="targetOrg2"
+          
+          # log in to target org2 by creds
+          
+          echo "Installing sfpowerkit plugin if no originally installed version is available ..."
+          (sf plugins | grep -i "sfpowerkit") || (echo "y" | sf plugins install sfpowerkit@$(sfPowerkitVersion))
+          
+          DX_STATUS_CODE=$(sf sfpowerkit:auth:login -a "${TARGET_ORG2_ALIAS}" -u "${TARGET_ORG2_USERNAME,,}" -p "${TARGET_ORG2_PASSWORD}" -r "${TARGET_ORG2_URL}" --json | jq .status);
+          
+          # early exit - error when autorizing to target org by creds
+          if [[ "$DX_STATUS_CODE" != "0" ]]; then
+            echo "Error when logging in to target org2 by creds as user '$TARGET_ORG2_USERNAME'!"
+            exit 1;
+          fi
+          
+          echo "Successfully logged into target org2 by creds as user '$TARGET_ORG2_USERNAME'."
+          
+        elif [[ ${TARGET_ORG2_AUTH_FILE:+1} ]] ; then
+          
+          TARGET_ORG2_ALIAS="targetOrg2"
+          
+          DX_AUTH_RESPONSE=$(sf org login sfdx-url -f "$TARGET_ORG2_AUTH_FILE" -a "$TARGET_ORG2_ALIAS" --json);
+          DX_STATUS_CODE=$(echo "$DX_AUTH_RESPONSE" | jq .status);
+          
+          # early exit - error when autorizing to target org2 by auth url
+          if [[ "$DX_STATUS_CODE" != "0" ]]; then
+            echo "Error when logging in to target org2 by auth url!"
+            exit 1;
+          fi
+          
+          TARGET_ORG2_USERNAME=$(echo "$DX_AUTH_RESPONSE" | jq -r .result.username);
+          
+          echo "Successfully logged into target org by auth url as user '$TARGET_ORG2_USERNAME'"
+          
+        fi
+        
+        
+        # pass specific step to run (if any provided)
+        if [[ ! "${{ parameters.stepToRun }}" =~ ^all$ ]] ; then
+          SR_PARAM_STEP_TO_RUN="${{ parameters.stepToRun }}"
+        fi
+        
+        SR_PARAM_SCRIPT_SANDBOX_DIR=$(mktemp -d)
+        
+        
+        # transforming script params (if provided)
+        if [[ '${{parameters.scriptParams}}' =~ ^none$ ]] ; then
+          
+          echo "No script params passed."
+          
+          SCRIPT_PARAMS_FILE="none"
+          
+        else
+          
+          echo "Transforming provided script params..."
+          echo '${{parameters.scriptParams}}'
+          
+          SCRIPT_PARAMS_FILE=$(mktemp)
+          echo '${{parameters.scriptParams}}' | jq -r '. | to_entries | .[] | .key + "=" + (.value | @sh)' > $SCRIPT_PARAMS_FILE
+          
+          echo "Generated script params properties file: "
+          cat $SCRIPT_PARAMS_FILE
+          
+        fi
+        
+        
+        # enable exit on error
+        set -e
+        
+        bash $(stepsRunnerUtil) \
+            -d "${{parameters.pathToFolder}}" -n "$SR_PARAM_STEP_TO_RUN" -o "$SR_PARAM_SCRIPT_SANDBOX_DIR" -w "$(pwd)" \
+            -a "$TARGET_ORG_ALIAS" -u "$TARGET_ORG_USERNAME" -p "$TARGET_ORG_PASSWORD" -r "$TARGET_ORG_URL" \
+            -x "$TARGET_ORG2_ALIAS" -e "$TARGET_ORG2_USERNAME" -t "$TARGET_ORG2_PASSWORD" -l "$TARGET_ORG2_URL" \
+            -c "$SCRIPT_PARAMS_FILE"
+        
+        # set variable to pass script sandbox directory to next steps
+        echo "##vso[task.setvariable variable=scriptSandboxDirectory]${SR_PARAM_SCRIPT_SANDBOX_DIR}"
+        
+        
+  displayName: 'Execute multi-step Script against Target Org'
+  continueOnError: ${{ parameters.continueOnError }}
+  timeoutInMinutes: 180
+
+
+- ${{ if eq(parameters.saveFolderAsArtifact, true) }}:
+  
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(scriptSandboxDirectory)'
+      artifact: '${{ parameters.folderArtifactName }}'
+      publishLocation: 'pipeline'
+      displayName: 'Publish Script Folder as artifact'
+
+

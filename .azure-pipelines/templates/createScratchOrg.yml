@@ -1,0 +1,114 @@
+
+parameters:
+
+- name: configFile
+  displayName: Relative path to scratch org config file
+  type: string
+  default: config/core/shape.json
+  values:
+  - config/core/shape.json
+  - config/core/features.json
+  - config/messaging/shape.json
+  - config/messaging/features.json
+
+- name: durationInDays
+  displayName: Number of Days for Scratch Org to expire after
+  type: number
+  default: 5
+  values:
+  - 1
+  - 2
+  - 3
+  - 5
+  - 7
+  - 10
+  - 15
+  - 20
+  - 30
+
+- name: enableDebugMode
+  displayName: Debug Mode?
+  type: boolean
+  default: false
+
+
+steps:
+
+# create new scratch org
+
+- bash: |
+        
+        # enable "debug" mode
+        if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
+          set -x
+        fi
+        
+        echo "Authorizing to dev hub..."
+        
+        DX_STATUS_CODE=$(sf org login jwt --client-id $(devHubClientId) --jwt-key-file $(devHubPrivateKey.secureFilePath) --username $(devHubUsername) -r $(devHubUrl) -a devHub --json | jq .status);
+        
+        # early exit - error when autorizing to dev hub
+        if [[ "$DX_STATUS_CODE" != "0" ]]; then
+          echo "Cannot log in to dev hub as '$(devHubUsername)'"
+          exit 1
+        fi
+        
+        echo "Successfully authorized to dev hub as '$(devHubUsername)'"
+        
+        echo "Creating Scratch Org..."
+        
+        # try to create scratch org (job id is used as an alias)
+        ORG_CREATION_RESPONSE=$(sf org create scratch -f "${{ parameters.configFile }}" -v "devHub" --duration-days=${{ parameters.durationInDays }} -w 60 -a targetOrg --json);
+        echo "$ORG_CREATION_RESPONSE" | jq .
+        
+        ORG_CREATION_STATUS_CODE=$(echo "$ORG_CREATION_RESPONSE" | jq .status);
+        
+        # early exit - error when creating scratch org
+        if [[ "$ORG_CREATION_STATUS_CODE" != "0" ]]; then
+          echo "Problem creating scratch org!"
+          exit 1
+        fi
+        
+        SCRATCH_ORG_USERNAME=$(echo $ORG_CREATION_RESPONSE | jq -r ".result.username")
+        echo "Successfully created scratch org with username: $SCRATCH_ORG_USERNAME"
+        
+        SCRATCH_ORG_URL=$(echo $ORG_CREATION_RESPONSE | jq -r ".result.scratchOrgInfo.LoginUrl // empty")
+        SCRATCH_ORG_URL=${SCRATCH_ORG_URL:-"https://test.salesforce.com"}
+        
+        echo "Generating password for user..."
+        GENERATED_USER_PASSWORD_RESPONSE=$(sf org generate password --target-org="targetOrg" --complexity=3 --json);
+        GENERATED_USER_PASSWORD_STATUS_CODE=$(echo "$GENERATED_USER_PASSWORD_RESPONSE" | jq .status);
+        
+        if [[ $GENERATED_USER_PASSWORD_STATUS_CODE -eq 0 ]]; then
+          SCRATCH_ORG_PASSWORD=$(echo -e "$GENERATED_USER_PASSWORD_RESPONSE" | jq -r '.result | if type=="array" then .[0].password else .password end');
+        fi
+        
+        # print scratch org info
+        echo "Scratch org has been successfully created."
+        echo "Url: $SCRATCH_ORG_URL"
+        echo "Username: $SCRATCH_ORG_USERNAME"
+        echo "Password: $SCRATCH_ORG_PASSWORD"
+        
+        # initial org config
+        echo "Running post-create steps..."
+        
+        # enable exit on error
+        set -e
+        
+        bash $(stepsRunnerUtil) -d "modules/common/scratch/create/after" -a "targetOrg" -w "$(pwd)" -u "$SCRATCH_ORG_USERNAME" -p "$SCRATCH_ORG_PASSWORD" -r "$SCRATCH_ORG_URL"
+        
+        # disable exit on error
+        set +e
+        
+        # set variable to pass scratch org auth info to next steps
+        echo "##vso[task.setvariable variable=TARGET_ORG_URL]$SCRATCH_ORG_URL"
+        echo "##vso[task.setvariable variable=TARGET_ORG_USERNAME]$SCRATCH_ORG_USERNAME"
+        echo "##vso[task.setvariable variable=TARGET_ORG_PASSWORD]$SCRATCH_ORG_PASSWORD"
+        
+        
+  displayName: 'Create Scratch Org'
+  continueOnError: false
+  timeoutInMinutes: 120
+
+
+

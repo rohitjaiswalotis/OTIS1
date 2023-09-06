@@ -1,0 +1,139 @@
+
+parameters:
+
+- name: targetOrgUrl
+  displayName: Target Org Url
+  type: string
+  default: https://test.salesforce.com
+
+- name: targetOrgUsername
+  displayName: Target Org Username
+  type: string
+  default: none
+
+- name: targetOrgPassword
+  displayName: Target Org Password
+  type: string
+  default: none
+
+- name: targetOrgAuthFilePath
+  displayName: Target Org Auth File Path
+  type: string
+  default: none
+
+- name: reportFileName
+  displayName: Tests Report File Name
+  type: string
+  default: TestsReport_$(Build.BuildId).xlsx
+
+- name: enableDebugMode
+  displayName: Debug Mode?
+  type: boolean
+  default: false
+
+
+steps:
+
+# get Target Org creds
+- ${{ if contains(parameters.targetOrgUsername, '@') }}:
+  
+  - bash: |
+          
+          # enable exit on error
+          set -e
+          
+          # set variable to pass target org auth info to next steps
+          echo "##vso[task.setvariable variable=TARGET_ORG_URL]${{ parameters.targetOrgUrl }}"
+          echo "##vso[task.setvariable variable=TARGET_ORG_USERNAME]${{ parameters.targetOrgUsername }}"
+          echo "##vso[task.setvariable variable=TARGET_ORG_PASSWORD]${{ parameters.targetOrgPassword }}"
+          
+    displayName: 'Assign Target Org creds'
+
+
+- ${{ if not( eq(parameters.targetOrgAuthFilePath, 'none') ) }}:
+  
+  - bash: |
+          
+          # enable exit on error
+          set -e
+          
+          # set variable to pass target org auth info to next steps
+          echo "##vso[task.setvariable variable=TARGET_ORG_AUTH_FILE]${{ parameters.targetOrgAuthFilePath }}"
+          
+    displayName: 'Assign Target Org auth file path'
+
+
+# generate tests report
+
+- bash: |
+        
+        # enable "debug" mode
+        if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
+          set -x
+        fi
+        
+        # check if target org creds provided
+        if [[ ${TARGET_ORG_USERNAME:+1} && ${TARGET_ORG_PASSWORD:+1} ]] ; then
+          
+          # log in to target org by creds
+          
+          echo "Installing sfpowerkit plugin if no originally installed version is available ..."
+          (sf plugins | grep -i "sfpowerkit") || (echo "y" | sf plugins install sfpowerkit@$(sfPowerkitVersion))
+          
+          DX_STATUS_CODE=$(sf sfpowerkit:auth:login -a targetOrg -u "${TARGET_ORG_USERNAME,,}" -p "${TARGET_ORG_PASSWORD}" -r "${TARGET_ORG_URL}" --json | jq .status);
+          
+          # early exit - error when autorizing to target org by creds
+          if [[ "$DX_STATUS_CODE" != "0" ]]; then
+            echo "Error when logging in to target org by creds as user '$TARGET_ORG_USERNAME'!"
+            exit 1;
+          fi
+          
+          echo "Successfully logged into target org by creds as user '$TARGET_ORG_USERNAME'"
+          
+        elif [[ ${TARGET_ORG_AUTH_FILE:+1} ]] ; then
+          
+          DX_AUTH_RESPONSE=$(sf org login sfdx-url -f "$TARGET_ORG_AUTH_FILE" -a targetOrg --json);
+          DX_STATUS_CODE=$(echo "$DX_AUTH_RESPONSE" | jq .status);
+          
+          # early exit - error when autorizing to target org by auth url
+          if [[ "$DX_STATUS_CODE" != "0" ]]; then
+            echo "Error when logging in to target org by auth url!"
+            exit 1;
+          fi
+          
+          TARGET_ORG_USERNAME=$(echo "$DX_AUTH_RESPONSE" | jq -r .result.username);
+          
+          echo "Successfully logged into target org by auth url as user '$TARGET_ORG_USERNAME'"
+          
+        fi
+        
+        
+        # get access token and instance url
+        sfOrgDetails=$(sf org display --target-org "targetOrg" --verbose --json);
+        sfAccessToken=$(echo "$sfOrgDetails" | jq -r '.result.accessToken // empty');
+        sfInstanceUrl=$(echo "$sfOrgDetails" | jq -r '.result.instanceUrl // empty');
+        
+        
+        # enable exit on error
+        set -e
+        
+        npx -p sf-tests-report@$(testReportGeneratorVersion) sf-generate-tests-report --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --reportFileName="${{ parameters.reportFileName }}"
+        
+        # disable exit on error
+        set +e
+        
+        
+  displayName: 'Generate Tests Report'
+  continueOnError: false
+  timeoutInMinutes: 120
+  
+  
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(System.DefaultWorkingDirectory)/${{ parameters.reportFileName }}'
+    artifact: '${{ parameters.reportFileName }}'
+    publishLocation: 'pipeline'
+  displayName: 'Publish Tests Report as artifact'
+
+
+

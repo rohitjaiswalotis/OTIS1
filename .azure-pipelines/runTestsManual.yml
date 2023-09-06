@@ -1,0 +1,107 @@
+name: 'Run Tests in Target Org'
+
+
+trigger: none
+    
+pr: none
+
+
+variables:
+- template: templates/variables.yml
+
+
+parameters:
+
+- name: targetOrgUrl
+  displayName: Target Org Url
+  type: string
+  default: https://test.salesforce.com
+
+- name: targetOrgUsername
+  displayName: Target Org Username
+  type: string
+  default: none
+
+- name: targetOrgPassword
+  displayName: Target Org Password
+  type: string
+  default: none
+
+- name: targetOrgAuthFileName
+  displayName: Target Org Auth File Name
+  type: string
+  default: none
+
+- name: concurrentExecution
+  displayName: Parallel Tests Mode?
+  type: boolean
+  default: false
+
+- name: shouldGenerateTestsReport
+  displayName: Generate Tests Report?
+  type: boolean
+  default: false
+
+- name: enableDebugMode
+  displayName: Debug Mode?
+  type: boolean
+  default: false
+
+
+stages:
+    
+    - stage: Test
+      
+      displayName: Test
+      dependsOn: []
+      
+      jobs:
+          
+          - job: RunTests
+            
+            displayName: 'Run Tests in Org'                         
+            
+            timeoutInMinutes: 0
+            
+            pool:
+                vmImage: 'ubuntu-latest'
+            
+            steps:
+            
+            - template: templates/init.yml
+            
+            
+            - ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
+              
+              - task: DownloadSEcureFile@1
+                name: targetOrgAuthFile
+                inputs:
+                    secureFile: ${{ parameters.targetOrgAuthFileName }}
+                displayName: 'Get Target Org auth file' 
+            
+            
+            - template: templates/runTests.yml
+              parameters:
+                ${{ if contains(parameters.targetOrgUsername, '@') }}:
+                  targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                  targetOrgUsername: ${{ parameters.targetOrgUsername }}
+                  targetOrgPassword: ${{ parameters.targetOrgPassword }}
+                ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
+                  targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                concurrentExecution: ${{ parameters.concurrentExecution }}
+                enableDebugMode: ${{ parameters.enableDebugMode }}
+                
+            
+            - ${{ if eq(parameters.shouldGenerateTestsReport, true) }}:
+              
+              - template: templates/generateTestsReport.yml
+                parameters:
+                  ${{ if contains(parameters.targetOrgUsername, '@') }}:
+                    targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                    targetOrgUsername: ${{ parameters.targetOrgUsername }}
+                    targetOrgPassword: ${{ parameters.targetOrgPassword }}
+                  ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
+                    targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                  enableDebugMode: ${{ parameters.enableDebugMode }}
+
+

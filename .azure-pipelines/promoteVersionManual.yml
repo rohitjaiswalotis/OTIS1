@@ -1,0 +1,54 @@
+name: 'Promote Field Service Package Version'
+
+
+trigger: none
+    
+pr: none
+
+
+variables:
+- template: templates/variables.yml
+
+
+parameters:
+
+- name: versionId
+  displayName: Package Version Id
+  type: string
+  default: none
+
+- name: enableDebugMode
+  displayName: Debug Mode?
+  type: boolean
+  default: false
+
+
+stages:
+    
+    - stage: Promote
+      
+      displayName: Promote
+      dependsOn: []
+      
+      jobs:
+          
+          - job: PromotePackageVersion
+            
+            displayName: 'Promote Package Version'                         
+            
+            timeoutInMinutes: 0
+            
+            pool:
+                vmImage: 'ubuntu-latest'
+            
+            steps:
+            
+            - template: templates/init.yml
+            
+            
+            - template: templates/promoteVersion.yml
+              parameters:
+                versionId: ${{ parameters.versionId }}
+                enableDebugMode: ${{ parameters.enableDebugMode }}
+
+

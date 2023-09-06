@@ -1,0 +1,235 @@
+
+parameters:
+
+- name: localizationDomain
+  displayName: Localization Domain
+  type: string
+  default: none
+
+- name: targetOrgUrl
+  displayName: Target Org Url
+  type: string
+  default: https://test.salesforce.com
+
+- name: targetOrgUsername
+  displayName: Target Org Username
+  type: string
+  default: none
+
+- name: targetOrgPassword
+  displayName: Target Org Password
+  type: string
+  default: none
+
+- name: targetOrgAuthFilePath
+  displayName: Target Org Auth File Path
+  type: string
+  default: none
+
+- name: deploymentMode
+  displayName: Deployment Mode
+  type: string
+  default: auto
+  values:
+  - auto
+  - install
+  - upgrade
+  - validateOnly
+  - validateWithTests
+
+- name: actionPhase
+  displayName: Action Phase
+  type: string
+  default: both
+  values:
+  - both
+  - before
+  - after
+  - none
+
+- name: enableDebugMode
+  displayName: Debug Mode?
+  type: boolean
+  default: false
+
+
+steps:
+
+# get Target Org creds
+- ${{ if contains(parameters.targetOrgUsername, '@') }}:
+  
+  - bash: |
+          
+          # enable exit on error
+          set -e
+          
+          # set variable to pass target org auth info to next steps
+          echo "##vso[task.setvariable variable=TARGET_ORG_URL]${{ parameters.targetOrgUrl }}"
+          echo "##vso[task.setvariable variable=TARGET_ORG_USERNAME]${{ parameters.targetOrgUsername }}"
+          echo "##vso[task.setvariable variable=TARGET_ORG_PASSWORD]${{ parameters.targetOrgPassword }}"
+          
+    displayName: 'Assign Target Org creds'
+
+
+- ${{ if not( eq(parameters.targetOrgAuthFilePath, 'none') ) }}:
+  
+  - bash: |
+          
+          # enable exit on error
+          set -e
+          
+          # set variable to pass target org auth info to next steps
+          echo "##vso[task.setvariable variable=TARGET_ORG_AUTH_FILE]${{ parameters.targetOrgAuthFilePath }}"
+          
+    displayName: 'Assign Target Org auth file path'
+
+
+# deploy code
+- bash: |
+        
+        # enable "debug" mode
+        if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
+          set -x
+        fi
+        
+        
+        # set localization domain (if provided) to be available inside steps runner
+        if [[ ! "${{parameters.localizationDomain}}" =~ ^none$ ]] ; then
+          export SF_SR_VAR_GLOBAL_LOCALIZATION_DOMAIN="${{parameters.localizationDomain}}";
+        fi
+        
+        
+        # check if target org creds provided
+        if [[ ${TARGET_ORG_USERNAME:+1} && ${TARGET_ORG_PASSWORD:+1} ]] ; then
+          
+          # log in to target org by creds
+          
+          echo "Installing sfpowerkit plugin if no originally installed version is available ..."
+          (sf plugins | grep -i "sfpowerkit") || (echo "y" | sf plugins install sfpowerkit@$(sfPowerkitVersion))
+          
+          DX_STATUS_CODE=$(sf sfpowerkit:auth:login -a targetOrg -u "${TARGET_ORG_USERNAME,,}" -p "${TARGET_ORG_PASSWORD}" -r "${TARGET_ORG_URL}" --json | jq .status);
+          
+          # early exit - error when autorizing to target org by creds
+          if [[ "$DX_STATUS_CODE" != "0" ]]; then
+            echo "Error when logging in to target org by creds as user '$TARGET_ORG_USERNAME'!"
+            exit 1;
+          fi
+          
+          echo "Successfully logged into target org by creds as user '$TARGET_ORG_USERNAME'"
+          
+        elif [[ ${TARGET_ORG_AUTH_FILE:+1} ]] ; then
+          
+          DX_AUTH_RESPONSE=$(sf org login sfdx-url -f "$TARGET_ORG_AUTH_FILE" -a targetOrg --json);
+          DX_STATUS_CODE=$(echo "$DX_AUTH_RESPONSE" | jq .status);
+          
+          # early exit - error when autorizing to target org by auth url
+          if [[ "$DX_STATUS_CODE" != "0" ]]; then
+            echo "Error when logging in to target org by auth url!"
+            exit 1;
+          fi
+          
+          TARGET_ORG_USERNAME=$(echo "$DX_AUTH_RESPONSE" | jq -r .result.username);
+          
+          echo "Successfully logged into target org by auth url as user '$TARGET_ORG_USERNAME'"
+          
+        fi
+        
+        
+        echo "Reconciling profiles..."
+        
+        bash $(reconcileProfilesUtil) -d "$(packageBaseDir)/main/default/profiles" -a "targetOrg" -o "$(packageBaseDir)/main/default/profiles" -p "$(profilesToReconcile)"
+        
+        
+        echo "Evaluating deployment mode..."
+        
+        if [[ "${{ parameters.deploymentMode }}" =~ ^auto$ ]] ; then
+          
+          QUERY_FS_META_MARKER_RESPONSE=$(sf data query --target-org targetOrg -q "$(fsMetaDetectionQuery)" --json);
+          echo $QUERY_FS_META_MARKER_RESPONSE | jq .
+          
+          FS_MARKER_META_COUNT=$(echo "$QUERY_FS_META_MARKER_RESPONSE" | jq -r ".result.records | length");
+          
+          if [[ $FS_MARKER_META_COUNT -gt 0 ]]; then
+            DEPLOYMENT_ACTION_TYPE="upgrade";
+          else
+            DEPLOYMENT_ACTION_TYPE="install";
+          fi
+          
+        elif [[ "${{ parameters.deploymentMode }}" =~ ^install$ ]] ; then
+          
+          DEPLOYMENT_ACTION_TYPE="install";
+        
+        elif [[ "${{ parameters.deploymentMode }}" =~ ^upgrade$ ]] ; then
+          
+          DEPLOYMENT_ACTION_TYPE="upgrade";
+          
+        elif [[ "${{ parameters.deploymentMode }}" =~ ^validateOnly$ ]] ; then
+          
+          DEPLOYMENT_ACTION_TYPE="validateOnly";
+          
+        elif [[ "${{ parameters.deploymentMode }}" =~ ^validateWithTests$ ]] ; then
+          
+          DEPLOYMENT_ACTION_TYPE="validateWithTests";
+          
+        fi
+        
+        echo "Going with $DEPLOYMENT_ACTION_TYPE deployment mode..."
+        
+        
+        # enable exit on error
+        set -e
+        
+        
+        if [[ "${DEPLOYMENT_ACTION_TYPE}" =~ ^validateOnly$ ]] ; then
+          
+          sf force source deploy --sourcepath="$(packageBaseDir)" -u "targetOrg" --checkonly --testlevel=NoTestRun --ignorewarnings -w 1000 --verbose
+          
+        elif [[ "${DEPLOYMENT_ACTION_TYPE}" =~ ^validateWithTests$ ]] ; then
+          
+          sf force source deploy --sourcepath="$(packageBaseDir)" -u "targetOrg" --checkonly --testlevel=RunLocalTests --ignorewarnings -w 1000 --verbose
+          
+        else
+          
+          if [[ "${{ parameters.actionPhase }}" =~ ^before$ || "${{ parameters.actionPhase }}" =~ ^both$ ]] ; then
+            
+            echo "Running pre-$DEPLOYMENT_ACTION_TYPE steps..."
+            
+            bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$DEPLOYMENT_ACTION_TYPE/before" -a "targetOrg" -w "$(pwd)"
+            
+          else
+            
+            echo "Skipped pre-$DEPLOYMENT_ACTION_TYPE steps."
+            
+          fi
+          
+          
+          # pre-destruct: run destructive operation before deploy
+          sf force source deploy -u "targetOrg" --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --predestructivechanges="destruct/destructiveChangesPre.xml" -w 1000 --verbose
+          
+          # actuall deployment
+          sf force source deploy --sourcepath="$(packageBaseDir)" -u "targetOrg" --ignorewarnings -w 1000 --verbose
+          
+          # post-destruct: run destructive operation after deploy
+          sf force source deploy -u "targetOrg" --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --postdestructivechanges="destruct/destructiveChangesPost.xml" -w 1000 --verbose
+          
+          
+          if [[ "${{ parameters.actionPhase }}" =~ ^after$ || "${{ parameters.actionPhase }}" =~ ^both$ ]] ; then
+            
+            echo "Running post-$DEPLOYMENT_ACTION_TYPE steps..."
+            
+            bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$DEPLOYMENT_ACTION_TYPE/after" -a "targetOrg" -w "$(pwd)"
+            
+          else
+            
+            echo "Skipped post-$DEPLOYMENT_ACTION_TYPE steps."
+            
+          fi
+          
+        fi
+        
+        
+  displayName: 'Deploy Field Service into Target Org'
+  continueOnError: false
+  timeoutInMinutes: 180
+
+

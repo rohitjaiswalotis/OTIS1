@@ -1,0 +1,35 @@
+
+variables:
+
+- group: CommonAuth
+
+- group: CommonUtils
+
+- group: CommonProject
+
+- group: PipelineConfigs
+
+
+- name: packageBaseDir
+  value: "modules/fs"
+
+
+- name: stepsRunnerUtil
+  value: scripts/runSteps.sh
+
+
+- name: reconcileProfilesUtil
+  value: scripts/reconcileProfiles.sh
+
+
+- name: clientUtils
+  value: scripts/clientUtils.sh
+
+
+- name: rulesValidationScript
+  value: modules/common/rules/validation
+
+
+- name: npm_config_cache
+  value: $(Pipeline.Workspace)/.npm
+

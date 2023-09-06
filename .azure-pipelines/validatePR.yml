@@ -1,0 +1,185 @@
+name: 'SF Field Service Validate PR'
+
+
+trigger: none
+    
+pr: none
+
+variables:
+
+- template: templates/variables.yml
+
+- name: counter
+  value: $[counter(variables['build.reason'], 0)]
+
+
+stages:
+    
+    - stage: ValidatePMD
+      
+      displayName: ValidatePMD
+      
+      jobs:
+          
+          - job: ValidatePMD
+            
+            displayName: 'Validate PMD'
+            
+            pool:
+                vmImage: 'ubuntu-latest'
+            
+            steps:
+            
+            - checkout: self
+              fetchDepth: 0
+              persistCredentials: true
+              
+            - script: |
+                  wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F$(pmdVersion)/pmd-bin-$(pmdVersion).zip
+                  unzip pmd-bin-$(pmdVersion).zip -d pmd && cd pmd && cp -a pmd-bin-$(pmdVersion)/* . && rm -rf pmd-bin-$(pmdVersion)/
+              displayName: 'PMD Downloading'
+              
+            - task: Ant@1
+              inputs:
+                buildFile: 'pmd/build.xml'
+                options: 
+                targets: 'init pmd pmd-html-artifact pmd-html-publish'
+                publishJUnitResults: false
+                testResultsFiles: 'pmd/junit.xml'
+                javaHomeOption: 'JDKVersion'
+              displayName: 'PMD Analysis'
+              
+            - task: PublishPipelineArtifact@1
+              inputs:
+                targetPath: '$(System.DefaultWorkingDirectory)/pmd/pmd-report-artifact-$(Build.BuildId).html'
+                artifact: 'pmd-report'
+                publishLocation: 'pipeline'
+              displayName: 'Publish HTML report to artifacts'
+              
+            - task: publishhtmlreport@1
+              inputs:
+                htmlType: 'genericHTML'
+                htmlPath: '$(System.DefaultWorkingDirectory)/pmd/pmd-report-publish-$(Build.BuildId).html'
+              displayName: 'Publish HTML report to pipeline'
+
+    - stage: Testing
+      displayName: 'Unit testing'
+      lockBehavior: runLatest
+      jobs:
+          - job : UnitTests
+            
+            displayName: 'Unit testing'     
+            
+            timeoutInMinutes: 0
+            
+            pool:
+                vmImage: 'ubuntu-latest'
+            
+            steps:
+                
+                - checkout: self
+                  fetchDepth: 0
+                  persistCredentials: true
+
+                - task: Cache@2
+                  inputs: 
+                    key: 'npm | "$(Agent.OS)" | package.json'
+                    restoreKeys: |
+                      npm | "$(Agent.OS)"
+                    path: $(npm_config_cache)
+                  displayName: Cache sfdx npm installation
+                  
+                - task: Npm@1
+                  inputs:
+                    command: 'custom'
+                    customCommand: 'install @salesforce/cli@$(sfdxVersion) --global --loglevel verbose'
+                  displayName: sfdx npm installation
+                  
+                  
+                - task: DownloadSEcureFile@1
+                  name: fsPoolAuthFile
+                  inputs:
+                    ${{ if eq(variables['Build.SourceBranchName'], 'dev-jpn') }}:
+                      secureFile: fsJpnPool
+                    ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-emea') }}:
+                      secureFile: fsEMEAPool
+                    ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-naa') }}:
+                      secureFile: fsNAAPool
+                    ${{ else }}:
+                      secureFile: fsPool
+                  displayName: 'Copy fsPool secure file'
+                  
+                - script: |
+                      
+                      echo "Number of pipelines execution for $(Build.Reason): $(counter)"
+                      execCounter=$(echo $(counter))
+                      
+                      fsPool=$(cat "$(fsPoolAuthFile.secureFilePath)");
+                      poolLength=$(echo $fsPool | jq 'length');
+                      echo "Number of orgs avaliable in pool: $poolLength"
+                      
+                      orgIndexInPool=$(( $execCounter % $poolLength ))
+                      echo "Org index to be used: $orgIndexInPool"
+                      
+                      # get org by evaluated index from pool
+                      validationOrg=$(echo $fsPool | jq -r ".[$((${orgIndexInPool}))]")
+                      
+                      # parse alias and auth url
+                      validationOrgAlias=$(echo $validationOrg | jq -r '.alias // "validationOrg"')
+                      validationOrgAuthUrl=$(echo $validationOrg | jq -r '.authUrl // empty')
+                      
+                      # early exit - no org alias available
+                      if [[ ! ${validationOrgAuthUrl:+1} ]]; then
+                        echo "Cannot get org auth url from pool!"
+                        exit -1
+                      fi
+                      
+                      echo "Org chosen for validation: ${validationOrgAlias}"
+                      
+                      # create temporary file with auth url
+                      validationOrgAuthFile=$(mktemp)
+                      echo -n "$validationOrgAuthUrl" >> $validationOrgAuthFile
+                      
+                      # authorize to validation org
+                      sf org login sfdx-url -f "$validationOrgAuthFile" -a "$validationOrgAlias"
+                      
+                      rm -f $validationOrgAuthFile
+                      
+                      echo "List of already installed packages in $validationOrgAlias org: "
+                      sf package installed list --target-org="$validationOrgAlias"
+                      
+                      
+                      set -e
+                      
+                      echo "Reconciling profiles..."
+                      bash $(reconcileProfilesUtil) -d "$(packageBaseDir)/main/default/profiles" -a "$validationOrgAlias" -o "$(packageBaseDir)/main/default/profiles" -p "$(profilesToReconcile)"
+                      
+                      echo "Validating source code..."
+                      
+                      bash $(stepsRunnerUtil) -d "$(rulesValidationScript)" -w "$(pwd)"
+                      
+                      sf force source deploy -p $(packageBaseDir) -u "$validationOrgAlias" --checkonly --testlevel RunLocalTests --junit --verbose --coverageformatters cobertura -w 1000
+                      
+                  displayName: Validation on pool org
+                  
+                  
+                - task: PublishTestResults@2
+                  inputs:
+                    testResultsFormat: 'JUnit'
+                    testResultsFiles: '**/junit/junit.xml'
+                  displayName: 'Publish Test Results'
+                  continueOnError: true
+                  
+                - task: UseDotNet@2
+                  displayName: 'Code Coverage Report'
+                  inputs:
+                    packageType: 'sdk'
+                    version: '3.1.x'
+                    
+                - task: PublishCodeCoverageResults@1
+                  inputs:
+                    codeCoverageTool: 'Cobertura'
+                    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage/cobertura.xml'
+                  displayName: 'Publish Coverage Results'
+                  continueOnError: true
+    

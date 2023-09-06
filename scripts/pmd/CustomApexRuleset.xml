@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<ruleset name="Custom ruleset"
+    xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+
+	<description>Custom crafted ruleset</description>
+	
+	
+	<!-- Hardcoded string literals -->
+	<rule 	class="net.sourceforge.pmd.lang.rule.XPathRule" 
+			deprecated="false" 
+			dfa="false"
+			language="apex"
+			message="Consider moving string literal to labels"
+			name="HardcodedStringLiteral"
+			typeResolution="true"
+	>
+		
+		<description>Rule to detect all string literals as potential candidates to be moved to labels</description>
+		
+		<priority>5</priority>
+		
+		<properties>
+			
+			<property name="version" value="2.0" />
+			
+			<property name="xpath">
+				
+				<value>
+					<![CDATA[
+						//UserClass[ModifierNode/@Test = false() and not(ancestor::UserClass[ModifierNode/@Test = true()])]//LiteralExpression[@LiteralType="STRING" and not(ancestor::MethodCallExpression[lower-case(@FullMethodName)='system.debug']) and string-length(@Image) > 2 and not(@Image='<br>' or @Image='</br>' or @Image='<br/>')]
+					]]>
+				</value>
+				
+			</property>
+			
+		</properties>
+		
+	</rule>	
+	
+</ruleset>
+

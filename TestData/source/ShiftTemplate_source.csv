@@ -1,0 +1,4 @@
+Id,Description,Duration,IsActive,IsNonStandard,Name,ShiftTemplateDurationType,StartTime
+0iJDO0000004DBZ2A2,,16,true,false,16:00 to 08:00,H,16:00:00.000Z
+0iJDO0000004DBa2AM,,8,true,false,08:00 to 16:00,H,08:00:00.000Z
+0iJDO0000004DBb2AM,Sat to Sun,24,true,false,08:00 to 08:00,H,08:00:00.000Z

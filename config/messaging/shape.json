@@ -1,0 +1,179 @@
+{
+	
+	"orgName": "OTIS Scratch Org",
+	
+	"sourceOrg": "00DDn000007pDnT",
+	
+	"features": [ 
+		
+		"FieldService:25",
+		"FieldServiceDispatcherUser:25",
+		"FieldServiceMobileUser:25",
+		"FieldServiceSchedulingUser:25",
+		"LightningSalesConsole",
+		"LightningServiceConsole",
+		"LiveAgent",
+		"LiveMessage",
+		
+		"ContactsToMultipleAccounts",
+		"Knowledge",
+		"CaseClassification",
+		
+		"ServiceCloud",
+		"SalesUser",
+		"ServiceUser",
+		
+		"RecordTypes",
+		"Workflow",
+		"ForceComPlatform",
+		
+		"AddCustomApps:30",
+		"AddCustomObjects:30",
+		"AddCustomTabs:30",
+		"ChangeDataCapture",
+		"MaxApexCodeSize:10",
+		"MaxCustomLabels:15",
+		"NumPlatformEvents:20",
+		"PlatformCache",
+		"PlatformEventsPerDay:10000",
+		"AdditionalFieldHistory:40",
+		"PlatformEncryption",
+		
+		"AuthorApex",
+		"DebugApex",
+		"API",
+		"ConnectedAppToolingAPI",
+		"StreamingAPI",
+		"DefaultWorkflowUser",
+		"ProcessBuilder",
+		"SessionIdInLogEnabled",
+		"Sites"
+		
+	],
+	
+	"settings": {
+		
+		"fieldServiceSettings": { 
+			"fieldServiceOrgPref": true,
+			"enableWorkOrders": true,
+			"serviceAppointmentsDueDateOffsetOrgValue": 7
+		},
+		
+		"accountSettings": {
+			"enableRelateContactToMultipleAccounts": true
+		},
+		
+		"forecastingSettings": {
+			"defaultToPersonalCurrency": false,
+			"enableForecasts": true
+		},
+		
+		"knowledgeSettings": {
+			"enableKnowledge": true,
+			"enableLightningKnowledge": true,
+			"answers": {
+				"enableArticleCreation": false
+			},
+			"cases": {
+				"enableArticleCreation": false,
+				"enableCaseDataCategoryMapping": true
+			},
+			"showValidationStatusField": true
+		},
+		
+		"chatterSettings": {
+			"enableChatter": true
+		},
+		
+		"enhancedNotesSettings": {
+			"enableEnhancedNotes": true,
+			"enableTasksOnEnhancedNotes": true
+		},
+		
+		"quoteSettings": {
+			"enableQuote": true
+		},
+		
+		"nameSettings": {
+		  "enableMiddleName": true,
+		  "enableNameSuffix": true
+		},
+		
+		"omniChannelSettings": {
+		  "enableOmniChannel": true,
+		  "enableOmniSkillsRouting": false
+		},
+		
+		"lightningExperienceSettings": {
+			"enableS1DesktopEnabled": true
+		},
+		
+		"securitySettings": {
+			"enableAuditFieldsInactiveOwner": true
+		},
+		
+		"apexSettings": {
+			"enableDisableParallelApexTesting": false
+		},
+		
+		"liveAgentSettings": {
+			"enableLiveAgent": true
+		},
+		
+		"liveMessageSettings": {
+			"enableLiveMessage": true
+		},
+		
+		"caseSettings": {
+			"emailToCase": {
+				"enableE2CAttachmentAsFile": true,
+				"enableE2CSourceTracking": true,
+				"enableEmailToCase": true,
+				"enableHtmlEmail": true,
+				"enableOnDemandEmailToCase": true,
+				"enableThreadIDInBody": true,
+				"enableThreadIDInSubject": true,
+				"notifyOwnerOnNewCaseEmail": false,
+				"overEmailLimitAction": "Bounce",
+				"preQuoteSignature": false,
+				"unauthorizedSenderAction": "Discard"
+			},
+			"enableCaseFeed": true,
+			"enableCollapseEmailThread": true,
+			"enableSolutionInlineCategory": true,
+			"enableSolutionShortSummary": true,
+			"webToCase": {
+				"enableWebToCase": false
+			}
+		},
+		
+		"notificationsSettings": {
+			"enableMobileAppPushNotifications": true,
+			"enableNotifications": true
+		},
+		
+		"languageSettings": {
+			"enableTranslationWorkbench": true
+		}
+		
+	},
+	
+	"objectSettings": {
+		"account": {
+		  "sharingModel": "read"
+		},
+		"asset": {
+		  "sharingModel": "private"
+		},
+		"contact": {
+		  "sharingModel": "read"
+		},
+		"opportunity": {
+		  "sharingModel": "private"
+		},
+		"case": {
+		  "sharingModel": "private"
+		}
+	}
+	
+}

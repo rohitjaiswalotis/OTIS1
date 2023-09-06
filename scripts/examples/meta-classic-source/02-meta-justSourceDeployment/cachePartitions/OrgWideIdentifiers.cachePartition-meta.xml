@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PlatformCachePartition xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>This cache partition is used to keep all unchangeable data such as Queues, Groups, Users IDs in order to get rid of repeatable queries.</description>
+    <isDefaultPartition>false</isDefaultPartition>
+    <masterLabel>OrgWideIdentifiers</masterLabel>
+    <platformCachePartitionTypes>
+		<!-- @PACKAGING_TROUBLE@: OrgWideIdentifiers: Total allocated capacity [5] exceeds the org limit [3].
+		Decreased to 3 MB
+        <allocatedCapacity>5</allocatedCapacity>
+		-->
+        <allocatedCapacity>3</allocatedCapacity>
+        <allocatedPartnerCapacity>0</allocatedPartnerCapacity>
+        <allocatedPurchasedCapacity>0</allocatedPurchasedCapacity>
+        <allocatedTrialCapacity>0</allocatedTrialCapacity>
+        <cacheType>Organization</cacheType>
+    </platformCachePartitionTypes>
+    <platformCachePartitionTypes>
+        <allocatedCapacity>0</allocatedCapacity>
+        <allocatedPartnerCapacity>0</allocatedPartnerCapacity>
+        <allocatedPurchasedCapacity>0</allocatedPurchasedCapacity>
+        <allocatedTrialCapacity>0</allocatedTrialCapacity>
+        <cacheType>Session</cacheType>
+    </platformCachePartitionTypes>
+</PlatformCachePartition>

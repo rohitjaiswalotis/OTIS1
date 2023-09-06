@@ -1,0 +1,179 @@
+name: 'SF Field Service Deploy PR'
+
+trigger:
+ branches:
+  include:
+    - dev
+    - dev-jpn
+    - dev-naa
+    - dev-emea
+    
+pr: none
+
+variables:
+
+- template: templates/variables.yml
+
+- name: OrgAliasDevFS
+  value: devFS
+
+- name: deploymentActionType
+  value: upgrade
+
+
+stages:
+    
+    - stage: ValidatePMD
+      
+      displayName: ValidatePMD
+      
+      jobs:
+          
+          - job: ValidatePMD
+            
+            displayName: 'Validate PMD'
+            
+            pool:
+                vmImage: 'ubuntu-latest'
+            
+            steps:
+            
+            - checkout: self
+              fetchDepth: 0
+              persistCredentials: true
+              
+            - script: |
+                  wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F$(pmdVersion)/pmd-bin-$(pmdVersion).zip
+                  unzip pmd-bin-$(pmdVersion).zip -d pmd && cd pmd && cp -a pmd-bin-$(pmdVersion)/* . && rm -rf pmd-bin-$(pmdVersion)/
+              displayName: 'PMD Downloading'
+              
+            - task: Ant@1
+              inputs:
+                buildFile: 'pmd/build.xml'
+                options: 
+                targets: 'init pmd pmd-html-artifact pmd-html-publish'
+                publishJUnitResults: false
+                testResultsFiles: 'pmd/junit.xml'
+                javaHomeOption: 'JDKVersion'
+              displayName: 'PMD Analysis'
+              
+            - task: PublishPipelineArtifact@1
+              inputs:
+                targetPath: '$(System.DefaultWorkingDirectory)/pmd/pmd-report-artifact-$(Build.BuildId).html'
+                artifact: 'pmd-report'
+                publishLocation: 'pipeline'
+              displayName: 'Publish HTML report to artifacts'
+              
+            - task: publishhtmlreport@1
+              inputs:
+                htmlType: 'genericHTML'
+                htmlPath: '$(System.DefaultWorkingDirectory)/pmd/pmd-report-publish-$(Build.BuildId).html'
+              displayName: 'Publish HTML report to pipeline'
+
+    - stage: Deploy
+      condition: succeeded()
+      dependsOn: 
+      - ValidatePMD
+      displayName: Deploying
+      jobs:
+          - deployment: release_devFS
+            environment: devFS
+            displayName: 'Release to devFS'
+            timeoutInMinutes: 0    
+            pool:
+                vmImage: 'ubuntu-latest'
+            strategy:
+             runOnce:
+               deploy:
+                
+                steps:
+                
+                - checkout: self
+                  fetchDepth: 0
+                  persistCredentials: true
+
+                - task: Npm@1
+                  inputs:
+                    command: 'custom'
+                    customCommand: 'install @salesforce/cli@$(sfdxVersion) --global --loglevel verbose'
+                  displayName: sfdx npm installation
+                  
+                - task: DownloadSEcureFile@1
+                  name: authFile
+                  inputs:
+                    ${{ if eq(variables['Build.SourceBranchName'], 'dev-jpn') }}:
+                      secureFile: authFile_devFSJpn
+                    ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-emea') }}:
+                      secureFile: authFile_devFSEMEA
+                    ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-naa') }}:
+                      secureFile: authFile_devFSNAA
+                    ${{ else }}:
+                      secureFile: authFile_devFS
+                  displayName: 'Copy authorization file for devFS'
+                  
+                - script: |
+                        
+                        sf org login sfdx-url -f $(authFile.secureFilePath) -a $(OrgAliasDevFS)
+                        
+                        echo "List of already installed packages in $(OrgAliasDevFS) org: "
+                        sf package installed list --target-org="$(OrgAliasDevFS)"
+                        
+                  displayName: 'Authenticate to devFS'
+                  
+                - bash: |
+                        
+                        # enable exit on error
+                        set -e
+                        
+                        # set localization domain (if provided) to be available inside steps runner
+                        if [[ "$(Build.SourceBranchName)" =~ ^dev-naa$ ]] ; then
+                          export SF_SR_VAR_GLOBAL_LOCALIZATION_DOMAIN="NAA";
+                        elif [[ "$(Build.SourceBranchName)" =~ ^dev-jpn$ ]] ; then
+                          export SF_SR_VAR_GLOBAL_LOCALIZATION_DOMAIN="Japan";
+                        elif [[ "$(Build.SourceBranchName)" =~ ^dev-emea$ ]] ; then
+                          export SF_SR_VAR_GLOBAL_LOCALIZATION_DOMAIN="EMEA";
+                        else
+                          export SF_SR_VAR_GLOBAL_LOCALIZATION_DOMAIN="Global";
+                        fi
+                        
+                        echo "Reconciling profiles..."                        
+                        bash $(reconcileProfilesUtil) -d "$(packageBaseDir)/main/default/profiles" -a "$(OrgAliasDevFS)" -o "$(packageBaseDir)/main/default/profiles" -p "$(profilesToReconcile)"
+                        
+                        echo "Running pre-$(deploymentActionType) steps..."
+                        bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$(deploymentActionType)/before" -a "$(OrgAliasDevFS)" -w "$(pwd)"
+                        
+                        echo "Running destructive operation before deploy into $(OrgAliasDevFS)..."
+                        sf force source deploy -u $(OrgAliasDevFS) --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --predestructivechanges="destruct/destructiveChangesPre.xml" -w 1000 --verbose
+                        
+                        echo "Actually deploying artifacts into $(OrgAliasDevFS)..."
+                        sf force source deploy --sourcepath="$(packageBaseDir)" -u $(OrgAliasDevFS) --testlevel RunLocalTests --junit --coverageformatters cobertura --ignorewarnings -w 1000 --verbose
+                        
+                        echo "Running destructive operation after deploy into $(OrgAliasDevFS)..."
+                        sf force source deploy -u $(OrgAliasDevFS) --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --postdestructivechanges="destruct/destructiveChangesPost.xml" -w 1000 --verbose
+                        
+                        echo "Running post-$(deploymentActionType) steps..."
+                        bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$(deploymentActionType)/after" -a "$(OrgAliasDevFS)" -w "$(pwd)"
+                        
+                  displayName: 'Full Deploy to devFS'
+                  
+                
+                - task: PublishTestResults@2
+                  inputs:
+                    testResultsFormat: 'JUnit'
+                    testResultsFiles: '**/junit/junit.xml'
+                  displayName: 'Publish Test Results'
+                  continueOnError: true
+                  
+                - task: UseDotNet@2
+                  displayName: 'Code Coverage Report'
+                  inputs:
+                    packageType: 'sdk'
+                    version: '3.1.x'
+                    
+                - task: PublishCodeCoverageResults@1
+                  inputs:
+                    codeCoverageTool: 'Cobertura'
+                    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage/cobertura.xml'
+                  displayName: 'Publish Coverage Results'
+                  continueOnError: true
+

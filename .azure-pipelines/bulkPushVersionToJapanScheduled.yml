@@ -1,0 +1,49 @@
+name: 'Push Field Service Package Version into Set of Japan Orgs by Schedule'
+
+
+trigger: none
+
+pr: none
+
+schedules:
+- cron: '0 4 * * *'
+  displayName: Nightly Field Service Package Version Bulk Push to Japan
+  branches:
+    include:
+    - dev-jpn
+  always: false
+
+
+parameters:
+
+- name: versionToPushOrgAuthFiles
+  displayName: Auth Files for Orgs to upgrade (comma-separated)
+  type: string
+  default: "authFile_avgJpn,authFile_devJpn,authFile_jpnPool1,authFile_jpnPool2,authFile_jpnPool3"
+
+- name: versionToPushExpression
+  displayName: Package version expression to upgrade to
+  type: string
+  default: "X.* (Beta ?)"
+
+- name: versionWhereCondition
+  displayName: Where Condition for version to upgrade
+  type: string
+  default: "Branch IN ('dev-jpn')"
+
+
+variables:
+
+- template: templates/variables.yml
+
+
+stages:
+
+- template: templates/bulkPushVersion.yml
+  parameters:
+    localizationDomain: "Japan"
+    versionToPushOrgAuthFiles: ${{ parameters.versionToPushOrgAuthFiles }}
+    versionToPushExpression: ${{ parameters.versionToPushExpression }}
+    versionWhereCondition: ${{ parameters.versionWhereCondition }}
+
+

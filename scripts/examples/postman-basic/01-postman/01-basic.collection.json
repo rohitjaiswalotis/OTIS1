@@ -1,0 +1,205 @@
+{
+	"info": {
+		"_postman_id": "66ee08fc-4f94-4147-9127-9b702475ecf1",
+		"name": "SF Basic",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12793592"
+	},
+	"item": [
+		{
+			"name": "LogIn",
+			"item": [
+				{
+					"name": "SOAP",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"//************* BEFORE HOOK *************//",
+									"",
+									"// skip LogIn post factum if session id is provided instead of credentials",
+									"if (!pm.environment.get(\"password\") && pm.environment.get(\"accessToken\")) {",
+									"    return;",
+									"}",
+									"",
+									"",
+									"//**************** CONST ****************//",
+									"",
+									"",
+									"//**************** TESTS ****************//",
+									"",
+									"pm.test(\"Response must be successful with body\", function () {",
+									"    pm.response.to.be.ok;",
+									"    pm.response.to.be.withBody;",
+									"});",
+									"",
+									"//**************** LOGIC ****************//",
+									"",
+									"// parse xml response to json",
+									"let result = xml2Json(pm.response.text())[\"soapenv:Envelope\"][\"soapenv:Body\"].loginResponse.result;",
+									"",
+									"// evaluate endpoint",
+									"let url = result.serverUrl.split(\"/\");",
+									"pm.environment.set(\"endpoint\", url[0] + \"//\" + url[2]);",
+									"",
+									"// save access token",
+									"pm.environment.set(\"accessToken\", result.sessionId);",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"\r",
+									"//************* BEFORE HOOK *************//\r",
+									"\r",
+									"// use endpoint as an url if no explicit url provided\r",
+									"if (!pm.environment.get(\"url\") && pm.environment.get(\"endpoint\")) {\r",
+									"    pm.environment.set(\"url\", pm.environment.get(\"endpoint\"));\r",
+									"}\r",
+									"// append .0 to api version if not already\r",
+									"let apiVersion = \"\" + pm.environment.get(\"apiVersion\");\r",
+									"if (apiVersion.indexOf(\".\") === -1) {\r",
+									"    pm.environment.set(\"apiVersion\", apiVersion + \".0\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "text/xml",
+								"type": "text"
+							},
+							{
+								"key": "SOAPAction",
+								"value": "login",
+								"type": "text"
+							},
+							{
+								"key": "charset",
+								"value": "UTF-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n<env:Envelope xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\n    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n    xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\">\n  <env:Body>\n    <n1:login xmlns:n1=\"urn:partner.soap.sforce.com\">\n      <n1:username>{{username}}</n1:username>\n      <n1:password>{{password}}</n1:password>\n    </n1:login>\n  </env:Body>\n</env:Envelope>"
+						},
+						"url": {
+							"raw": "{{url}}/services/Soap/u/{{apiVersion}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"services",
+								"Soap",
+								"u",
+								"{{apiVersion}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Main Org",
+			"item": [
+				{
+					"name": "GetUserInfo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"//**************** CONST ****************//\r",
+									"\r",
+									"\r",
+									"//**************** TESTS ****************//\r",
+									"\r",
+									"pm.test(\"Response must be successful with body\", function () {\r",
+									"    pm.response.to.be.ok;\r",
+									"    pm.response.to.be.withBody;\r",
+									"});\r",
+									"\r",
+									"//**************** LOGIC ****************//\r",
+									"\r",
+									"// parse xml response to json\r",
+									"let result = xml2Json(pm.response.text())[\"soapenv:Envelope\"][\"soapenv:Body\"].getUserInfoResponse.result;\r",
+									"\r",
+									"// save org and user data\r",
+									"pm.environment.set(\"orgId\", result.organizationId);\r",
+									"pm.environment.set(\"orgName\", result.organizationName);\r",
+									"pm.environment.set(\"userId\", result.userId);\r",
+									"pm.environment.set(\"profileId\", result.profileId);\r",
+									"pm.environment.set(\"userEmail\", result.userEmail);\r",
+									"pm.environment.set(\"userName\", result.userName);\r",
+									"pm.environment.set(\"userFullName\", result.userFullName);\r",
+									"pm.environment.set(\"userLocale\", result.userLocale);\r",
+									"pm.environment.set(\"userTimeZone\", result.userTimeZone);\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "text/xml"
+							},
+							{
+								"key": "SOAPAction",
+								"value": "get",
+								"type": "text"
+							},
+							{
+								"key": "charset",
+								"value": "UTF-8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\r\n<env:Envelope xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\r\n    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n    xmlns:env=\"http://schemas.xmlsoap.org/soap/envelope/\"\r\n    xmlns:cmd=\"http://soap.sforce.com/2006/04/metadata\"\r\n  >\r\n  <env:Header>\r\n    <cmd:SessionHeader>\r\n      <cmd:sessionId>{{accessToken}}</cmd:sessionId>\r\n    </cmd:SessionHeader>\r\n  </env:Header>\r\n  <env:Body>\r\n    <n1:getUserInfo xmlns:n1=\"urn:partner.soap.sforce.com\" />\r\n  </env:Body>\r\n</env:Envelope>"
+						},
+						"url": {
+							"raw": "{{instanceUrl}}/services/Soap/u/{{apiVersion}}",
+							"host": [
+								"{{instanceUrl}}"
+							],
+							"path": [
+								"services",
+								"Soap",
+								"u",
+								"{{apiVersion}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,7 @@
+Id,BookableResource__c,Branch__c,InternalResource__c,JobTitle__c,Member__c,Name,PrimaryOffice__c,BookableResource__r.Name,Branch__r.Name,InternalResource__r.Name
+a0qDO000000eZpOYAU,0HnDO00000006CS0AY,a0rDO0000004OXzYAM,,Maintenance Supervisor,Supervisor OTIS,OM-0000030,true,Supervisor OTIS,DEV HUB Office,
+a0qDO000000eZpPYAU,,a0rDO0000004OXzYAM,a11DO0000008SNjYAM,Sales Representative,Sally Sales,OM-0000031,true,,DEV HUB Office,Sally Sales
+a0qDO000000eZpQYAU,0HnDO00000006CU0AY,a0rDO0000004OXuYAM,,Service Mechanic,Mechanic2 OTIS,OM-0000032,false,Mechanic2 OTIS,Asset Marketplace LR,
+a0qDO000000eZpRYAU,,a0rDO0000004OXzYAM,a11DO0000008SNkYAM,Branch Manager,Bob Branch Manager,OM-0000033,true,,DEV HUB Office,Bob Branch Manager
+a0qDO000000eZpSYAU,0HnDO00000006CT0AY,a0rDO0000004OXzYAM,,Service Mechanic,Mechanic1 OTIS,OM-0000034,true,Mechanic1 OTIS,DEV HUB Office,
+a0qDO000000eZpTYAU,0HnDO00000006CU0AY,a0rDO0000004OXzYAM,,Service Mechanic,Mechanic2 OTIS,OM-0000035,true,Mechanic2 OTIS,DEV HUB Office,

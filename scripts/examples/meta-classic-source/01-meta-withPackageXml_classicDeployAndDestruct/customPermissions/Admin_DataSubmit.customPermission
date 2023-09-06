@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Accessibility of &apos;Data Submit&apos; item in &apos;Monitoring&apos; section of Admin Console</description>
+    <label>Data Submit</label>
+</CustomPermission>

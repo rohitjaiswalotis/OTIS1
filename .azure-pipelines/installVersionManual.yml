@@ -1,0 +1,301 @@
+name: 'Install Field Service Package Version'
+
+
+trigger: none
+    
+pr: none
+
+
+variables:
+- template: templates/variables.yml
+
+
+parameters:
+
+- name: versionId
+  displayName: Package Version Id
+  type: string
+  default: none
+
+- name: localizationDomain
+  displayName: Localization Domain (e.g. NAA, Japan, EMEA)
+  type: string
+  default: Global
+
+- name: targetOrgUrl
+  displayName: Target Org Url
+  type: string
+  default: https://test.salesforce.com
+
+- name: targetOrgUsername
+  displayName: Target Org Username
+  type: string
+  default: none
+
+- name: targetOrgPassword
+  displayName: Target Org Password
+  type: string
+  default: none
+
+- name: targetOrgAuthFileName
+  displayName: Target Org Auth File Name
+  type: string
+  default: none
+
+- name: shouldCreateNewScratchOrg
+  displayName: Create new Scratch Org?
+  type: boolean
+  default: false
+
+- name: scratchOrgConfigFile
+  displayName: Relative path to scratch org config file
+  type: string
+  default: config/core/shape.json
+  values:
+  - config/core/shape.json
+  - config/core/features.json
+  - config/messaging/shape.json
+  - config/messaging/features.json
+
+- name: scratchOrgDurationInDays
+  displayName: Number of Days for Scratch Org to expire after
+  type: number
+  default: 5
+  values:
+  - 1
+  - 2
+  - 3
+  - 5
+  - 7
+  - 10
+  - 15
+  - 20
+  - 30
+
+- name: autoInstallDependencies
+  displayName: Auto Install Dependencies?
+  type: boolean
+  default: false
+
+- name: shouldInstallFSL
+  displayName: Install FSL?
+  type: boolean
+  default: false
+  
+- name: fslPackageVersionId
+  displayName: FSL Package Version Id
+  type: string
+  default: "default"
+
+- name: installationMode
+  displayName: Installation Mode
+  type: string
+  default: auto
+  values:
+  - auto
+  - install
+  - upgrade
+
+- name: compileScope
+  displayName: Package Apex Compilation Scope
+  type: string
+  default: all
+  values:
+  - all
+  - package
+
+- name: upgradeType
+  displayName: Package Upgrade Type
+  type: string
+  default: Mixed
+  values:
+  - Mixed
+  - DeprecateOnly
+  - Delete
+
+- name: actionPhase
+  displayName: Action Phase
+  type: string
+  default: both
+  values:
+  - both
+  - before
+  - after
+  - none
+
+- name: shouldDataBeLoaded
+  displayName: Load Data?
+  type: boolean
+  default: false
+
+- name: shouldRunTestsBefore
+  displayName: Run Tests Before?
+  type: boolean
+  default: false
+
+- name: shouldRunTestsAfter
+  displayName: Run Tests After?
+  type: boolean
+  default: false
+
+- name: concurrentTestsExecution
+  displayName: Parallel Tests Mode?
+  type: boolean
+  default: false
+
+- name: shouldGenerateTestsReport
+  displayName: Generate Tests Report?
+  type: boolean
+  default: false
+
+- name: enableDebugMode
+  displayName: Debug Mode?
+  type: boolean
+  default: false
+
+
+stages:
+    
+    - stage: Install
+      
+      displayName: Install
+      dependsOn: []
+      
+      jobs:
+          
+          - job: InstallVersion
+            
+            displayName: 'Install Package Version'                         
+            
+            timeoutInMinutes: 0
+            
+            pool:
+                vmImage: 'ubuntu-latest'
+
+            steps:
+            
+            - template: templates/init.yml
+            
+            
+            - ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
+              
+              - task: DownloadSEcureFile@1
+                name: targetOrgAuthFile
+                inputs:
+                    secureFile: ${{ parameters.targetOrgAuthFileName }}
+                displayName: 'Get Target Org auth file' 
+                
+            
+            - ${{ if eq(parameters.shouldCreateNewScratchOrg, true) }}:
+              
+              - template: templates/createScratchOrg.yml
+                parameters:
+                  configFile: ${{ parameters.scratchOrgConfigFile }}
+                  durationInDays: ${{ parameters.scratchOrgDurationInDays }}
+                  enableDebugMode: ${{ parameters.enableDebugMode }}
+                  
+            
+            - ${{ if eq(parameters.shouldRunTestsBefore, true) }}:
+              
+              - template: templates/runTests.yml
+                parameters:
+                  ${{ if contains(parameters.targetOrgUsername, '@') }}:
+                    targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                    targetOrgUsername: ${{ parameters.targetOrgUsername }}
+                    targetOrgPassword: ${{ parameters.targetOrgPassword }}
+                  ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
+                    targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                  concurrentExecution: ${{ parameters.concurrentTestsExecution }}
+                  continueOnError: true
+                  enableDebugMode: ${{ parameters.enableDebugMode }}
+                  
+            
+              - ${{ if eq(parameters.shouldGenerateTestsReport, true) }}:
+                
+                - template: templates/generateTestsReport.yml
+                  parameters:
+                    ${{ if contains(parameters.targetOrgUsername, '@') }}:
+                      targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                      targetOrgUsername: ${{ parameters.targetOrgUsername }}
+                      targetOrgPassword: ${{ parameters.targetOrgPassword }}
+                    ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
+                      targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                    reportFileName: TestsReport_$(Build.BuildId)_before.xlsx
+                    enableDebugMode: ${{ parameters.enableDebugMode }}
+                  
+            
+            - ${{ if eq(parameters.shouldInstallFSL, true) }}:
+              
+              - template: templates/installFSL.yml
+                parameters:
+                  ${{ if contains(parameters.targetOrgUsername, '@') }}:
+                    targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                    targetOrgUsername: ${{ parameters.targetOrgUsername }}
+                    targetOrgPassword: ${{ parameters.targetOrgPassword }}
+                  ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
+                    targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                  versionId: ${{ parameters.fslPackageVersionId }}
+                  continueOnError: true
+                  enableDebugMode: ${{ parameters.enableDebugMode }}
+                  
+            
+            - template: templates/installVersion.yml
+              parameters:
+                versionId: ${{ parameters.versionId }}
+                localizationDomain: ${{ parameters.localizationDomain }}
+                ${{ if contains(parameters.targetOrgUsername, '@') }}:
+                  targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                  targetOrgUsername: ${{ parameters.targetOrgUsername }}
+                  targetOrgPassword: ${{ parameters.targetOrgPassword }}
+                ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
+                  targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                installationMode: ${{ parameters.installationMode }}
+                compileScope: ${{ parameters.compileScope }}
+                upgradeType: ${{ parameters.upgradeType }}
+                actionPhase: ${{ parameters.actionPhase }}
+                autoInstallDependencies: ${{ parameters.autoInstallDependencies }}
+                enableDebugMode: ${{ parameters.enableDebugMode }}
+                
+                
+            - ${{ if eq(parameters.shouldDataBeLoaded, true) }}:
+              
+              - template: templates/loadData.yml
+                parameters:
+                  ${{ if contains(parameters.targetOrgUsername, '@') }}:
+                    targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                    targetOrgUsername: ${{ parameters.targetOrgUsername }}
+                    targetOrgPassword: ${{ parameters.targetOrgPassword }}
+                  ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
+                    targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                  enableDebugMode: ${{ parameters.enableDebugMode }}
+                  
+            
+            - ${{ if eq(parameters.shouldRunTestsAfter, true) }}:
+              
+              - template: templates/runTests.yml
+                parameters:
+                  ${{ if contains(parameters.targetOrgUsername, '@') }}:
+                    targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                    targetOrgUsername: ${{ parameters.targetOrgUsername }}
+                    targetOrgPassword: ${{ parameters.targetOrgPassword }}
+                  ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
+                    targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                  concurrentExecution: ${{ parameters.concurrentTestsExecution }}
+                  continueOnError: false
+                  enableDebugMode: ${{ parameters.enableDebugMode }}
+                
+              
+              - ${{ if eq(parameters.shouldGenerateTestsReport, true) }}:
+                
+                - template: templates/generateTestsReport.yml
+                  parameters:
+                    ${{ if contains(parameters.targetOrgUsername, '@') }}:
+                      targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                      targetOrgUsername: ${{ parameters.targetOrgUsername }}
+                      targetOrgPassword: ${{ parameters.targetOrgPassword }}
+                    ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
+                      targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                    reportFileName: TestsReport_$(Build.BuildId)_after.xlsx
+                    enableDebugMode: ${{ parameters.enableDebugMode }}
+                
+

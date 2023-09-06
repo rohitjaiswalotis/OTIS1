@@ -1,0 +1,127 @@
+name: 'Create Field Service Package Version by Schedule'
+
+
+trigger: none
+    
+pr: none
+
+schedules:
+
+- cron: '0 1 * * *'
+  displayName: Nightly Field Service Global Package Version Build
+  branches:
+    include:
+    - dev
+  always: false
+
+- cron: '0 2 * * *'
+  displayName: Nightly Field Service Japan Package Version Build
+  branches:
+    include:
+    - dev-jpn
+  always: false
+
+- cron: '0 3 * * *'
+  displayName: Nightly Field Service EMEA Package Version Build
+  branches:
+    include:
+    - dev-emea
+  always: false
+
+- cron: '0 4 * * *'
+  displayName: Nightly Field Service NAA Package Version Build
+  branches:
+    include:
+    - dev-naa
+  always: false
+
+
+variables:
+  
+  - template: templates/variables.yml
+  
+  - name: targetOrgName
+    ${{ if eq(variables['Build.SourceBranchName'], 'dev-jpn') }}:
+      value: 'avgJpn'
+    ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-emea') }}:
+      value: 'avgEMEA'
+    ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-naa') }}:
+      value: 'avgNAA'
+    ${{ else }}:
+      value: 'avgCore'
+
+
+stages:
+    
+    - stage: Upload
+      
+      displayName: Upload
+      dependsOn: []
+      
+      jobs:
+          
+          - job: CreatePackageVersion
+            
+            displayName: 'Create Package Version'                         
+            
+            timeoutInMinutes: 0
+            
+            pool:
+                vmImage: 'ubuntu-latest'
+            
+            steps:
+            
+            - template: templates/init.yml
+            
+            
+            - template: templates/createVersion.yml
+              parameters:
+                branchMarker: ${{ variables['Build.SourceBranchName'] }}
+                skipValidation: false
+                createTag: true
+                numberOfRetries: 1
+              
+            
+            - task: DownloadSEcureFile@1
+              name: targetOrgAuthFile
+              inputs:
+                  secureFile: authFile_$(targetOrgName)
+              displayName: 'Get Target Org auth file' 
+              
+            
+            - template: templates/runTests.yml
+              parameters:
+                targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                concurrentExecution: true
+                continueOnError: true
+              
+            
+            - template: templates/installFSL.yml
+              parameters:
+                targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                versionId: default
+                continueOnError: true
+                
+            
+            - template: templates/installVersion.yml
+              parameters:
+                ${{ if eq(variables['Build.SourceBranchName'], 'dev-jpn') }}:
+                  localizationDomain: "Japan"
+                ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-emea') }}:
+                  localizationDomain: "EMEA"
+                ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-naa') }}:
+                  localizationDomain: "NAA"
+                ${{ else }}:
+                  localizationDomain: "Global"
+                targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                
+            - template: templates/runAQA.yml
+              parameters:
+                targetOrgAuthVariableGroup: $(targetOrgName)
+            
+            - template: templates/runTests.yml
+              parameters:
+                targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                concurrentExecution: false
+
+

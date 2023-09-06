@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sorted>false</sorted>
+    <standardValue>
+        <fullName>Mistake</fullName>
+        <default>false</default>
+        <label>Mistake</label>
+    </standardValue>
+    <standardValue>
+        <fullName>No-Voice</fullName>
+        <default>false</default>
+        <label>No-Voice</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Testing</fullName>
+        <default>false</default>
+        <label>Testing</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Entrapment</fullName>
+        <default>false</default>
+        <label>Entrapment</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Possible Entrapment</fullName>
+        <default>false</default>
+        <label>Possible Entrapment</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Out of Service</fullName>
+        <default>false</default>
+        <label>Out of Service</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Malfunction</fullName>
+        <default>false</default>
+        <label>Malfunction</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Alleged Injury</fullName>
+        <default>false</default>
+        <label>Alleged Injury</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Safety / Hazard</fullName>
+        <default>false</default>
+        <label>Safety / Hazard</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Branch Communication</fullName>
+        <default>false</default>
+        <label>Branch Communication</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Message to Field Ops</fullName>
+        <default>false</default>
+        <label>Message to Field Ops</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Customer Inquiry</fullName>
+        <default>false</default>
+        <label>Customer Inquiry</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Field Inquiry</fullName>
+        <default>false</default>
+        <label>Field Inquiry</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Elevator Programming</fullName>
+        <default>false</default>
+        <label>Elevator Programming</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Customer Relations</fullName>
+        <default>false</default>
+        <label>Customer Relations</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Customer / Other</fullName>
+        <default>false</default>
+        <label>Customer / Other</label>
+    </standardValue>
+</StandardValueSet>

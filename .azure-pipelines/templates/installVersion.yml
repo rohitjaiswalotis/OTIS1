@@ -1,0 +1,374 @@
+
+parameters:
+
+- name: versionId
+  displayName: Package Version Id
+  type: string
+  default: none
+
+- name: localizationDomain
+  displayName: Localization Domain
+  type: string
+  default: none
+
+- name: targetOrgUrl
+  displayName: Target Org Url
+  type: string
+  default: https://test.salesforce.com
+
+- name: targetOrgUsername
+  displayName: Target Org Username
+  type: string
+  default: none
+
+- name: targetOrgPassword
+  displayName: Target Org Password
+  type: string
+  default: none
+
+- name: targetOrgAuthFilePath
+  displayName: Target Org Auth File Path
+  type: string
+  default: none
+
+- name: installationMode
+  displayName: Installation Mode
+  type: string
+  default: auto
+  values:
+  - auto
+  - install
+  - upgrade
+
+- name: compileScope
+  displayName: Package Apex Compilation Scope
+  type: string
+  default: all
+  values:
+  - all
+  - package
+
+- name: upgradeType
+  displayName: Package Upgrade Type
+  type: string
+  default: Mixed
+  values:
+  - Mixed
+  - DeprecateOnly
+  - Delete
+
+- name: actionPhase
+  displayName: Action Phase
+  type: string
+  default: both
+  values:
+  - both
+  - before
+  - after
+  - none
+
+- name: autoInstallDependencies
+  displayName: Auto Install Dependencies?
+  type: boolean
+  default: false
+
+- name: enableDebugMode
+  displayName: Debug Mode?
+  type: boolean
+  default: false
+
+
+steps:
+
+# get Field Service package version id
+
+- bash: |
+        
+        # enable exit on error
+        set -e
+        
+        if [[ "${{parameters.versionId}}" =~ ^04t.* ]]; then
+          
+          FS_PACKAGE_VERSION_ID="${{parameters.versionId}}"
+          
+        # try to parse version id from branch/tag name
+        elif [[ ! ${FS_PACKAGE_VERSION_ID:+1} ]]; then
+          
+          echo "Parsing version id from current branch/tag: $(Build.SourceBranchName)"
+          FS_PACKAGE_VERSION_ID="$(echo -n "$(Build.SourceBranchName)" | egrep -oi "(^|[^a-z0-9])04t([a-z0-9]{12}|[a-z0-9]{15})([^a-z0-9]|$)" | egrep -oi "[a-z0-9]+" || true)"
+          echo "Parsed version id: $FS_PACKAGE_VERSION_ID"
+          
+        fi
+        
+        if [[ ! ${FS_PACKAGE_VERSION_ID:+1} ]]; then
+          echo "Cannot detect package version id!"
+          exit 1;
+        fi
+        
+        # set variable to pass package version to next steps
+        echo "##vso[task.setvariable variable=FS_PACKAGE_VERSION_ID]${FS_PACKAGE_VERSION_ID}"
+        
+  displayName: 'Assign Field Service package version id'
+  
+
+
+# get Target Org creds
+- ${{ if and(contains(parameters.targetOrgUsername, '@'), not( eq(parameters.targetOrgPassword, 'none'))) }}:
+  
+  - bash: |
+          
+          # enable exit on error
+          set -e
+          
+          # set variable to pass target org auth info to next steps
+          echo "##vso[task.setvariable variable=TARGET_ORG_URL]${{ parameters.targetOrgUrl }}"
+          echo "##vso[task.setvariable variable=TARGET_ORG_USERNAME]${{ parameters.targetOrgUsername }}"
+          echo "##vso[task.setvariable variable=TARGET_ORG_PASSWORD]${{ parameters.targetOrgPassword }}"
+          
+    displayName: 'Assign Target Org creds'
+
+
+- ${{ if not( eq(parameters.targetOrgAuthFilePath, 'none') ) }}:
+  
+  - bash: |
+          
+          # enable exit on error
+          set -e
+          
+          # set variable to pass target org auth info to next steps
+          echo "##vso[task.setvariable variable=TARGET_ORG_AUTH_FILE]${{ parameters.targetOrgAuthFilePath }}"
+          
+    displayName: 'Assign Target Org auth file path'
+
+
+# install/upgrade package  
+
+- bash: |
+        
+        # enable "debug" mode
+        if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
+          set -x
+        fi
+        
+        
+        # set localization domain (if provided) to be available inside steps runner
+        if [[ ! "${{parameters.localizationDomain}}" =~ ^none$ ]] ; then
+          export SF_SR_VAR_GLOBAL_LOCALIZATION_DOMAIN="${{parameters.localizationDomain}}";
+        fi
+        
+        
+        # check if target org creds provided
+        if [[ ${TARGET_ORG_USERNAME:+1} && ${TARGET_ORG_PASSWORD:+1} ]] ; then
+          
+          # log in to target org by creds
+          
+          echo "Installing sfpowerkit plugin if no originally installed version is available ..."
+          (sf plugins | grep -i "sfpowerkit") || (echo "y" | sf plugins install sfpowerkit@$(sfPowerkitVersion))
+          
+          DX_STATUS_CODE=$(sf sfpowerkit:auth:login -a targetOrg -u "${TARGET_ORG_USERNAME,,}" -p "${TARGET_ORG_PASSWORD}" -r "${TARGET_ORG_URL}" --json | jq .status);
+          
+          # early exit - error when autorizing to target org by creds
+          if [[ "$DX_STATUS_CODE" != "0" ]]; then
+            echo "Error when logging in to target org by creds as user '$TARGET_ORG_USERNAME'!"
+            exit 1;
+          fi
+          
+          echo "Successfully logged into target org by creds as user '$TARGET_ORG_USERNAME'."
+          
+        elif [[ ${TARGET_ORG_AUTH_FILE:+1} ]] ; then
+          
+          DX_AUTH_RESPONSE=$(sf org login sfdx-url -f "$TARGET_ORG_AUTH_FILE" -a targetOrg --json);
+          DX_STATUS_CODE=$(echo "$DX_AUTH_RESPONSE" | jq .status);
+          
+          # early exit - error when autorizing to target org by auth url
+          if [[ "$DX_STATUS_CODE" != "0" ]]; then
+            echo "Error when logging in to target org by auth url!"
+            exit 1;
+          fi
+          
+          TARGET_ORG_USERNAME=$(echo "$DX_AUTH_RESPONSE" | jq -r .result.username);
+          
+          echo "Successfully logged into target org by auth url as user '$TARGET_ORG_USERNAME'"
+          
+          TARGET_ORG_AUTH_FILE_NAME="${TARGET_ORG_AUTH_FILE##*/}"
+          TARGET_ORG_AUTH_FILE_NAME="${TARGET_ORG_AUTH_FILE_NAME%%.*}"
+          
+        fi
+        
+        
+        # get packages installed into target org
+        echo "Fetching packages installed into target org..."
+        DX_LIST_INSTALLED_PACKAGES_RESPONSE=$(sf package installed list --target-org="targetOrg" --json);
+        echo "List of already installed packages into target org: "
+        echo "$DX_LIST_INSTALLED_PACKAGES_RESPONSE" | jq .
+        
+        DX_STATUS_CODE=$(echo "$DX_LIST_INSTALLED_PACKAGES_RESPONSE" | jq .status);
+        
+        # early exit - error when grabbing installed packages from target org
+        if [[ "$DX_STATUS_CODE" != "0" ]]; then
+          echo "ERROR: Cannot read list of installed packages from target org!"
+          exit 1
+        fi
+        
+        
+        # check by name if package is already present in target org
+        FS_PACKAGE_ORIGINAL_VERSION_DETAILS=$(echo "$DX_LIST_INSTALLED_PACKAGES_RESPONSE" | jq -c ".result[] | select( ( .SubscriberPackageName | test(\"^$(fsPackageName)\$\";\"i\") ) ) ");
+        
+        # early exit if package version with exact same id has already been installed
+        if [[ ${FS_PACKAGE_ORIGINAL_VERSION_DETAILS:+1} ]]; then
+          
+          FS_PACKAGE_ORIGINAL_VERSION_ID=$(echo "$FS_PACKAGE_ORIGINAL_VERSION_DETAILS" | jq -r ".SubscriberPackageVersionId");
+          
+          if [[ "${FS_PACKAGE_ORIGINAL_VERSION_ID::15}" == "${FS_PACKAGE_VERSION_ID::15}" ]]; then
+            echo "'$(fsPackageName)' package version ($FS_PACKAGE_VERSION_ID) is already installed into target org, so nothing to do here!"
+            exit 0;
+          fi
+          
+        fi
+        
+        
+        # auto install dependencies if requested
+        if [[ "${{ parameters.autoInstallDependencies }}" =~ ^[Tt]rue$ ]] ; then
+          
+          # include client utils
+          chmod +x $(clientUtils)
+          source $(clientUtils)
+          
+          echo "Authorizing to dev hub..."
+          
+          DX_STATUS_CODE=$(sf org login jwt --client-id $(devHubClientId) --jwt-key-file $(devHubPrivateKey.secureFilePath) --username $(devHubUsername) -r $(devHubUrl) -a devHub --json | jq .status);
+          
+          # early exit - error when autorizing to dev hub
+          if [[ "$DX_STATUS_CODE" != "0" ]]; then
+            echo "Cannot log in to dev hub as '$(devHubUsername)'"
+            exit 1
+          fi
+          
+          echo "Successfully authorized to dev hub as '$(devHubUsername)'"
+          
+          echo "Installing dependencies for package $(fsPackageName) ($FS_PACKAGE_VERSION_ID) into target org as '$TARGET_ORG_USERNAME' user..."
+          CURRENT_DIR_CHECKPOINT="$(pwd)";
+          installPackageDependencies "$FS_PACKAGE_VERSION_ID" "{ \"devHubAlias\":\"devHub\", \"orgAlias\":\"targetOrg\", \"username\":\"${TARGET_ORG_USERNAME:-none}\", \"password\":\"${TARGET_ORG_PASSWORD:-none}\", \"url\":\"${TARGET_ORG_URL:-none}\", \"authFile\":\"${TARGET_ORG_AUTH_FILE_NAME:-none}\" }" "{ \"organization\":\"$(System.TeamFoundationCollectionUri)\", \"project\": \"$(System.TeamProject)\", \"projectId\": \"$(System.TeamProjectId)\", \"localizationDomain\":\"${{parameters.localizationDomain}}\", \"debugMode\":\"${OPTION_DEBUG_MODE:-false}\", \"betaDiff\":true }" 2>&1; DX_STATUS_CODE=$?;
+          cd "$CURRENT_DIR_CHECKPOINT"
+          
+          # early exit - error when grabbing installed packages from target org
+          if [[ "$DX_STATUS_CODE" != "0" ]]; then
+            echo "ERROR: Cannot install dependencies for package $(fsPackageName) ($FS_PACKAGE_VERSION_ID) into target org as '$TARGET_ORG_USERNAME' user!"
+            exit 1
+          fi
+          
+        fi
+        
+        
+        # evaluate action type in case of auto mode
+        if [[ "${{ parameters.installationMode }}" =~ ^auto$ ]] ; then
+          
+          if [[ ${FS_PACKAGE_ORIGINAL_VERSION_DETAILS:+1} ]]; then
+            
+            echo "Field Service package is already present in target org. Going with upgrade flow..."
+            PACKAGE_ACTION_TYPE="upgrade"
+            
+            # grab already installed version number
+            FS_PACKAGE_ORIGINAL_VERSION_NUMBER=$(echo "$FS_PACKAGE_ORIGINAL_VERSION_DETAILS" | jq -r ".SubscriberPackageVersionNumber");
+            
+            echo "Upgrading '$(fsPackageName)' package version ($FS_PACKAGE_VERSION_ID) on top of '$FS_PACKAGE_ORIGINAL_VERSION_NUMBER'..."
+            
+          else
+            
+            echo "No Field Service metadata present in target org. Going with install flow..."
+            
+            PACKAGE_ACTION_TYPE="install";
+            echo "Installing '$(fsPackageName)' package version ($FS_PACKAGE_VERSION_ID)..."
+            
+          fi
+          
+        elif [[ "${{ parameters.installationMode }}" =~ ^install$ ]] ; then
+          
+          PACKAGE_ACTION_TYPE="install";
+        
+        elif [[ "${{ parameters.installationMode }}" =~ ^upgrade$ ]] ; then
+          
+          PACKAGE_ACTION_TYPE="upgrade";
+          
+        fi
+        
+        
+        if [[ ! "${{parameters.localizationDomain}}" =~ ^none$ ]] ; then
+          export SF_SR_VAR_GLOBAL_LOCALIZATION_DOMAIN="${{parameters.localizationDomain}}";
+        fi
+        
+        
+        if [[ "${{ parameters.actionPhase }}" =~ ^before$ || "${{ parameters.actionPhase }}" =~ ^both$ ]] ; then
+          
+          echo "Running pre-$PACKAGE_ACTION_TYPE steps..."
+          
+          # enable exit on error
+          set -e
+          
+          bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$PACKAGE_ACTION_TYPE/before" -a "targetOrg" -w "$(pwd)"
+          
+          # disable exit on error
+          set +e
+          
+        else
+          
+          echo "Skipped pre-$PACKAGE_ACTION_TYPE steps."
+          
+        fi
+        
+        
+        # actuall installation
+        echo "Actually installing '$(fsPackageName)' package version ($FS_PACKAGE_VERSION_ID)..."
+        
+        DX_INSTALL_RESPONSE=$(sf package install --target-org="targetOrg" -p "$FS_PACKAGE_VERSION_ID" --upgrade-type="${{ parameters.upgradeType }}" --apex-compile="${{ parameters.compileScope }}" -r --publish-wait=60 -w 1000 --json);
+        echo "$DX_INSTALL_RESPONSE" | jq .
+        
+        DX_INSTALL_STATUS_CODE=$(echo "$DX_INSTALL_RESPONSE" | jq .status);
+        
+        # early exit - package installation error
+        if [[ "$DX_INSTALL_STATUS_CODE" != "0" ]]; then
+          echo "Error when installing '$(fsPackageName)' package version ($FS_PACKAGE_VERSION_ID) into target org as user '$TARGET_ORG_USERNAME'!"
+          exit 1;
+        fi
+        
+        
+        if [[ "${{ parameters.actionPhase }}" =~ ^after$ || "${{ parameters.actionPhase }}" =~ ^both$ ]] ; then
+          
+          echo "Running post-$PACKAGE_ACTION_TYPE steps..."
+          
+          # enable exit on error
+          set -e
+          
+          bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$PACKAGE_ACTION_TYPE/after" -a "targetOrg" -w "$(pwd)"
+          
+          # disable exit on error
+          set +e
+          
+        else
+          
+          echo "Skipped post-$PACKAGE_ACTION_TYPE steps."
+          
+        fi
+        
+        
+        # get packages installed into target org again
+        echo "Fetching packages available in target org after Field Service package install/upgrade..."
+        sf package installed list --target-org="targetOrg"
+        
+        echo "Printing dependencies of currently installed/upgraded Field Service package..."
+        
+        # get access token and instance url
+        sfOrgDetails=$(sf org display --target-org "targetOrg" --verbose --json);
+        sfAccessToken=$(echo "$sfOrgDetails" | jq -r '.result.accessToken // empty');
+        sfInstanceUrl=$(echo "$sfOrgDetails" | jq -r '.result.instanceUrl // empty');
+        
+        npx -p sf-package-inspector@$(packageInspectorVersion) sf-package-inspect --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --command="list-deps" --versionId="$FS_PACKAGE_VERSION_ID"
+        
+        
+  displayName: 'Install/Upgrade Field Service Package into Target Org'
+  continueOnError: false
+  timeoutInMinutes: 360
+  env:
+    AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+
+
