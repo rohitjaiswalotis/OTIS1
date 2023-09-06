@@ -2,7 +2,7 @@
   "packageDirectories": [
     {
       "path": "modules/fs",
-      "default": false,
+      "default": true,
       "package": "OTIS Field Service",
       "versionName": "OTIS Field Service",
       "versionDescription": "OTIS Field Service",
