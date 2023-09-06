@@ -51,7 +51,7 @@ if [[ -d "${LOCAL_CURRENT_STEP_DIR}/profiles" ]]; then
 	xmlstarlet ed --inplace --delete "//*[local-name()='layoutAssignments']" ${LOCAL_CURRENT_STEP_DIR}/profiles/*.xml
 	
 	# example re how to remove all layouts assignments still excluding some by name
-	# xmlstarlet ed --inplace --delete "//*[local-name()='layoutAssignments'][ *[local-name()='layout' and not(text()='Lead-Lead Layout' or text()='ReturnOrder-Return Order Layout') ] ]" ${LOCAL_CURRENT_STEP_DIR}/profiles/*.xml
+	# xmlstarlet ed --inplace --delete "//*[local-name()='layoutAssignments'][ *[local-name()='layout' and not(text()='Lead-FS Lead Layout' or text()='ReturnOrder-FS Return Order Layout') ] ]" ${LOCAL_CURRENT_STEP_DIR}/profiles/*.xml
 	
 fi
 

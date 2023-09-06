@@ -8,7 +8,7 @@ public inherited sharing class FS_CoreInstallHandlerImplTest {
 	@isTest
 	static void basic() {
 		
-		FS_CoreInstallHandlerImpl installHandler = new FS_CoreInstallHandlerImpl();
+		CoreInstallHandler installHandler = new FS_CoreInstallHandlerImpl();
 		
 		Map<String, Object> context = new Map<String, Object>();
 		
