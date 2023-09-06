@@ -1,8 +1,8 @@
 {
-  "name": "otis-global-cc-core",
+  "name": "otis-field-service",
   "private": true,
   "version": "1.0.0",
-  "description": "OTIS Global CC Core",
+  "description": "OTIS Field Service",
   "scripts": {
     "lint": "eslint **/{aura,lwc}/**",
     "test": "npm run test:unit",
