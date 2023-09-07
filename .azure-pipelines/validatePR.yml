@@ -35,6 +35,11 @@ stages:
               persistCredentials: true
               
             - script: |
+                  echo "XXXXX System.PullRequest.targetBranchName: $(System.PullRequest.targetBranchName)"
+                  echo "XXXXX System.PullRequest.TargetBranchName: $(System.PullRequest.TargetBranchName)"
+                  echo "XXXXX System.PullRequest.TargetBranch: $(System.PullRequest.TargetBranch)"
+                  echo "XXXXX System.PullRequest.PullRequestId: $(System.PullRequest.PullRequestId)"
+                  echo "XXXXX System.PullRequest.PullRequestNumber: $(System.PullRequest.PullRequestNumber)"
                   wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F$(pmdVersion)/pmd-bin-$(pmdVersion).zip
                   unzip pmd-bin-$(pmdVersion).zip -d pmd && cd pmd && cp -a pmd-bin-$(pmdVersion)/* . && rm -rf pmd-bin-$(pmdVersion)/
               displayName: 'PMD Downloading'
