@@ -99,11 +99,11 @@ stages:
                 - task: DownloadSEcureFile@1
                   name: fsPoolAuthFile
                   inputs:
-                    ${{ if eq(variables['Build.SourceBranchName'], 'dev-jpn') }}:
+                    ${{ if eq(variables['System.PullRequest.targetBranchName'], 'dev-jpn') }}:
                       secureFile: fsJpnPool
-                    ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-emea') }}:
+                    ${{ elseif eq(variables['System.PullRequest.targetBranchName'], 'dev-emea') }}:
                       secureFile: fsEMEAPool
-                    ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-naa') }}:
+                    ${{ elseif eq(variables['System.PullRequest.targetBranchName'], 'dev-naa') }}:
                       secureFile: fsNAAPool
                     ${{ else }}:
                       secureFile: fsPool
