@@ -92,7 +92,7 @@ function installPackage {
 	
 	
 	if [[ $statusCode -eq 0 ]]; then
-	
+		
 		echo "Successfully retrieved list of installed packages from org"
 		
 		# match package version by 15-char case-sensitive id
@@ -100,7 +100,7 @@ function installPackage {
 		
 		if [[ ${packageVersionDetails:+1} ]]; then
 			
-			echo "${packageNamespace:-'no namespace'} package version ${versionNumber} is already installed into org - nothing to do here!"
+			echo "'${packageName}' (${packageNamespace:-"no namespace"}) package version ${versionNumber} is already installed into org - nothing to do here!"
 			versionNeedsToBeInstalled=0
 			
 			# format json nicely
@@ -109,9 +109,9 @@ function installPackage {
 			
 			# validate mode
 			if [[ "${validateMode,,}" =~ ^true$ ]] ; then
-				echo "Validate mode is ON: package version ${packageNamespace:-'no namespace'} ${versionNumber} cannot be installed since it is already installed into org"
+				echo "Validate mode is ON: '${packageName}' (${packageNamespace:-"no namespace"}) package version ${versionNumber} cannot be installed since it is already installed into org"
 				return 107;
-			fi 
+			fi
 			
 			return 0;
 			
@@ -162,11 +162,11 @@ function installPackage {
 		  
 			if [[ $versionNeedsToBeInstalled -eq 1 ]]; then 
 				
-				echo "Package ${packageNamespace:-'no namespace'} ${versionNumber} should be upgraded: older version is currently installed (${installedVersionNumber})"
+				echo "'${packageName}' (${packageNamespace:-"no namespace"}) package version ${versionNumber} should be upgraded: older version is currently installed (${installedVersionNumber})"
 				
 				# prevent upgrade on top of beta package except for unlocked package
 				if [[ "${installedVersionIsBeta,,}" =~ ^true$ && "${packageType,,}" != "unlocked" ]]; then 
-					echo "ERROR: Currently installed ${packageNamespace:-'no namespace'} package version $installedVersionNumber is beta. Cannot upgrade to ${packageNamespace:-'no namespace'} $versionNumber on top of beta version!";
+					echo "ERROR: Currently installed '${packageName}' (${packageNamespace:-"no namespace"}) package version $installedVersionNumber is beta. Cannot upgrade to '${packageName}' (${packageNamespace:-"no namespace"}) package version $versionNumber on top of beta version!";
 					return 102;
 				fi
 				
@@ -174,10 +174,10 @@ function installPackage {
 				
 				# validate mode
 				if [[ "${validateMode,,}" =~ ^true$ ]] ; then
-					echo "Validate mode is ON: package version ${packageNamespace:-'no namespace'} ${versionNumber} cannot be upgraded: installed version is more recent (${installedVersionNumber})"
+					echo "Validate mode is ON: '${packageName}' (${packageNamespace:-"no namespace"}) package version ${versionNumber} cannot be upgraded: installed version is more recent (${installedVersionNumber})"
 					return 108;
 				else 
-					echo "Package ${packageNamespace:-'no namespace'} ${versionNumber} should NOT be upgraded: currently installed version is fine (${installedVersionNumber})"
+					echo "'${packageName}' (${packageNamespace:-"no namespace"}) package version ${versionNumber} should NOT be upgraded: currently installed version is fine (${installedVersionNumber})"
 					return 0;
 				fi
 				
@@ -186,13 +186,13 @@ function installPackage {
 		else
 			
 			versionNeedsToBeInstalled=1;
-			echo "Package ${packageNamespace:-'no namespace'} ${versionNumber} should be installed: no package version installed at all."
+			echo "'${packageName}' (${packageNamespace:-"no namespace"}) package version ${versionNumber} should be installed: no package version installed at all."
 			
 		fi
 	  
 	else
 	  
-	  echo "Cannot read list of installed packages from org to check if ${packageNamespace:-'no namespace'} package version '$versionId' is already installed!"
+	  echo "Cannot read list of installed packages from org to check if '${packageName}' (${packageNamespace:-"no namespace"}) package version '$versionId' is already installed!"
 	  
 	  # suppress error deliberately to try to install anyway
 	  statusCode=0;
@@ -206,7 +206,7 @@ function installPackage {
 		# validate mode
 		if [[ "${validateMode,,}" =~ ^true$ ]] ; then
 			
-			echo "Validate mode is ON: no obstacles detected to install package version ${packageNamespace:-'no namespace'} ${versionNumber}"
+			echo "Validate mode is ON: no obstacles detected to install '${packageName}' (${packageNamespace:-"no namespace"}) package version ${versionNumber}"
 			return 0;
 			
 		# debug mode
@@ -231,7 +231,7 @@ function installPackage {
 			# installed succefully
 			if [[ ${packageVersionDetails:+1} ]]; then
 				
-				echo "${packageNamespace:-'no namespace'} package version '$versionName' ${versionNumber} ($versionId) has been successfully installed into org."
+				echo "'${packageName}' (${packageNamespace:-"no namespace"}) package version '$versionName' ${versionNumber} ($versionId) has been successfully installed into org."
 				
 				# format json nicely
 				packageVersionDetails=$(echo "$packageVersionDetails" | jq .)
@@ -240,7 +240,7 @@ function installPackage {
 			# failure
 			else
 				
-				echo "ERROR: ${packageNamespace:-'no namespace'} package version '$versionName' ${versionNumber} ($versionId) has NOT been installed into org."
+				echo "ERROR: '${packageName}' (${packageNamespace:-"no namespace"}) package version '$versionName' ${versionNumber} ($versionId) has NOT been installed into org."
 		  
 				return 111;
 		  
@@ -441,23 +441,23 @@ function installPackageDependencies {
 		  
 			if [[ $dependencyNeedsToBeInstalled -eq 1 ]]; then 
 				
-				echo "Dependency ${dependencyPackageNamespace:-'no namespace'} ${dependencyVersionNumber} should be upgraded: older version is currently installed (${installedVersionNumber})"
+				echo "Dependency '${dependencyPackageName}' (${dependencyPackageNamespace:-"no namespace"}) ${dependencyVersionNumber} should be upgraded: older version is currently installed (${installedVersionNumber})"
 				
 				if [[ "${installedVersionIsBeta,,}" =~ ^true$ && "${dependencyPackageType,,}" != "unlocked" ]]; then 
-					echo "ERROR: Currently installed ${dependencyPackageNamespace:-'no namespace'} package version $installedVersionNumber is beta. Cannot upgrade to ${dependencyPackageNamespace:-'no namespace'} $dependencyVersionNumber on top of beta version!";
+					echo "ERROR: Currently installed '${dependencyPackageName}' (${dependencyPackageNamespace:-"no namespace"}) package version $installedVersionNumber is beta. Cannot upgrade to '${dependencyPackageName}' (${dependencyPackageNamespace:-"no namespace"}) $dependencyVersionNumber on top of beta version!";
 					return 102;
 				fi
 				
 			else
 				
-				echo "Dependency ${dependencyPackageNamespace:-'no namespace'} ${dependencyVersionNumber} should NOT be upgraded: currently installed version is fine (${installedVersionNumber})"
+				echo "Dependency '${dependencyPackageName}' (${dependencyPackageNamespace:-"no namespace"}) ${dependencyVersionNumber} should NOT be upgraded: currently installed version is fine (${installedVersionNumber})"
 				
 			fi
 			
 		else
 			
 			dependencyNeedsToBeInstalled=1;
-			echo "Dependency ${dependencyPackageNamespace:-'no namespace'} ${dependencyVersionNumber} should be installed: no package version installed at all."
+			echo "Dependency '${dependencyPackageName}' (${dependencyPackageNamespace:-"no namespace"}) ${dependencyVersionNumber} should be installed: no package version installed at all."
 			
 		fi
 		
