@@ -95,26 +95,46 @@ stages:
                     customCommand: 'install @salesforce/cli@$(sfdxVersion) --global --loglevel verbose'
                   displayName: sfdx npm installation
                   
-                  
                 - task: DownloadSEcureFile@1
                   name: fsPoolAuthFile
                   inputs:
-                    ${{ if eq(variables['System.PullRequest.targetBranchName'], 'dev-jpn') }}:
-                      secureFile: fsJpnPool
-                    ${{ elseif eq(variables['System.PullRequest.targetBranchName'], 'dev-emea') }}:
-                      secureFile: fsEMEAPool
-                    ${{ elseif eq(variables['System.PullRequest.targetBranchName'], 'dev-naa') }}:
-                      secureFile: fsNAAPool
-                    ${{ else }}:
-                      secureFile: fsPool
+                    secureFile: fsPool
                   displayName: 'Copy fsPool secure file'
+                  
+                - task: DownloadSEcureFile@1
+                  name: fsEMEAPoolAuthFile
+                  inputs:
+                    secureFile: fsEMEAPool
+                  displayName: 'Copy fsEMEAPool secure file'
+                  
+                - task: DownloadSEcureFile@1
+                  name: fsNAAPoolAuthFile
+                  inputs:
+                    secureFile: fsNAAPool
+                  displayName: 'Copy fsNAAPool secure file'
                   
                 - script: |
                       
                       echo "Number of pipelines execution for $(Build.Reason): $(counter)"
                       execCounter=$(echo $(counter))
                       
-                      fsPool=$(cat "$(fsPoolAuthFile.secureFilePath)");
+                      # select pool based on target branch (in case of PR), otherwise go with reasonable default
+                      
+                      fsPoolFilePath="$(fsPoolAuthFile.secureFilePath)";
+                      
+                      if [[ "$(Build.Reason)" =~ ^PullRequest$ ]]; then
+                        
+                        if [[ "$(System.PullRequest.TargetBranchName)" =~ ^dev-naa$ ]]; then
+                          fsPoolFilePath="$(fsNAAPoolAuthFile.secureFilePath)";
+                          
+                        elif [[ "$(System.PullRequest.TargetBranchName)" =~ ^dev-emea$ ]]; then
+                          fsPoolFilePath="$(fsEMEAPoolAuthFile.secureFilePath)";
+                          
+                        fi
+                        
+                      fi
+                      
+                      fsPool=$(cat "$fsPoolFilePath");
                       poolLength=$(echo $fsPool | jq 'length');
                       echo "Number of orgs avaliable in pool: $poolLength"
                       
