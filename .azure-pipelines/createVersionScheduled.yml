@@ -21,7 +21,7 @@ schedules:
     - dev-jpn
   always: false
 
-- cron: '0 3 * * *' 
+- cron: '0 3 * * *'
   displayName: Nightly Field Service EMEA Package Version Build
   branches:
     include:
