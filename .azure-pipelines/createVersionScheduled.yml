@@ -28,7 +28,7 @@ schedules:
     - dev-emea
   always: false
 
-- cron: '0 4 * * *' 
+- cron: '0 4 * * *'
   displayName: Nightly Field Service NAA Package Version Build
   branches:
     include:
