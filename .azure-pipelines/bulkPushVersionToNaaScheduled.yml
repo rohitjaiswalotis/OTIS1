@@ -6,7 +6,7 @@ trigger: none
 pr: none
 
 schedules:
-- cron: '0 6 * * *' 
+- cron: '0 6 * * *'
   displayName: Nightly Field Service Package Version Bulk Push to NAA
   branches:
     include:
