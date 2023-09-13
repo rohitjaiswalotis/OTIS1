@@ -22,7 +22,7 @@ insert new Otis_Settings__c(
     TextMessageErrorEmail__c = UserInfo.getUserEmail(),
     Schedule_Job_User__c = UserInfo.getUserId(),
     SendCustomerEmail__c = true,
-    OtisREMEngineerContactId__c = [SELECT Id FROM Contact WHERE Name = 'OTIS REM-ROLE Engineer' LIMIT 1].Id,
+    OtisREMEngineerContactId__c = [SELECT Id FROM Contact WHERE Name = 'OTIS REM-ROLE Engineer' LIMIT 1]?.Id,
     Integration_User_ProfileName__c = 'Otis System Integration'
 );
 
