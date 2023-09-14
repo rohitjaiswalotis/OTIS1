@@ -88,15 +88,26 @@ steps:
         set -e
         
         if [[ "${{parameters.versionId}}" =~ ^04t.* ]]; then
-          
           FS_PACKAGE_VERSION_ID="${{parameters.versionId}}"
+        fi
           
         # try to parse version id from branch/tag name
-        elif [[ ! ${FS_PACKAGE_VERSION_ID:+1} ]]; then
-          
-          echo "Parsing version id from current branch/tag: $(Build.SourceBranchName)"
+        if [[ ! ${FS_PACKAGE_VERSION_ID:+1} ]]; then
+          echo "Parsing version id from current branch/tag name: $(Build.SourceBranchName)"
           FS_PACKAGE_VERSION_ID="$(echo -n "$(Build.SourceBranchName)" | egrep -oi "(^|[^a-z0-9])04t([a-z0-9]{12}|[a-z0-9]{15})([^a-z0-9]|$)" | egrep -oi "[a-z0-9]+" || true)"
-          echo "Parsed version id: $FS_PACKAGE_VERSION_ID"
+          echo "Parsed version id from current branch/tag name: $FS_PACKAGE_VERSION_ID"
+        fi
+        
+        # try to parse version id from tag message
+        if [[ ! ${FS_PACKAGE_VERSION_ID:+1} ]]; then
+          
+          GIT_TAG_MESSAGE=$(git tag -l --format='%(contents)' "$(Build.SourceBranchName)")
+          
+          if [[ ${GIT_TAG_MESSAGE:+1} ]]; then
+            echo "Parsing version id from tag message: $GIT_TAG_MESSAGE"
+            FS_PACKAGE_VERSION_ID="$(echo -n "$GIT_TAG_MESSAGE" | egrep -oi "(^|[^a-z0-9])04t([a-z0-9]{12}|[a-z0-9]{15})([^a-z0-9]|$)" | egrep -oi "[a-z0-9]+" || true)"
+            echo "Parsed version id from tag message: $FS_PACKAGE_VERSION_ID"
+          fi
           
         fi
         

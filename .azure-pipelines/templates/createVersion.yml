@@ -197,6 +197,11 @@ steps:
             echo "WARNING: Error when updating package version '$FS_PACKAGE_VERSION_NUMBER' ($FS_PACKAGE_VERSION_ID) with just created tag '$FS_PACKAGE_VERSION_TAG_NAME'!"
           fi
           
+          # create extra tag to track latest snapshot of the package version for current branch
+          FS_PACKAGE_LATEST_VERSION_ON_BRANCH_TAG_NAME="$(Build.SourceBranchName)-latestPackageVersion"
+          git tag -fa "$FS_PACKAGE_LATEST_VERSION_ON_BRANCH_TAG_NAME" -m "Tag Ref: $FS_PACKAGE_VERSION_TAG_NAME"
+          git push -f origin "tags/$FS_PACKAGE_LATEST_VERSION_ON_BRANCH_TAG_NAME"
+          
         fi
         
         
