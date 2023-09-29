@@ -109,3 +109,34 @@ if [[ -d "${LOCAL_CURRENT_STEP_DIR}/objects" && "$(ls -A "${LOCAL_CURRENT_STEP_D
 fi
 
 
+# remove everything from dashboards except folders descriptors
+if [[ -d "${LOCAL_CURRENT_STEP_DIR}/dashboards" && "$(ls -A "${LOCAL_CURRENT_STEP_DIR}/dashboards")" ]]; then
+	
+	for dashboardItem in ${LOCAL_CURRENT_STEP_DIR}/dashboards/*; do
+		
+		# remove everything except folder descriptor file
+		if [[ -d "$dashboardItem" || ! "${dashboardItem}" =~ ^.*\.dashboardFolder-meta\.xml$ ]]; then
+			rm -rf "$dashboardItem"
+			continue;
+		fi
+		
+	done
+	
+fi
+
+
+# remove everything from reports except folders descriptors
+if [[ -d "${LOCAL_CURRENT_STEP_DIR}/reports" && "$(ls -A "${LOCAL_CURRENT_STEP_DIR}/reports")" ]]; then
+	
+	for reportItem in ${LOCAL_CURRENT_STEP_DIR}/reports/*; do
+		
+		# remove everything except folder descriptor file
+		if [[ -d "$reportItem" || ! "${reportItem}" =~ ^.*\.reportFolder-meta\.xml$ ]]; then
+			rm -rf "$reportItem"
+			continue;
+		fi
+		
+	done
+	
+fi
+
