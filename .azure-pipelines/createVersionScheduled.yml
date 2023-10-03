@@ -36,6 +36,24 @@ schedules:
   always: false
 
 
+parameters:
+
+- name: shouldRunAqaTests
+  displayName: Run AQA Tests?
+  type: boolean
+  default: false
+
+- name: shouldRunTestsBefore
+  displayName: Run Tests Before?
+  type: boolean
+  default: true
+
+- name: shouldRunTestsAfter
+  displayName: Run Tests After?
+  type: boolean
+  default: true
+
+
 variables:
   
   - template: templates/variables.yml
@@ -89,11 +107,13 @@ stages:
               displayName: 'Get Target Org auth file' 
               
             
-            - template: templates/runTests.yml
-              parameters:
-                targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
-                concurrentExecution: true
-                continueOnError: true
+            - ${{ if eq(parameters.shouldRunTestsBefore, true) }}:
+              
+              - template: templates/runTests.yml
+                parameters:
+                  targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                  concurrentExecution: true
+                  continueOnError: true
               
             
             - template: templates/installFSL.yml
@@ -115,13 +135,19 @@ stages:
                   localizationDomain: "Global"
                 targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
                 
-            - template: templates/runAQA.yml
-              parameters:
-                targetOrgAuthVariableGroup: $(targetOrgName)
+                
+            - ${{ if eq(parameters.shouldRunAqaTests, true) }}:
+              
+              - template: templates/runAQA.yml
+                parameters:
+                  targetOrgAuthVariableGroup: $(targetOrgName)
             
-            - template: templates/runTests.yml
-              parameters:
-                targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
-                concurrentExecution: false
+            
+            - ${{ if eq(parameters.shouldRunTestsAfter, true) }}:
+              
+              - template: templates/runTests.yml
+                parameters:
+                  targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                  concurrentExecution: false
 
 

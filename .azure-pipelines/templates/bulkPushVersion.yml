@@ -20,6 +20,16 @@ parameters:
   type: string
   default: none
 
+- name: shouldRunTestsBefore
+  displayName: Run Tests Before?
+  type: boolean
+  default: true
+
+- name: shouldRunTestsAfter
+  displayName: Run Tests After?
+  type: boolean
+  default: true
+
 
 stages:
     
@@ -103,11 +113,13 @@ stages:
                 displayName: 'Get Target Org auth file' 
                 
               
-              - template: runTests.yml
-                parameters:
-                  targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
-                  concurrentExecution: true
-                  continueOnError: true
+              - ${{ if eq(parameters.shouldRunTestsBefore, true) }}:
+                
+                - template: runTests.yml
+                  parameters:
+                    targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
+                    concurrentExecution: true
+                    continueOnError: true
                 
               
               - template: installFSL.yml
@@ -123,10 +135,12 @@ stages:
                   targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
                 
               
-              - template: runTests.yml
-                parameters:
-                  targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
-                  concurrentExecution: true
-                  continueOnError: true
+              - ${{ if eq(parameters.shouldRunTestsAfter, true) }}:
+                
+                - template: runTests.yml
+                  parameters:
+                    targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
+                    concurrentExecution: true
+                    continueOnError: true
 
 

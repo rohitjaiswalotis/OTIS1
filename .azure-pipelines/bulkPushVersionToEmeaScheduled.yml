@@ -31,6 +31,16 @@ parameters:
   type: string
   default: "Branch IN ('dev-emea')"
 
+- name: shouldRunTestsBefore
+  displayName: Run Tests Before?
+  type: boolean
+  default: true
+
+- name: shouldRunTestsAfter
+  displayName: Run Tests After?
+  type: boolean
+  default: true
+
 
 variables:
 
@@ -45,5 +55,7 @@ stages:
     versionToPushOrgAuthFiles: ${{ parameters.versionToPushOrgAuthFiles }}
     versionToPushExpression: ${{ parameters.versionToPushExpression }}
     versionWhereCondition: ${{ parameters.versionWhereCondition }}
+    shouldRunTestsBefore: ${{ parameters.shouldRunTestsBefore }}
+    shouldRunTestsAfter: ${{ parameters.shouldRunTestsAfter }}
 
 
