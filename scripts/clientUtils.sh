@@ -513,7 +513,7 @@ function installPackageDependencies {
 					AZ_INSTALL_PIPELINE_RUN_ID=$(echo $AZ_INSTALL_PIPELINE_TRIGGER_RESPONSE | jq -r ".id");
 					echo "Install Pipeline Run Id: $AZ_INSTALL_PIPELINE_RUN_ID"
 					
-					if [[ ! ${AZ_INSTALL_PIPELINE_RUN_ID:+1} || $OPERATION_STATUS_CODE -ne 0 ]]; then
+					if [[ ! ${AZ_INSTALL_PIPELINE_RUN_ID:+1} || $AZ_INSTALL_PIPELINE_TRIGGER_CODE -ne 0 ]]; then
 						echo "ERROR: Cannot trigger pipeline '$specialInstallPipeline' to install package '$dependencyPackageName'."
 						exit -1
 					fi
