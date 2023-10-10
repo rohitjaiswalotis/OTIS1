@@ -37,6 +37,11 @@ parameters:
   type: string
   default: none
 
+- name: targetOrgToken
+  displayName: Target Org Token
+  type: string
+  default: none
+
 - name: targetOrgAuthFileName
   displayName: Target Org Auth File Name
   type: string
@@ -203,6 +208,9 @@ stages:
                     targetOrgUrl: ${{ parameters.targetOrgUrl }}
                     targetOrgUsername: ${{ parameters.targetOrgUsername }}
                     targetOrgPassword: ${{ parameters.targetOrgPassword }}
+                  ${{ if not( eq(parameters.targetOrgToken, 'none') ) }}:
+                    targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                    targetOrgToken: ${{ parameters.targetOrgToken }}
                   ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
                     targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
                   concurrentExecution: ${{ parameters.concurrentTestsExecution }}
@@ -218,6 +226,9 @@ stages:
                       targetOrgUrl: ${{ parameters.targetOrgUrl }}
                       targetOrgUsername: ${{ parameters.targetOrgUsername }}
                       targetOrgPassword: ${{ parameters.targetOrgPassword }}
+                    ${{ if not( eq(parameters.targetOrgToken, 'none') ) }}:
+                      targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                      targetOrgToken: ${{ parameters.targetOrgToken }}
                     ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
                       targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
                     reportFileName: TestsReport_$(Build.BuildId)_before.xlsx
@@ -232,6 +243,9 @@ stages:
                     targetOrgUrl: ${{ parameters.targetOrgUrl }}
                     targetOrgUsername: ${{ parameters.targetOrgUsername }}
                     targetOrgPassword: ${{ parameters.targetOrgPassword }}
+                  ${{ if not( eq(parameters.targetOrgToken, 'none') ) }}:
+                    targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                    targetOrgToken: ${{ parameters.targetOrgToken }}
                   ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
                     targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
                   versionId: ${{ parameters.fslPackageVersionId }}
@@ -247,6 +261,9 @@ stages:
                   targetOrgUrl: ${{ parameters.targetOrgUrl }}
                   targetOrgUsername: ${{ parameters.targetOrgUsername }}
                   targetOrgPassword: ${{ parameters.targetOrgPassword }}
+                ${{ if not( eq(parameters.targetOrgToken, 'none') ) }}:
+                  targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                  targetOrgToken: ${{ parameters.targetOrgToken }}
                 ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
                   targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
                 installationMode: ${{ parameters.installationMode }}
@@ -265,6 +282,9 @@ stages:
                     targetOrgUrl: ${{ parameters.targetOrgUrl }}
                     targetOrgUsername: ${{ parameters.targetOrgUsername }}
                     targetOrgPassword: ${{ parameters.targetOrgPassword }}
+                  ${{ if not( eq(parameters.targetOrgToken, 'none') ) }}:
+                    targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                    targetOrgToken: ${{ parameters.targetOrgToken }}
                   ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
                     targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
                   enableDebugMode: ${{ parameters.enableDebugMode }}
@@ -278,6 +298,9 @@ stages:
                     targetOrgUrl: ${{ parameters.targetOrgUrl }}
                     targetOrgUsername: ${{ parameters.targetOrgUsername }}
                     targetOrgPassword: ${{ parameters.targetOrgPassword }}
+                  ${{ if not( eq(parameters.targetOrgToken, 'none') ) }}:
+                    targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                    targetOrgToken: ${{ parameters.targetOrgToken }}
                   ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
                     targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
                   concurrentExecution: ${{ parameters.concurrentTestsExecution }}
@@ -293,6 +316,9 @@ stages:
                       targetOrgUrl: ${{ parameters.targetOrgUrl }}
                       targetOrgUsername: ${{ parameters.targetOrgUsername }}
                       targetOrgPassword: ${{ parameters.targetOrgPassword }}
+                    ${{ if not( eq(parameters.targetOrgToken, 'none') ) }}:
+                      targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                      targetOrgToken: ${{ parameters.targetOrgToken }}
                     ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
                       targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
                     reportFileName: TestsReport_$(Build.BuildId)_after.xlsx
