@@ -14,6 +14,7 @@ function installPackage {
 	local username="$(echo $credentials | jq -r '.username')";
 	local password="$(echo $credentials | jq -r '.password')";
 	local serverurl="$(echo $credentials | jq -r '.url')";
+	local token="$(echo $credentials | jq -r '.token // empty')";
 	local orgAlias="$(echo $credentials | jq -r '.orgAlias // empty')";
 	local authFile="$(echo $credentials | jq -r '.authFile // empty')";
 	
@@ -273,6 +274,7 @@ function installPackageDependencies {
 	local username="$(echo $credentials | jq -r '.username')";
 	local password="$(echo $credentials | jq -r '.password')";
 	local serverurl="$(echo $credentials | jq -r '.url')";
+	local token="$(echo $credentials | jq -r '.token // empty')";
 	local orgAlias="$(echo $credentials | jq -r '.orgAlias // empty')";
 	local authFile="$(echo $credentials | jq -r '.authFile // empty')";
 	
@@ -506,7 +508,7 @@ function installPackageDependencies {
 					fi
 					
 					# trigger package version install pipeline
-					AZ_INSTALL_PIPELINE_TRIGGER_RESPONSE=$(eval "az pipelines run --organization \"$organization\" --project \"$project\" $AZ_INSTALL_PIPELINE_CHECKOUT --name=\"$specialInstallPipelineName\" $AZ_INSTALL_PIPELINE_FOLDER_PATH --parameters \"versionId=$dependencyVersionId\" \"localizationDomain=$localizationDomain\" \"targetOrgUrl=${serverurl}\" \"targetOrgUsername=${username}\" \"targetOrgPassword=${password}\" \"targetOrgAuthFileName=${authFile}\" \"autoInstallDependencies=true\""); AZ_INSTALL_PIPELINE_TRIGGER_CODE=$?;
+					AZ_INSTALL_PIPELINE_TRIGGER_RESPONSE=$(eval "az pipelines run --organization \"$organization\" --project \"$project\" $AZ_INSTALL_PIPELINE_CHECKOUT --name=\"$specialInstallPipelineName\" $AZ_INSTALL_PIPELINE_FOLDER_PATH --parameters \"versionId=$dependencyVersionId\" \"localizationDomain=$localizationDomain\" \"targetOrgUrl=${serverurl}\" \"targetOrgUsername=${username}\" \"targetOrgPassword=${password}\" \"targetOrgAuthFileName=${authFile}\" \"targetOrgToken=${token}\" \"autoInstallDependencies=true\""); AZ_INSTALL_PIPELINE_TRIGGER_CODE=$?;
 					echo $AZ_INSTALL_PIPELINE_TRIGGER_RESPONSE
 					
 					# grab pipeline run id from response

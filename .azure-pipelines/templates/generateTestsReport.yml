@@ -16,6 +16,11 @@ parameters:
   type: string
   default: none
 
+- name: targetOrgToken
+  displayName: Target Org Token
+  type: string
+  default: none
+
 - name: targetOrgAuthFilePath
   displayName: Target Org Auth File Path
   type: string
@@ -63,8 +68,23 @@ steps:
     displayName: 'Assign Target Org auth file path'
 
 
-# generate tests report
+- ${{ if not( eq(parameters.targetOrgToken, 'none') ) }}:
+  
+  - bash: |
+          
+          # enable exit on error
+          set -e
+          
+          TARGET_ORG_URL="$(echo -n "${{ parameters.targetOrgUrl }}" | cut -d"/" -f1-3)";
+          
+          # set variable to pass target org instance url and token to next steps
+          echo "##vso[task.setvariable variable=TARGET_ORG_URL]$TARGET_ORG_URL"
+          echo "##vso[task.setvariable variable=TARGET_ORG_TOKEN]${{ parameters.targetOrgToken }}"
+          
+    displayName: 'Assign Target Org token'
 
+
+# generate tests report
 - bash: |
         
         # enable "debug" mode
@@ -104,6 +124,23 @@ steps:
           TARGET_ORG_USERNAME=$(echo "$DX_AUTH_RESPONSE" | jq -r .result.username);
           
           echo "Successfully logged into target org by auth url as user '$TARGET_ORG_USERNAME'"
+          
+        # check if target org token provided
+        elif [[ ${TARGET_ORG_TOKEN:+1} && ${TARGET_ORG_URL:+1} ]] ; then
+          
+          # log in to target org by token
+          
+          export SF_ACCESS_TOKEN="${TARGET_ORG_TOKEN}" SFDX_ACCESS_TOKEN="${TARGET_ORG_TOKEN}"
+          DX_STATUS_CODE=$(sf org login access-token -a targetOrg --instance-url="$TARGET_ORG_URL" --json --no-prompt | jq .status);
+          unset SF_ACCESS_TOKEN SFDX_ACCESS_TOKEN
+          
+          # early exit - error when autorizing to target org by creds
+          if [[ "$DX_STATUS_CODE" != "0" ]]; then
+            echo "Error when logging in to target org by token!"
+            exit 1;
+          fi
+          
+          echo "Successfully logged into target org by token."
           
         fi
         
