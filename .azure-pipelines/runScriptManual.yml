@@ -41,6 +41,11 @@ parameters:
   type: string
   default: none
 
+- name: targetOrgToken
+  displayName: Target Org Token
+  type: string
+  default: none
+
 - name: targetOrgAuthFileName
   displayName: Target Org Auth File Name
   type: string
@@ -58,6 +63,11 @@ parameters:
 
 - name: targetOrg2Password
   displayName: Target Org2 Password
+  type: string
+  default: none
+
+- name: targetOrg2Token
+  displayName: Target Org2 Token
   type: string
   default: none
 
@@ -130,6 +140,9 @@ stages:
                   targetOrgUrl: ${{ parameters.targetOrgUrl }}
                   targetOrgUsername: ${{ parameters.targetOrgUsername }}
                   targetOrgPassword: ${{ parameters.targetOrgPassword }}
+                ${{ if not( eq(parameters.targetOrgToken, 'none') ) }}:
+                  targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                  targetOrgToken: ${{ parameters.targetOrgToken }}
                 ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
                   targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
                 
@@ -137,6 +150,9 @@ stages:
                   targetOrg2Url: ${{ parameters.targetOrg2Url }}
                   targetOrg2Username: ${{ parameters.targetOrg2Username }}
                   targetOrg2Password: ${{ parameters.targetOrg2Password }}
+                ${{ if not( eq(parameters.targetOrg2Token, 'none') ) }}:
+                  targetOrg2Url: ${{ parameters.targetOrg2Url }}
+                  targetOrg2Token: ${{ parameters.targetOrg2Token }}
                 ${{ if not( eq(parameters.targetOrg2AuthFileName, 'none') ) }}:
                   targetOrg2AuthFilePath: $(targetOrg2AuthFile.secureFilePath)
                 
