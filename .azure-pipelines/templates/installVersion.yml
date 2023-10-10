@@ -26,6 +26,11 @@ parameters:
   type: string
   default: none
 
+- name: targetOrgToken
+  displayName: Target Org Token
+  type: string
+  default: none
+  
 - name: targetOrgAuthFilePath
   displayName: Target Org Auth File Path
   type: string
@@ -152,8 +157,23 @@ steps:
     displayName: 'Assign Target Org auth file path'
 
 
-# install/upgrade package  
+- ${{ if not( eq(parameters.targetOrgToken, 'none') ) }}:
+  
+  - bash: |
+          
+          # enable exit on error
+          set -e
+          
+          TARGET_ORG_URL="$(echo -n "${{ parameters.targetOrgUrl }}" | cut -d"/" -f1-3)";
+          
+          # set variable to pass target org instance url and token to next steps
+          echo "##vso[task.setvariable variable=TARGET_ORG_URL]$TARGET_ORG_URL"
+          echo "##vso[task.setvariable variable=TARGET_ORG_TOKEN]${{ parameters.targetOrgToken }}"
+          
+    displayName: 'Assign Target Org token'
 
+
+# install/upgrade package  
 - bash: |
         
         # enable "debug" mode
@@ -186,6 +206,7 @@ steps:
           
           echo "Successfully logged into target org by creds as user '$TARGET_ORG_USERNAME'."
           
+        # check if target org auth file provided
         elif [[ ${TARGET_ORG_AUTH_FILE:+1} ]] ; then
           
           DX_AUTH_RESPONSE=$(sf org login sfdx-url -f "$TARGET_ORG_AUTH_FILE" -a targetOrg --json);
@@ -194,6 +215,7 @@ steps:
           # early exit - error when autorizing to target org by auth url
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
             echo "Error when logging in to target org by auth url!"
+            echo "$DX_AUTH_RESPONSE" | jq .
             exit 1;
           fi
           
@@ -203,6 +225,23 @@ steps:
           
           TARGET_ORG_AUTH_FILE_NAME="${TARGET_ORG_AUTH_FILE##*/}"
           TARGET_ORG_AUTH_FILE_NAME="${TARGET_ORG_AUTH_FILE_NAME%%.*}"
+          
+        # check if target org token provided
+        elif [[ ${TARGET_ORG_TOKEN:+1} && ${TARGET_ORG_URL:+1} ]] ; then
+          
+          # log in to target org by token
+          
+          export SF_ACCESS_TOKEN="${TARGET_ORG_TOKEN}" SFDX_ACCESS_TOKEN="${TARGET_ORG_TOKEN}"
+          DX_STATUS_CODE=$(sf org login access-token -a targetOrg --instance-url="$TARGET_ORG_URL" --json --no-prompt | jq .status);
+          unset SF_ACCESS_TOKEN SFDX_ACCESS_TOKEN
+          
+          # early exit - error when autorizing to target org by creds
+          if [[ "$DX_STATUS_CODE" != "0" ]]; then
+            echo "Error when logging in to target org by token!"
+            exit 1;
+          fi
+          
+          echo "Successfully logged into target org by token."
           
         fi
         
@@ -259,7 +298,7 @@ steps:
           
           echo "Installing dependencies for package $(fsPackageName) ($FS_PACKAGE_VERSION_ID) into target org as '$TARGET_ORG_USERNAME' user..."
           CURRENT_DIR_CHECKPOINT="$(pwd)";
-          installPackageDependencies "$FS_PACKAGE_VERSION_ID" "{ \"devHubAlias\":\"devHub\", \"orgAlias\":\"targetOrg\", \"username\":\"${TARGET_ORG_USERNAME:-none}\", \"password\":\"${TARGET_ORG_PASSWORD:-none}\", \"url\":\"${TARGET_ORG_URL:-none}\", \"authFile\":\"${TARGET_ORG_AUTH_FILE_NAME:-none}\" }" "{ \"organization\":\"$(System.TeamFoundationCollectionUri)\", \"project\": \"$(System.TeamProject)\", \"projectId\": \"$(System.TeamProjectId)\", \"localizationDomain\":\"${{parameters.localizationDomain}}\", \"debugMode\":\"${OPTION_DEBUG_MODE:-false}\", \"betaDiff\":true }" 2>&1; DX_STATUS_CODE=$?;
+          installPackageDependencies "$FS_PACKAGE_VERSION_ID" "{ \"devHubAlias\":\"devHub\", \"orgAlias\":\"targetOrg\", \"username\":\"${TARGET_ORG_USERNAME:-none}\", \"password\":\"${TARGET_ORG_PASSWORD:-none}\", \"url\":\"${TARGET_ORG_URL:-none}\", \"authFile\":\"${TARGET_ORG_AUTH_FILE_NAME:-none}\", \"token\":\"${TARGET_ORG_TOKEN:-none}\" }" "{ \"organization\":\"$(System.TeamFoundationCollectionUri)\", \"project\": \"$(System.TeamProject)\", \"projectId\": \"$(System.TeamProjectId)\", \"localizationDomain\":\"${{parameters.localizationDomain}}\", \"debugMode\":\"${OPTION_DEBUG_MODE:-false}\", \"betaDiff\":true }" 2>&1; DX_STATUS_CODE=$?;
           cd "$CURRENT_DIR_CHECKPOINT"
           
           # early exit - error when grabbing installed packages from target org
