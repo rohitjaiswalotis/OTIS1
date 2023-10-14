@@ -73,7 +73,23 @@ mkdir -p $LOCAL_WORKING_DIR/everythingElse
 mkdir -p $LOCAL_WORKING_DIR/result
 
 
-IFS=',' read -r -a LOCAL_PROFILES_NAMES <<< "$PARAM_PROFILES"
+# parse provided profiles to consider
+if [[ ${PARAM_PROFILES:+1} && "${PARAM_PROFILES}" != '*' ]]; then
+	
+	IFS=',' read -r -a LOCAL_PROFILES_NAMES <<< "$PARAM_PROFILES"
+	
+# consider asterisk as all available profiles in folder
+elif [[ ${PARAM_PROFILES:+1} && "${PARAM_PROFILES}" == '*' ]]; then
+	
+	LOCAL_PROFILES_NAMES=()
+	
+	for LOCAL_PROFILE_FILE_NAME in ${PARAM_PROFILES_DIR}/*.profile-meta.xml; do 
+		[ -e "$LOCAL_PROFILE_FILE_NAME" ] || continue
+		LOCAL_PROFILE_FILE=${LOCAL_PROFILE_FILE_NAME##*/}
+		LOCAL_PROFILES_NAMES+=("${LOCAL_PROFILE_FILE%%.*}")
+	done
+	
+fi
 
 LOCAL_PROFILES_LIST=""
 
@@ -89,7 +105,7 @@ fi
 
 # iterate over profile names and split into user permissions vs everything else
 for LOCAL_PROFILE_NAME in "${LOCAL_PROFILES_NAMES[@]}"; do
-    
+	
 	# trim
 	LOCAL_PROFILE_NAME=$(echo "$LOCAL_PROFILE_NAME" | xargs);
 	
@@ -153,7 +169,7 @@ for LOCAL_PROFILE_NAME in "${LOCAL_PROFILES_NAMES[@]}"; do
 	sed '/<\/Profile>/d' "${LOCAL_WORKING_DIR}/everythingElse/${LOCAL_PROFILE_FILENAME}" > "${LOCAL_WORKING_DIR}/result/${LOCAL_PROFILE_FILENAME}"
 	
 	# extract reconciled user permissions and append into result file
-	grep -Pzo "(?s)<userPermissions>.*</userPermissions>" "${LOCAL_WORKING_DIR}/reconciledUserPermissions/${LOCAL_PROFILE_FILENAME}" >> "${LOCAL_WORKING_DIR}/result/${LOCAL_PROFILE_FILENAME}"
+	grep -Pzo "(?s)<userPermissions>.*</userPermissions>" "${LOCAL_WORKING_DIR}/reconciledUserPermissions/${LOCAL_PROFILE_FILENAME}" >> "${LOCAL_WORKING_DIR}/result/${LOCAL_PROFILE_FILENAME}" || true
 	
 	# put back closing tag: </Profile>
 	echo -n "</Profile>" >> "${LOCAL_WORKING_DIR}/result/${LOCAL_PROFILE_FILENAME}"
