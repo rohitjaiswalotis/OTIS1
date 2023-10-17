@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>FS Read Only V2 Permission Set Group</description>
+    <label>FS Read Only V2 Persona</label>
+    <permissionSets>FS_ReadOnlyV2_Permissions</permissionSets>
+</PermissionSetGroup>
