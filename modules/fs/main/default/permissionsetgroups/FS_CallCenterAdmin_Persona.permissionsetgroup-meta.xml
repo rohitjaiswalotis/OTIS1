@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>FS Call Center Admin Permission Set Group</description>
+    <label>FS Call Center Admin Persona</label>
+    <permissionSets>FS_CallCenterAdmin_Permissions</permissionSets>
+</PermissionSetGroup>
