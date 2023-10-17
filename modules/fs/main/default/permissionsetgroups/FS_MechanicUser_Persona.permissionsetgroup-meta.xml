@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>FS Mechanic User Permission Set Group</description>
+    <label>FS Mechanic User Persona</label>
+    <permissionSets>FS_MechanicUser_Permissions</permissionSets>
+</PermissionSetGroup>

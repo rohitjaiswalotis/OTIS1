@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>FS CSR Supervisor Permission Set</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>FS CSR Supervisor Permissions</label>
+</PermissionSet>
