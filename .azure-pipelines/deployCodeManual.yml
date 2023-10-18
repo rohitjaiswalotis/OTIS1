@@ -72,11 +72,11 @@ parameters:
   - 20
   - 30
 
-- name: shouldInstallFSL
-  displayName: Install FSL?
+- name: shouldInstallThirdParties
+  displayName: Install Third Parties?
   type: boolean
   default: false
-  
+
 - name: fslPackageVersionId
   displayName: FSL Package Version Id
   type: string
@@ -210,9 +210,9 @@ stages:
                     enableDebugMode: ${{ parameters.enableDebugMode }}
                 
               
-            - ${{ if eq(parameters.shouldInstallFSL, true) }}:
+            - ${{ if eq(parameters.shouldInstallThirdParties, true) }}:
               
-              - template: templates/installFSL.yml
+              - template: templates/installThirdParty.yml
                 parameters:
                   ${{ if contains(parameters.targetOrgUsername, '@') }}:
                     targetOrgUrl: ${{ parameters.targetOrgUrl }}
@@ -224,6 +224,7 @@ stages:
                   ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
                     targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
                   versionId: ${{ parameters.fslPackageVersionId }}
+                  packageAlias: FSL
                   continueOnError: true
                   enableDebugMode: ${{ parameters.enableDebugMode }}
                   

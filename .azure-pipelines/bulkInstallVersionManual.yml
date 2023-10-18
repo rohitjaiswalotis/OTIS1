@@ -26,8 +26,8 @@ parameters:
   displayName: Target Org Auth File Names (comma-separated)
   type: string
 
-- name: shouldInstallFSL
-  displayName: Install FSL?
+- name: shouldInstallThirdParties
+  displayName: Install Third Parties?
   type: boolean
   default: false
   
@@ -153,12 +153,13 @@ stages:
                       enableDebugMode: ${{ parameters.enableDebugMode }}
                 
               
-              - ${{ if eq(parameters.shouldInstallFSL, true) }}:
+              - ${{ if eq(parameters.shouldInstallThirdParties, true) }}:
                 
-                - template: templates/installFSL.yml
+                - template: templates/installThirdParty.yml
                   parameters:
                     targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
                     versionId: ${{ parameters.fslPackageVersionId }}
+                    packageAlias: FSL
                     continueOnError: true
                     enableDebugMode: ${{ parameters.enableDebugMode }}
                   
