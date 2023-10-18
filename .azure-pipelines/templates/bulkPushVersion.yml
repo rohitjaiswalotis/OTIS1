@@ -122,10 +122,10 @@ stages:
                     continueOnError: true
                 
               
-              - template: installFSL.yml
+              - template: installThirdParty.yml
                 parameters:
                   targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
-                  versionId: default
+                  packageAlias: FSL
                   continueOnError: true
                 
               

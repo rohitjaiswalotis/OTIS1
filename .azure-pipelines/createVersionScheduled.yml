@@ -116,10 +116,10 @@ stages:
                   continueOnError: true
               
             
-            - template: templates/installFSL.yml
+            - template: templates/installThirdParty.yml
               parameters:
                 targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
-                versionId: default
+                packageAlias: FSL
                 continueOnError: true
                 
             
