@@ -154,7 +154,7 @@ steps:
         # enable exit on error
         set -e
         
-        npx -p sf-tests-report@$(testReportGeneratorVersion) sf-generate-tests-report --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --reportFileName="${{ parameters.reportFileName }}"
+        npx -p sf-tests-report@$(testReportGeneratorVersion) sf-generate-tests-report --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --reportFileName="${{ parameters.reportFileName }}" --apiVersion="$(sfApiVersion)"
         
         # disable exit on error
         set +e
