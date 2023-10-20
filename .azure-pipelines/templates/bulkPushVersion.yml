@@ -87,7 +87,7 @@ stages:
                     fi
                     
                     # grab package version by expression
-                    FS_PACKAGE_VERSION_DETAILS=$(npx -q -p sf-package-version-evaluator@$(packageVersionEvaluator) sf-get-package-version --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --packageName="$(fsPackageName)" --packageNamespace="" --versionExpression="$versionToPushExpression" --versionWhereCondition="$versionWhereCondition" --json)
+                    FS_PACKAGE_VERSION_DETAILS=$(npx -q -p sf-package-version-evaluator@$(packageVersionEvaluator) sf-get-package-version --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --packageName="$(fsPackageName)" --packageNamespace="" --versionExpression="$versionToPushExpression" --versionWhereCondition="$versionWhereCondition" --apiVersion="$(sfApiVersion)" --json)
                     
                     FS_PACKAGE_VERSION_ID=$(echo $FS_PACKAGE_VERSION_DETAILS | jq -r ".versionId // empty")
                     FS_PACKAGE_VERSION_NUMBER=$(echo $FS_PACKAGE_VERSION_DETAILS | jq -r ".versionNumber // empty")

@@ -265,7 +265,7 @@ steps:
         FS_PACKAGE_ORIGINAL_VERSION_DETAILS=$(echo "$DX_LIST_INSTALLED_PACKAGES_RESPONSE" | jq -c ".result[] | select( ( .SubscriberPackageName | test(\"^$(fsPackageName)\$\";\"i\") ) ) ");
         
         # early exit if package version with exact same id has already been installed
-        if [[ ${FS_PACKAGE_ORIGINAL_VERSION_DETAILS:+1} ]]; then
+        if [[ "$(enableVersionComparison)" =~ ^[Tt]rue$ && ${FS_PACKAGE_ORIGINAL_VERSION_DETAILS:+1} ]]; then
           
           FS_PACKAGE_ORIGINAL_VERSION_ID=$(echo "$FS_PACKAGE_ORIGINAL_VERSION_DETAILS" | jq -r ".SubscriberPackageVersionId");
           
@@ -298,7 +298,7 @@ steps:
           
           echo "Installing dependencies for package $(fsPackageName) ($FS_PACKAGE_VERSION_ID) into target org as '$TARGET_ORG_USERNAME' user..."
           CURRENT_DIR_CHECKPOINT="$(pwd)";
-          installPackageDependencies "$FS_PACKAGE_VERSION_ID" "{ \"devHubAlias\":\"devHub\", \"orgAlias\":\"targetOrg\", \"username\":\"${TARGET_ORG_USERNAME:-none}\", \"password\":\"${TARGET_ORG_PASSWORD:-none}\", \"url\":\"${TARGET_ORG_URL:-none}\", \"authFile\":\"${TARGET_ORG_AUTH_FILE_NAME:-none}\", \"token\":\"${TARGET_ORG_TOKEN:-none}\" }" "{ \"organization\":\"$(System.TeamFoundationCollectionUri)\", \"project\": \"$(System.TeamProject)\", \"projectId\": \"$(System.TeamProjectId)\", \"localizationDomain\":\"${{parameters.localizationDomain}}\", \"debugMode\":\"${OPTION_DEBUG_MODE:-false}\", \"betaDiff\":true }" 2>&1; DX_STATUS_CODE=$?;
+          installPackageDependencies "$FS_PACKAGE_VERSION_ID" "{ \"devHubAlias\":\"devHub\", \"orgAlias\":\"targetOrg\", \"username\":\"${TARGET_ORG_USERNAME:-none}\", \"password\":\"${TARGET_ORG_PASSWORD:-none}\", \"url\":\"${TARGET_ORG_URL:-none}\", \"authFile\":\"${TARGET_ORG_AUTH_FILE_NAME:-none}\", \"token\":\"${TARGET_ORG_TOKEN:-none}\" }" "{ \"organization\":\"$(System.TeamFoundationCollectionUri)\", \"project\": \"$(System.TeamProject)\", \"projectId\": \"$(System.TeamProjectId)\", \"localizationDomain\":\"${{parameters.localizationDomain}}\", \"debugMode\":\"${OPTION_DEBUG_MODE:-false}\", \"betaDiff\":true, \"versionComparison\":$(enableVersionComparison) }" 2>&1; DX_STATUS_CODE=$?;
           cd "$CURRENT_DIR_CHECKPOINT"
           
           # early exit - error when grabbing installed packages from target org
@@ -412,7 +412,7 @@ steps:
         sfAccessToken=$(echo "$sfOrgDetails" | jq -r '.result.accessToken // empty');
         sfInstanceUrl=$(echo "$sfOrgDetails" | jq -r '.result.instanceUrl // empty');
         
-        npx -p sf-package-inspector@$(packageInspectorVersion) sf-package-inspect --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --command="list-deps" --versionId="$FS_PACKAGE_VERSION_ID"
+        npx -p sf-package-inspector@$(packageInspectorVersion) sf-package-inspect --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --command="list-deps" --versionId="$FS_PACKAGE_VERSION_ID" --apiVersion="$(sfApiVersion)"
         
         
   displayName: 'Install/Upgrade Field Service Package into Target Org'

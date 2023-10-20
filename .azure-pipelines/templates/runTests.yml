@@ -176,7 +176,7 @@ steps:
         sfAccessToken=$(echo "$sfOrgDetails" | jq -r '.result.accessToken // empty');
         sfInstanceUrl=$(echo "$sfOrgDetails" | jq -r '.result.instanceUrl // empty');
         
-        npx -p sf-tests-runner@$(testRunnerVersion) sf-run-tests --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --killOthers --killOnTimeout --pullingInterval=1 --maxPullTimes=180
+        npx -p sf-tests-runner@$(testRunnerVersion) sf-run-tests --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --killOthers --killOnTimeout --pullingInterval=1 --maxPullTimes=180 --apiVersion="$(sfApiVersion)"
         
         # disable exit on error
         set +e
