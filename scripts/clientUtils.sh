@@ -30,6 +30,8 @@ function installPackage {
 	local waitPublish="$(echo $options | jq -r '.waitPublish // 1000')";
 	local waitInstall="$(echo $options | jq -r '.waitInstall // 1000')";
 	
+	local versionComparison="$(echo $options | jq -r '.versionComparison // true')";
+	
 	local validateMode="$(echo $options | jq -r '.validateMode // false')";
 	local debugMode="$(echo $options | jq -r '.debugMode // false')";
 	
@@ -92,7 +94,7 @@ function installPackage {
 	statusCode=$(echo "$listInstalledPackagesResponse" | jq -r '.status // 2');
 	
 	
-	if [[ $statusCode -eq 0 ]]; then
+	if [[ ${versionComparison,,} =~ ^true$ && $statusCode -eq 0 ]]; then
 		
 		echo "Successfully retrieved list of installed packages from org"
 		
@@ -190,14 +192,24 @@ function installPackage {
 			echo "'${packageName}' (${packageNamespace:-"no namespace"}) package version ${versionNumber} should be installed: no package version installed at all."
 			
 		fi
-	  
+		
+		
+	elif [[ ! ${versionComparison,,} =~ ^true$ ]]; then
+		
+		echo "Version comparison is disabled, so going to install '${packageName}' (${packageNamespace:-"no namespace"}) package version ${versionNumber} anyway!"
+		
+		# imitate success code to try to install anyway due to disabled version comparison
+		statusCode=0;
+		versionNeedsToBeInstalled=1;
+		
 	else
-	  
-	  echo "Cannot read list of installed packages from org to check if '${packageName}' (${packageNamespace:-"no namespace"}) package version '$versionId' is already installed!"
-	  
-	  # suppress error deliberately to try to install anyway
-	  statusCode=0;
-	  
+		
+		echo "Cannot read list of installed packages from org to check if '${packageName}' (${packageNamespace:-"no namespace"}) package version '$versionId' is already installed!"
+		
+		# suppress error deliberately to try to install anyway
+		statusCode=0;
+		versionNeedsToBeInstalled=1;
+		
 	fi
 	
 	
@@ -288,6 +300,8 @@ function installPackageDependencies {
 	local waitPublish="$(echo $options | jq -r '.waitPublish // 1000')";
 	local waitInstall="$(echo $options | jq -r '.waitInstall // 1000')";
 	
+	local versionComparison="$(echo $options | jq -r '.versionComparison // true')";
+	
 	local majorDiff="$(echo $options | jq -r '.majorDiff // true')";
 	local minorDiff="$(echo $options | jq -r '.minorDiff // true')";
 	local patchDiff="$(echo $options | jq -r '.patchDiff // false')";
@@ -315,8 +329,11 @@ function installPackageDependencies {
 			echo "Package version $versionId validation has failed: no further actions re dependencies installation to be taken."
 			return 114;
 		fi
+		
 	else
+		
 		echo "Package version $versionId validation has succeeded: continue further with installing dependencies..."
+		
 	fi
 	
 	
@@ -402,7 +419,7 @@ function installPackageDependencies {
 		# get installed version of the same package (if any)
 		local installedPackage=$(echo $listInstalledPackagesResponse | jq -c ".result[] | select( ( ( .SubscriberPackageId | .[0:15] ) == ( \"$dependencyPackageId\" | .[0:15]) ) ) // empty" || true);
 		
-		if [[ ${installedPackage:+1} ]]; then
+		if [[ ${versionComparison,,} =~ ^true$ && ${installedPackage:+1} ]]; then
 			
 			local installedVersionId=$(echo $installedPackage | jq -r ".SubscriberPackageVersionId // empty" || true);
 			local installedVersionName=$(echo $installedPackage | jq -r ".SubscriberPackageVersionName // empty" || true);
@@ -455,6 +472,11 @@ function installPackageDependencies {
 				echo "Dependency '${dependencyPackageName}' (${dependencyPackageNamespace:-"no namespace"}) ${dependencyVersionNumber} should NOT be upgraded: currently installed version is fine (${installedVersionNumber})"
 				
 			fi
+			
+		elif [[ ! ${versionComparison,,} =~ ^true$ ]]; then
+			
+			dependencyNeedsToBeInstalled=1;
+			echo "Version comparison is disabled, so going to install dependency '${dependencyPackageName}' (${dependencyPackageNamespace:-"no namespace"}) ${dependencyVersionNumber} anyway!"
 			
 		else
 			
