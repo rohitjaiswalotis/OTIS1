@@ -30,10 +30,10 @@ function installPackage {
 	local waitPublish="$(echo $options | jq -r '.waitPublish // 1000')";
 	local waitInstall="$(echo $options | jq -r '.waitInstall // 1000')";
 	
-	local versionComparison="$(echo $options | jq -r '.versionComparison // true')";
+	local versionComparison="$(echo $options | jq -r '. | if has("versionComparison") then .versionComparison else true end')";
 	
-	local validateMode="$(echo $options | jq -r '.validateMode // false')";
-	local debugMode="$(echo $options | jq -r '.debugMode // false')";
+	local validateMode="$(echo $options | jq -r '. | if has("validateMode") then .validateMode else false end')";
+	local debugMode="$(echo $options | jq -r '. | if has("debugMode") then .debugMode else false end')";
 	
 	local MONITOR="$(mktemp)"
 	
@@ -300,15 +300,15 @@ function installPackageDependencies {
 	local waitPublish="$(echo $options | jq -r '.waitPublish // 1000')";
 	local waitInstall="$(echo $options | jq -r '.waitInstall // 1000')";
 	
-	local versionComparison="$(echo $options | jq -r '.versionComparison // true')";
+	local versionComparison="$(echo $options | jq -r '. | if has("versionComparison") then .versionComparison else true end')";
 	
-	local majorDiff="$(echo $options | jq -r '.majorDiff // true')";
-	local minorDiff="$(echo $options | jq -r '.minorDiff // true')";
-	local patchDiff="$(echo $options | jq -r '.patchDiff // false')";
-	local betaDiff="$(echo $options | jq -r '.betaDiff // false')";
+	local majorDiff="$(echo $options | jq -r '. | if has("majorDiff") then .majorDiff else true end')";
+	local minorDiff="$(echo $options | jq -r '. | if has("minorDiff") then .minorDiff else true end')";
+	local patchDiff="$(echo $options | jq -r '. | if has("patchDiff") then .patchDiff else false end')";
+	local betaDiff="$(echo $options | jq -r '. | if has("betaDiff") then .betaDiff else false end')";
 	
-	local validateMode="$(echo $options | jq -r '.validateMode // false')";
-	local debugMode="$(echo $options | jq -r '.debugMode // false')";
+	local validateMode="$(echo $options | jq -r '. | if has("validateMode") then .validateMode else false end')";
+	local debugMode="$(echo $options | jq -r '. | if has("debugMode") then .debugMode else false end')";
 	
 	local MONITOR="$(mktemp)"
 	
