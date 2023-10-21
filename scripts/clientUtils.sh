@@ -94,7 +94,7 @@ function installPackage {
 	statusCode=$(echo "$listInstalledPackagesResponse" | jq -r '.status // 2');
 	
 	
-	if [[ ${versionComparison,,} =~ ^true$ && $statusCode -eq 0 ]]; then
+	if [[ ( ${versionComparison,,} =~ ^true$ || "${packageType,,}" != "unlocked" ) && $statusCode -eq 0 ]]; then
 		
 		echo "Successfully retrieved list of installed packages from org"
 		
@@ -196,7 +196,7 @@ function installPackage {
 		
 	elif [[ ! ${versionComparison,,} =~ ^true$ ]]; then
 		
-		echo "Version comparison is disabled, so going to install '${packageName}' (${packageNamespace:-"no namespace"}) package version ${versionNumber} anyway!"
+		echo "Version comparison is disabled, so going to try to install '${packageName}' (${packageNamespace:-"no namespace"}) package version ${versionNumber} anyway!"
 		
 		# imitate success code to try to install anyway due to disabled version comparison
 		statusCode=0;
@@ -419,7 +419,7 @@ function installPackageDependencies {
 		# get installed version of the same package (if any)
 		local installedPackage=$(echo $listInstalledPackagesResponse | jq -c ".result[] | select( ( ( .SubscriberPackageId | .[0:15] ) == ( \"$dependencyPackageId\" | .[0:15]) ) ) // empty" || true);
 		
-		if [[ ${versionComparison,,} =~ ^true$ && ${installedPackage:+1} ]]; then
+		if [[ ( ${versionComparison,,} =~ ^true$ || "${dependencyPackageType,,}" != "unlocked" ) && ${installedPackage:+1} ]]; then
 			
 			local installedVersionId=$(echo $installedPackage | jq -r ".SubscriberPackageVersionId // empty" || true);
 			local installedVersionName=$(echo $installedPackage | jq -r ".SubscriberPackageVersionName // empty" || true);
@@ -476,7 +476,7 @@ function installPackageDependencies {
 		elif [[ ! ${versionComparison,,} =~ ^true$ ]]; then
 			
 			dependencyNeedsToBeInstalled=1;
-			echo "Version comparison is disabled, so going to install dependency '${dependencyPackageName}' (${dependencyPackageNamespace:-"no namespace"}) ${dependencyVersionNumber} anyway!"
+			echo "Version comparison is disabled, so going to try to install dependency '${dependencyPackageName}' (${dependencyPackageNamespace:-"no namespace"}) ${dependencyVersionNumber} anyway!"
 			
 		else
 			
