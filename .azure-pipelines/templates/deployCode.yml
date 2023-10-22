@@ -243,14 +243,14 @@ steps:
           fi
           
           
-          # pre-destruct: run destructive operation before deploy
-          sf force source deploy -u "targetOrg" --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --predestructivechanges="destruct/destructiveChangesPre.xml" -w 1000 --verbose
+          # COMMENTED FOR NOW: pre-destruct: run destructive operation before deploy
+          #sf force source deploy -u "targetOrg" --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --predestructivechanges="destruct/destructiveChangesPre.xml" -w 1000 --verbose
           
           # actuall deployment
           sf force source deploy --sourcepath="$(packageBaseDir)" -u "targetOrg" --ignorewarnings -w 1000 --verbose
           
-          # post-destruct: run destructive operation after deploy
-          sf force source deploy -u "targetOrg" --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --postdestructivechanges="destruct/destructiveChangesPost.xml" -w 1000 --verbose
+          # COMMENTED FOR NOW: post-destruct: run destructive operation after deploy
+          #sf force source deploy -u "targetOrg" --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --postdestructivechanges="destruct/destructiveChangesPost.xml" -w 1000 --verbose
           
           
           if [[ "${{ parameters.actionPhase }}" =~ ^after$ || "${{ parameters.actionPhase }}" =~ ^both$ ]] ; then
