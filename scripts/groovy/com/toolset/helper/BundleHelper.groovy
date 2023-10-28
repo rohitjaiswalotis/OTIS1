@@ -46,6 +46,8 @@ public class BundleHelper {
 	private static final String FILE_EXTENSION_LABELS = 'labels-meta.xml';
 	private static final String FILE_EXTENSION_EMAIL_TEMPLATE = 'email';
 	private static final String FILE_EXTENSION_EMAIL_FOLDER = 'emailFolder-meta.xml';
+	private static final String FILE_EXTENSION_REPORT_FOLDER = 'reportFolder-meta.xml';
+	private static final String FILE_EXTENSION_DASHBOARD_FOLDER = 'dashboardFolder-meta.xml';
 	
 	public static final String FILE_SUFFIX_META_DESCRIPTOR = "-meta.xml";
 	
@@ -1054,7 +1056,7 @@ public class BundleHelper {
 	
 	
 	
-	// loop through apex classes
+	// loop through email template
 	public static void forEachEmailTemplate(File emailTemplatesDir, Closure eachEmailTemplateClosure) {
 		
 		if (!emailTemplatesDir.exists()) {
@@ -1104,7 +1106,7 @@ public class BundleHelper {
 	
 	
 	
-	// loop through custom permissions
+	// loop through email folders
 	public static void forEachEmailFolder(File emailFoldersDir, Closure eachEmailFolderClosure) {
 		
 		if (!emailFoldersDir.exists()) {
@@ -1122,6 +1124,58 @@ public class BundleHelper {
 			eachEmailFolderClosure.call(
 				emailFolderName, 
 				emailFolderRoot
+			);
+			
+		}
+		
+	}
+	
+	
+	
+	// loop through report folders
+	public static void forEachReportFolder(File reportFoldersDir, Closure eachReportFolderClosure) {
+		
+		if (!reportFoldersDir.exists()) {
+			return;
+		}
+		
+		reportFoldersDir.traverse(type: FileType.FILES, nameFilter: ~/(?i).*\.${FILE_EXTENSION_REPORT_FOLDER}(\..*)?/) { reportFolderFile ->
+			
+			// evaluate report folder name based on file name - just by removing report folder extension
+			def reportFolderName = reportFolderFile.name.substring(0, reportFolderFile.name.toLowerCase().lastIndexOf(".${FILE_EXTENSION_REPORT_FOLDER.toLowerCase()}"));
+			
+			def reportFolderRoot = new XmlSlurper().parseText(readFile(reportFolderFile));
+			
+			// callback to closure with params
+			eachReportFolderClosure.call(
+				reportFolderName, 
+				reportFolderRoot
+			);
+			
+		}
+		
+	}
+	
+	
+	
+	// loop through dashboard folders
+	public static void forEachDashboardFolder(File dashboardFoldersDir, Closure eachDashboardFolderClosure) {
+		
+		if (!dashboardFoldersDir.exists()) {
+			return;
+		}
+		
+		dashboardFoldersDir.traverse(type: FileType.FILES, nameFilter: ~/(?i).*\.${FILE_EXTENSION_DASHBOARD_FOLDER}(\..*)?/) { dashboardFolderFile ->
+			
+			// evaluate dashboard folder name based on file name - just by removing dashboard folder extension
+			def dashboardFolderName = dashboardFolderFile.name.substring(0, dashboardFolderFile.name.toLowerCase().lastIndexOf(".${FILE_EXTENSION_DASHBOARD_FOLDER.toLowerCase()}"));
+			
+			def dashboardFolderRoot = new XmlSlurper().parseText(readFile(dashboardFolderFile));
+			
+			// callback to closure with params
+			eachDashboardFolderClosure.call(
+				dashboardFolderName, 
+				dashboardFolderRoot
 			);
 			
 		}
