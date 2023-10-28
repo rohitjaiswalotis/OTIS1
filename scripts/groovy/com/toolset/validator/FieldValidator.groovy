@@ -48,6 +48,10 @@ public class FieldValidator implements Validator {
 	
 	public List<String> validate() {
 		
+		if (!this.customPrefix) {
+			return;
+		}
+		
 		String normalizedCustomPrefix = BundleHelper.normalize(this.customPrefix);
 		List<String> errors = [];
 		
@@ -101,7 +105,13 @@ public class FieldValidator implements Validator {
 	
 	private String getCustomPrefix(String customScope) {
 		
-		return customScope.replaceAll("_+\$", "") + '_';
+		return (
+			customScope 
+			? 
+				customScope.replaceAll("_+\$", "") + '_' 
+				: 
+				customScope
+		);
 		
 	}
 	

@@ -18,6 +18,8 @@ import com.toolset.validator.LwcValidator;
 import com.toolset.validator.AuraValidator;
 import com.toolset.validator.CustomLabelValidator;
 import com.toolset.validator.EmailTemplateValidator;
+import com.toolset.validator.ReportValidator;
+import com.toolset.validator.DashboardValidator;
 
 
 def env = System.getenv();
@@ -55,10 +57,12 @@ if (!projectConfigFile.exists()) {
 def projectConfig = new JsonSlurper().parseText(BundleHelper.readFile(projectConfigFile)) as Map;
 
 // early exit - no custom scope provided
+/*
 if (!projectConfig?.customScope?.name) {
 	System.out.println("No custom scope detected in project config file.");
 	return;
 }
+*/
 
 def defaultPackage = projectConfig.packageDirectories?.find { pkg -> pkg.default == true }
 
@@ -71,7 +75,7 @@ if (!defaultPackage) {
 
 def packageDir = new File(options.workingDir, defaultPackage.path);
 
-def scopeName = projectConfig.customScope.name;
+def scopeName = projectConfig?.customScope?.name;
 def scopeExclusions = projectConfig.customScope.exclusions;
 
 // define validators chain
@@ -87,6 +91,8 @@ List<Validator> validators = [
 	new LwcValidator(packageDir, scopeName, scopeExclusions?.lwc),
 	new AuraValidator(packageDir, scopeName, scopeExclusions?.aura),
 	//new EmailTemplateValidator(packageDir, scopeName, scopeExclusions?.emails),
+	new ReportValidator(packageDir, scopeName, scopeExclusions?.reports),
+	new DashboardValidator(packageDir, scopeName, scopeExclusions?.reports),
 	new CustomLabelValidator(packageDir, scopeName, scopeExclusions?.labels)
 ];
 
