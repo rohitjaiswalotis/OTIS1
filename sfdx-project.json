@@ -65,7 +65,9 @@
       "lwc": [],
       "aura": [],
       "labels": [],
-      "emails": []
+      "emails": [],
+      "reports": [],
+      "dashboards": []
     }
   }
 }

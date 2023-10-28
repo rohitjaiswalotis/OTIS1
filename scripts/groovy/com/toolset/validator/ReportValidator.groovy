@@ -6,24 +6,24 @@ import com.toolset.helper.BundleHelper;
 import com.toolset.validator.Validator;
 
 
-public class ApexClassValidator implements Validator {
+public class ReportValidator implements Validator {
 	
-	private File classesDir;
+	private File reportsDir;
 	private String customPrefix;
 	private Set<String> exclusions;
 	
 	
 	
-	public ApexClassValidator(File classesDir, String customScope) {
+	public ReportValidator(File reportsDir, String customScope) {
 		
-		this(classesDir, customScope, null);
+		this(reportsDir, customScope, null);
 		
 	}
 	
 	
-	public ApexClassValidator(File classesDir, String customScope, def exclusions) {
+	public ReportValidator(File reportsDir, String customScope, def exclusions) {
 		
-		this.classesDir = classesDir;
+		this.reportsDir = reportsDir;
 		this.customPrefix = this.getCustomPrefix(customScope);
 		
 		this.exclusions = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
@@ -48,30 +48,30 @@ public class ApexClassValidator implements Validator {
 	
 	public List<String> validate() {
 		
-		if (!this.customPrefix) {
-			return;
-		}
-		
 		String normalizedCustomPrefix = BundleHelper.normalize(this.customPrefix);
 		List<String> errors = [];
 		
 		
-		// loop through apex classes
-		BundleHelper.forEachClass(this.classesDir) { className, classFile ->
+		// loop through folders
+		BundleHelper.forEachReportFolder(this.reportsDir) { reportFolderName, reportFolderRoot ->
 			
-			def normalizedClassName = BundleHelper.normalize(className) - ~/^\./;
+			def normalizedFolderName = BundleHelper.normalize(reportFolderName) - ~/^\./;
 			
-			if (
-				// ignore excluded classes
-				normalizedClassName in this.exclusions 
-				|| 
-				// ignore correctly prefixed classes
-				normalizedClassName.startsWith(normalizedCustomPrefix)
-			) {
-				return;
+			
+			reportFolderRoot.folderShares.each { folderShareRoot ->
+				
+				def sharedToName = folderShareRoot.sharedTo.toString();
+				def sharedToType = folderShareRoot.sharedToType.toString();
+				
+				if (
+					BundleHelper.isNormalizedEquals(sharedToType, "User")
+					&&
+					sharedToName.contains('@')
+				) {
+					errors << "Report Folder '${reportFolderName}' should not be shared with hardcoded username: '${sharedToName}'."
+				}
+				
 			}
-			
-			errors << "Class '${className}' should start with '${this.customPrefix}' custom prefix."
 			
 		}
 		
@@ -83,7 +83,7 @@ public class ApexClassValidator implements Validator {
 	
 	public String getName() {
 		
-		return "Apex Classes Validator";
+		return "Reports Validator";
 		
 	}
 	
