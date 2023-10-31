@@ -48,10 +48,6 @@ public class FieldValidator implements Validator {
 	
 	public List<String> validate() {
 		
-		if (!this.customPrefix) {
-			return;
-		}
-		
 		String normalizedCustomPrefix = BundleHelper.normalize(this.customPrefix);
 		List<String> errors = [];
 		
@@ -75,17 +71,27 @@ public class FieldValidator implements Validator {
 			}
 			
 			
-			// enforce description to be populated
-			if (!fieldRoot?.description?.toString()) {
-				errors << "Field '${fullFieldName ?: fieldName}' should have description populated.";
+			if (this.customPrefix) {
+				
+				// enforce description to be populated
+				if (!fieldRoot?.description?.toString()) {
+					errors << "Field '${fullFieldName ?: fieldName}' should have description populated.";
+				}
+				
+				
+				def normalizedFieldName = BundleHelper.normalize(fieldName) - ~/^\./;
+				
+				// enforce custom prefix for field
+				if (!normalizedFieldName.startsWith(normalizedCustomPrefix)) {
+					errors << "Field '${fullFieldName ?: fieldName}' should start with '${this.customPrefix}' custom prefix."
+				}
+				
 			}
 			
 			
-			def normalizedFieldName = BundleHelper.normalize(fieldName) - ~/^\./;
-			
-			// enforce custom prefix for field
-			if (!normalizedFieldName.startsWith(normalizedCustomPrefix)) {
-				errors << "Field '${fullFieldName ?: fieldName}' should start with '${this.customPrefix}' custom prefix."
+			// prevent field with namespace
+			if (ObjectHelper.hasObjectNamespace(fieldName)) {
+				errors << "Field '${fullFieldName ?: fieldName}' belongs to another package: ${fieldName.split('__')[0]}."
 			}
 			
 		}
