@@ -125,3 +125,19 @@ if [[ -d "${LOCAL_CURRENT_STEP_DIR}/reports" && "$(ls -A "${LOCAL_CURRENT_STEP_D
 	
 fi
 
+
+# remove everything from emails except folders descriptors
+if [[ -d "${LOCAL_CURRENT_STEP_DIR}/email" && "$(ls -A "${LOCAL_CURRENT_STEP_DIR}/email")" ]]; then
+	
+	for emailItem in ${LOCAL_CURRENT_STEP_DIR}/email/*; do
+		
+		# remove everything except folder descriptor file
+		if [[ -d "$emailItem" || ! "${emailItem}" =~ ^.*\.emailFolder-meta\.xml$ ]]; then
+			rm -rf "$emailItem"
+			continue;
+		fi
+		
+	done
+	
+fi
+
