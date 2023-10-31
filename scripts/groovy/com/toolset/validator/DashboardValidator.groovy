@@ -76,6 +76,25 @@ public class DashboardValidator implements Validator {
 		}
 		
 		
+		// loop through dashboards
+		BundleHelper.forEachDashboard(this.dashboardsDir) { dashboardName, dashboardRoot ->
+			
+			def normalizedName = BundleHelper.normalize(dashboardName) - ~/^\./;
+			
+			def dashboardType = dashboardRoot.dashboardType?.toString();
+			def runningUser = dashboardRoot.runningUser?.toString();
+			
+			if (
+				BundleHelper.isNormalizedEquals(dashboardType, "SpecifiedUser")
+				&&
+				runningUser && runningUser.contains('@')
+			) {
+				errors << "Dashboard '${dashboardName}' should not be running as hardcoded user: '${runningUser}'."
+			}
+			
+		}
+		
+		
 		return errors;
 		
 	}

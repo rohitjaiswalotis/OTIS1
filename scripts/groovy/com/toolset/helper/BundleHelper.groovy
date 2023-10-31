@@ -48,6 +48,7 @@ public class BundleHelper {
 	private static final String FILE_EXTENSION_EMAIL_FOLDER = 'emailFolder-meta.xml';
 	private static final String FILE_EXTENSION_REPORT_FOLDER = 'reportFolder-meta.xml';
 	private static final String FILE_EXTENSION_DASHBOARD_FOLDER = 'dashboardFolder-meta.xml';
+	private static final String FILE_EXTENSION_DASHBOARD = 'dashboard-meta.xml';
 	
 	public static final String FILE_SUFFIX_META_DESCRIPTOR = "-meta.xml";
 	
@@ -1176,6 +1177,32 @@ public class BundleHelper {
 			eachDashboardFolderClosure.call(
 				dashboardFolderName, 
 				dashboardFolderRoot
+			);
+			
+		}
+		
+	}
+	
+	
+	
+	// loop through dashboard files
+	public static void forEachDashboard(File dashboardsDir, Closure eachDashboardClosure) {
+		
+		if (!dashboardsDir.exists()) {
+			return;
+		}
+		
+		dashboardsDir.traverse(type: FileType.FILES, nameFilter: ~/(?i).*\.${FILE_EXTENSION_DASHBOARD}(\..*)?/) { dashboardFile ->
+			
+			// evaluate dashboard name based on file name - just by removing dashboard extension
+			def dashboardName = dashboardFile.name.substring(0, dashboardFile.name.toLowerCase().lastIndexOf(".${FILE_EXTENSION_DASHBOARD.toLowerCase()}"));
+			
+			def dashboardRoot = new XmlSlurper().parseText(readFile(dashboardFile));
+			
+			// callback to closure with params
+			eachDashboardClosure.call(
+				dashboardName, 
+				dashboardRoot
 			);
 			
 		}
