@@ -11,7 +11,7 @@
     </columns>
     <filter>
         <criteriaItems>
-            <column>WorkOrder.ServiceAppointments$IsInitialETAGreaterThan__c</column>
+            <column>WorkOrder.ServiceAppointments$FS_IsInitialETAGreaterThan__c</column>
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
