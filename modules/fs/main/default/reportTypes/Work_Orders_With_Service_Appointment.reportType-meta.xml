@@ -1050,11 +1050,6 @@
             <field>UnitTemporarySpecialInstructions__c</field>
             <table>WorkOrder</table>
         </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
-            <field>Unit_Supervisor__c</field>
-            <table>WorkOrder</table>
-        </columns>
         <masterLabel>Work Orders</masterLabel>
     </sections>
     <sections>
