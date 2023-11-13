@@ -1480,11 +1480,6 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>Priority__c</field>
-            <table>WorkOrder.ServiceAppointments</table>
-        </columns>
-        <columns>
-            <checkedByDefault>false</checkedByDefault>
             <field>Billable__c</field>
             <table>WorkOrder.ServiceAppointments</table>
         </columns>
