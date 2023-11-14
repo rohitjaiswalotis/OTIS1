@@ -1050,6 +1050,11 @@
             <field>UnitTemporarySpecialInstructions__c</field>
             <table>WorkOrder</table>
         </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Unit_Supervisor__c</field>
+            <table>WorkOrder</table>
+        </columns>
         <masterLabel>Work Orders</masterLabel>
     </sections>
     <sections>
@@ -1480,32 +1485,37 @@
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>Billable__c</field>
+            <field>Priority__c</field>
             <table>WorkOrder.ServiceAppointments</table>
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>Component_Code__c</field>
+            <field>NAA_Billable__c</field>
             <table>WorkOrder.ServiceAppointments</table>
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>Work_Performed_Code__c</field>
+            <field>NAA_Component_Code__c</field>
             <table>WorkOrder.ServiceAppointments</table>
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>Category__c</field>
+            <field>NAA_Work_Performed_Code__c</field>
             <table>WorkOrder.ServiceAppointments</table>
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>Unit_Condition__c</field>
+            <field>NAA_Category__c</field>
             <table>WorkOrder.ServiceAppointments</table>
         </columns>
         <columns>
             <checkedByDefault>false</checkedByDefault>
-            <field>Unit_Number__c</field>
+            <field>NAA_Unit_Condition__c</field>
+            <table>WorkOrder.ServiceAppointments</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>NAA_Unit_Number__c</field>
             <table>WorkOrder.ServiceAppointments</table>
         </columns>
         <columns>
