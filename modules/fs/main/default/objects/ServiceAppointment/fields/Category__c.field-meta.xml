@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Category__c</fullName>
+    <externalId>false</externalId>
+    <label>Category</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Car Controller</fullName>
+                <default>false</default>
+                <label>Car Controller</label>
+            </value>
+            <value>
+                <fullName>Group Controller</fullName>
+                <default>false</default>
+                <label>Group Controller</label>
+            </value>
+            <value>
+                <fullName>Car Door</fullName>
+                <default>false</default>
+                <label>Car Door</label>
+            </value>
+            <value>
+                <fullName>Door Operator</fullName>
+                <default>false</default>
+                <label>Door Operator</label>
+            </value>
+            <value>
+                <fullName>Car Equipment</fullName>
+                <default>false</default>
+                <label>Car Equipment</label>
+            </value>
+            <value>
+                <fullName>Hoistway Doors</fullName>
+                <default>false</default>
+                <label>Hoistway Doors</label>
+            </value>
+            <value>
+                <fullName>Hoistwat Equipment</fullName>
+                <default>false</default>
+                <label>Hoistwat Equipment</label>
+            </value>
+            <value>
+                <fullName>Governor</fullName>
+                <default>false</default>
+                <label>Governor</label>
+            </value>
+            <value>
+                <fullName>Hall Fixture</fullName>
+                <default>false</default>
+                <label>Hall Fixture</label>
+            </value>
+            <value>
+                <fullName>Lobby Panel</fullName>
+                <default>false</default>
+                <label>Lobby Panel</label>
+            </value>
+            <value>
+                <fullName>Selector/PPT</fullName>
+                <default>false</default>
+                <label>Selector/PPT</label>
+            </value>
+            <value>
+                <fullName>Generator</fullName>
+                <default>false</default>
+                <label>Generator</label>
+            </value>
+            <value>
+                <fullName>Motor</fullName>
+                <default>false</default>
+                <label>Motor</label>
+            </value>
+            <value>
+                <fullName>Canadian</fullName>
+                <default>false</default>
+                <label>Canadian</label>
+            </value>
+            <value>
+                <fullName>Hydraulic Machine</fullName>
+                <default>false</default>
+                <label>Hydraulic Machine</label>
+            </value>
+            <value>
+                <fullName>Gear Case</fullName>
+                <default>false</default>
+                <label>Gear Case</label>
+            </value>
+            <value>
+                <fullName>Main Machine/Brake</fullName>
+                <default>false</default>
+                <label>Main Machine/Brake</label>
+            </value>
+            <value>
+                <fullName>Escalator</fullName>
+                <default>false</default>
+                <label>Escalator</label>
+            </value>
+            <value>
+                <fullName>Pit</fullName>
+                <default>false</default>
+                <label>Pit</label>
+            </value>
+            <value>
+                <fullName>Not Equipment Related</fullName>
+                <default>false</default>
+                <label>Not Equipment Related</label>
+            </value>
+            <value>
+                <fullName>Clean/Standby/Survey/Test</fullName>
+                <default>false</default>
+                <label>Clean/Standby/Survey/Test</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
