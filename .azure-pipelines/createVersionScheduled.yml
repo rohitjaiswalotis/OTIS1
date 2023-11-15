@@ -38,6 +38,11 @@ schedules:
 
 parameters:
 
+- name: skipValidation
+  displayName: Skip validation for package?
+  type: boolean
+  default: false
+
 - name: shouldRunAqaTests
   displayName: Run AQA Tests?
   type: boolean
@@ -95,7 +100,7 @@ stages:
             - template: templates/createVersion.yml
               parameters:
                 branchMarker: ${{ variables['Build.SourceBranchName'] }}
-                skipValidation: false
+                skipValidation: ${{ parameters.skipValidation }}
                 createTag: true
                 numberOfRetries: 1
               
