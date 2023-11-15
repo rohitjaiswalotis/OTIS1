@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+	<sharingCriteriaRules>
+        <fullName>Salesforce_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Salesforce GBO</label>
+        <sharedTo>
+            <group>Salesforce_GBO</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>GBO_Name__c</field>
+            <operation>equals</operation>
+            <value>Salesforce GBO</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+</SharingRules>
