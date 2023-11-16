@@ -21,6 +21,11 @@
             <operation>equals</operation>
             <value>Salesforce GBO</value>
         </filters>
+        <filters>
+            <field>OperationalStatus__c</field>
+            <operation>equals</operation>
+            <value>Shutdown</value>
+        </filters>
         <label>Unit Operational status - Shutdown</label>
         <sharedTo>
             <role>RouteSupervisor</role>
