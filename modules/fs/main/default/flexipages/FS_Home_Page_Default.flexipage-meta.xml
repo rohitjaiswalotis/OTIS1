@@ -1617,22 +1617,10 @@
                 </visibilityRule>
             </componentInstance>
         </itemInstances>
-        <itemInstances>
-            <componentInstance>
-                <componentName>unitShutdownStatus</componentName>
-                <identifier>c_unitShutdownStatus</identifier>
-            </componentInstance>
-        </itemInstances>
         <name>top</name>
         <type>Region</type>
     </flexiPageRegions>
     <flexiPageRegions>
-        <itemInstances>
-            <componentInstance>
-                <componentName>sAComponent</componentName>
-                <identifier>c_sAComponent</identifier>
-            </componentInstance>
-        </itemInstances>
         <name>left</name>
         <type>Region</type>
     </flexiPageRegions>
