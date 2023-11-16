@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>Salesforce_GBO_Sharing</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Salesforce GBO Sharing</label>
+        <sharedTo>
+            <group>Salesforce_GBO_Group</group>
+        </sharedTo>
+        <booleanFilter>1 AND 2</booleanFilter>
+        <criteriaItems>
+            <field>GBO_Name__c</field>
+            <operation>equals</operation>
+            <value>Salesforce GBO</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>GBO_Name__c</field>
+            <operation>notEqual</operation>
+            <value></value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+</SharingRules>
