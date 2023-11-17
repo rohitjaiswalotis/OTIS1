@@ -1,0 +1,1186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>ActiveCoverage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Active Coverage</shortDescription>
+        <value>Active Coverage</value>
+    </labels>
+    <labels>
+        <fullName>ActiveSubstitutePrimary</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Active Substitute (Primary)</shortDescription>
+        <value>Active Substitute (Primary)</value>
+    </labels>
+    <labels>
+        <fullName>ActiveSubstituteSecondary</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Active Substitute (Secondary)</shortDescription>
+        <value>Active Substitute (Secondary)</value>
+    </labels>
+    <labels>
+        <fullName>ActiveSubstituteSupervisor</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Active Substitute (Supervisor)</shortDescription>
+        <value>Active Substitute (Supervisor)</value>
+    </labels>
+    <labels>
+        <fullName>ActiveSubstituteTertiary</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Active Substitute (Tertiary)</shortDescription>
+        <value>Active Substitute (Tertiary)</value>
+    </labels>
+    <labels>
+        <fullName>AdditionalInformation</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>AdditionalInformation</shortDescription>
+        <value>Additional Information</value>
+    </labels>
+    <labels>
+        <fullName>ApplyToAllRoutesInOffice</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Apply to all routes in office</shortDescription>
+        <value>Apply to all routes in office</value>
+    </labels>
+    <labels>
+        <fullName>AreYouSure</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Are you sure?</shortDescription>
+        <value>Are you sure?</value>
+    </labels>
+    <labels>
+        <fullName>Asset_Add_Error_Duty_Roster_Is_Not_Built</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Asset_Add_Error_Duty_Roster_Is_Not_Built</shortDescription>
+        <value>You cannot move a Unit to a Route until the Duty Roster is built.</value>
+    </labels>
+    <labels>
+        <fullName>Asset_Add_Error_Units_Without_Contract</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Asset_Add_Error_Units_Without_Contract</shortDescription>
+        <value>Units without contract cannot be moved to new Route.</value>
+    </labels>
+    <labels>
+        <fullName>Branch</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Branch</shortDescription>
+        <value>Branch</value>
+    </labels>
+    <labels>
+        <fullName>BranchCommunicationContacts</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>BranchCommunicationContacts</shortDescription>
+        <value>Branch Communication Contacts</value>
+    </labels>
+    <labels>
+        <fullName>BuildingAndUnitInfo</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>BuildingAndUnitInfo</shortDescription>
+        <value>Building &amp; Unit Info</value>
+    </labels>
+    <labels>
+        <fullName>BusinessPhoneNumberMustBePopulated</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>BusinessPhoneNumberMustBePopulated</shortDescription>
+        <value>Business Phone Number must be populated for Field Ops visibility on Mobile.
+&lt;br/&gt; 10 number limit; DO NOT include spaces, dashes, or characters.</value>
+    </labels>
+    <labels>
+        <fullName>CallbackReportRecipents</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CallbackReportRecipents</shortDescription>
+        <value>rajamani.neelamegam@otis.com;PawanKumar1@otis.com</value>
+    </labels>
+    <labels>
+        <fullName>Cancel</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Cancel</shortDescription>
+        <value>Cancel</value>
+    </labels>
+    <labels>
+        <fullName>CannotDeactivateServiceResourceRecord</fullName>
+        <categories>Service Resource</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Cannot Deactivate Service Resource Record</shortDescription>
+        <value>Service Resource is used in an active coverage group, modify the route coverage groups before inactivating the record</value>
+    </labels>
+    <labels>
+        <fullName>CannotFind</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CannotFind</shortDescription>
+        <value>Cannot find</value>
+    </labels>
+    <labels>
+        <fullName>CaseInfo</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CaseInfo</shortDescription>
+        <value>Case Info</value>
+    </labels>
+    <labels>
+        <fullName>CaseServiceRequestNotificationSubject</fullName>
+        <categories>Case</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Case Service Request Notification Subject</shortDescription>
+        <value>Message From OTISLINE - Service request created for Unit: {0}, Building: {1}</value>
+    </labels>
+    <labels>
+        <fullName>Clock</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Clock</shortDescription>
+        <value>Clock</value>
+    </labels>
+    <labels>
+        <fullName>CloseNotes</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Close Notes</shortDescription>
+        <value>Close Notes</value>
+    </labels>
+    <labels>
+        <fullName>ClosingAndFinalizing</fullName>
+        <categories>Closing and Finalizing</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Closing and Finalizing</shortDescription>
+        <value>Closing and Finalizing</value>
+    </labels>
+    <labels>
+        <fullName>CompletedDate</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Completed Date</shortDescription>
+        <value>Completed Date</value>
+    </labels>
+    <labels>
+        <fullName>ContactInfo</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ContactInfo</shortDescription>
+        <value>Contact Info</value>
+    </labels>
+    <labels>
+        <fullName>Contact_Prevent_Delete_Error_Message</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>You can not delete this contact. Contact your administrator.</shortDescription>
+        <value>You can not delete this contact. Contact your administrator.</value>
+    </labels>
+    <labels>
+        <fullName>ContractInformation</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ContractInformation</shortDescription>
+        <value>Contract Information</value>
+    </labels>
+    <labels>
+        <fullName>ControlOperations</fullName>
+        <categories>Closing and Finalizing</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Control Operations</shortDescription>
+        <value>Control Operations</value>
+    </labels>
+    <labels>
+        <fullName>CoverageDetails</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CoverageDetails</shortDescription>
+        <value>Coverage Details</value>
+    </labels>
+    <labels>
+        <fullName>CoverageEnded</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Coverage Ended!</shortDescription>
+        <value>Coverage Ended!</value>
+    </labels>
+    <labels>
+        <fullName>CoverageGroups</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CoverageGroups</shortDescription>
+        <value>Coverage Groups</value>
+    </labels>
+    <labels>
+        <fullName>CoverageWas</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>coverage was</shortDescription>
+        <value>coverage was</value>
+    </labels>
+    <labels>
+        <fullName>CoveragesWere</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>coverages were</shortDescription>
+        <value>coverages were</value>
+    </labels>
+    <labels>
+        <fullName>CreateBulkCoverage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CreateBulkCoverage</shortDescription>
+        <value>Create Bulk Coverage</value>
+    </labels>
+    <labels>
+        <fullName>CreateCoverages</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Create Coverages</shortDescription>
+        <value>Create Coverages</value>
+    </labels>
+    <labels>
+        <fullName>CreateNewCustomerContact</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CreateNewCustomerContact</shortDescription>
+        <value>Create New Customer Contact</value>
+    </labels>
+    <labels>
+        <fullName>Created</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Created</shortDescription>
+        <value>Created</value>
+    </labels>
+    <labels>
+        <fullName>CustomerAdvocate</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>CustomerAdvocate</shortDescription>
+        <value>Customer Advocate</value>
+    </labels>
+    <labels>
+        <fullName>Day</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>day</shortDescription>
+        <value>day</value>
+    </labels>
+    <labels>
+        <fullName>Days</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Day(s)</shortDescription>
+        <value>Day(s)</value>
+    </labels>
+    <labels>
+        <fullName>Days_to_Service_Request_Logs</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Days to Service Request Logs</shortDescription>
+        <value>90</value>
+    </labels>
+    <labels>
+        <fullName>Default_Work_Type_Id</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Default Work Type Id</shortDescription>
+        <value>08qDO0000004QTpYAM</value>
+    </labels>
+    <labels>
+        <fullName>DeferredCoverage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Deferred Coverage</shortDescription>
+        <value>Deferred Coverage</value>
+    </labels>
+    <labels>
+        <fullName>EmailHasBeenSent</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Email Has Been Sent</shortDescription>
+        <value>The &quot;{0}&quot; has been sent.</value>
+    </labels>
+    <labels>
+        <fullName>EmailTemplateIsNotFound</fullName>
+        <categories>Error</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Email Template is not found</shortDescription>
+        <value>Email template (&quot;{0}&quot;) is not found. Please, contact the system admin.</value>
+    </labels>
+    <labels>
+        <fullName>EmailToCase</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>EmailToCase</shortDescription>
+        <value>Email To Case</value>
+    </labels>
+    <labels>
+        <fullName>EnterThreeCharacters</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Please enter only three characters</shortDescription>
+        <value>Please enter only three characters</value>
+    </labels>
+    <labels>
+        <fullName>EnterTwoCharacters</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Please enter only two characters</shortDescription>
+        <value>Please enter only two characters</value>
+    </labels>
+    <labels>
+        <fullName>EntrapmentAndUnitOperationalStatus</fullName>
+        <categories>Closing and Finalizing</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Entrapment and Unit Operational Status</shortDescription>
+        <value>Entrapment and Unit Operational Status</value>
+    </labels>
+    <labels>
+        <fullName>Error</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Error</shortDescription>
+        <value>Error</value>
+    </labels>
+    <labels>
+        <fullName>ErrorOccurred</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Error Occurred</shortDescription>
+        <value>Error Occurred</value>
+    </labels>
+    <labels>
+        <fullName>EscalationContacts</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>EscalationContacts</shortDescription>
+        <value>Escalation Contacts</value>
+    </labels>
+    <labels>
+        <fullName>EtaDeferral</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ETA/ Deferral</shortDescription>
+        <value>ETA/ Deferral</value>
+    </labels>
+    <labels>
+        <fullName>FailedToUpdateRelatedRecordsForResource</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>FailedToUpdateRelatedRecordsForResource</shortDescription>
+        <value>Failed to update related records for resource</value>
+    </labels>
+    <labels>
+        <fullName>FieldService</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>FieldService</shortDescription>
+        <value>Field Service</value>
+    </labels>
+    <labels>
+        <fullName>FieldServiceInformation</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>FieldServiceInformation</shortDescription>
+        <value>Field Service Information</value>
+    </labels>
+    <labels>
+        <fullName>Files</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Files</shortDescription>
+        <value>Files</value>
+    </labels>
+    <labels>
+        <fullName>Following</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Following</shortDescription>
+        <value>Following</value>
+    </labels>
+    <labels>
+        <fullName>Hr</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Hr</shortDescription>
+        <value>Hr</value>
+    </labels>
+    <labels>
+        <fullName>Hrs</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>hrs</shortDescription>
+        <value>hrs</value>
+    </labels>
+    <labels>
+        <fullName>InService</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>InService</shortDescription>
+        <value>In Service</value>
+    </labels>
+    <labels>
+        <fullName>Launchpad</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Launchpad</shortDescription>
+        <value>Launchpad</value>
+    </labels>
+    <labels>
+        <fullName>Loading</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Loading</shortDescription>
+        <value>Loading</value>
+    </labels>
+    <labels>
+        <fullName>Maintenance_Skill_Id</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Maintenance Skill Id</shortDescription>
+        <value>0C5DO00000000DU0AY</value>
+    </labels>
+    <labels>
+        <fullName>MechanicClosingDetails</fullName>
+        <categories>Closing and Finalizing</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Mechanic Closing Details</shortDescription>
+        <value>Mechanic Closing Details</value>
+    </labels>
+    <labels>
+        <fullName>MechanicName</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Mechanic Name</shortDescription>
+        <value>Mechanic Name</value>
+    </labels>
+    <labels>
+        <fullName>MechanicTimestamps</fullName>
+        <categories>Closing and Finalizing</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Mechanic Timestamps</shortDescription>
+        <value>Mechanic Timestamps</value>
+    </labels>
+    <labels>
+        <fullName>Min</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>min</shortDescription>
+        <value>min</value>
+    </labels>
+    <labels>
+        <fullName>Mins</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Mins</shortDescription>
+        <value>Mins</value>
+    </labels>
+    <labels>
+        <fullName>Next</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Next</shortDescription>
+        <value>Next</value>
+    </labels>
+    <labels>
+        <fullName>NextCoverage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Next Coverage</shortDescription>
+        <value>Next Coverage</value>
+    </labels>
+    <labels>
+        <fullName>NoCoverageGroupForReplacement</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>NoCoverageGroupForReplacement</shortDescription>
+        <value>Error: The replacement resource does not have a personal coverage group</value>
+    </labels>
+    <labels>
+        <fullName>NoCoveragesFound</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>No coverages found</shortDescription>
+        <value>No coverages found</value>
+    </labels>
+    <labels>
+        <fullName>NoneSelected</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>NoneSelected</shortDescription>
+        <value>none selected</value>
+    </labels>
+    <labels>
+        <fullName>NoOfDays</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>No of days</shortDescription>
+        <value>No of days</value>
+    </labels>
+    <labels>
+        <fullName>NotCreated</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>not created</shortDescription>
+        <value>not created</value>
+    </labels>
+    <labels>
+        <fullName>NotProgressedCases</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>NotProgressedCases</shortDescription>
+        <value>Not Progressed Cases</value>
+    </labels>
+    <labels>
+        <fullName>NoTriggerSettingFound</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>NoTriggerSettingFound</shortDescription>
+        <value>No Trigger Setting found! Please create an entry for CS Trigger Settings Object. Contact your administrator</value>
+    </labels>
+    <labels>
+        <fullName>OfficeFromTheSameGBOAsPrimaryMember</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OfficeFromTheSameGBOAsPrimaryMember</shortDescription>
+        <value>Please select Office from the same GBO as Primary Office Member</value>
+    </labels>
+    <labels>
+        <fullName>OfficeGboAndRouteGboAreNotSame</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Notify if office GBO and Route GBO are not the same</shortDescription>
+        <value>Please make sure Service resource office GBO and Route GBO are same</value>
+    </labels>
+    <labels>
+        <fullName>OfficeMustBePrimary</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OfficeMustBePrimary</shortDescription>
+        <value>There is only one office for this building. It must be marked as the primary.</value>
+    </labels>
+    <labels>
+        <fullName>OnlyOnePrimaryOfficePerBuilding</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OnlyOnePrimaryOfficePerBuilding</shortDescription>
+        <value>Only one primary office is allowed per building</value>
+    </labels>
+    <labels>
+        <fullName>OnlyOnePrimaryOfficePerResource</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OnlyOnePrimaryOfficePerResource</shortDescription>
+        <value>Only one primary office is allowed per resource</value>
+    </labels>
+    <labels>
+        <fullName>OtherAccountBuildings</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OtherAccountBuildings</shortDescription>
+        <value>Other Account Buildings</value>
+    </labels>
+    <labels>
+        <fullName>OtherUnitsInBuilding</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OtherUnitsInBuilding</shortDescription>
+        <value>Other Units in Building</value>
+    </labels>
+    <labels>
+        <fullName>OtisContact</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>OtisContact</shortDescription>
+        <value>Otis Contact</value>
+    </labels>
+    <labels>
+        <fullName>PayrollIdDuplicateValueFound</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PayrollIdDuplicateValueFound</shortDescription>
+        <value>Error : Payroll ID - Duplicate Value found</value>
+    </labels>
+    <labels>
+        <fullName>Phone_Activity_Description_BP</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Phone_Activity_Description_BP</shortDescription>
+        <value>Call {0} to notify the ETA at their phone number: {1} Ext. {3} with an ETA of {2}</value>
+    </labels>
+    <labels>
+        <fullName>Phone_Activity_Description_MP</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Phone_Activity_Description_MP</shortDescription>
+        <value>Call {0} to notify the ETA at their phone number: {1} with and ETA of {2}</value>
+    </labels>
+    <labels>
+        <fullName>Preparing</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Preparing</shortDescription>
+        <value>Preparing</value>
+    </labels>
+    <labels>
+        <fullName>Prev</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Prev</shortDescription>
+        <value>Prev</value>
+    </labels>
+    <labels>
+        <fullName>PrimaryCaller</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PrimaryCaller</shortDescription>
+        <value>Primary Caller</value>
+    </labels>
+    <labels>
+        <fullName>PrimaryCallerETAOptIn</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>PrimaryCallerETAOptIn</shortDescription>
+        <value>Primary Caller ETA Opt In</value>
+    </labels>
+    <labels>
+        <fullName>PrimaryDeferralInstructions</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Primary Deferral Instructions</shortDescription>
+        <value>Primary Deferral Instructions</value>
+    </labels>
+    <labels>
+        <fullName>Processing</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Processing</shortDescription>
+        <value>Processing</value>
+    </labels>
+    <labels>
+        <fullName>ProvidedEmployeeIdDoesNotExistInWorkday</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ProvidedEmployeeIdDoesNotExistInWorkday</shortDescription>
+        <value>Provided Employee ID doesn&apos;t exist in Workday</value>
+    </labels>
+    <labels>
+        <fullName>REMInformation</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>REMInformation</shortDescription>
+        <value>REM Information</value>
+    </labels>
+    <labels>
+        <fullName>RMDInformation</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RMDInformation</shortDescription>
+        <value>RMD Information</value>
+    </labels>
+    <labels>
+        <fullName>R_SubstitutionErrorMechanicSameTimeframe</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>R_SubstitutionErrorMechanicSameTimeframe</shortDescription>
+        <value>Not - Allowed : Because selected resource is already covered by another Mechanic in the same timeframe.</value>
+    </labels>
+    <labels>
+        <fullName>R_SubstitutionErrorsLevel_2</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>R_SubstitutionErrorsLevel_2</shortDescription>
+        <value>Not - Allowed : Because selected mechanic is already at Level 2.</value>
+    </labels>
+    <labels>
+        <fullName>R_SubstitutionErrorsomeoneCoveredBySomeOne</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>R_SubstitutionErrorsomeoneCoveredBySomeOne</shortDescription>
+        <value>Not - Allowed : Because resource is already covered by someone else.</value>
+    </labels>
+    <labels>
+        <fullName>RelatedLists</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RelatedLists</shortDescription>
+        <value>Related Lists</value>
+    </labels>
+    <labels>
+        <fullName>RelatedUnits</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Related Units</shortDescription>
+        <value>Related Units</value>
+    </labels>
+    <labels>
+        <fullName>RelatedWorkOrders</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Related Work Orders</shortDescription>
+        <value>Related Work Orders</value>
+    </labels>
+    <labels>
+        <fullName>RememberToReassignWorkOrderToDeferralMechanic</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>RememberToReassignWorkOrderToDeferralMechanic</shortDescription>
+        <value>PLEASE REMEMBER TO RE-ASSIGN WORK ORDER TO DEFERRAL MECHANIC</value>
+    </labels>
+    <labels>
+        <fullName>Repair_Skill_Id</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Repair Skill Id</shortDescription>
+        <value>0C5DO00000000DP0AY</value>
+    </labels>
+    <labels>
+        <fullName>ReplacementResourceShouldBeProvided</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ReplacementResourceShouldBeProvided</shortDescription>
+        <value>This resource is in the duty roster after the effective date please provide a replacement resource</value>
+    </labels>
+    <labels>
+        <fullName>ResourceCannotBeEmptyForClosedWorkorder</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ResourceCannotBeEmptyForClosedWorkorder</shortDescription>
+        <value>Assigned Resource cannot be empty for a closed workorder</value>
+    </labels>
+    <labels>
+        <fullName>ResourceIsAlreadyPresent</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Informs that certain type of route resource is already present on the route</shortDescription>
+        <value>is already present on this Route. Please update the existing Route Resource.</value>
+    </labels>
+    <labels>
+        <fullName>Reviewers</fullName>
+        <categories>Closing and Finalizing</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Reviewers</shortDescription>
+        <value>Reviewers</value>
+    </labels>
+    <labels>
+        <fullName>RouteName</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Route Name</shortDescription>
+        <value>Route Name</value>
+    </labels>
+    <labels>
+        <fullName>Save</fullName>
+        <categories>Generic</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Save</shortDescription>
+        <value>Save</value>
+    </labels>
+    <labels>
+        <fullName>SearchForPrimaryCaller</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SearchForPrimaryCaller</shortDescription>
+        <value>Search for Primary Caller</value>
+    </labels>
+    <labels>
+        <fullName>Sec</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>sec</shortDescription>
+        <value>sec</value>
+    </labels>
+    <labels>
+        <fullName>SecondaryDeferralInstructions</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Secondary Deferral Instructions</shortDescription>
+        <value>Secondary Deferral Instructions</value>
+    </labels>
+    <labels>
+        <fullName>SelectProgress</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Select Progress</shortDescription>
+        <value>Select Progress</value>
+    </labels>
+    <labels>
+        <fullName>SelectRoutesToApplyTemporaryCoverageTo</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SelectRoutesToApplyTemporaryCoverageTo</shortDescription>
+        <value>Select routes to apply temporary coverage to</value>
+    </labels>
+    <labels>
+        <fullName>SelectTheDaysToRetrieve</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Select the days to retrieve</shortDescription>
+        <value>Select the days to retrieve</value>
+    </labels>
+    <labels>
+        <fullName>ServiceAppointment</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Gantt</shortDescription>
+        <value>Service Appointments</value>
+    </labels>
+    <labels>
+        <fullName>ServiceResourceAlreadyExistsForThisUser</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ServiceResourceAlreadyExistsForThisUser</shortDescription>
+        <value>Error : A service resource of this type already exists for this user</value>
+    </labels>
+    <labels>
+        <fullName>ServiceResourceCreated</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ServiceResourceCreated</shortDescription>
+        <value>Service resource created</value>
+    </labels>
+    <labels>
+        <fullName>ServiceResourceEmailIsNotAvailable</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ServiceResourceEmailIsNotAvailable</shortDescription>
+        <value>Error : Service Resource Email Address is not available from Work Day</value>
+    </labels>
+    <labels>
+        <fullName>ServiceRequestEventInstanceIsNull</fullName>
+        <categories>Error</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Service Request Event Instance is Null</shortDescription>
+        <value>Service request event has to be specified</value>
+    </labels>
+    <labels>
+        <fullName>ServiceResourcePayrollIdIsNotAvailable</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ServiceResourcePayrollIdIsNotAvailable</shortDescription>
+        <value>Error : Service Resource Payroll ID is not available from Work Day</value>
+    </labels>
+    <labels>
+        <fullName>ShiftGenerationActionDescription</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Shift Generation Action Description</shortDescription>
+        <value>This action will create coverages for this month to the end of next month.
+Any existing coverages for the route in that period may be overwritten.
+Please ensure that the route shift patterns are complete before running.</value>
+    </labels>
+    <labels>
+        <fullName>Shutdown</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Shutdown</shortDescription>
+        <value>Shutdown</value>
+    </labels>
+    <labels>
+        <fullName>ShouldBeAtLeastOneOfficeForBuilding</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ShouldBeAtLeastOneOfficeForBuilding</shortDescription>
+        <value>This record cannot be deleted. There must be at least one office for the Building.</value>
+    </labels>
+    <labels>
+        <fullName>Submit</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Submit</shortDescription>
+        <value>Submit</value>
+    </labels>
+    <labels>
+        <fullName>Success</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Success</shortDescription>
+        <value>Success</value>
+    </labels>
+    <labels>
+        <fullName>SuccessCoveragesHaveBeenAdded</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Success! Coverages have been added.</shortDescription>
+        <value>Success! Coverages have been added.</value>
+    </labels>
+    <labels>
+        <fullName>Supervisor</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Supervisor</shortDescription>
+        <value>Supervisor</value>
+    </labels>
+    <labels>
+        <fullName>SyncYourAppForLatestUpdates</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>SyncYourAppForLatestUpdates</shortDescription>
+        <value>Update is Incomplete, Please sync your app for latest updates</value>
+    </labels>
+    <labels>
+        <fullName>Task_eService_Enrollment_Description</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Task eService Enrollment Description</shortDescription>
+        <value>An eService email enrollment request has been sent. Request comments:</value>
+    </labels>
+    <labels>
+        <fullName>Task_eService_Enrollment_Subject</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Task eService Enrollment Subject</shortDescription>
+        <value>eService Enrollment Requested</value>
+    </labels>
+    <labels>
+        <fullName>Tasks</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Tasks</shortDescription>
+        <value>Tasks</value>
+    </labels>
+    <labels>
+        <fullName>TertiaryDeferralInstructions</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Tertiary Deferral Instructions</shortDescription>
+        <value>Tertiary Deferral Instructions</value>
+    </labels>
+    <labels>
+        <fullName>TheMechanicIsAlreadyBeingSubstituted</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>TheMechanicIsAlreadyBeingSubstituted</shortDescription>
+        <value>The mechanic is already being substituted</value>
+    </labels>
+    <labels>
+        <fullName>ThirdParty</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>ThirdParty</shortDescription>
+        <value>3rd Party</value>
+    </labels>
+    <labels>
+        <fullName>UnitBuildingAndContractDetails</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>UnitBuildingAndContractDetails</shortDescription>
+        <value>Unit, Building &amp; Contract Details</value>
+    </labels>
+    <labels>
+        <fullName>UnitDetails</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>UnitDetails</shortDescription>
+        <value>Unit Details</value>
+    </labels>
+    <labels>
+        <fullName>UnitFollowerIsDuplicateOnUnit</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>UnitFollowerIsDuplicateOnUnit</shortDescription>
+        <value>The same Unit Follower Contact / Internal Resource / Service Resource is already assigned to this Unit.</value>
+    </labels>
+    <labels>
+        <fullName>UnitHasBeenChangedFromTo</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>UnitHasBeenChangedFromTo</shortDescription>
+        <value>Unit has been changed from {0} to {1}</value>
+    </labels>
+    <labels>
+        <fullName>UnitMustBeLocatedInTheSameBuildingAsTheOriginalUnit</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>UnitMustBeLocatedInTheSameBuildingAsTheOriginalUnit</shortDescription>
+        <value>Unit must be located in the same building as the original Unit.</value>
+    </labels>
+    <labels>
+        <fullName>UserNotExistsWithTheReceivedEmailAddress</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>UserNotExistsWithTheReceivedEmailAddress</shortDescription>
+        <value>Error : User not exists with the received email address from WOrkday</value>
+    </labels>
+    <labels>
+        <fullName>WdEmployeeIdDuplicateValueFound</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>WdEmployeeIdDuplicateValueFound</shortDescription>
+        <value>Error : WD Employee ID - Duplicate Value found</value>
+    </labels>
+    <labels>
+        <fullName>resourceSubstitutionScheduleJob</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>resourceSubstitutionScheduleJob</shortDescription>
+        <value>15</value>
+    </labels>
+    <labels>
+        <fullName>WorkOrderAssignment</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>WorkOrderAssignment</shortDescription>
+        <value>Work Order Assignment</value>
+    </labels>
+    <labels>
+        <fullName>WorkOrders</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>WorkOrders</shortDescription>
+        <value>Work Orders</value>
+    </labels>
+    <labels>
+        <fullName>WorkOrderCaseCancellationWarningMessage</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>WorkOrderCaseCancellationWarningMessage</shortDescription>
+        <value>Case&apos;s Work Order is in Accepted Status. Case will remain In Progress until the mechanic is informed, then continue with cancellation process or mechanic closure process.</value>
+    </labels>
+    <labels>
+        <fullName>printNotesLWC_Toast_SuccessDelete_Title</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>printNotesLWC_Toast_SuccessDelete_Title</shortDescription>
+        <value>Success</value>
+    </labels>
+    <labels>
+        <fullName>printNotesLWC_Toast_SuccessDelete_Message</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>printNotesLWC_Toast_SuccessDelete_Message</shortDescription>
+        <value>Record has been deleted</value>
+    </labels>
+    <labels>
+        <fullName>printNotesLWC_Toast_ErrorDelete_Title</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>printNotesLWC_Toast_ErrorDelete_Title</shortDescription>
+        <value>Error while deleting record</value>
+    </labels>
+    <labels>
+        <fullName>printNotesLWC_NotesList_FieldTitle_CreatedDate</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>printNotesLWC_NotesList_FieldTitle_CreatedDate</shortDescription>
+        <value>Subject</value>
+    </labels>
+    <labels>
+        <fullName>printNotesLWC_NotesList_FieldValue_CreatedDate</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>printNotesLWC_NotesList_FieldValue_CreatedDate</shortDescription>
+        <value>Created Date:</value>
+    </labels>
+    <labels>
+        <fullName>printNotesLWC_NotesList_FieldTitle_Notes</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>printNotesLWC_NotesList_FieldTitle_Notes</shortDescription>
+        <value>Status</value>
+    </labels>
+    <labels>
+        <fullName>printNotesLWC_NotesList_FieldValue_Notes</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>printNotesLWC_NotesList_FieldValue_Notes</shortDescription>
+        <value>Notes:</value>
+    </labels>
+    <labels>
+        <fullName>printNotesLWC_NotesList_ActionLink_Edit</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>printNotesLWC_NotesList_ActionLink_Edit</shortDescription>
+        <value>Edit</value>
+    </labels>
+    <labels>
+        <fullName>printNotesLWC_NotesList_ActionLink_Delete</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>printNotesLWC_NotesList_ActionLink_Delete</shortDescription>
+        <value>Delete</value>
+    </labels>
+    <labels>
+        <fullName>printNotesLWC_NotesList_Header_Text</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>printNotesLWC_NotesList_Header_Text</shortDescription>
+        <value>Shutdown Notes</value>
+    </labels>
+    <labels>
+        <fullName>WorkOrder_Status_Unassigned</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>WorkOrder_Status_Unassigned</shortDescription>
+        <value>Unassigned</value>
+    </labels>
+    <labels>
+        <fullName>WorkOrder_Status_Assigned</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>WorkOrder_Status_Assigned</shortDescription>
+        <value>Assigned</value>
+    </labels>
+    <labels>
+        <fullName>WorkOrder_Status_Accepted</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>WorkOrder_Status_Accepted</shortDescription>
+        <value>Accepted</value>
+    </labels>
+    <labels>
+        <fullName>WorkOrder_Status_Rejected</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>WorkOrder_Status_Rejected</shortDescription>
+        <value>Rejected</value>
+    </labels>
+    <labels>
+        <fullName>WorkOrder_Status_CompletedShutdown</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>WorkOrder_Status_CompletedShutdown</shortDescription>
+        <value>Completed - Shutdown</value>
+    </labels>
+    <labels>
+        <fullName>WorkOrder_Status_Closed</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>WorkOrder_Status_Closed</shortDescription>
+        <value>Closed</value>
+    </labels>
+    <labels>
+        <fullName>WorkOrder_Status_CanceledByOtis</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>WorkOrder_Status_CanceledByOtis</shortDescription>
+        <value>Canceled by Otis</value>
+    </labels>
+    <labels>
+        <fullName>WorkOrder_Status_CanceledByCustomer</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>WorkOrder_Status_CanceledByCustomer</shortDescription>
+        <value>Canceled by Customer</value>
+    </labels>
+</CustomLabels>
