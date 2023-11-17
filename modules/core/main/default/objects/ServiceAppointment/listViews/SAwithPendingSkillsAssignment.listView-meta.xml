@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SAwithPendingSkillsAssignment</fullName>
+    <columns>Name</columns>
+    <columns>Status</columns>
+    <columns>LatestEndTime</columns>
+    <columns>Assigned_Mechanic_Name__c</columns>
+    <columns>ReasonSA__c</columns>
+    <filterScope>Mine</filterScope>
+    <filters>
+        <field>ReasonSA__c</field>
+        <operation>equals</operation>
+        <value>Additional Skills Needed</value>
+    </filters>
+    <label>SA With Pending Skills Assignment</label>
+</ListView>
