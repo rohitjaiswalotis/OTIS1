@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>ApprovalCommentsRequiredOnRejection</fullName>
-    <active>true</active>
-    <errorConditionFormula>ISPICKVAL(ApprovalStatus__c , &apos;Rejected&apos;) &amp;&amp;
-ApprovalComments__c = &apos;&apos;</errorConditionFormula>
-    <errorDisplayField>ApprovalComments__c</errorDisplayField>
-    <errorMessage>Upon Rejection, Approval Comments field is required.</errorMessage>
-</ValidationRule>

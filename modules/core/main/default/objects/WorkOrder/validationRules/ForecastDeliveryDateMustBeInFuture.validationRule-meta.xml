@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>ForecastDeliveryDateMustBeInFuture</fullName>
-    <active>true</active>
-    <errorConditionFormula>ForecastedPartsDelivery__c &lt;=  TODAY()</errorConditionFormula>
-    <errorDisplayField>ForecastedPartsDelivery__c</errorDisplayField>
-    <errorMessage>Forecasted Parts Delivery Must Be Only In The Future.</errorMessage>
-</ValidationRule>
