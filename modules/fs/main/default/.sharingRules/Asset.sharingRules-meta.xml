@@ -1,11 +1,153 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
     <sharingCriteriaRules>
-        <fullName>Salesforce_GBO_Sharing</fullName>
-        <accessLevel>Read</accessLevel>
-        <label>Salesforce GBO Sharing</label>
+        <fullName>Asset_FS_Admin</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Asset FS Admin</label>
         <sharedTo>
-            <group>Salesforce_GBO_Group</group>
+            <role>FieldServiceAdmin</role>
+        </sharedTo>
+        <criteriaItems>
+            <field>OperationalStatus__c</field>
+            <operation>equals</operation>
+            <value>In Service,Shutdown</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Baltimore_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Baltimore - GBO</label>
+        <sharedTo>
+            <group>GBOBaltimore</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>GBO_Name__c</field>
+            <operation>equals</operation>
+            <value>Baltimore - GBO</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>CSR</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>CSR</label>
+        <sharedTo>
+            <group>CSRCoreGroup</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>OperationalStatus__c</field>
+            <operation>equals</operation>
+            <value>In Service,Shutdown</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Charlotte_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Charlotte - GBO</label>
+        <sharedTo>
+            <group>GBOCharlotte</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>GBO_Name__c</field>
+            <operation>equals</operation>
+            <value>Charlotte - GBO</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Fairfield_NJ_GBO</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Fairfield, NJ - GBO</label>
+        <sharedTo>
+            <group>GBOFairfieldNJ</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>GBO_Name__c</field>
+            <operation>contains</operation>
+            <value>Fairfield</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>GBO_Name__c</field>
+            <operation>notEqual</operation>
+            <value></value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Mechanics</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Mechanics</label>
+        <sharedTo>
+            <group>Mechanics</group>
+        </sharedTo>
+        <booleanFilter>1 AND 2</booleanFilter>
+        <criteriaItems>
+            <field>OperationalStatus__c</field>
+            <operation>equals</operation>
+            <value>In Service</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>GBO_Name__c</field>
+            <operation>equals</operation>
+            <value>Salesforce GBO</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Mechanics_Sh</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Mechanics_Sh</label>
+        <sharedTo>
+            <group>Mechanics</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>OperationalStatus__c</field>
+            <operation>equals</operation>
+            <value>Shutdown</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>GBO_Name__c</field>
+            <operation>equals</operation>
+            <value>Salesforce GBO</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Northern_Virginia_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Northern Virginia - GBO</label>
+        <sharedTo>
+            <group>GBONorthernVirginia</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>GBO_Name__c</field>
+            <operation>equals</operation>
+            <value>Northern Virginia - GBO</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Remote_Engineer</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Remote Engineer</label>
+        <sharedTo>
+            <role>EliteEngineer</role>
+        </sharedTo>
+        <criteriaItems>
+            <field>OperationalStatus__c</field>
+            <operation>equals</operation>
+            <value>In Service,Shutdown</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>SF_GBO_Sharing</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>SF GBO Sharing</label>
+        <sharedTo>
+            <group>SF_GBO_Group</group>
         </sharedTo>
         <booleanFilter>1 AND 2</booleanFilter>
         <criteriaItems>
@@ -20,4 +162,1082 @@
         </criteriaItems>
         <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
+    <sharingOwnerRules>
+        <fullName>Albany_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Albany - GBO</label>
+        <sharedTo>
+            <group>GBOAlbany</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOAlbany</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Amtech_Superior_Alliance_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Amtech Superior Alliance - GBO</label>
+        <sharedTo>
+            <group>GBOAmtech</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOAmtech</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Anaheim_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Anaheim - GBO</label>
+        <sharedTo>
+            <group>GBOAnaheim</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOAnaheim</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Anchorage_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Anchorage - GBO</label>
+        <sharedTo>
+            <group>GBOAnchorage</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOAnchorage</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Atlanta_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Atlanta - GBO</label>
+        <sharedTo>
+            <group>GBOAtlanta</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOAtlanta</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Bahamas_418L_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Bahamas 418L - GBO</label>
+        <sharedTo>
+            <group>GBOBahamas418L</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOBahamas418L</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Bermuda_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Bermuda - GBO</label>
+        <sharedTo>
+            <group>GBOBermuda</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOBermuda</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Birmingham_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Birmingham - GBO</label>
+        <sharedTo>
+            <group>GBOBirmingham</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOBirmingham</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Boston_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Boston - GBO</label>
+        <sharedTo>
+            <group>GBOBoston</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOBoston</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Buffalo_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Buffalo - GBO</label>
+        <sharedTo>
+            <group>GBOBuffalo</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOBuffalo</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Calgary_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Calgary - GBO</label>
+        <sharedTo>
+            <group>GBOCalgary</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOCalgary</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Charleston_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Charleston - GBO</label>
+        <sharedTo>
+            <group>GBOCharleston</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOCharleston</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Chicago_ACM_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Chicago ACM - GBO</label>
+        <sharedTo>
+            <group>GBOChicagoACM</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOChicagoACM</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Chicago_Downtown</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Chicago Downtown</label>
+        <sharedTo>
+            <group>GBOChicagoDowntown</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOChicagoDowntown</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Chicago_New_Equipment_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Chicago New Equipment - GBO</label>
+        <sharedTo>
+            <group>GBOChicagoNewEquipment</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOChicagoNewEquipment</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Chicago_Suburban_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Chicago Suburban - GBO</label>
+        <sharedTo>
+            <group>GBOChicagoSuburban</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOChicagoSuburban</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Cincinnati_Location_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Cincinnati Location - GBO</label>
+        <sharedTo>
+            <group>GBOCincinnati</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOCincinnati</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Cleveland_Location_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Cleveland Location -GBO</label>
+        <sharedTo>
+            <group>GBOCleveland</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOCleveland</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Columbia_SC_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Columbia, SC - GBO</label>
+        <sharedTo>
+            <group>GBOColumbiaSC</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOColumbiaSC</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Columbus_Location_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Columbus Location - GBO</label>
+        <sharedTo>
+            <group>GBOColumbus</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOColumbus</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>DC_New_Equipment_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>DC New Equipment - GBO</label>
+        <sharedTo>
+            <group>GBODCNewEquipment</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBODCNewEquipment</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Dallas_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Dallas GBO</label>
+        <sharedTo>
+            <group>GBODallas</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBODallas</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Delta_Beckwith_Boston_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Delta Beckwith Boston GBO</label>
+        <sharedTo>
+            <group>GBODeltaBeckwithBoston</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBODeltaBeckwithBoston</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Denver_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Denver - GBO</label>
+        <sharedTo>
+            <group>GBODenver</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBODenver</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Des_Moines_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Des Moines - GBO</label>
+        <sharedTo>
+            <group>GBODesMoines</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBODesMoines</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Detroit_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Detroit - GBO</label>
+        <sharedTo>
+            <group>GBODetroit</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBODetroit</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>East_Tennessee_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>East Tennessee - GBO</label>
+        <sharedTo>
+            <group>GBOEastTennessee</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOEastTennessee</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Fairfield_NJ_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Fairfield, NJ - GBO</label>
+        <sharedTo>
+            <group>GBOFairfieldNJ</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOFairfieldNJ</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Fargo_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Fargo - GBO</label>
+        <sharedTo>
+            <group>GBOFargo</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOFargo</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Ft_Worth_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Ft. Worth - GBO</label>
+        <sharedTo>
+            <group>GBOFtWorth</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOFtWorth</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>GBO_Edmonton</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>GBO Edmonton</label>
+        <sharedTo>
+            <group>GBOEdmonton</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOEdmonton</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>GBO_Grand_Rapids</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>GBO Grand Rapids</label>
+        <sharedTo>
+            <group>GBOGrandRapids</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOGrandRapids</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>GBO_Little_Rock</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>GBO Little Rock</label>
+        <sharedTo>
+            <group>GBOLittleRock</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOLittleRock</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>GBO_San_Jose</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>GBO San Jose</label>
+        <sharedTo>
+            <group>GBOSanJose</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOSanJose</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Green_Bay_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Green Bay - GBO</label>
+        <sharedTo>
+            <group>GBOGreenBay</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOGreenBay</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Guam_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Guam - GBO</label>
+        <sharedTo>
+            <group>GBOGuam</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOGuam</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Halifax_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Halifax - GBO</label>
+        <sharedTo>
+            <group>GBOHalifax</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOHalifax</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Hamilton_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Hamilton - GBO</label>
+        <sharedTo>
+            <group>GBOHamilton</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOHamilton</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Harrisburg_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Harrisburg - GBO</label>
+        <sharedTo>
+            <group>GBOHarrisburg</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOHarrisburg</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Hartford_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Hartford - GBO</label>
+        <sharedTo>
+            <group>GBOHartford</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOHartford</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Honolulu_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Honolulu - GBO</label>
+        <sharedTo>
+            <group>GBOHonolulu</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOHonolulu</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Houston_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Houston - GBO</label>
+        <sharedTo>
+            <group>GBOHouston</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOHouston</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Indianapolis_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Indianapolis - GBO</label>
+        <sharedTo>
+            <group>GBOIndianapolis</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOIndianapolis</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Jacksonville_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Jacksonville - GBO</label>
+        <sharedTo>
+            <group>GBOJacksonville</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOJacksonville</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Kansas_City_Wichita_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Kansas City/Wichita - GBO</label>
+        <sharedTo>
+            <group>GBOKansasCity_Wichita</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOKansasCity_Wichita</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>LA_East_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>LA East - GBO</label>
+        <sharedTo>
+            <group>GBOLAEast</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOLAEast</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>LA_West_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>LA West - GBO</label>
+        <sharedTo>
+            <group>GBOLAwest</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOLAwest</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Las_Vegas_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Las Vegas - GBO</label>
+        <sharedTo>
+            <group>GBOLasVegas</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOLasVegas</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Los_Angeles_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Los Angeles - GBO</label>
+        <sharedTo>
+            <group>GBOLosAngeles</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOLosAngeles</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Los_Angeles_North_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Los Angeles North - GBO</label>
+        <sharedTo>
+            <group>GBOLosAngelesNorth</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOLosAngelesNorth</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Manhattan_Acquisitions_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Manhattan Acquisitions - GBO</label>
+        <sharedTo>
+            <group>GBOManhattanAcquisitions</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOManhattanAcquisitions</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Manhattan_New_Equipment_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Manhattan New Equipment - GBO</label>
+        <sharedTo>
+            <group>GBOManhattanNewEquipment</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOManhattanNewEquipment</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Manhattan_North_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Manhattan North - GBO</label>
+        <sharedTo>
+            <group>GBOManhattanNorth</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOManhattanNorth</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Manhattan_South_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Manhattan South - GBO</label>
+        <sharedTo>
+            <group>GBOManhattanSouth</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOManhattanSouth</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Memphis_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Memphis - GBO</label>
+        <sharedTo>
+            <group>GBOMemphis</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOMemphis</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Milwaukee_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Milwaukee - GBO</label>
+        <sharedTo>
+            <group>GBOMilwaukee</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOMilwaukee</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Minneapolis_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Minneapolis - GBO</label>
+        <sharedTo>
+            <group>GBOMinneapolis</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOMinneapolis</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Mississauga_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Mississauga - GBO</label>
+        <sharedTo>
+            <group>GBOMississauga</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOMississauga</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Montreal_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Montreal - GBO</label>
+        <sharedTo>
+            <group>GBOMontreal</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOMontreal</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>NAES_Houston_Amtech_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>NAES Houston Amtech - GBO</label>
+        <sharedTo>
+            <group>GBONAESHoustonAmtech</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBONAESHoustonAmtech</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>New_Orleans_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>New Orleans - GBO</label>
+        <sharedTo>
+            <group>GBONewOrleans</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBONewOrleans</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Norfolk_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Norfolk - GBO</label>
+        <sharedTo>
+            <group>GBONorfolk</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBONorfolk</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Oakland_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Oakland - GBO</label>
+        <sharedTo>
+            <group>GBOOakland</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOOakland</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Oklahoma_City_Tulsa_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Oklahoma City/Tulsa GBO</label>
+        <sharedTo>
+            <group>GBOOklahoma</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOOklahoma</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Orlando_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Orlando - GBO</label>
+        <sharedTo>
+            <group>GBOOrlando</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOOrlando</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Ottawa_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Ottawa - GBO</label>
+        <sharedTo>
+            <group>GBOOttawa</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOOttawa</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Pensacola_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Pensacola - GBO</label>
+        <sharedTo>
+            <group>GBOPensacola</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOPensacola</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Philadelphia_Downtown_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Philadelphia Downtown-GBO</label>
+        <sharedTo>
+            <group>GBOPhiladelphiaDowntown</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOPhiladelphiaDowntown</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Philadelphia_Suburbs_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Philadelphia Suburbs-GBO</label>
+        <sharedTo>
+            <group>GBOPhiladelphiaSuburbs</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOPhiladelphiaSuburbs</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Phoenix_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Phoenix - GBO</label>
+        <sharedTo>
+            <group>GBOPhoenix</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOPhoenix</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Pittsburgh_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Pittsburgh - GBO</label>
+        <sharedTo>
+            <group>GBOPittsburgh</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOPittsburgh</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Plainview_NY_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Plainview, NY - GBO</label>
+        <sharedTo>
+            <group>GBOPlainviewNY</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOPlainviewNY</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Portland_East_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Portland East - GBO</label>
+        <sharedTo>
+            <group>GBOPortlandEast</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOPortlandEast</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Portland_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Portland - GBO</label>
+        <sharedTo>
+            <group>GBOPortland</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOPortland</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Providence_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Providence - GBO</label>
+        <sharedTo>
+            <group>GBOProvidence</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOProvidence</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Puerto_Rico_419L_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Puerto Rico 419L - GBO</label>
+        <sharedTo>
+            <group>GBOPuertoRico419L</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOPuertoRico419L</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Quebec_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Quebec - GBO</label>
+        <sharedTo>
+            <group>GBOQuebec</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOQuebec</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Raleigh_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Raleigh - GBO</label>
+        <sharedTo>
+            <group>GBORaleigh</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBORaleigh</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Reno_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Reno - GBO</label>
+        <sharedTo>
+            <group>GBOReno</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOReno</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Sacramento_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Sacramento - GBO</label>
+        <sharedTo>
+            <group>GBOSacramento</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOSacramento</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Salt_Lake_City_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Salt Lake City - GBO</label>
+        <sharedTo>
+            <group>GBOSaltLakeCity</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOSaltLakeCity</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>San_Antonio_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>San Antonio - GBO</label>
+        <sharedTo>
+            <group>GBOSanAntonio</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOSanAntonio</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>San_Diego_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>San Diego - GBO</label>
+        <sharedTo>
+            <group>GBOSanDiego</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOSanDiego</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>San_Francisco_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>San Francisco - GBO</label>
+        <sharedTo>
+            <group>GBOSanFrancisco</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOSanFrancisco</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Seattle_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Seattle - GBO</label>
+        <sharedTo>
+            <group>GBOSeattle</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOSeattle</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>South_Florida_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>South Florida GBO</label>
+        <sharedTo>
+            <group>GBOSouthFlorida</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOSouthFlorida</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Spokane_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Spokane - GBO</label>
+        <sharedTo>
+            <group>GBOSpokane</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOSpokane</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Springfield_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Springfield - GBO</label>
+        <sharedTo>
+            <group>GBOSpringfield</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOSpringfield</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>St_Louis_Location_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>St Louis Location - GBO</label>
+        <sharedTo>
+            <group>GBOStLouisLocation</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOStLouisLocation</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Stamford_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Stamford - GBO</label>
+        <sharedTo>
+            <group>GBOStamford</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOStamford</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Syracuse_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Syracuse - GBO</label>
+        <sharedTo>
+            <group>GBOSyracuse</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOSyracuse</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>VA_WV_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>VA / WV - GBO</label>
+        <sharedTo>
+            <group>GBOVA_WV</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOVA_WV</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Vancouver_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Vancouver - GBO</label>
+        <sharedTo>
+            <group>GBOVancouver</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOVancouver</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Washington_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Washington - GBO</label>
+        <sharedTo>
+            <group>GBOWashington</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOWashington</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>West_Florida</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>West Florida</label>
+        <sharedTo>
+            <group>GBOWestFlorida</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOWestFlorida</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Willis_Tower_CHW_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Willis Tower - CHW-GBO</label>
+        <sharedTo>
+            <group>GBOWillisTowerCHW</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOWillisTowerCHW</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Winnipeg_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Winnipeg - GBO</label>
+        <sharedTo>
+            <group>GBOWinnipeg</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOWinnipeg</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Yonkers_GBO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Yonkers - GBO</label>
+        <sharedTo>
+            <group>GBOYonkers</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>GBOYonkers</group>
+        </sharedFrom>
+    </sharingOwnerRules>
 </SharingRules>
