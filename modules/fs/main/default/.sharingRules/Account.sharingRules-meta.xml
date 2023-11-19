@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>CSR_Core_Group_Edit_Access</fullName>
+        <accessLevel>Edit</accessLevel>
+        <accountSettings>
+            <caseAccessLevel>Edit</caseAccessLevel>
+            <contactAccessLevel>Edit</contactAccessLevel>
+            <opportunityAccessLevel>Read</opportunityAccessLevel>
+        </accountSettings>
+        <description>Users in role of CSR Beginner, CSR Expert, CSR Supervisor and CSR Admin gets edit access to all the &apos;Active&apos; account records.
+
+For &apos;InActive&apos; Accounts, all the CSR will continue to have ReadOnly access to all the account through their profile setting as &apos;View All&apos; on Account Object</description>
+        <label>CSR Core Group Edit Access</label>
+        <sharedTo>
+            <group>CSRCoreGroup</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Active,Inactive</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+</SharingRules>
