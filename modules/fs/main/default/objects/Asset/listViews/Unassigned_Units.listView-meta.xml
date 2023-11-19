@@ -17,7 +17,6 @@
     </filters>
     <label>Unassigned Units</label>
     <sharedTo>
-        <role>CSRAdmin</role>
-        <role>CSRSupervisor</role>
+        <group>Field_Service_Admin_group</group>
     </sharedTo>
 </ListView>
