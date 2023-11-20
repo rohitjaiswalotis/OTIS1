@@ -5,6 +5,9 @@
 	<layoutAssignments>
         <layout>Asset-Asset Layout</layout>
     </layoutAssignments>
+    <layoutAssignments>
+        <layout>ServiceAppointment-FS OTIS Service Appointment Layout</layout>
+    </layoutAssignments>
 	<tabVisibilities>
         <tab>Daily_hurdle</tab>
         <visibility>DefaultOn</visibility>

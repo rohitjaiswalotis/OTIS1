@@ -47,11 +47,11 @@ if [[ -d "${LOCAL_CURRENT_STEP_DIR}/profiles" ]]; then
 	# remove application visibilities
 	xmlstarlet ed --inplace --delete "//*[local-name()='applicationVisibilities']" ${LOCAL_CURRENT_STEP_DIR}/profiles/*.xml
 	
-	# remove layout assignments
-	xmlstarlet ed --inplace --delete "//*[local-name()='layoutAssignments']" ${LOCAL_CURRENT_STEP_DIR}/profiles/*.xml
+	# remove all layout assignments
+	#xmlstarlet ed --inplace --delete "//*[local-name()='layoutAssignments']" ${LOCAL_CURRENT_STEP_DIR}/profiles/*.xml
 	
-	# example re how to remove all layouts assignments still excluding some by name
-	# xmlstarlet ed --inplace --delete "//*[local-name()='layoutAssignments'][ *[local-name()='layout' and not(text()='Lead-FS Lead Layout' or text()='ReturnOrder-FS Return Order Layout') ] ]" ${LOCAL_CURRENT_STEP_DIR}/profiles/*.xml
+	# remove all layouts assignments still excluding some by name
+	xmlstarlet ed --inplace --delete "//*[local-name()='layoutAssignments'][ *[local-name()='layout' and not(text()='ServiceAppointment-FS OTIS Service Appointment Layout') ] ]" ${LOCAL_CURRENT_STEP_DIR}/profiles/*.xml
 	
 fi
 
