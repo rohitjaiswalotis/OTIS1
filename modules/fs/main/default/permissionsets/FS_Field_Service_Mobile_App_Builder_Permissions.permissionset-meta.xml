@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>Permission Set used to provide the configuration capabilities to tailor the SFS Mobile app’s tab bar</description>
+    <description>Permission Set used to provide the configuration capabilities to tailor the SF Mobile app's tab bar</description>
     <hasActivationRequired>false</hasActivationRequired>
-    <label>Field Service Mobile App Builder Permissions</label>
+    <label>FS Field Service Mobile App Builder Permissions</label>
     <userPermissions>
         <enabled>true</enabled>
         <name>AccessContentBuilder</name>
