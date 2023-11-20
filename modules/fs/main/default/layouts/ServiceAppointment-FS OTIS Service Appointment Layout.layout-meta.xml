@@ -26,10 +26,12 @@
                 <behavior>Edit</behavior>
                 <field>Description</field>
             </layoutItems>
+			<!--
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Schedule_over_lower_priority_appointment__c</field>
             </layoutItems>
+			-->
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Use_Async_Logic__c</field>
