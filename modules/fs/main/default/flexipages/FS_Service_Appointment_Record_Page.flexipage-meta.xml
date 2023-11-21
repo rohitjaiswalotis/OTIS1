@@ -199,7 +199,7 @@
             </componentInstance>
         </itemInstances>
         <mode>Replace</mode>
-        <name>sidebar</name>
+        <name>sidebar</name> 
         <type>Region</type>
     </flexiPageRegions>
     <masterLabel>Service Appointment Record Page</masterLabel>
