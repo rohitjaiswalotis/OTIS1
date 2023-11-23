@@ -12,8 +12,8 @@
     <columns>FieldSupervisor__c</columns>
     <columns>RouteNumber__c</columns>
     <columns>Unit_ShutDown_DateTime_Rollup__c</columns>
-    <columns>Shut_Down_Duration__c</columns>
-    <columns>Shutdown_Reported_By__c</columns>
+    <columns>FS_Shut_Down_Duration__c</columns>
+    <columns>FS_Shutdown_Reported_By__c</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>OperationalStatus__c</field>
