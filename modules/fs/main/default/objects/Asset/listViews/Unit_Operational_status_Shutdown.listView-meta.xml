@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Unit_Operational_status_Shutdown</fullName>
+    <columns>ASSET.NAME</columns>
+    <columns>CustomerDesignation__c</columns>
+    <columns>Location</columns>
+    <columns>BuildingAddress__c</columns>
+    <columns>ContractNumber__c</columns>
+    <columns>OperationalStatus__c</columns>
+    <columns>OperationalStatusReason__c</columns>
+    <columns>RouteMechanic__c</columns>
+    <columns>FieldSupervisor__c</columns>
+    <columns>RouteNumber__c</columns>
+    <columns>Unit_ShutDown_DateTime_Rollup__c</columns>
+    <columns>FS_Shut_Down_Duration__c</columns>
+    <columns>FS_Shutdown_Reported_By__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>OperationalStatus__c</field>
+        <operation>equals</operation>
+        <value>Shutdown</value>
+    </filters>
+    <label>Unit Operational status - Shutdown</label>
+</ListView>
