@@ -1,4 +1,4 @@
-Id mechanicProfileId = [SELECT Id FROM Profile WHERE Name = 'Mechanic User' LIMIT 1].Id;
+Id mechanicProfileId = [SELECT Id FROM Profile WHERE Name = 'Field Service Mechanic' LIMIT 1].Id;
 Id supervisorProfileId = [SELECT Id FROM Profile WHERE Name = 'Field Service Supervisor' LIMIT 1].Id;
 Id mechanicRoleId = [SELECT Id FROM UserRole WHERE Name = 'Mechanic' LIMIT 1].Id;
 Id supervisorRole = [SELECT Id FROM UserRole WHERE Name = 'Route Supervisor' LIMIT 1].Id;
