@@ -5,13 +5,13 @@ trigger: none
 
 pr: none
 
-schedules:
-- cron: '0 5 * * *'
-  displayName: Nightly Field Service Package Version Bulk Push to EMEA
-  branches:
-    include:
-    - dev-emea
-  always: false
+#schedules:
+#- cron: '0 5 * * *'
+#  displayName: Nightly Field Service Package Version Bulk Push to EMEA
+#  branches:
+#    include:
+#    - dev-emea
+#  always: false
 
 
 parameters:
