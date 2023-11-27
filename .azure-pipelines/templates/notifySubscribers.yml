@@ -1,0 +1,123 @@
+
+parameters:
+
+- name: subscribers
+  displayName: JSON-array with subscribers, i.e. pipelines to be triggered
+  type: string
+
+- name: enableDebugMode
+  displayName: Debug Mode?
+  type: boolean
+  default: false
+
+
+steps:
+
+- bash: |
+        
+        # enable exit on error
+        set -e
+        
+        
+        # enable "debug" mode
+        if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
+          set -x
+        fi
+        
+        SUBSCRIBERS_POOL='${{ parameters.subscribers }}';
+        
+        if [[ ! ${SUBSCRIBERS_POOL:+1} ]] ; then
+            echo "WARNING: Early Exit - Empty subscribers pool!";
+            exit 0;
+        fi
+        
+        
+        # get number of subscribers (checking if json is valid along the way)
+        set +e
+        SUBSCRIBERS_POOL_LENGTH=$(echo $SUBSCRIBERS_POOL | jq 'length'); SUBSCRIBERS_POOL_JSON_PARSING_CODE=$?;
+        set -e
+        
+        if [[ ${SUBSCRIBERS_POOL_JSON_PARSING_CODE} -ne 0 ]]; then
+            echo "WARNING: Early Exit - Invalid format of subscribers pool, it should be json array!";
+            exit 1;
+        fi
+        
+        
+        echo "Number of subscribers in pool: $SUBSCRIBERS_POOL_LENGTH"
+        
+        if [[ ${SUBSCRIBERS_POOL_LENGTH} -eq 0 ]]; then
+            echo "WARNIGN: Early Exit - No Subscribers in pool!"
+        fi
+        
+        SUBSCRIBER_CURRENT_INDEX=0;
+        
+        
+        while [[ $SUBSCRIBER_CURRENT_INDEX -lt $SUBSCRIBERS_POOL_LENGTH ]]; do
+            
+            SUBSCRIBER_TO_NOTIFY=$(echo $SUBSCRIBERS_POOL | jq -r ".[$((${SUBSCRIBER_CURRENT_INDEX}))]")
+            
+            # increment subscriber index for next iteration
+            SUBSCRIBER_CURRENT_INDEX=$(( $SUBSCRIBER_CURRENT_INDEX + 1 ))
+            
+            # parse subscriber pipeline name
+            SUBSCRIBER_PIPELINE_NAME=$(echo $SUBSCRIBER_TO_NOTIFY | jq -r '.pipeline // empty')
+            
+            echo
+            echo "-----> Processing subscriber with pipeline: $SUBSCRIBER_PIPELINE_NAME"
+            
+            # check if subscriber is active
+            SUBSCRIBER_IS_ACTIVE="$(echo $SUBSCRIBER_TO_NOTIFY | jq -r '. | if has("active") then .active else true end')";
+            
+            if [[ ! "${SUBSCRIBER_IS_ACTIVE,,}" =~ ^true$ ]] ; then
+                echo "Skipping inactive subscriber with pipeline '$SUBSCRIBER_PIPELINE_NAME'!"
+                continue;
+            fi
+            
+            # split pipeline name to separate folder
+            subscriberPipelineFolder="$(echo $SUBSCRIBER_PIPELINE_NAME | cut -d "/" -f1)";
+            subscriberPipelineName="$(echo $SUBSCRIBER_PIPELINE_NAME | cut -d "/" -f2)";
+            
+            if [[ "${subscriberPipelineName,,}" == "${subscriberPipelineFolder,,}" ]]; then
+                SUBSCRIBER_PIPELINE_FOLDER_PATH=""
+            else
+                SUBSCRIBER_PIPELINE_FOLDER_PATH="--folder-path=\"$subscriberPipelineFolder\""
+            fi
+            
+            SUBSCRIBER_PIPELINE_BRANCH=$(echo $SUBSCRIBER_TO_NOTIFY | jq -r '.branch // empty')
+            
+            SUBSCRIBER_PIPELINE_PARAMETERS=$(echo $SUBSCRIBER_TO_NOTIFY | jq -r '.parameters // empty')
+            
+            if [[ ${SUBSCRIBER_PIPELINE_PARAMETERS:+1} ]]; then
+                SUBSCRIBER_PIPELINE_PARAMETERS_ARG="--parameters $SUBSCRIBER_PIPELINE_PARAMETERS"
+            else
+                SUBSCRIBER_PIPELINE_PARAMETERS_ARG=""
+            fi
+            
+            
+            # trigger subscriber pipeline (suppressing errors)
+            set +e
+            SUBSCRIBER_PIPELINE_TRIGGER_RESPONSE=$(eval "az pipelines run --branch=\"$SUBSCRIBER_PIPELINE_BRANCH\" --name=\"$subscriberPipelineName\" $SUBSCRIBER_PIPELINE_FOLDER_PATH $SUBSCRIBER_PIPELINE_PARAMETERS_ARG"); SUBSCRIBER_PIPELINE_TRIGGER_CODE=$?;
+            set -e
+            echo $SUBSCRIBER_PIPELINE_TRIGGER_RESPONSE
+            
+            # grab pipeline run id from response
+            SUBSCRIBER_PIPELINE_RUN_ID=$(echo $SUBSCRIBER_PIPELINE_TRIGGER_RESPONSE | jq -r ".id");
+            echo "Subscriber Pipeline Run Id: $SUBSCRIBER_PIPELINE_RUN_ID"
+            
+            # generate web link to triggered subscriber pipeline from pieces
+            if [[ ${SUBSCRIBER_PIPELINE_RUN_ID:+1} && $SUBSCRIBER_PIPELINE_TRIGGER_CODE -eq 0 ]]; then
+                echo "Subscriber Notify Pipeline Web Url ($SUBSCRIBER_PIPELINE_NAME): $(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$SUBSCRIBER_PIPELINE_RUN_ID"
+            else
+                echo "WARNING: Cannot trigger pipeline '$SUBSCRIBER_PIPELINE_NAME' to notify subscriber."
+            fi
+            
+        done
+        
+        
+  displayName: 'Trigger Subscriber Pipelines to Notify'
+  continueOnError: true
+  timeoutInMinutes: 180
+  env:
+    AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+
+
