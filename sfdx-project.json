@@ -52,7 +52,8 @@
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "59.0",
   "customScope": {
-    "name": "FS",
+    "name": "",
+    "name_commented": "FS",
     "exclusions": {
       "classes": [],
       "objects": [],
