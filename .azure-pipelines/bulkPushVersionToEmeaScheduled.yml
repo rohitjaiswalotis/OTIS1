@@ -19,7 +19,7 @@ parameters:
 - name: versionToPushOrgAuthFiles
   displayName: Auth Files for Orgs to upgrade (comma-separated)
   type: string
-  default: "default"
+  default: "authFile_devEMEA,authFile_emeaPool1,authFile_emeaPool2,authFile_emeaPool3"
 
 - name: versionToPushExpression
   displayName: Package version expression to upgrade to
