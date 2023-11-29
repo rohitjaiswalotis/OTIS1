@@ -19,7 +19,7 @@ parameters:
 - name: versionToPushOrgAuthFiles
   displayName: Auth Files for Orgs to upgrade (comma-separated)
   type: string
-  default: "authFile_clientNAA,authFile_devNAA,authFile_naaPool1,authFile_naaPool2,authFile_naaPool3"
+  default: "default"
 
 - name: versionToPushExpression
   displayName: Package version expression to upgrade to
@@ -52,7 +52,10 @@ stages:
 - template: templates/bulkPushVersion.yml
   parameters:
     localizationDomain: "NAA"
-    versionToPushOrgAuthFiles: ${{ parameters.versionToPushOrgAuthFiles }}
+    ${{ if eq(parameters.versionToPushOrgAuthFiles, 'default') }}:
+      versionToPushOrgAuthFiles: $(push_FsNaa_toNaa)
+    ${{ else }}:
+      versionToPushOrgAuthFiles: ${{ parameters.versionToPushOrgAuthFiles }}
     versionToPushExpression: ${{ parameters.versionToPushExpression }}
     versionWhereCondition: ${{ parameters.versionWhereCondition }}
     shouldRunTestsBefore: ${{ parameters.shouldRunTestsBefore }}
