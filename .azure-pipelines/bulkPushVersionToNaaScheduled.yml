@@ -19,7 +19,7 @@ parameters:
 - name: versionToPushOrgAuthFiles
   displayName: Auth Files for Orgs to upgrade (comma-separated)
   type: string
-  default: "default"
+  default: "authFile_devNAA,authFile_naaPool1,authFile_naaPool2,authFile_naaPool3"
 
 - name: versionToPushExpression
   displayName: Package version expression to upgrade to
