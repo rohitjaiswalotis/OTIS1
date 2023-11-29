@@ -14,4 +14,9 @@
         <field>Asset.Shut_Down_Duration__c</field>
         <readable>true</readable>
    </fieldPermissions>
+   <fieldPermissions>
+        <editable>true</editable>
+        <field>AssetDowntimePeriod.Projected_Restart_Reason__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
 </Profile>
