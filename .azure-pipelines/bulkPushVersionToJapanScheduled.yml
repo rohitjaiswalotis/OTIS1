@@ -19,7 +19,7 @@ parameters:
 - name: versionToPushOrgAuthFiles
   displayName: Auth Files for Orgs to upgrade (comma-separated)
   type: string
-  default: "default"
+  default: "authFile_devJpn,authFile_jpnPool1,authFile_jpnPool2,authFile_jpnPool3"
 
 - name: versionToPushExpression
   displayName: Package version expression to upgrade to
