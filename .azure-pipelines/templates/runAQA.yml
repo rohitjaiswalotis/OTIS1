@@ -1,0 +1,35 @@
+
+parameters:
+
+- name: targetOrgAuthVariableGroup
+  displayName: Target Org Auth Variable Group
+  type: string
+
+
+steps:
+
+- bash: |
+        
+        # enable exit on error
+        set -e
+        
+        # trigger aqa pipeline
+        AZ_PIPELINE_RUN_RESPONSE=$(az pipelines run --branch="$(aqaTestsPipelineBranch)" --name="$(aqaTestsPipelineName)" --parameters="targetOrgAuthVariableGroup=${{parameters.targetOrgAuthVariableGroup}}");
+        echo $AZ_PIPELINE_RUN_RESPONSE
+        
+        # grab pipeline run id from response
+        AZ_PIPELINE_RUN_ID=$(echo $AZ_PIPELINE_RUN_RESPONSE | jq -r ".id");
+        echo "AQA Pipeline Run Id: $AZ_PIPELINE_RUN_ID"
+        
+        # show pipeline run details by id
+        az pipelines runs show --id="$AZ_PIPELINE_RUN_ID"
+        
+        # generate web link to triggered aqa pipeline from pieces
+        echo "AQA Pipeline Web Url: $(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$AZ_PIPELINE_RUN_ID"
+        
+  displayName: 'Trigger AQA Tests Execution against Target Org'
+  timeoutInMinutes: 180
+  env:
+    AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+
+

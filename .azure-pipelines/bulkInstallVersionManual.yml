@@ -1,0 +1,205 @@
+name: 'Install Field Service Package Version into Set of Orgs'
+
+
+trigger: none
+    
+pr: none
+
+
+variables:
+- template: templates/variables.yml
+
+
+parameters:
+
+- name: versionId
+  displayName: Package Version Id
+  type: string
+  default: none
+
+- name: localizationDomain
+  displayName: Localization Domain (e.g. NAA, Japan, EMEA)
+  type: string
+  default: Global
+
+- name: targetOrgAuthFileNames
+  displayName: Target Org Auth File Names (comma-separated)
+  type: string
+
+- name: shouldInstallThirdParties
+  displayName: Install Third Parties?
+  type: boolean
+  default: false
+  
+- name: fslPackageVersionId
+  displayName: FSL Package Version Id
+  type: string
+  default: "default"
+
+- name: installationMode
+  displayName: Installation Mode
+  type: string
+  default: auto
+  values:
+  - auto
+  - install
+  - upgrade
+
+- name: compileScope
+  displayName: Package Apex Compilation Scope
+  type: string
+  default: all
+  values:
+  - all
+  - package
+
+- name: upgradeType
+  displayName: Package Upgrade Type
+  type: string
+  default: Mixed
+  values:
+  - Mixed
+  - DeprecateOnly
+  - Delete
+
+- name: actionPhase
+  displayName: Action Phase
+  type: string
+  default: both
+  values:
+  - both
+  - before
+  - after
+  - none
+
+- name: shouldDataBeLoaded
+  displayName: Load Data?
+  type: boolean
+  default: false
+
+- name: shouldRunTestsBefore
+  displayName: Run Tests Before?
+  type: boolean
+  default: false
+
+- name: shouldRunTestsAfter
+  displayName: Run Tests After?
+  type: boolean
+  default: false
+
+- name: concurrentTestsExecution
+  displayName: Parallel Tests Mode?
+  type: boolean
+  default: false
+
+- name: shouldGenerateTestsReport
+  displayName: Generate Tests Report?
+  type: boolean
+  default: false
+
+- name: enableDebugMode
+  displayName: Debug Mode?
+  type: boolean
+  default: false
+
+
+stages:
+    
+    - stage: Install
+      
+      displayName: Install
+      dependsOn: []
+      
+      jobs:
+          
+          - job: InstallVersion
+            
+            displayName: 'Install Package Version into Set of Orgs'                         
+            
+            timeoutInMinutes: 0
+            
+            pool:
+                vmImage: 'ubuntu-latest'
+
+            steps:
+            
+            - template: templates/init.yml
+            
+            
+            - ${{ each targetOrgAuthFileName in split(parameters.targetOrgAuthFileNames, ',')}}:
+              
+              - task: DownloadSEcureFile@1
+                inputs:
+                    secureFile: ${{ targetOrgAuthFileName }}
+                displayName: 'Get Target Org auth file' 
+                
+                
+              - ${{ if eq(parameters.shouldRunTestsBefore, true) }}:
+                
+                - template: templates/runTests.yml
+                  parameters:
+                    targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
+                    concurrentExecution: ${{ parameters.concurrentTestsExecution }}
+                    continueOnError: true
+                    enableDebugMode: ${{ parameters.enableDebugMode }}
+                    
+                
+                - ${{ if eq(parameters.shouldGenerateTestsReport, true) }}:
+                  
+                  - template: templates/generateTestsReport.yml
+                    parameters:
+                      targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
+                      reportFileName: TestsReport_${{ targetOrgAuthFileName }}_$(Build.BuildId)_before.xlsx
+                      enableDebugMode: ${{ parameters.enableDebugMode }}
+                
+              
+              - ${{ if eq(parameters.shouldInstallThirdParties, true) }}:
+                
+                - template: templates/installThirdParty.yml
+                  parameters:
+                    targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
+                    versionId: ${{ parameters.fslPackageVersionId }}
+                    packageAlias: FSL
+                    continueOnError: true
+                    enableDebugMode: ${{ parameters.enableDebugMode }}
+                  
+                
+              - template: templates/installVersion.yml
+                parameters:
+                  versionId: ${{ parameters.versionId }}
+                  localizationDomain: ${{ parameters.localizationDomain }}
+                  targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
+                  installationMode: ${{ parameters.installationMode }}
+                  compileScope: ${{ parameters.compileScope }}
+                  upgradeType: ${{ parameters.upgradeType }}
+                  actionPhase: ${{ parameters.actionPhase }}
+                  enableDebugMode: ${{ parameters.enableDebugMode }}
+                  
+                
+              - ${{ if eq(parameters.shouldDataBeLoaded, true) }}:
+                
+                - template: templates/loadData.yml
+                  parameters:
+                    targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
+                    enableDebugMode: ${{ parameters.enableDebugMode }}
+                    
+                
+              - ${{ if eq(parameters.shouldRunTestsAfter, true) }}:
+                
+                - template: templates/runTests.yml
+                  parameters:
+                    targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
+                    concurrentExecution: ${{ parameters.concurrentTestsExecution }}
+                    continueOnError: true
+                    enableDebugMode: ${{ parameters.enableDebugMode }}
+                    
+                
+                - ${{ if eq(parameters.shouldGenerateTestsReport, true) }}:
+                  
+                  - template: templates/generateTestsReport.yml
+                    parameters:
+                      targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
+                      reportFileName: TestsReport_${{ targetOrgAuthFileName }}_$(Build.BuildId)_after.xlsx
+                      enableDebugMode: ${{ parameters.enableDebugMode }}
+                
+

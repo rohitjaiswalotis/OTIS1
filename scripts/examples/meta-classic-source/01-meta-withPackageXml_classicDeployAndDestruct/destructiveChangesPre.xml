@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+
+	<types>
+        <members>InsightCaptureProductIsMandatory</members>
+        <name>CustomPermission</name>
+    </types>
+	<types>
+		<members>GenerateDocumentPlaceholder</members>
+		<name>ApexPage</name>
+	</types>
+    <types>
+        <members>ConcurCallExpJobsManagementController</members>
+        <members>ConcurCallExpJobsManagementTest</members>
+        <name>ApexClass</name>
+    </types>
+    <version>58.0</version>
+    
+</Package>

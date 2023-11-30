@@ -1,0 +1,137 @@
+{
+  "allOrNone" : true,
+  "objects": [
+    {
+      "query": "SELECT AfterDelete__c, AfterInsert__c, AfterUndelete__c,AfterUpdate__c, BeforeDelete__c, BeforeInsert__c, BeforeUpdate__c, IsActive__c, ObjectAPIName__c, PreventRecursion__c FROM CS_TriggerSettings__c",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT Area__c, BranchCode__c, BranchPhoneNumber__c, BranchType__c, Brand__c, City__c, Country__c, CountryOffice__c, DateTimeLastUpdated__c, DummyBranchBuilding__c, ExitEscalationProcess__c, GBO__c, GBO_Name__c, Name, ParentBranch__c, PermanentSpecialInstructions__c, PostalCode__c, Region__c, RosterInUse__c, S1EscalationTimer__c, S2EscalationTimer__c, S3EscalationTimer__c, S4EscalationTimer__c, SpecialInstructionsExpiration__c, State__c, Status__c, Street__c, SubRegion__c, TemporarySpecialInstructions__c, TimeZone__c FROM Branch__c",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT Id, Name, TimeZone FROM OperatingHours",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT Branch__c, BranchCode__c, Brand__c, GBO_Name__c, HasOptedInEmail__c, Id, IndividualCoverage__c, IsActive, IsCapacityBased, IsOptimizationCapable, JobTitle__c, MMedia__c, MobileNumber__c, Name, PayrollId__c, PersonType__c, PrimaryEmail__c, RelatedRecordId, ResourceType, S1Media__c, S2Media__c, S3Media__c, S4Media__c, SupervisorID__c, SupervisorNumber__c, TimeZone__c FROM ServiceResource",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT Branch__c, CrewSize, GBO__c, Id, IsIndividualGroup__c, Month__c, Name, Region__c, S1Mechanic__c, S1Substitute__c, S2Mechanic__c, S2Substitute__c, S3Mechanic__c, S3Substitute__c, S4Mechanic__c, S4Substitute__c, Status__c, Substitution__c, Supervisor__c, SupervisorSubstitute__c, X12_Months__c FROM ServiceCrew",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT Address, Area__c, Branch__c, BranchCode__c, Brand__c, Country__c, Description, FieldSupervisor__c, GBO__c, GBO_Name__c, Id, IsActive, IsUserSupervisor__c, Name, OperatingHoursId, ParentTerritoryId, PrimaryMechanic__c, RecordTypeId, Region__c, RouteNumber__c, SubRegion__c, SupervisorId__c, TimeZone__c, TopLevelTerritoryId, UserFieldSuper__c FROM ServiceTerritory",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT Active__c, Brand__c, EmailPreference__c, HasOptedInEmail__c, Id, JobTitle__c, Name, OfficeCode__c, OfficeName__c, PayrollID__c, PersonType__c, PrimaryEmail__c, TimeZone__c, User__c FROM InternalResource__c",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT BookableResource__c, Branch__c, Id, InternalResource__c, JobTitle__c, Member__c, Name, PrimaryOffice__c FROM BranchMemberRole__c",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": " SELECT BranchCode__c, BranchName__c, Brand__c, DateLastUpdated__c, GBO_Name__c, Id, IVRRequired__c, Key_Account_Level__c, ManualAssignmentOverride__c, Name, OtisSalesRep__c, OtisSalesRepEmail__c, PermanentSpecialInstructions__c, PhotoUrl, Sector__c, SpecialInstructionsExpiration__c, Status__c, TemporarySpecialInstructions__c FROM Account",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT Name, ParentId, city, country, postalCode, state, street FROM Address",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT Account__c, AccountPermanentSpecialInstructions__c, AlternatePhoneNumber1__c, BranchCode__c, BranchName__c, Brand__c, BuildingAddress__c, BuildingDayPhoneNumber__c, BuildingNumber__c, City__c, GBO_Name__c, IsInventoryLocation, IsMobile, LocationType, ManualAssignmentOverride__c, MarketVerticalEntry__c, Name, RecordTypeId, RootLocationId, State__c, Status__c, TimeZone,TimeZone__c VisitorAddressId FROM Location",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT AccountId, CancellationDate__c, Contract_Number__c, ContractNumber, ContractTerm, ContractType__c, EndDate, Id, Name, StartDate, Status, StatusCode, StatusReason__c FROM Contract",
+      "operation": "Upsert",
+      "externalId": "Contract_Number__c",
+      "useCSVValuesMapping": true
+    },
+    {
+      "query": "SELECT AccountId, AccountPermanentSpecialInstructions__c, AssetLevel, AverageUptimePerDay, Branch__c, BranchCode__c, Brand__c, Building247PhoneNumber__c, BuildingAddress__c, BuildingDayPhoneNumber__c, BuildingNumber__c, BuildingPermanentSpecialInstructions__c, CarOpenings__c, ContractEndDate__c, ContractLineItem__c, ContractNumber__c, ContractNumberCalulated__c, ContractStartDate__c, CustomerDesignation__c, DateTimeLastUpdated__c, DTMFCodes__c, ElevatorPhoneNumber__c, Elite__c, FieldSupervisor__c, GBO_Name__c, Id, IsCompetitorProduct, IsInternal, LineShared__c, LocationId, ManualAssignmentOverride__c, Model__c, Name, NIS_End_Date__c, NIS_Start_Date__c, NISMISContractNumber__c, OperationalStatus__c, OperationalStatusReason__c, OvertimeIncluded__c, PermanentSpecialInstructions__c, PhonePrefix__c, PrimaryDialOut__c, ProductFamily, ProductFamily__c, ProductType__c, QOP_Flag__c, RathSmartViewURL__c, REMType__c, RMDManufacturer__c, RootAssetId, RouteMechanic__c, RouteName__c, RouteNumber__c, RouteOfficeCode__c, SecondaryDialOut__c, SerialNumber, SharedWith__c, SpecialInstructionsExpirationDate__c, Status, StatusReason__c, SumDowntime, TemporarySpecialInstructions__c, TemporarySpecialInstructionsFormula__c, TimeZone__c, UnitModel__c, UpdatedByIntegration__c FROM Asset",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT Contract__c, ContractHoursEnd__c, ContractHoursStart__c, ContractType__c, DispatchServiceStartDate__c, Elite__c, Id, Name, OvertimeIncluded__c, Status__c, StatusReason__c, Unit__c FROM ContractLineItem__c",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT Description, Duration, Id, IsActive, IsNonStandard, Name, ShiftTemplateDurationType, StartTime FROM ShiftTemplate",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT ActiveMatch__c, Id, IsActive, Name, Office__c, PatternLength, Route__c FROM ShiftPattern",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT DayOfWeek__c, DayOrder, EndTime__c, Id, Name, Office__c, OfficeCode__c, PrimaryGroup__c, Route__c, SecondaryGroup__c, Sequence__c, ShiftPatternId, ShiftTemplateId, StartTime__c, TertiaryGroup__c, Type__c, WeekOfMonth__c FROM ShiftPatternEntry",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT Country__c, HolidayDate__c, Id, Name, NationalHoliday__c FROM Holiday__c",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT Id, Name, Status__c, WorkPerformedCode__c, WorkPerformedDescription__c FROM WorkPerformedCode__c",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT ComponentCode__c, ComponentDescription__c, Id, Name, Status__c FROM ComponentCode__c",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT Name, OperatingHours__c, ResourceType__c, ServiceResource__c, ServiceTerritory__c, TimeZone__c FROM RouteResource__c",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT AccountId, AccountSaleRepEmail__c, ContactType__c, Email, Email_Preference__c, eServiceEnrollmentComments__c, eServiceEnrollmentEmail__c, eServiceEnrollmentRequested__c, ETAPreferredMethodofContact__c, FirstName, Id, IsEmailBounced, JobTitle__c, LastName, MiddleName, MobilePhone, Name, OtisNote_Subscription__c, Phone, PhotoUrl, PreferredMethodofContact__c, RecordTypeId, Salutation, SMSOptOut__c, Status__c, Suffix FROM Contact",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT Account__c, Id, InternalResource__c, Name, ServiceResource__c FROM AccountResource__c",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT Branch__c, Closed__c, Date__c, Holiday__c, Id, Name, OfficeHolidayKey__c, OvertimeCharged__c FROM BranchHoliday__c",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT Building__c, Id, Name, Office__c, PrimaryOffice__c FROM BuildingOffice__c",
+      "operation": "Upsert",
+      "externalId": "Name"
+    },
+    {
+      "query": "SELECT Building__c, Id, InternalResource__c, Name, ServiceResource__c FROM BuildingResource__c",
+      "operation": "Upsert",
+      "externalId": "Name"
+    }
+  ]
+}
+

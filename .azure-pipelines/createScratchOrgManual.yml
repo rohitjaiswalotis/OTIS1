@@ -1,0 +1,75 @@
+name: 'Create Scratch Org'
+
+
+trigger: none
+    
+pr: none
+
+
+variables:
+- template: templates/variables.yml
+
+
+parameters:
+
+- name: configFile
+  displayName: Relative path to scratch org config file
+  type: string
+  default: config/core/shape.json
+  values:
+  - config/core/shape.json
+  - config/core/features.json
+  - config/messaging/shape.json
+  - config/messaging/features.json
+
+- name: durationInDays
+  displayName: Number of Days for Scratch Org to expire after
+  type: number
+  default: 5
+  values:
+  - 1
+  - 2
+  - 3
+  - 5
+  - 7
+  - 10
+  - 15
+  - 20
+  - 30
+
+- name: enableDebugMode
+  displayName: Debug Mode?
+  type: boolean
+  default: false
+
+
+stages:
+    
+    - stage: Build
+      
+      displayName: Build
+      dependsOn: []
+      
+      jobs:
+          
+          - job: CreateScratchOrg
+            
+            displayName: 'Create Scratch Org'                         
+            
+            timeoutInMinutes: 0
+            
+            pool:
+                vmImage: 'ubuntu-latest'
+
+            steps:
+            
+            - template: templates/init.yml
+            
+            
+            - template: templates/createScratchOrg.yml
+              parameters:
+                configFile: ${{ parameters.configFile }}
+                durationInDays: ${{ parameters.durationInDays }}
+                enableDebugMode: ${{ parameters.enableDebugMode }}
+
+

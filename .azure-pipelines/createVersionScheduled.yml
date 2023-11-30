@@ -1,0 +1,177 @@
+name: 'Create Field Service Package Version by Schedule'
+
+
+trigger: none
+    
+pr: none
+
+schedules:
+
+- cron: '0 1 * * *'
+  displayName: Nightly Field Service Global Package Version Build
+  branches:
+    include:
+    - dev
+  always: false
+
+- cron: '0 2 * * *'
+  displayName: Nightly Field Service Japan Package Version Build
+  branches:
+    include:
+    - dev-jpn
+  always: false
+
+- cron: '0 3 * * *'
+  displayName: Nightly Field Service EMEA Package Version Build
+  branches:
+    include:
+    - dev-emea
+  always: false
+
+- cron: '0 4 * * *'
+  displayName: Nightly Field Service NAA Package Version Build
+  branches:
+    include:
+    - dev-naa
+  always: false
+
+
+parameters:
+
+- name: skipValidation
+  displayName: Skip validation for package?
+  type: boolean
+  default: false
+
+- name: shouldNotifySubscribers
+  displayName: Notify Subscribers?
+  type: boolean
+  default: true
+
+- name: shouldRunAqaTests
+  displayName: Run AQA Tests?
+  type: boolean
+  default: false
+
+- name: shouldRunTestsBefore
+  displayName: Run Tests Before?
+  type: boolean
+  default: true
+
+- name: shouldRunTestsAfter
+  displayName: Run Tests After?
+  type: boolean
+  default: true
+
+
+variables:
+  
+  - template: templates/variables.yml
+  
+  - name: targetOrgName
+    ${{ if eq(variables['Build.SourceBranchName'], 'dev-jpn') }}:
+      value: 'avgJpn'
+    ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-emea') }}:
+      value: 'avgEMEA'
+    ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-naa') }}:
+      value: 'avgNAA'
+    ${{ else }}:
+      value: 'avgCore'
+
+
+stages:
+    
+    - stage: Upload
+      
+      displayName: Upload
+      dependsOn: []
+      
+      jobs:
+          
+          - job: CreatePackageVersion
+            
+            displayName: 'Create Package Version'                         
+            
+            timeoutInMinutes: 0
+            
+            pool:
+                vmImage: 'ubuntu-latest'
+            
+            steps:
+            
+            - template: templates/init.yml
+            
+            
+            - template: templates/createVersion.yml
+              parameters:
+                branchMarker: ${{ variables['Build.SourceBranchName'] }}
+                skipValidation: ${{ parameters.skipValidation }}
+                createTag: true
+                numberOfRetries: 1
+              
+              
+            - ${{ if eq(parameters.shouldNotifySubscribers, true) }}:
+              
+              - template: templates/notifySubscribers.yml
+                parameters:
+                  ${{ if eq(variables['Build.SourceBranchName'], 'dev-jpn') }}:
+                    subscribers: $(subs_pkgVersion_FsJpn)
+                  ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-emea') }}:
+                    subscribers: $(subs_pkgVersion_FsEMEA)
+                  ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-naa') }}:
+                    subscribers: $(subs_pkgVersion_FsNAA)
+                  ${{ else }}:
+                    subscribers: $(subs_pkgVersion_FsGlobal)
+              
+            
+            - task: DownloadSEcureFile@1
+              name: targetOrgAuthFile
+              inputs:
+                  secureFile: authFile_$(targetOrgName)
+              displayName: 'Get Target Org auth file' 
+              
+            
+            - ${{ if eq(parameters.shouldRunTestsBefore, true) }}:
+              
+              - template: templates/runTests.yml
+                parameters:
+                  targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                  concurrentExecution: true
+                  continueOnError: true
+              
+            
+            - template: templates/installThirdParty.yml
+              parameters:
+                targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                packageAlias: FSL
+                continueOnError: true
+                
+            
+            - template: templates/installVersion.yml
+              parameters:
+                ${{ if eq(variables['Build.SourceBranchName'], 'dev-jpn') }}:
+                  localizationDomain: "Japan"
+                ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-emea') }}:
+                  localizationDomain: "EMEA"
+                ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-naa') }}:
+                  localizationDomain: "NAA"
+                ${{ else }}:
+                  localizationDomain: "Global"
+                targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                
+                
+            - ${{ if eq(parameters.shouldRunAqaTests, true) }}:
+              
+              - template: templates/runAQA.yml
+                parameters:
+                  targetOrgAuthVariableGroup: $(targetOrgName)
+            
+            
+            - ${{ if eq(parameters.shouldRunTestsAfter, true) }}:
+              
+              - template: templates/runTests.yml
+                parameters:
+                  targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                  concurrentExecution: false
+
+

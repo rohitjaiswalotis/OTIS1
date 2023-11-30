@@ -1,0 +1,239 @@
+
+parameters:
+
+- name: envProfile
+  displayName: Environment profile
+  type: string
+  default: default
+
+- name: skipValidation
+  displayName: Skip validation for package?
+  type: boolean
+  default: false
+
+- name: branchMarker
+  displayName: Branch marker for package
+  type: string
+  default: none
+
+- name: createTag
+  displayName: Create tag for version?
+  type: boolean
+  default: true
+
+- name: numberOfRetries
+  displayName: Number of Retries?
+  type: number
+  default: 0
+
+- name: savePackageDumpAsArtifact
+  displayName: Save Package Dump as Artifact?
+  type: boolean
+  default: false
+
+- name: packageDumpArtifactName
+  displayName: Package Dump Artifact Name
+  type: string
+  default: PackageDump_$(Build.BuildId)
+
+- name: enableDebugMode
+  displayName: Debug Mode?
+  type: boolean
+  default: false
+  
+
+steps:
+
+# build package version
+- bash: |
+        
+        # enable "debug" mode
+        if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
+          set -x
+        fi
+        
+        
+        echo "Applying transformation to project config..."
+        
+        PROJECT_CONFIG_FILE="$(projectConfigFile)"
+        
+        # replace default project config with env profile specific (if provided)
+        if [[ ! "${{parameters.envProfile}}" =~ ^default$ && ! "${{parameters.envProfile}}" =~ ^none$ ]] ; then
+          
+          PROJECT_CONFIG_FILE_ENV_PROFILE="$(projectConfigFile).${{parameters.envProfile}}"
+          
+          if [[ -f "$PROJECT_CONFIG_FILE_ENV_PROFILE" ]]; then
+            cp -f $PROJECT_CONFIG_FILE_ENV_PROFILE $PROJECT_CONFIG_FILE
+          else
+            echo "WARNING: Cannot find request project config: $PROJECT_CONFIG_FILE_ENV_PROFILE"
+          fi
+          
+        fi
+        
+        # resolve variables in project config
+        PROJECT_CONFIG_FILE_TMP=$(mktemp);
+        cat $PROJECT_CONFIG_FILE | envsubst > ${PROJECT_CONFIG_FILE_TMP}
+        mv ${PROJECT_CONFIG_FILE_TMP} $PROJECT_CONFIG_FILE
+        
+        echo "Instrumented $PROJECT_CONFIG_FILE:"
+        cat $PROJECT_CONFIG_FILE
+        
+        
+        echo "Applying transformation to source code..."
+        
+        TESTS_METADATA_DIR="$(packageBaseDir)-tests-meta/main"
+        bash $(stepsRunnerUtil) -d "$TESTS_METADATA_DIR" -o "$TESTS_METADATA_DIR"
+        
+        
+        set -e
+        echo "Validating source code..."
+        bash $(stepsRunnerUtil) -d "$(rulesValidationScript)" -w "$(pwd)"
+        set +e
+        
+        
+        echo "Authorizing to dev hub..."
+        
+        DX_STATUS_CODE=$(sf org login jwt --client-id $(devHubClientId) --jwt-key-file $(devHubPrivateKey.secureFilePath) --username $(devHubUsername) -r $(devHubUrl) -a devHub --json | jq .status);
+        
+        # early exit - error when autorizing to dev hub
+        if [[ "$DX_STATUS_CODE" != "0" ]]; then
+          echo "Cannot log in to dev hub as '$(devHubUsername)'"
+          exit 1
+        fi
+        
+        echo "Successfully authorized to dev hub as '$(devHubUsername)'"
+        
+        
+        # eavaluate validation mode
+        if [[ "${{ parameters.skipValidation }}" =~ ^[Tt]rue$ ]] ; then
+          PACKAGE_VALIDATION_MODE="--skip-validation"
+          echo "Creating package version without validation..."
+        else
+          PACKAGE_VALIDATION_MODE="--code-coverage"
+          echo "Creating package version with validation..."
+        fi
+        
+        # evaluate branch marker
+        if [[ "${{parameters.branchMarker}}" =~ ^none$ ]] ; then
+          PACKAGE_BRANCH_MARKER=""
+        else
+          PACKAGE_BRANCH_MARKER="${{parameters.branchMarker}}"
+        fi
+        
+        
+        DX_PACKAGE_VERSION_CREATE_RESPONSE=$(sf package version create $PACKAGE_VALIDATION_MODE --package "$(fsPackageName)" -x --wait 600 -v devHub --branch="$PACKAGE_BRANCH_MARKER" --tag="$(Build.SourceVersion)" --verbose --json -r);
+        
+        echo "$DX_PACKAGE_VERSION_CREATE_RESPONSE" | jq .
+        
+        
+        # catching package dump
+        PACKAGE_DUMP_BASE_DIR="$(packageDumpBaseDir)"
+        
+        if [[ -d "$PACKAGE_DUMP_BASE_DIR" ]]; then
+          PACKAGE_DUMP_DIR="$PACKAGE_DUMP_BASE_DIR/$(ls -t $PACKAGE_DUMP_BASE_DIR | head -1)"
+          echo "Package dump directory: $PACKAGE_DUMP_DIR"
+          ls -la $PACKAGE_DUMP_DIR
+        fi
+        
+        # set variable to pass package dump directory to next steps
+        echo "##vso[task.setvariable variable=packageDumpDirectory]${PACKAGE_DUMP_DIR}"
+        
+        
+        DX_STATUS_CODE=$(echo "$DX_PACKAGE_VERSION_CREATE_RESPONSE" | jq .status);
+        
+        # early exit: error on package version creation
+        if [[ "$DX_STATUS_CODE" != "0" ]]; then
+          echo "Error when creating '$(fsPackageName)' package version!"
+          exit 1
+        fi
+        
+        
+        echo "Successfully uploaded '$(fsPackageName)' package version."
+        
+        FS_PACKAGE_VERSION_ID=$(echo "$DX_PACKAGE_VERSION_CREATE_RESPONSE" | jq -r '.result | if type=="array" then .[0].SubscriberPackageVersionId else .SubscriberPackageVersionId end // empty');
+        echo "Parsed created package version id: ${FS_PACKAGE_VERSION_ID}"
+        
+        if ! [[ "${FS_PACKAGE_VERSION_ID}" =~ ^04t.* ]] ; then
+          echo "Error when parsing created version id for '$(fsPackageName)' package!"
+          exit 1
+        fi
+        
+        # set variable to pass package version to next steps
+        echo "##vso[task.setvariable variable=FS_PACKAGE_VERSION_ID]${FS_PACKAGE_VERSION_ID}"
+        
+        echo "Created Field Service package version details:"
+        FS_PACKAGE_VERSION_DETAILS=$(sf package version report -p $FS_PACKAGE_VERSION_ID -v devHub --json);
+        echo "$FS_PACKAGE_VERSION_DETAILS" | jq .
+        
+        FS_PACKAGE_VERSION_NUMBER=$(echo "$FS_PACKAGE_VERSION_DETAILS" | jq -r '.result.Version // empty')
+        
+        
+        # optionally create tag in repo with the following format: v{major}.{minor}.{build}.{patch}-{valid|skip}-{04txxxxxxxxxxxxxxx}-{branchName}
+        if [[ "${{ parameters.createTag }}" =~ ^[Tt]rue$ ]] ; then
+          
+          FS_PACKAGE_VERSION_TAG_NAME="v${FS_PACKAGE_VERSION_NUMBER}"
+          
+          if [[ "${{ parameters.skipValidation }}" =~ ^[Tt]rue$ ]] ; then
+            FS_PACKAGE_VERSION_TAG_NAME="${FS_PACKAGE_VERSION_TAG_NAME}-skip"
+          else
+            FS_PACKAGE_VERSION_TAG_NAME="${FS_PACKAGE_VERSION_TAG_NAME}-valid"
+          fi
+          
+          FS_PACKAGE_VERSION_TAG_NAME="${FS_PACKAGE_VERSION_TAG_NAME}-${FS_PACKAGE_VERSION_ID}-$(Build.SourceBranchName)"
+          
+          git config --global user.name "BuildService"
+          git config --global user.email "pipeline.package.fs@otis.com"
+          git tag -a "$FS_PACKAGE_VERSION_TAG_NAME" -m "Field Service Package Version: $FS_PACKAGE_VERSION_NUMBER"
+          git push origin "$FS_PACKAGE_VERSION_TAG_NAME"
+          
+          # update package version with just created tag
+          echo "Updating package version '$FS_PACKAGE_VERSION_NUMBER' ($FS_PACKAGE_VERSION_ID) with just created tag '$FS_PACKAGE_VERSION_TAG_NAME'..."
+          DX_PACKAGE_VERSION_UPDATE_RESPONSE=$(sf package version update --package "$FS_PACKAGE_VERSION_ID" --tag "$FS_PACKAGE_VERSION_TAG_NAME" -v devHub --json);
+          echo "$DX_PACKAGE_VERSION_UPDATE_RESPONSE" | jq .
+          
+          DX_STATUS_CODE=$(echo "$DX_PACKAGE_VERSION_UPDATE_RESPONSE" | jq .status);
+          
+          if [[ "$DX_STATUS_CODE" != "0" ]]; then
+            echo "WARNING: Error when updating package version '$FS_PACKAGE_VERSION_NUMBER' ($FS_PACKAGE_VERSION_ID) with just created tag '$FS_PACKAGE_VERSION_TAG_NAME'!"
+          fi
+          
+          # create extra tag to track latest snapshot of the package version for current branch
+          FS_PACKAGE_LATEST_VERSION_ON_BRANCH_TAG_NAME="$(Build.SourceBranchName)-latestPackageVersion"
+          git tag -fa "$FS_PACKAGE_LATEST_VERSION_ON_BRANCH_TAG_NAME" -m "Tag Ref: $FS_PACKAGE_VERSION_TAG_NAME"
+          git push -f origin "tags/$FS_PACKAGE_LATEST_VERSION_ON_BRANCH_TAG_NAME"
+          
+        fi
+        
+        
+        # reset changes
+        git checkout $(packageBaseDir)/..
+        git checkout $PROJECT_CONFIG_FILE || true
+        
+        
+        echo "Printing dependencies of just created Field Service package version..."
+        
+        # get access token and instance url
+        sfOrgDetails=$(sf org display --target-org "devHub" --verbose --json);
+        sfAccessToken=$(echo "$sfOrgDetails" | jq -r '.result.accessToken // empty');
+        sfInstanceUrl=$(echo "$sfOrgDetails" | jq -r '.result.instanceUrl // empty');
+        
+        npx -p sf-package-inspector@$(packageInspectorVersion) sf-package-inspect --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --command="list-deps" --versionId="$FS_PACKAGE_VERSION_ID" --apiVersion="$(sfApiVersion)"
+        
+        
+  displayName: 'Create Field Service package version'
+  continueOnError: false
+  retryCountOnTaskFailure: ${{ parameters.numberOfRetries }}
+  timeoutInMinutes: 240
+  
+
+# optionally attach package dump as artifact
+- ${{ if eq(parameters.savePackageDumpAsArtifact, true) }}:
+  
+  - task: PublishPipelineArtifact@1
+    inputs:
+      targetPath: '$(packageDumpDirectory)'
+      artifact: '${{ parameters.packageDumpArtifactName }}'
+      publishLocation: 'pipeline'
+      displayName: 'Publish Package Dump as artifact'
+      condition: ne(variables.packageDumpDirectory, '')
+  

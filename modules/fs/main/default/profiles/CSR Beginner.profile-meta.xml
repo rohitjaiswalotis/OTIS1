@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Profile xmlns="http://soap.sforce.com/2006/04/metadata">
+    <custom>true</custom>
+    <description>These users are entry level, they will manage cases, work orders, contacts, accounts and buildings. They need the ability to schedule assignments and make minor updates to some unit fields. They must also have report access.</description>
+    <userLicense>Salesforce</userLicense>
+</Profile>

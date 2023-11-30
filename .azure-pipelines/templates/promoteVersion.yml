@@ -1,0 +1,104 @@
+
+parameters:
+
+- name: versionId
+  displayName: Package Version Id
+  type: string
+  default: none
+
+- name: enableDebugMode
+  displayName: Debug Mode?
+  type: boolean
+  default: false
+  
+
+steps:
+
+# get Field Service package version id
+
+- bash: |
+        
+        # enable exit on error
+        set -e
+        
+        if [[ "${{parameters.versionId}}" =~ ^04t.* ]]; then
+          FS_PACKAGE_VERSION_ID="${{parameters.versionId}}"
+        fi
+          
+        # try to parse version id from branch/tag name
+        if [[ ! ${FS_PACKAGE_VERSION_ID:+1} ]]; then
+          echo "Parsing version id from current branch/tag name: $(Build.SourceBranchName)"
+          FS_PACKAGE_VERSION_ID="$(echo -n "$(Build.SourceBranchName)" | egrep -oi "(^|[^a-z0-9])04t([a-z0-9]{12}|[a-z0-9]{15})([^a-z0-9]|$)" | egrep -oi "[a-z0-9]+" || true)"
+          echo "Parsed version id from current branch/tag name: $FS_PACKAGE_VERSION_ID"
+        fi
+        
+        # try to parse version id from tag message
+        if [[ ! ${FS_PACKAGE_VERSION_ID:+1} ]]; then
+          
+          GIT_TAG_MESSAGE=$(git tag -l --format='%(contents)' "$(Build.SourceBranchName)")
+          
+          if [[ ${GIT_TAG_MESSAGE:+1} ]]; then
+            echo "Parsing version id from tag message: $GIT_TAG_MESSAGE"
+            FS_PACKAGE_VERSION_ID="$(echo -n "$GIT_TAG_MESSAGE" | egrep -oi "(^|[^a-z0-9])04t([a-z0-9]{12}|[a-z0-9]{15})([^a-z0-9]|$)" | egrep -oi "[a-z0-9]+" || true)"
+            echo "Parsed version id from tag message: $FS_PACKAGE_VERSION_ID"
+          fi
+          
+        fi
+        
+        if [[ ! ${FS_PACKAGE_VERSION_ID:+1} ]]; then
+          echo "Cannot detect package version id!"
+          exit 1;
+        fi
+        
+        # set variable to pass package version to next steps
+        echo "##vso[task.setvariable variable=FS_PACKAGE_VERSION_ID]${FS_PACKAGE_VERSION_ID}"
+        
+  displayName: 'Assign Field Service package version id'
+  
+
+
+# promote package version
+- bash: |
+        
+        # enable "debug" mode
+        if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
+          set -x
+        fi
+        
+        
+        echo "Authorizing to dev hub..."
+        
+        DX_STATUS_CODE=$(sf org login jwt --client-id $(devHubClientId) --jwt-key-file $(devHubPrivateKey.secureFilePath) --username $(devHubUsername) -r $(devHubUrl) -a devHub --json | jq .status);
+        
+        # early exit - error when autorizing to dev hub
+        if [[ "$DX_STATUS_CODE" != "0" ]]; then
+          echo "Cannot log in to dev hub as '$(devHubUsername)'"
+          exit 1
+        fi
+        
+        echo "Successfully authorized to dev hub as '$(devHubUsername)'"
+        
+        
+        FS_PACKAGE_VERSION_PROMOTE_RESPONSE=$(sf package version promote --package "${FS_PACKAGE_VERSION_ID}" --no-prompt -v "devHub" --json);
+        echo "$FS_PACKAGE_VERSION_PROMOTE_RESPONSE" | jq .
+        
+        DX_STATUS_CODE=$(echo "$FS_PACKAGE_VERSION_PROMOTE_RESPONSE" | jq .status);
+        
+        # early exit: error on package version promotion
+        if [[ "$DX_STATUS_CODE" != "0" ]]; then
+          echo "Error when promoting '$(fsPackageName)' package version '$FS_PACKAGE_VERSION_ID'!"
+          exit 1
+        fi
+        
+        echo "Successfully promoted '$(fsPackageName)' package version '$FS_PACKAGE_VERSION_ID'!"
+        
+        echo "Promoted Field Service package version details:"
+        FS_PACKAGE_VERSION_DETAILS=$(sf package version report -p "$FS_PACKAGE_VERSION_ID" -v devHub --json);
+        echo "$FS_PACKAGE_VERSION_DETAILS" | jq .
+        
+        
+  displayName: 'Promote Field Service package version'
+  continueOnError: false
+  timeoutInMinutes: 30
+  
+

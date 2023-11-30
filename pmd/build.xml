@@ -1,0 +1,60 @@
+<project name="PMDTask" default="pmd" basedir=".">
+  <description>
+    PMD SCA using Ant
+  </description>
+
+  <property name="src" location="pmd"/>
+  <property environment="env"/>
+    <target name="init">
+        <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" 
+        classpathref="pmd.classpath"/>
+    </target>
+
+    <path id="pmd.classpath">
+        <fileset dir="lib/">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <target name="pmd" depends="init">
+        <pmd>
+            <ruleset>rulesets/apex/bestpractices.xml,rulesets/apex/codestyle.xml,rulesets/apex/design.xml,rulesets/apex/errorprone.xml,rulesets/apex/multithreading.xml,rulesets/apex/performance.xml,rulesets/apex/security.xml,../scripts/pmd/CustomApexRuleset.xml</ruleset>
+            <formatter type="xml" toFile="output.xml" toConsole="true"/>
+            <fileset dir="../modules/fs">
+            </fileset>
+            <relativizePathsWith>
+                <pathelement location="${env.SYSTEM_DEFAULTWORKINGDIRECTORY}"/>
+            </relativizePathsWith>
+        </pmd>
+    </target>
+    <target name="pmd-beauty">
+        <!-- Specify the path to your PMD XML report -->
+        <property name="pmd.report.filepath" value="output.xml" />
+
+        <!-- Specify the path to the output JUnit XML report -->
+        <property name="junit.report.filepath" value="junit.xml" />
+
+        <!-- Convert PMD XML report to JUnit XML report using the XSLT transformation -->
+        <xslt in="${pmd.report.filepath}" out="${junit.report.filepath}" style="JUnit.xslt" />
+    </target>
+    <target name="pmd-html-artifact">
+        <!-- Specify the path to your PMD XML report -->
+        <property name="pmd.report.filepath" value="output.xml" />
+
+        <!-- Specify the path to the output HTML report -->
+        <property name="html.report.filepath" value="pmd-report-artifact-${env.BUILD_BUILDID}.html" />
+
+        <!-- Convert PMD XML report to HTML report using the XSLT transformation -->
+        <xslt in="${pmd.report.filepath}" out="${html.report.filepath}" style="html-report-v2.xslt" />
+    </target>
+    <target name="pmd-html-publish">
+        <!-- Specify the path to your PMD XML report -->
+        <property name="pmd.report.filepath" value="output.xml" />
+
+        <!-- Specify the path to the output HTML report -->
+        <property name="html-publish.report.filepath" value="pmd-report-publish-${env.BUILD_BUILDID}.html" />
+
+        <!-- Convert PMD XML report to HTML report using the XSLT transformation -->
+        <xslt in="${pmd.report.filepath}" out="${html-publish.report.filepath}" style="pmd-nicerhtml.xsl" />
+    </target>
+</project>

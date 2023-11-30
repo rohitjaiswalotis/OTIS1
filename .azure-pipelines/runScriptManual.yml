@@ -1,0 +1,162 @@
+name: 'Execute multi-step Script against Target Org'
+
+
+trigger: none
+    
+pr: none
+
+
+variables:
+- template: templates/variables.yml
+
+
+parameters:
+
+- name: pathToFolder
+  displayName: Path to Folder with Steps
+  type: string
+
+- name: stepToRun
+  displayName: Step to run
+  type: string
+  default: all
+
+- name: scriptParams
+  displayName: Script params (json)
+  type: string
+  default: none
+
+- name: targetOrgUrl
+  displayName: Target Org Url
+  type: string
+  default: https://test.salesforce.com
+
+- name: targetOrgUsername
+  displayName: Target Org Username
+  type: string
+  default: none
+
+- name: targetOrgPassword
+  displayName: Target Org Password
+  type: string
+  default: none
+
+- name: targetOrgToken
+  displayName: Target Org Token
+  type: string
+  default: none
+
+- name: targetOrgAuthFileName
+  displayName: Target Org Auth File Name
+  type: string
+  default: none
+
+- name: targetOrg2Url
+  displayName: Target Org2 Url
+  type: string
+  default: https://test.salesforce.com
+
+- name: targetOrg2Username
+  displayName: Target Org2 Username
+  type: string
+  default: none
+
+- name: targetOrg2Password
+  displayName: Target Org2 Password
+  type: string
+  default: none
+
+- name: targetOrg2Token
+  displayName: Target Org2 Token
+  type: string
+  default: none
+
+- name: targetOrg2AuthFileName
+  displayName: Target Org2 Auth File Name
+  type: string
+  default: none
+
+- name: saveFolderAsArtifact
+  displayName: Save Folder as Artifact?
+  type: boolean
+  default: false
+
+- name: enableDebugMode
+  displayName: Debug Mode?
+  type: boolean
+  default: false
+
+
+stages:
+    
+    - stage: Execute
+      
+      displayName: Execute
+      dependsOn: []
+      
+      jobs:
+          
+          - job: RunScript
+            
+            displayName: 'Run Script against Org'                         
+            
+            timeoutInMinutes: 0
+            
+            pool:
+                vmImage: 'ubuntu-latest'
+            
+            steps:
+            
+            - template: templates/init.yml
+            
+            
+            - ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
+              
+              - task: DownloadSEcureFile@1
+                name: targetOrgAuthFile
+                inputs:
+                    secureFile: ${{ parameters.targetOrgAuthFileName }}
+                displayName: 'Get Target Org auth file'
+                
+              
+            - ${{ if not( eq(parameters.targetOrg2AuthFileName, 'none') ) }}:
+              
+              - task: DownloadSEcureFile@1
+                name: targetOrg2AuthFile
+                inputs:
+                    secureFile: ${{ parameters.targetOrg2AuthFileName }}
+                displayName: 'Get Target Org2 auth file'
+                
+              
+            - template: templates/runScript.yml
+              
+              parameters:
+                
+                pathToFolder: ${{ parameters.pathToFolder }}
+                stepToRun: ${{ parameters.stepToRun }}
+                scriptParams: ${{ parameters.scriptParams }}
+                
+                ${{ if contains(parameters.targetOrgUsername, '@') }}:
+                  targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                  targetOrgUsername: ${{ parameters.targetOrgUsername }}
+                  targetOrgPassword: ${{ parameters.targetOrgPassword }}
+                ${{ if not( eq(parameters.targetOrgToken, 'none') ) }}:
+                  targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                  targetOrgToken: ${{ parameters.targetOrgToken }}
+                ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
+                  targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                
+                ${{ if contains(parameters.targetOrg2Username, '@') }}:
+                  targetOrg2Url: ${{ parameters.targetOrg2Url }}
+                  targetOrg2Username: ${{ parameters.targetOrg2Username }}
+                  targetOrg2Password: ${{ parameters.targetOrg2Password }}
+                ${{ if not( eq(parameters.targetOrg2Token, 'none') ) }}:
+                  targetOrg2Url: ${{ parameters.targetOrg2Url }}
+                  targetOrg2Token: ${{ parameters.targetOrg2Token }}
+                ${{ if not( eq(parameters.targetOrg2AuthFileName, 'none') ) }}:
+                  targetOrg2AuthFilePath: $(targetOrg2AuthFile.secureFilePath)
+                
+                saveFolderAsArtifact: ${{ parameters.saveFolderAsArtifact }}
+                enableDebugMode: ${{ parameters.enableDebugMode }}
+
+

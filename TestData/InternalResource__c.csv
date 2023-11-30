@@ -1,0 +1,3 @@
+Id,Active__c,Brand__c,EmailPreference__c,HasOptedInEmail__c,JobTitle__c,Name,OfficeCode__c,OfficeName__c,PayrollID__c,PersonType__c,PrimaryEmail__c,TimeZone__c,User__c,OfficeName__r.Name,User__r.Name
+a11DO0000008SNjYAM,true,OTIS,A,true,Sales Representative,Sally Sales,CDH,a0rDO0000004OXzYAM,c666666,SLR,lisa.ouellette@otis.com,America/New_York,,DEV HUB Office,
+a11DO0000008SNkYAM,true,OTIS,S1,true,Branch Manager,Bob Branch Manager,CDH,a0rDO0000004OXzYAM,C777777,BM,lisa.ouellette@otis.com,America/New_York,,DEV HUB Office,

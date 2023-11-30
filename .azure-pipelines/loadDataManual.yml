@@ -1,0 +1,91 @@
+name: 'Load Data into Target Org'
+
+
+trigger: none
+    
+pr: none
+
+
+variables:
+- template: templates/variables.yml
+
+
+parameters:
+
+- name: targetOrgUrl
+  displayName: Target Org Url
+  type: string
+  default: https://test.salesforce.com
+
+- name: targetOrgUsername
+  displayName: Target Org Username
+  type: string
+  default: none
+
+- name: targetOrgPassword
+  displayName: Target Org Password
+  type: string
+  default: none
+
+- name: targetOrgToken
+  displayName: Target Org Token
+  type: string
+  default: none
+
+- name: targetOrgAuthFileName
+  displayName: Target Org Auth File Name
+  type: string
+  default: none
+
+- name: enableDebugMode
+  displayName: Debug Mode?
+  type: boolean
+  default: false
+
+
+stages:
+    
+    - stage: Load
+      
+      displayName: Load
+      dependsOn: []
+      
+      jobs:
+          
+          - job: LoadData
+            
+            displayName: 'Load Data into Org'                         
+            
+            timeoutInMinutes: 0
+            
+            pool:
+                vmImage: 'ubuntu-latest'
+            
+            steps:
+            
+            - template: templates/init.yml
+            
+            
+            - ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
+              
+              - task: DownloadSEcureFile@1
+                name: targetOrgAuthFile
+                inputs:
+                    secureFile: ${{ parameters.targetOrgAuthFileName }}
+                displayName: 'Get Target Org auth file'
+                
+            
+            - template: templates/loadData.yml
+              parameters:
+                ${{ if contains(parameters.targetOrgUsername, '@') }}:
+                  targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                  targetOrgUsername: ${{ parameters.targetOrgUsername }}
+                  targetOrgPassword: ${{ parameters.targetOrgPassword }}
+                ${{ if not( eq(parameters.targetOrgToken, 'none') ) }}:
+                  targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                  targetOrgToken: ${{ parameters.targetOrgToken }}
+                ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
+                  targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                enableDebugMode: ${{ parameters.enableDebugMode }}
+
+

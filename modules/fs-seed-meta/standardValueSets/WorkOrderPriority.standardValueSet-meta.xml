@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sorted>false</sorted>
+    <standardValue>
+        <fullName>S1 - Emergency</fullName>
+        <default>true</default>
+        <label>S1 - Emergency</label>
+    </standardValue>
+    <standardValue>
+        <fullName>S2 - High</fullName>
+        <default>false</default>
+        <label>S2 - High</label>
+    </standardValue>
+    <standardValue>
+        <fullName>S3 - Normal</fullName>
+        <default>false</default>
+        <label>S3 - Normal</label>
+    </standardValue>
+    <standardValue>
+        <fullName>S4 - Low</fullName>
+        <default>false</default>
+        <label>S4 - Low</label>
+    </standardValue>
+    <standardValue>
+        <fullName>M - Message</fullName>
+        <default>false</default>
+        <label>M - Message</label>
+    </standardValue>
+</StandardValueSet>

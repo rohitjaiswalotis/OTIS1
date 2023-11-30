@@ -1,0 +1,91 @@
+name: 'Create Field Service Package Version'
+
+
+trigger: none
+    
+pr: none
+
+
+variables:
+- template: templates/variables.yml
+
+
+parameters:
+
+- name: envProfile
+  displayName: Environment profile
+  type: string
+  default: default
+
+- name: skipValidation
+  displayName: Skip validation for package?
+  type: boolean
+  default: false
+
+- name: branchMarker
+  displayName: Branch marker for package
+  type: string
+  default: none
+
+- name: createTag
+  displayName: Create tag for version?
+  type: boolean
+  default: true
+
+- name: promoteVersion
+  displayName: Promote package version?
+  type: boolean
+  default: false
+
+- name: savePackageDumpAsArtifact
+  displayName: Save Package Dump as Artifact?
+  type: boolean
+  default: false
+
+- name: enableDebugMode
+  displayName: Debug Mode?
+  type: boolean
+  default: false
+
+
+stages:
+    
+    - stage: Upload
+      
+      displayName: Upload
+      dependsOn: []
+      
+      jobs:
+          
+          - job: CreatePackageVersion
+            
+            displayName: 'Create Package Version'                         
+            
+            timeoutInMinutes: 0
+            
+            pool:
+                vmImage: 'ubuntu-latest'
+            
+            steps:
+            
+            - template: templates/init.yml
+            
+            
+            - template: templates/createVersion.yml
+              parameters:
+                envProfile: ${{ parameters.envProfile }}
+                skipValidation: ${{ parameters.skipValidation }}
+                ${{ if not( eq(parameters.branchMarker, 'none') ) }}:
+                  branchMarker: ${{ parameters.branchMarker }}
+                createTag: ${{ parameters.createTag }}
+                savePackageDumpAsArtifact: ${{ parameters.savePackageDumpAsArtifact }}
+                enableDebugMode: ${{ parameters.enableDebugMode }}
+              
+            
+            - ${{ if eq(parameters.promoteVersion, true) }}:
+              
+              - template: templates/promoteVersion.yml
+                parameters:
+                  enableDebugMode: ${{ parameters.enableDebugMode }}
+
+

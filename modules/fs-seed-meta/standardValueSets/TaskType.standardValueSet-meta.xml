@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sorted>false</sorted>
+    <standardValue>
+        <fullName>Call</fullName>
+        <default>false</default>
+        <label>Call</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Reminder</fullName>
+        <default>false</default>
+        <label>Reminder</label>
+    </standardValue>
+    <standardValue>
+        <fullName>eService Enrollment</fullName>
+        <default>false</default>
+        <label>eService Enrollment</label>
+    </standardValue>
+    <standardValue>
+        <fullName>3rd Party Work Order</fullName>
+        <default>false</default>
+        <label>3rd Party Work Order</label>
+    </standardValue>
+</StandardValueSet>

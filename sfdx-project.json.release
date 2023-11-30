@@ -1,0 +1,74 @@
+{
+  "packageDirectories": [
+    {
+      "path": "modules/fs",
+      "default": true,
+      "package": "OTIS Field Service",
+      "versionName": "OTIS Field Service",
+      "versionDescription": "OTIS Field Service",
+      "versionNumber": "1.0.0.NEXT",
+      "definitionFile": "config/core/shape.json",
+      "dependencies": [
+        {
+          "package": "FSL@246.0.75"
+        },
+        {
+          "package": "OTIS Global CC Core",
+          "versionNumber": "1.8.0.RELEASED"
+        }
+      ],
+      "unpackagedMetadata": {
+        "path": "modules/fs-tests-meta"
+      },
+      "seedMetadata": {
+        "path": "modules/fs-seed-meta"
+      },
+      "includeProfileUserLicenses": true
+    },
+    {
+      "path": "modules/fs-tests-meta",
+      "default": false
+    },
+    {
+      "path": "modules/fs-seed-meta",
+      "default": false
+    },
+    {
+      "path": "modules/fs-unpackaged",
+      "default": false
+    },
+    {
+      "path": "modules/common",
+      "default": false
+    }
+  ],
+  "packageAliases": {
+    "FSL@246.0.75": "04t3y000001SkXdAAK",
+    "OTIS Global CC Core": "0HoDn000000TNCsKAO",
+    "OTIS Field Service": "0HoDn000000TNHeKAO"
+  },
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "59.0",
+  
+  "customScope": {
+    "name": "FS",
+    "exclusions": {
+      "classes": [],
+      "objects": [],
+      "fields": [],
+      "triggers": [],
+      "pages": [],
+      "flexipages": [],
+      "permissionsets": [],
+      "customPermissions": [],
+      "lwc": [],
+      "aura": [],
+      "labels": [],
+      "emails": [],
+      "reports": [],
+      "dashboards": []
+    }
+  }
+  
+}
