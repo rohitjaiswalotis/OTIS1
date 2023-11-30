@@ -20,4 +20,43 @@
         </criteriaItems>
         <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Mechanics</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Mechanics</label>
+        <sharedTo>
+            <group>Mechanics</group>
+        </sharedTo>
+        <booleanFilter>1 AND 2</booleanFilter>
+        <criteriaItems>
+            <field>OperationalStatus__c</field>
+            <operation>equals</operation>
+            <value>In Service</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>GBO_Name__c</field>
+            <operation>equals</operation>
+            <value>Salesforce GBO</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Mechanics_Sh</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Mechanics_Sh</label>
+        <sharedTo>
+            <group>Mechanics</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>OperationalStatus__c</field>
+            <operation>equals</operation>
+            <value>Shutdown</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>GBO_Name__c</field>
+            <operation>equals</operation>
+            <value>Salesforce GBO</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
 </SharingRules>
