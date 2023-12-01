@@ -2,16 +2,4 @@
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
     <custom>true</custom>
     <userLicense>Salesforce</userLicense>
-	<layoutAssignments>
-        <layout>Asset-Asset Layout</layout>
-    </layoutAssignments>
-	<tabVisibilities>
-        <tab>Daily_hurdle</tab>
-        <visibility>DefaultOn</visibility>
-  </tabVisibilities>
-  <fieldPermissions>
-        <editable>false</editable>
-        <field>Asset.Shut_Down_Duration__c</field>
-        <readable>true</readable>
-   </fieldPermissions>
 </Profile>
