@@ -10,6 +10,15 @@ trigger:
     
 pr: none
 
+
+parameters:
+
+- name: shouldNotifySubscribers
+  displayName: Notify Subscribers?
+  type: boolean
+  default: true
+
+
 variables:
 
 - template: templates/variables.yml
@@ -176,4 +185,18 @@ stages:
                     summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage/cobertura.xml'
                   displayName: 'Publish Coverage Results'
                   continueOnError: true
-
+                
+                - ${{ if eq(parameters.shouldNotifySubscribers, true) }}:
+                  
+                  - template: templates/notifySubscribers.yml
+                    parameters:
+                      ${{ if eq(variables['Build.SourceBranchName'], 'dev-jpn') }}:
+                        subscribers: $(subs_deployPR_FsJpn)
+                      ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-emea') }}:
+                        subscribers: $(subs_deployPR_FsEMEA)
+                      ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-naa') }}:
+                        subscribers: $(subs_deployPR_FsNAA)
+                      ${{ else }}:
+                        subscribers: $(subs_deployPR_FsGlobal)
+                    
+                  
