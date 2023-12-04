@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Mark_Reason_Required_On_Checkbox_True</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND ( Mark_For_Supervisor_Review__c ,ISBLANK(TEXT( Reason__c )))</errorConditionFormula>
+    <errorDisplayField>Reason__c</errorDisplayField>
+    <errorMessage>Reason is mandatory</errorMessage>
+</ValidationRule>
