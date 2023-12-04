@@ -57,6 +57,16 @@ parameters:
   - config/messaging/shape.json
   - config/messaging/features.json
 
+- name: scratchOrgConfigFeatures
+  displayName: Additional features to be included on top of scratch org config file
+  type: string
+  default: "[]"
+
+- name: scratchOrgConfigSettings
+  displayName: Additional settings to be included on top of scratch org config file
+  type: string
+  default: "{}"
+
 - name: scratchOrgDurationInDays
   displayName: Number of Days for Scratch Org to expire after
   type: number
@@ -171,6 +181,8 @@ stages:
               - template: templates/createScratchOrg.yml
                 parameters:
                   configFile: ${{ parameters.scratchOrgConfigFile }}
+                  configFeatures: ${{ parameters.scratchOrgConfigFeatures }}
+                  configSettings: ${{ parameters.scratchOrgConfigSettings }}
                   durationInDays: ${{ parameters.scratchOrgDurationInDays }}
                   enableDebugMode: ${{ parameters.enableDebugMode }}
                 
