@@ -48,6 +48,11 @@ parameters:
   type: boolean
   default: true
 
+- name: shouldInstall
+  displayName: Install Package Version?
+  type: boolean
+  default: true
+
 - name: shouldRunAqaTests
   displayName: Run AQA Tests?
   type: boolean
@@ -124,54 +129,56 @@ stages:
                     subscribers: $(subs_pkgVersion_FsGlobal)
               
             
-            - task: DownloadSEcureFile@1
-              name: targetOrgAuthFile
-              inputs:
+            - ${{ if eq(parameters.shouldInstall, true) }}:
+              
+              - task: DownloadSEcureFile@1
+                name: targetOrgAuthFile
+                inputs:
                   secureFile: authFile_$(targetOrgName)
-              displayName: 'Get Target Org auth file' 
+                displayName: 'Get Target Org auth file' 
+                
               
-            
-            - ${{ if eq(parameters.shouldRunTestsBefore, true) }}:
+              - ${{ if eq(parameters.shouldRunTestsBefore, true) }}:
+                
+                - template: templates/runTests.yml
+                  parameters:
+                    targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                    concurrentExecution: true
+                    continueOnError: true
+                
               
-              - template: templates/runTests.yml
+              - template: templates/installThirdParty.yml
                 parameters:
                   targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
-                  concurrentExecution: true
+                  packageAlias: FSL
                   continueOnError: true
+                  
               
-            
-            - template: templates/installThirdParty.yml
-              parameters:
-                targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
-                packageAlias: FSL
-                continueOnError: true
-                
-            
-            - template: templates/installVersion.yml
-              parameters:
-                ${{ if eq(variables['Build.SourceBranchName'], 'dev-jpn') }}:
-                  localizationDomain: "Japan"
-                ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-emea') }}:
-                  localizationDomain: "EMEA"
-                ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-naa') }}:
-                  localizationDomain: "NAA"
-                ${{ else }}:
-                  localizationDomain: "Global"
-                targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
-                
-                
-            - ${{ if eq(parameters.shouldRunAqaTests, true) }}:
-              
-              - template: templates/runAQA.yml
+              - template: templates/installVersion.yml
                 parameters:
-                  targetOrgAuthVariableGroup: $(targetOrgName)
-            
-            
-            - ${{ if eq(parameters.shouldRunTestsAfter, true) }}:
-              
-              - template: templates/runTests.yml
-                parameters:
+                  ${{ if eq(variables['Build.SourceBranchName'], 'dev-jpn') }}:
+                    localizationDomain: "Japan"
+                  ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-emea') }}:
+                    localizationDomain: "EMEA"
+                  ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-naa') }}:
+                    localizationDomain: "NAA"
+                  ${{ else }}:
+                    localizationDomain: "Global"
                   targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
-                  concurrentExecution: false
-
-
+                  
+                
+              - ${{ if eq(parameters.shouldRunAqaTests, true) }}:
+                
+                - template: templates/runAQA.yml
+                  parameters:
+                    targetOrgAuthVariableGroup: $(targetOrgName)
+                
+              
+              - ${{ if eq(parameters.shouldRunTestsAfter, true) }}:
+                
+                - template: templates/runTests.yml
+                  parameters:
+                    targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                    concurrentExecution: false
+                
+              
