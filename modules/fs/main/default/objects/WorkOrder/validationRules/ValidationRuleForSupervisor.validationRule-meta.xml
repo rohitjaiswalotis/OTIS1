@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ValidationRuleForSupervisor</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+   ISPICKVAL(PartsStatus__c, &quot;Part Delivered&quot;),
+   ISBLANK(ActualPartsDelivery__c)) &amp;&amp; OR($Profile.Name  == &apos;CSR Supervisor&apos;,$Profile.Name  == &apos;Mechanic User&apos;)</errorConditionFormula>
+    <errorDisplayField>ActualPartsDelivery__c</errorDisplayField>
+    <errorMessage>You Must Enter A Date</errorMessage>
+</ValidationRule>
