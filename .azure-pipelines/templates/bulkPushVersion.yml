@@ -127,8 +127,14 @@ stages:
                   targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
                   packageAlias: FSL
                   continueOnError: true
+                  
+              - template: installThirdParty.yml
+                parameters:
+                  targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
+                  packageAlias: Salesforce Maps
+                  continueOnError: true
+                  
                 
-              
               - template: installVersion.yml
                 parameters:
                   localizationDomain: ${{ parameters.localizationDomain }}

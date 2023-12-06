@@ -13,6 +13,9 @@
           "package": "FSL@246.0.75"
         },
         {
+          "package": "Salesforce Maps@246.9"
+        },
+        {
           "package": "OTIS Global CC Core",
           "versionNumber": "1.8.0.RELEASED"
         }
@@ -44,6 +47,7 @@
   ],
   "packageAliases": {
     "FSL@246.0.75": "04t3y000001SkXdAAK",
+    "Salesforce Maps@246.9": "04t4P000002fQreQAE",
     "OTIS Global CC Core": "0HoDn000000TNCsKAO",
     "OTIS Field Service": "0HoDn000000TNHeKAO"
   },

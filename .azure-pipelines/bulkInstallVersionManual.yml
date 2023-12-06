@@ -163,6 +163,13 @@ stages:
                     continueOnError: true
                     enableDebugMode: ${{ parameters.enableDebugMode }}
                   
+                - template: templates/installThirdParty.yml
+                  parameters:
+                    targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
+                    packageAlias: Salesforce Maps
+                    continueOnError: true
+                    enableDebugMode: ${{ parameters.enableDebugMode }}
+                  
                 
               - template: templates/installVersion.yml
                 parameters:

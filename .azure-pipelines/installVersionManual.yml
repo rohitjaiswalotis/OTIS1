@@ -264,8 +264,23 @@ stages:
                   packageAlias: FSL
                   continueOnError: true
                   enableDebugMode: ${{ parameters.enableDebugMode }}
-                  
-            
+                
+              - template: templates/installThirdParty.yml
+                parameters:
+                  ${{ if contains(parameters.targetOrgUsername, '@') }}:
+                    targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                    targetOrgUsername: ${{ parameters.targetOrgUsername }}
+                    targetOrgPassword: ${{ parameters.targetOrgPassword }}
+                  ${{ if not( eq(parameters.targetOrgToken, 'none') ) }}:
+                    targetOrgUrl: ${{ parameters.targetOrgUrl }}
+                    targetOrgToken: ${{ parameters.targetOrgToken }}
+                  ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
+                    targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                  packageAlias: Salesforce Maps
+                  continueOnError: true
+                  enableDebugMode: ${{ parameters.enableDebugMode }}
+                
+              
             - template: templates/installVersion.yml
               parameters:
                 versionId: ${{ parameters.versionId }}
