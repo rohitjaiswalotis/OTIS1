@@ -80,7 +80,7 @@ stages:
               displayName: 'Publish HTML report to pipeline'
 
     - stage: Deploy
-      condition: succeeded()
+      condition: and(succeeded(), not(contains(variables['Build.SourceVersionMessage'], '[SKIP CI]')))
       dependsOn: 
       - ValidatePMD
       displayName: Deploying
@@ -193,7 +193,7 @@ stages:
                   displayName: 'Send Notification re Failed Deployment'
                   condition: failed()
                   
-                - ${{ if eq(parameters.shouldNotifySubscribers, true) }}:
+                - ${{ if and( eq(parameters.shouldNotifySubscribers, true), not( contains(variables['Build.SourceVersionMessage'], '[SKIP PACKAGE]') ) ) }}:
                   
                   - template: templates/notifySubscribers.yml
                     parameters:
