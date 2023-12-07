@@ -49,16 +49,18 @@ variables:
 
 stages:
 
-- template: templates/bulkPushVersion.yml
-  parameters:
-    localizationDomain: "EMEA"
-    ${{ if eq(parameters.versionToPushOrgAuthFiles, 'default') }}:
-      versionToPushOrgAuthFiles: $(push_FsEmea_toEmea)
-    ${{ else }}:
-      versionToPushOrgAuthFiles: ${{ parameters.versionToPushOrgAuthFiles }}
-    versionToPushExpression: ${{ parameters.versionToPushExpression }}
-    versionWhereCondition: ${{ parameters.versionWhereCondition }}
-    shouldRunTestsBefore: ${{ parameters.shouldRunTestsBefore }}
-    shouldRunTestsAfter: ${{ parameters.shouldRunTestsAfter }}
+- ${{ if not(eq(parameters.versionToPushOrgAuthFiles, 'none')) }}:
+  
+  - template: templates/bulkPushVersion.yml
+    parameters:
+      localizationDomain: "EMEA"
+      ${{ if eq(parameters.versionToPushOrgAuthFiles, 'default') }}:
+        versionToPushOrgAuthFiles: $(push_FsEmea_toEmea)
+      ${{ else }}:
+        versionToPushOrgAuthFiles: ${{ parameters.versionToPushOrgAuthFiles }}
+      versionToPushExpression: ${{ parameters.versionToPushExpression }}
+      versionWhereCondition: ${{ parameters.versionWhereCondition }}
+      shouldRunTestsBefore: ${{ parameters.shouldRunTestsBefore }}
+      shouldRunTestsAfter: ${{ parameters.shouldRunTestsAfter }}
 
 
