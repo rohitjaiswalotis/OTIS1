@@ -166,7 +166,7 @@ stages:
                       # set variable to pass validation org auth file to next steps
                       echo "##vso[task.setvariable variable=validationOrgAuthFile]${validationOrgAuthFile}"
                       
-                  displayName: Validation on pool org
+                  displayName: Select validation org from pool
                   
                 - template: templates/installThirdParties.yml
                   parameters:
