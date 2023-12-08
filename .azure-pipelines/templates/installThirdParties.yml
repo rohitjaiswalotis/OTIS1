@@ -51,8 +51,8 @@ steps:
     ${{ if not( eq(parameters.targetOrgToken, 'none') ) }}:
       targetOrgUrl: ${{ parameters.targetOrgUrl }}
       targetOrgToken: ${{ parameters.targetOrgToken }}
-    ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
-      targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+    ${{ if not( eq(parameters.targetOrgAuthFilePath, 'none') ) }}:
+      targetOrgAuthFilePath: ${{ parameters.targetOrgAuthFilePath }}
     continueOnError: ${{ parameters.continueOnError }}
     enableDebugMode: ${{ parameters.enableDebugMode }}
 
@@ -69,8 +69,8 @@ steps:
     ${{ if not( eq(parameters.targetOrgToken, 'none') ) }}:
       targetOrgUrl: ${{ parameters.targetOrgUrl }}
       targetOrgToken: ${{ parameters.targetOrgToken }}
-    ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
-      targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+    ${{ if not( eq(parameters.targetOrgAuthFilePath, 'none') ) }}:
+      targetOrgAuthFilePath: ${{ parameters.targetOrgAuthFilePath }}
     continueOnError: ${{ parameters.continueOnError }}
     enableDebugMode: ${{ parameters.enableDebugMode }}
 
