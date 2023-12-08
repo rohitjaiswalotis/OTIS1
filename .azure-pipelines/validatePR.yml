@@ -166,7 +166,7 @@ stages:
                       # set variable to pass validation org auth file to next steps
                       echo "##vso[task.setvariable variable=validationOrgAuthFile]${validationOrgAuthFile}"
                       
-                  displayName: Select validation org from pool
+                  displayName: Select Validation Org from Pool
                   
                 - template: templates/installThirdParties.yml
                   parameters:
@@ -178,6 +178,12 @@ stages:
                       echo "BEFORE##########"
                       echo "validationOrgAuthFile=$validationOrgAuthFile"
                       echo "validationOrgAlias=$validationOrgAlias"
+                      
+                      echo "VALIDATIONORGAUTHFILE=$VALIDATIONORGAUTHFILE"
+                      echo "VALIDATIONORGALIAS=$VALIDATIONORGALIAS"
+                      
+                      echo "validationOrgAuthFile=$VALIDATION_ORG_AUTH_FILE"
+                      echo "validationOrgAlias=$VALIDATION_ORG_ALIAS"
                       
                       validationOrgAuthFile=$(validationOrgAuthFile)
                       validationOrgAlias=$(validationOrgAlias)
@@ -207,7 +213,7 @@ stages:
                       
                       sf force source deploy -p $(packageBaseDir) -u "$validationOrgAlias" --checkonly --testlevel RunLocalTests --junit --verbose --coverageformatters cobertura -w 1000
                       
-                  displayName: Validation on pool org
+                  displayName: Validate Changes against Org
                   
                   
                 - task: PublishTestResults@2
