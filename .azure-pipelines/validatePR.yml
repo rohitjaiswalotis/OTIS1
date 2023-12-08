@@ -160,6 +160,18 @@ stages:
                       validationOrgAuthFile=$(mktemp)
                       echo -n "$validationOrgAuthUrl" >> $validationOrgAuthFile
                       
+                      # set variable to pass validation org auth file to next steps
+                      echo "##vso[task.setvariable variable=validationOrgAuthFile]${validationOrgAuthFile}"
+                      
+                  displayName: Validation on pool org
+                  
+                - template: templates/installThirdParties.yml
+                  parameters:
+                    targetOrgAuthFilePath: $(validationOrgAuthFile)
+                    continueOnError: true
+                  
+                - script: |
+                      
                       # authorize to validation org
                       sf org login sfdx-url -f "$validationOrgAuthFile" -a "$validationOrgAlias"
                       

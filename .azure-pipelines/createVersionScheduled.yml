@@ -147,16 +147,9 @@ stages:
                     continueOnError: true
                 
               
-              - template: templates/installThirdParty.yml
+              - template: templates/installThirdParties.yml
                 parameters:
                   targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
-                  packageAlias: FSL
-                  continueOnError: true
-                
-              - template: templates/installThirdParty.yml
-                parameters:
-                  targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
-                  packageAlias: Salesforce Maps
                   continueOnError: true
                   
               
