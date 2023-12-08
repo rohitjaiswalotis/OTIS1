@@ -160,6 +160,9 @@ stages:
                       validationOrgAuthFile=$(mktemp)
                       echo -n "$validationOrgAuthUrl" >> $validationOrgAuthFile
                       
+                      # set variable to pass validation org alias to next steps
+                      echo "##vso[task.setvariable variable=validationOrgAlias]${validationOrgAlias}"
+                      
                       # set variable to pass validation org auth file to next steps
                       echo "##vso[task.setvariable variable=validationOrgAuthFile]${validationOrgAuthFile}"
                       
