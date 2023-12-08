@@ -122,16 +122,9 @@ stages:
                     continueOnError: true
                 
               
-              - template: installThirdParty.yml
+              - template: installThirdParties.yml
                 parameters:
                   targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
-                  packageAlias: FSL
-                  continueOnError: true
-                  
-              - template: installThirdParty.yml
-                parameters:
-                  targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
-                  packageAlias: Salesforce Maps
                   continueOnError: true
                   
                 
