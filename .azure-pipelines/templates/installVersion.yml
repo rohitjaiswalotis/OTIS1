@@ -306,7 +306,9 @@ steps:
           # early exit - error when grabbing installed packages from target org
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
             echo "ERROR: Cannot install dependencies for package $(fsPackageName) ($FS_PACKAGE_VERSION_ID) into target org as '$TARGET_ORG_USERNAME' user!"
-            curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version `'$FS_PACKAGE_VERSION_ID'` dependencies installation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!"}' $(notificationUrl)
+            for notifErrorUrl in $notifErrorUrls; do
+              curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version `'$FS_PACKAGE_VERSION_ID'` dependencies installation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!"}' $(notifErrorUrl)
+            done
             exit 1
           fi
           
@@ -381,7 +383,9 @@ steps:
         # early exit - package installation error
         if [[ "$DX_INSTALL_STATUS_CODE" != "0" ]]; then
           echo "Error when installing '$(fsPackageName)' package version ($FS_PACKAGE_VERSION_ID) into target org as user '$TARGET_ORG_USERNAME'!"
-          curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version `'$FS_PACKAGE_VERSION_ID'` installation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!"}' $(notificationUrl)
+          for notifErrorUrl in $notifErrorUrls; do
+            curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version `'$FS_PACKAGE_VERSION_ID'` installation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!"}' $(notifErrorUrl)
+          done
           exit 1;
         fi
         
@@ -404,9 +408,9 @@ steps:
           
         fi
         
-        
-        curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version `'$FS_PACKAGE_VERSION_ID'` installation [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!"}' $(notificationUrl)
-        
+        for notifSuccessUrl in $notifSuccessUrls; do
+          curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version `'$FS_PACKAGE_VERSION_ID'` installation [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!"}' $(notifSuccessUrls)
+        done
         
         # get packages installed into target org again
         echo "Fetching packages available in target org after Field Service package install/upgrade..."
