@@ -87,11 +87,6 @@ parameters:
   type: boolean
   default: false
 
-- name: fslPackageVersionId
-  displayName: FSL Package Version Id
-  type: string
-  default: "default"
-
 - name: deploymentMode
   displayName: Deployment Mode
   type: string
@@ -224,7 +219,7 @@ stages:
               
             - ${{ if eq(parameters.shouldInstallThirdParties, true) }}:
               
-              - template: templates/installThirdParty.yml
+              - template: templates/installThirdParties.yml
                 parameters:
                   ${{ if contains(parameters.targetOrgUsername, '@') }}:
                     targetOrgUrl: ${{ parameters.targetOrgUrl }}
@@ -235,23 +230,6 @@ stages:
                     targetOrgToken: ${{ parameters.targetOrgToken }}
                   ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
                     targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
-                  versionId: ${{ parameters.fslPackageVersionId }}
-                  packageAlias: FSL
-                  continueOnError: true
-                  enableDebugMode: ${{ parameters.enableDebugMode }}
-                
-              - template: templates/installThirdParty.yml
-                parameters:
-                  ${{ if contains(parameters.targetOrgUsername, '@') }}:
-                    targetOrgUrl: ${{ parameters.targetOrgUrl }}
-                    targetOrgUsername: ${{ parameters.targetOrgUsername }}
-                    targetOrgPassword: ${{ parameters.targetOrgPassword }}
-                  ${{ if not( eq(parameters.targetOrgToken, 'none') ) }}:
-                    targetOrgUrl: ${{ parameters.targetOrgUrl }}
-                    targetOrgToken: ${{ parameters.targetOrgToken }}
-                  ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
-                    targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
-                  packageAlias: Salesforce Maps
                   continueOnError: true
                   enableDebugMode: ${{ parameters.enableDebugMode }}
                 
