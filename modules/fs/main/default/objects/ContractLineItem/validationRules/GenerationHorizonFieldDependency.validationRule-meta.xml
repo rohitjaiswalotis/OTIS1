@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>GenerationHorizonFieldDependency</fullName>
-    <active>true</active>
-    <description>Generation_Horizon_Field_Dependency is there on Generate_New_Batch_Upon_Completion.</description>
-    <errorConditionFormula>AND(GenerateNewBatchUponCompletion__c == False ,  (NOT(ISBLANK(GenerationHorizon__c))) )</errorConditionFormula>
-    <errorMessage>For Updating Generation Horizon we need to Check Generate new batch upon completion CheckBox</errorMessage>
-</ValidationRule>
