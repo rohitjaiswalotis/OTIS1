@@ -175,6 +175,18 @@ stages:
                   
                 - script: |
                       
+                      echo "BEFORE##########"
+                      echo "validationOrgAuthFile=$validationOrgAuthFile"
+                      echo "validationOrgAlias=$validationOrgAlias"
+                      
+                      validationOrgAuthFile=$(validationOrgAuthFile)
+                      validationOrgAlias=$(validationOrgAlias)
+                      
+                      echo "AFTER##########"
+                      echo "validationOrgAuthFile=$validationOrgAuthFile"
+                      echo "validationOrgAlias=$validationOrgAlias"
+                      
+                      
                       # authorize to validation org
                       sf org login sfdx-url -f "$validationOrgAuthFile" -a "$validationOrgAlias"
                       
