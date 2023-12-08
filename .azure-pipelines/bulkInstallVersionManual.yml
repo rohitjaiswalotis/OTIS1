@@ -30,11 +30,6 @@ parameters:
   displayName: Install Third Parties?
   type: boolean
   default: false
-  
-- name: fslPackageVersionId
-  displayName: FSL Package Version Id
-  type: string
-  default: "default"
 
 - name: installationMode
   displayName: Installation Mode
@@ -155,18 +150,9 @@ stages:
               
               - ${{ if eq(parameters.shouldInstallThirdParties, true) }}:
                 
-                - template: templates/installThirdParty.yml
+                - template: templates/installThirdParties.yml
                   parameters:
                     targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
-                    versionId: ${{ parameters.fslPackageVersionId }}
-                    packageAlias: FSL
-                    continueOnError: true
-                    enableDebugMode: ${{ parameters.enableDebugMode }}
-                  
-                - template: templates/installThirdParty.yml
-                  parameters:
-                    targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
-                    packageAlias: Salesforce Maps
                     continueOnError: true
                     enableDebugMode: ${{ parameters.enableDebugMode }}
                   

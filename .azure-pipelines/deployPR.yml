@@ -120,6 +120,13 @@ stages:
                       secureFile: authFile_devFS
                   displayName: 'Copy authorization file for devFS'
                   
+                  
+                - template: templates/installThirdParties.yml
+                  parameters:
+                    targetOrgAuthFilePath: $(authFile.secureFilePath)
+                    continueOnError: true
+                    
+                  
                 - script: |
                         
                         sf org login sfdx-url -f $(authFile.secureFilePath) -a $(OrgAliasDevFS)
@@ -128,6 +135,7 @@ stages:
                         sf package installed list --target-org="$(OrgAliasDevFS)"
                         
                   displayName: 'Authenticate to devFS'
+                  
                   
                 - bash: |
                         
