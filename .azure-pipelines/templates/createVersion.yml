@@ -144,7 +144,9 @@ steps:
         # early exit: error on package version creation
         if [[ "$DX_STATUS_CODE" != "0" ]]; then
           echo "Error when creating '$(fsPackageName)' package version!"
-          curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version creation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)!"}' $(notificationUrl)
+          for notifErrorUrl in $(notifErrorUrls); do
+            curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version creation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)!"}' $notifErrorUrl
+          done
           exit 1
         fi
         
@@ -168,7 +170,9 @@ steps:
         
         FS_PACKAGE_VERSION_NUMBER=$(echo "$FS_PACKAGE_VERSION_DETAILS" | jq -r '.result.Version // empty')
         
-        curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version creation `'$FS_PACKAGE_VERSION_NUMBER'` [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)!"}' $(notificationUrl)
+        for notifSuccessUrl in $(notifSuccessUrls); do
+          curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version creation `'$FS_PACKAGE_VERSION_NUMBER'` [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)!"}' $notifSuccessUrl
+        done
         
         
         # optionally create tag in repo with the following format: v{major}.{minor}.{build}.{patch}-{valid|skip}-{04txxxxxxxxxxxxxxx}-{branchName}

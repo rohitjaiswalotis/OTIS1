@@ -196,7 +196,9 @@ stages:
                   
                 - bash: |
                         
-                        curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; **$(fsPackageName)** `$(Build.SourceBranchName)` - PR deployment [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `$(OrgAliasDevFS)` org by $(Build.RequestedFor)!"}' $(notificationUrl)
+                        for notifErrorUrl in $(notifErrorUrls); do
+                          curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; **$(fsPackageName)** `$(Build.SourceBranchName)` - PR deployment [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `$(OrgAliasDevFS)` org by $(Build.RequestedFor)!"}' $notifErrorUrl
+                        done
                         
                   displayName: 'Send Notification re Failed Deployment'
                   condition: failed()
