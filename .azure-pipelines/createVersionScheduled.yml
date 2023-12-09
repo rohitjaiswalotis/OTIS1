@@ -53,6 +53,16 @@ parameters:
   type: boolean
   default: true
 
+- name: shouldInstallThirdParties
+  displayName: Install Third Parties?
+  type: boolean
+  default: true
+
+- name: autoInstallDependencies
+  displayName: Auto Install Dependencies?
+  type: boolean
+  default: false
+
 - name: shouldRunAqaTests
   displayName: Run AQA Tests?
   type: boolean
@@ -147,12 +157,14 @@ stages:
                     continueOnError: true
                 
               
-              - template: templates/installThirdParties.yml
-                parameters:
-                  targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
-                  continueOnError: true
+              - ${{ if eq(parameters.shouldInstallThirdParties, true) }}:
+                
+                - template: templates/installThirdParties.yml
+                  parameters:
+                    targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                    continueOnError: true
                   
-              
+                
               - template: templates/installVersion.yml
                 parameters:
                   ${{ if eq(variables['Build.SourceBranchName'], 'dev-jpn') }}:
@@ -164,6 +176,7 @@ stages:
                   ${{ else }}:
                     localizationDomain: "Global"
                   targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                  autoInstallDependencies: ${{ parameters.autoInstallDependencies }}
                   
                 
               - ${{ if eq(parameters.shouldRunAqaTests, true) }}:

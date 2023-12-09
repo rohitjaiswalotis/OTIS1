@@ -36,6 +36,16 @@ parameters:
   type: string
   default: none
 
+- name: autoInstallDependencies
+  displayName: Auto Install Dependencies?
+  type: boolean
+  default: false
+
+- name: installOnlyDependencies
+  displayName: Install Only Dependencies?
+  type: boolean
+  default: false
+
 - name: installationMode
   displayName: Installation Mode
   type: string
@@ -71,11 +81,6 @@ parameters:
   - before
   - after
   - none
-
-- name: autoInstallDependencies
-  displayName: Auto Install Dependencies?
-  type: boolean
-  default: false
 
 - name: enableDebugMode
   displayName: Debug Mode?
@@ -280,7 +285,7 @@ steps:
         
         
         # auto install dependencies if requested
-        if [[ "${{ parameters.autoInstallDependencies }}" =~ ^[Tt]rue$ ]] ; then
+        if [[ "${{ parameters.autoInstallDependencies }}" =~ ^[Tt]rue$ || "${{ parameters.installOnlyDependencies }}" =~ ^[Tt]rue$ ]] ; then
           
           # include client utils
           chmod +x $(clientUtils)
@@ -368,6 +373,20 @@ steps:
         else
           
           echo "Skipped pre-$PACKAGE_ACTION_TYPE steps."
+          
+        fi
+        
+        
+        # early exit - only dependencies installation have been requested
+        if [[ "${{ parameters.installOnlyDependencies }}" =~ ^[Tt]rue$ ]] ; then
+          
+          echo "Early exit after successfully installing dependencies, since no package version installation has been requested."
+          
+          for notifSuccessUrl in $(notifSuccessUrls); do
+            curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; **$(fsPackageName)** `$(Build.SourceBranchName)` - dependencies for package version `'$FS_PACKAGE_VERSION_ID'` installation [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!"}' $notifSuccessUrl
+          done
+          
+          exit 0;
           
         fi
         

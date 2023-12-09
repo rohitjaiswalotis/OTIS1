@@ -92,6 +92,11 @@ parameters:
   type: boolean
   default: false
 
+- name: installOnlyDependencies
+  displayName: Install Only Dependencies?
+  type: boolean
+  default: false
+
 - name: shouldInstallThirdParties
   displayName: Install Third Parties?
   type: boolean
@@ -277,6 +282,7 @@ stages:
                 upgradeType: ${{ parameters.upgradeType }}
                 actionPhase: ${{ parameters.actionPhase }}
                 autoInstallDependencies: ${{ parameters.autoInstallDependencies }}
+                installOnlyDependencies: ${{ parameters.installOnlyDependencies }}
                 enableDebugMode: ${{ parameters.enableDebugMode }}
                 
                 
