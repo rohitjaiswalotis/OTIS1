@@ -20,6 +20,21 @@ parameters:
   type: string
   default: none
 
+- name: shouldInstallThirdParties
+  displayName: Install Third Parties?
+  type: boolean
+  default: true
+
+- name: autoInstallDependencies
+  displayName: Auto Install Dependencies?
+  type: boolean
+  default: false
+
+- name: installOnlyDependencies
+  displayName: Install Only Dependencies?
+  type: boolean
+  default: false
+
 - name: shouldRunTestsBefore
   displayName: Run Tests Before?
   type: boolean
@@ -122,16 +137,20 @@ stages:
                     continueOnError: true
                 
               
-              - template: installThirdParties.yml
-                parameters:
-                  targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
-                  continueOnError: true
+              - ${{ if eq(parameters.shouldInstallThirdParties, true) }}:
+                
+                - template: installThirdParties.yml
+                  parameters:
+                    targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
+                    continueOnError: true
                   
                 
               - template: installVersion.yml
                 parameters:
                   localizationDomain: ${{ parameters.localizationDomain }}
                   targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
+                  autoInstallDependencies: ${{ parameters.autoInstallDependencies }}
+                  installOnlyDependencies: ${{ parameters.installOnlyDependencies }}
                 
               
               - ${{ if eq(parameters.shouldRunTestsAfter, true) }}:

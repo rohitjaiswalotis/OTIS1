@@ -31,6 +31,16 @@ parameters:
   type: boolean
   default: false
 
+- name: autoInstallDependencies
+  displayName: Auto Install Dependencies?
+  type: boolean
+  default: false
+
+- name: installOnlyDependencies
+  displayName: Install Only Dependencies?
+  type: boolean
+  default: false
+
 - name: installationMode
   displayName: Installation Mode
   type: string
@@ -162,6 +172,8 @@ stages:
                   versionId: ${{ parameters.versionId }}
                   localizationDomain: ${{ parameters.localizationDomain }}
                   targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
+                  autoInstallDependencies: ${{ parameters.autoInstallDependencies }}
+                  installOnlyDependencies: ${{ parameters.installOnlyDependencies }}
                   installationMode: ${{ parameters.installationMode }}
                   compileScope: ${{ parameters.compileScope }}
                   upgradeType: ${{ parameters.upgradeType }}
