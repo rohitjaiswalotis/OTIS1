@@ -5,7 +5,7 @@
         <name>testing</name>
         <label>testing</label>
         <locationX>138</locationX>
-        <locationY>1151</locationY>
+        <locationY>1259</locationY>
         <assignmentItems>
             <assignToReference>testing1</assignToReference>
             <operator>Add</operator>
@@ -21,7 +21,7 @@
         <name>Error_Msg</name>
         <label>Error Msg</label>
         <locationX>182</locationX>
-        <locationY>1535</locationY>
+        <locationY>1643</locationY>
         <customErrorMessages>
             <errorMessage>There are already Service Appointment which are active.</errorMessage>
             <isFieldError>false</isFieldError>
@@ -31,7 +31,7 @@
         <name>Unit_Error</name>
         <label>Unit Error</label>
         <locationX>446</locationX>
-        <locationY>935</locationY>
+        <locationY>1043</locationY>
         <customErrorMessages>
             <errorMessage>There is a problem in the Related Unit.</errorMessage>
             <isFieldError>false</isFieldError>
@@ -41,7 +41,7 @@
         <name>check_statuses</name>
         <label>check statuses</label>
         <locationX>270</locationX>
-        <locationY>1043</locationY>
+        <locationY>1151</locationY>
         <defaultConnector>
             <targetReference>Looping_SA_records</targetReference>
         </defaultConnector>
@@ -56,6 +56,13 @@
                     <stringValue>Completed</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>Looping_SA_records.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Canceled</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>testing</targetReference>
             </connector>
@@ -65,11 +72,8 @@
     <decisions>
         <name>Check_Unit_Status</name>
         <label>Check Unit Status</label>
-        <locationX>248</locationX>
+        <locationX>479</locationX>
         <locationY>827</locationY>
-        <defaultConnector>
-            <targetReference>Unit_Error</targetReference>
-        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Unit_Status_Shutdown</name>
@@ -81,15 +85,8 @@
                     <stringValue>Shutdown</stringValue>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>Get_Unit.Unit_ShutDown_DateTime_Rollup__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
             <connector>
-                <targetReference>Looping_SA_records</targetReference>
+                <targetReference>shutdown_date_is_present_or_not</targetReference>
             </connector>
             <label>Unit Status Shutdown</label>
         </rules>
@@ -98,7 +95,7 @@
         <name>Checking_Criteria</name>
         <label>Checking Criteria</label>
         <locationX>50</locationX>
-        <locationY>1427</locationY>
+        <locationY>1535</locationY>
         <defaultConnector>
             <targetReference>Error_Msg</targetReference>
         </defaultConnector>
@@ -133,7 +130,7 @@
     <decisions>
         <name>Checking_User</name>
         <label>Checking User</label>
-        <locationX>479</locationX>
+        <locationX>726</locationX>
         <locationY>395</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -152,6 +149,31 @@
             <label>User role should be Route Supervisor</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>shutdown_date_is_present_or_not</name>
+        <label>shutdown date is present or not</label>
+        <locationX>248</locationX>
+        <locationY>935</locationY>
+        <defaultConnector>
+            <targetReference>Unit_Error</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>shutdown_date_time</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Unit.Unit_ShutDown_DateTime_Rollup__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Looping_SA_records</targetReference>
+            </connector>
+            <label>shutdown date time</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
     <interviewLabel>SA by Supervisor {!$Flow.CurrentDateTime}</interviewLabel>
     <label>SA by Supervisor</label>
@@ -159,7 +181,7 @@
         <name>Looping_SA_records</name>
         <label>Looping SA records</label>
         <locationX>50</locationX>
-        <locationY>935</locationY>
+        <locationY>1043</locationY>
         <collectionReference>Get_All_SA_records</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -191,7 +213,7 @@
     <recordLookups>
         <name>Get_All_SA_records</name>
         <label>Get All SA records</label>
-        <locationX>248</locationX>
+        <locationX>479</locationX>
         <locationY>719</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -214,7 +236,7 @@
     <recordLookups>
         <name>Get_Unit</name>
         <label>Get Unit</label>
-        <locationX>248</locationX>
+        <locationX>479</locationX>
         <locationY>611</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -235,7 +257,7 @@
     <recordLookups>
         <name>get_User</name>
         <label>get User</label>
-        <locationX>479</locationX>
+        <locationX>726</locationX>
         <locationY>287</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -256,7 +278,7 @@
     <recordLookups>
         <name>Get_WO</name>
         <label>Get WO</label>
-        <locationX>248</locationX>
+        <locationX>479</locationX>
         <locationY>503</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -275,7 +297,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>353</locationX>
+        <locationX>600</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>get_User</targetReference>
@@ -285,6 +307,14 @@
         <triggerType>RecordBeforeSave</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>currentItem_filter</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
+    </variables>
     <variables>
         <name>recordtest</name>
         <dataType>SObject</dataType>
