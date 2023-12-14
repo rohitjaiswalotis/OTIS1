@@ -1,11 +1,144 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>59.0</apiVersion>
+    <assignments>
+        <name>Update_Counter</name>
+        <label>Update Counter</label>
+        <locationX>1326</locationX>
+        <locationY>971</locationY>
+        <assignmentItems>
+            <assignToReference>AssignedServiceResourceCounter</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Through_Record_Collection</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Check_Assigned_resource_populated_on_SA</name>
+        <label>Check Assigned resource populated on SA</label>
+        <locationX>182</locationX>
+        <locationY>1079</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>If_Populated</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CreateAssignedResourcerecordtoSA</targetReference>
+            </connector>
+            <label>If Populated</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>If_Get_records_returns_Blank_Collection</name>
+        <label>If Get records returns Blank Collection</label>
+        <locationX>1238</locationX>
+        <locationY>1163</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>If_Not_Blank</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>AssignedServiceResourceCounter</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>DeleteRelatedAssignedResourceRecord</targetReference>
+            </connector>
+            <label>If Not Blank</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>operations_on_assigned_resource</name>
+        <label>operations on assigned resource</label>
+        <locationX>1106</locationX>
+        <locationY>647</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>If_new_assigned_resource_record_created</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Related_Assigned_Resource_record_to_SA</targetReference>
+            </connector>
+            <label>If new assigned resource record created</label>
+        </rules>
+        <rules>
+            <name>If_updated_existing_Assigned_Resource_record</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetRelatedAssignedResourceRecords</targetReference>
+            </connector>
+            <label>If updated existing Assigned Resource record</label>
+        </rules>
+        <rules>
+            <name>If_Assigned_Service_Resource_field_cleared</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Related_Assigned_Resource_Record</targetReference>
+            </connector>
+            <label>If Assigned Service Resource field cleared</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>SA_Decision</name>
         <label>SA Decision</label>
-        <locationX>446</locationX>
-        <locationY>431</locationY>
+        <locationX>1436</locationX>
+        <locationY>539</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>When_Work_Order_is_Blank</name>
@@ -22,6 +155,28 @@
             </connector>
             <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
             <label>When Work Order is Blank</label>
+        </rules>
+        <rules>
+            <name>Assigned_Service_Resource_field_filled</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AssignedServiceResource__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.AssignedServiceResource__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record.AssignedServiceResource__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>operations_on_assigned_resource</targetReference>
+            </connector>
+            <label>Assigned Service Resource field filled</label>
         </rules>
         <rules>
             <name>SA_completed_within_time</name>
@@ -102,6 +257,11 @@
         <expression>NOW() + ({!$Record.Mechanic_ETA_Minutes__c}/1440)</expression>
     </formulas>
     <formulas>
+        <name>PopulateGanttLabel</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.Unit__r.Name}+&apos;-&apos;+{!$Record.WorkType.Name}  +&apos;-&apos;+Text({!$Record.WorkOrder__r.FS_WorkOderType__c}) +&apos;-&apos;+({!$Record.Priority__c})</expression>
+    </formulas>
+    <formulas>
         <name>TotalTimer</name>
         <dataType>Number</dataType>
         <expression>({!$Record.SchedEndTime}-{!$Record.SchedStartTime})*60</expression>
@@ -115,6 +275,20 @@
     </formulas>
     <interviewLabel>Service Appointment Flow {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Service Appointment Flow</label>
+    <loops>
+        <name>Loop_Through_Record_Collection</name>
+        <label>Loop Through Record Collection</label>
+        <locationX>1238</locationX>
+        <locationY>863</locationY>
+        <collectionReference>AssignedResourceRecordCollection</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Update_Counter</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>If_Get_records_returns_Blank_Collection</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -134,11 +308,135 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Create_Related_Assigned_Resource_record_to_SA</name>
+        <label>Create Related Assigned Resource record to SA</label>
+        <locationX>578</locationX>
+        <locationY>755</locationY>
+        <inputAssignments>
+            <field>ServiceAppointmentId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ServiceResourceId</field>
+            <value>
+                <elementReference>$Record.AssignedServiceResource__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>AssignedResource</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>CreateAssignedResourcerecordtoSA</name>
+        <label>Create Assigned Resource record to SA</label>
+        <locationX>50</locationX>
+        <locationY>1187</locationY>
+        <inputAssignments>
+            <field>ServiceAppointmentId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ServiceResourceId</field>
+            <value>
+                <elementReference>$Record.AssignedServiceResource__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>AssignedResource</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordDeletes>
+        <name>DeleteRelatedAssignedResourceRecord</name>
+        <label>Delete Related Assigned Resource Record</label>
+        <locationX>1106</locationX>
+        <locationY>1271</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ServiceAppointmentId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <object>AssignedResource</object>
+    </recordDeletes>
+    <recordLookups>
+        <name>Get_Related_Assigned_Resource_Record</name>
+        <label>Get Related Assigned Resource Record</label>
+        <locationX>1238</locationX>
+        <locationY>755</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_Through_Record_Collection</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ServiceAppointmentId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>AssignedResourceDeletedManually__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <object>AssignedResource</object>
+        <outputReference>AssignedResourceRecordCollection</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>IsDeleted</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>GetRelatedAssignedResourceRecords</name>
+        <label>Get Related Assigned Resource Records</label>
+        <locationX>842</locationX>
+        <locationY>755</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>UpdateAssignedResourceRecords</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ServiceAppointmentId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>AssignedResource</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Building_Id</name>
+        <label>Building Id</label>
+        <locationX>182</locationX>
+        <locationY>971</locationY>
+        <connector>
+            <targetReference>Check_Assigned_resource_populated_on_SA</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>BuildingId__c</field>
+            <value>
+                <elementReference>$Record.Unit__r.Location.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
     <recordUpdates>
         <name>Populate_Address_field_on_SA</name>
         <label>Populate Address field on SA</label>
-        <locationX>50</locationX>
-        <locationY>755</locationY>
+        <locationX>182</locationX>
+        <locationY>863</locationY>
+        <connector>
+            <targetReference>Building_Id</targetReference>
+        </connector>
         <inputAssignments>
             <field>City</field>
             <value>
@@ -174,8 +472,8 @@
     <recordUpdates>
         <name>Update_Asset</name>
         <label>Update Asset</label>
-        <locationX>50</locationX>
-        <locationY>647</locationY>
+        <locationX>182</locationX>
+        <locationY>755</locationY>
         <connector>
             <targetReference>Populate_Address_field_on_SA</targetReference>
         </connector>
@@ -190,10 +488,10 @@
     <recordUpdates>
         <name>Update_Initial_Time_of_SA</name>
         <label>Update Initial Time of SA</label>
-        <locationX>578</locationX>
+        <locationX>1436</locationX>
         <locationY>323</locationY>
         <connector>
-            <targetReference>SA_Decision</targetReference>
+            <targetReference>Update_SA_FS_Unit_Priority</targetReference>
         </connector>
         <filterLogic>1 AND 2 AND (3 OR 4)</filterLogic>
         <filters>
@@ -247,8 +545,8 @@
     <recordUpdates>
         <name>Update_New_Scheduled_Time</name>
         <label>Update New Scheduled Time</label>
-        <locationX>842</locationX>
-        <locationY>539</locationY>
+        <locationX>2426</locationX>
+        <locationY>647</locationY>
         <inputAssignments>
             <field>SchedEndTime</field>
             <value>
@@ -256,18 +554,61 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>SchedStartTime</field>
+            <field>Status</field>
             <value>
-                <elementReference>NewScheduledStartTime</elementReference>
+                <stringValue>In Progress</stringValue>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
+        <name>Update_SA_FS_Unit_Priority</name>
+        <label>Update SA FS Unit Priority</label>
+        <locationX>1436</locationX>
+        <locationY>431</locationY>
+        <connector>
+            <targetReference>SA_Decision</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FS_Gantt_Label__c</field>
+            <value>
+                <elementReference>PopulateGanttLabel</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>FS_Unit_Priority__c</field>
+            <value>
+                <elementReference>$Record.Priority__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>UpdateAssignedResourceRecords</name>
+        <label>Update Assigned Resource Records</label>
+        <locationX>842</locationX>
+        <locationY>863</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>GetRelatedAssignedResourceRecords.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>ServiceResourceId</field>
+            <value>
+                <elementReference>$Record.AssignedServiceResource__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>AssignedResource</object>
+    </recordUpdates>
+    <recordUpdates>
         <name>updating_reason_on_WO</name>
         <label>Updating Reason On WO</label>
-        <locationX>578</locationX>
-        <locationY>539</locationY>
+        <locationX>2162</locationX>
+        <locationY>647</locationY>
         <inputAssignments>
             <field>Mark_For_Supervisor_Review__c</field>
             <value>
@@ -291,8 +632,8 @@
     <recordUpdates>
         <name>Updating_Wo</name>
         <label>Updating Wo</label>
-        <locationX>314</locationX>
-        <locationY>539</locationY>
+        <locationX>1898</locationX>
+        <locationY>647</locationY>
         <inputAssignments>
             <field>Mark_For_Supervisor_Review__c</field>
             <value>
@@ -310,8 +651,8 @@
     <recordUpdates>
         <name>Work_Order_Field_Update</name>
         <label>Work Order Field Update</label>
-        <locationX>50</locationX>
-        <locationY>539</locationY>
+        <locationX>182</locationX>
+        <locationY>647</locationY>
         <connector>
             <targetReference>Update_Asset</targetReference>
         </connector>
@@ -324,7 +665,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>452</locationX>
+        <locationX>1310</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Update_Initial_Time_of_SA</targetReference>
@@ -334,4 +675,20 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>AssignedResourceRecordCollection</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>AssignedResource</objectType>
+    </variables>
+    <variables>
+        <name>AssignedServiceResourceCounter</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+    </variables>
 </Flow>
