@@ -143,11 +143,19 @@ steps:
         
         # early exit: error on package version creation
         if [[ "$DX_STATUS_CODE" != "0" ]]; then
+          
           echo "Error when creating '$(fsPackageName)' package version!"
-          for notifErrorUrl in $(notifErrorUrls); do
-            curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version creation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)!"}' $notifErrorUrl
-          done
+          
+          DX_ERROR_MESSAGE=$(echo "$DX_PACKAGE_VERSION_CREATE_RESPONSE" | jq -r ".message // empty");
+          
+          if [[ ${DX_ERROR_MESSAGE:+1} ]] ; then
+            echo "$DX_ERROR_MESSAGE"
+          fi
+          
+          curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version creation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)! <pre>'"${DX_ERROR_MESSAGE:-unknown error}"'<\/pre>"}' $(notifErrorUrls)
+          
           exit 1
+          
         fi
         
         
@@ -170,9 +178,7 @@ steps:
         
         FS_PACKAGE_VERSION_NUMBER=$(echo "$FS_PACKAGE_VERSION_DETAILS" | jq -r '.result.Version // empty')
         
-        for notifSuccessUrl in $(notifSuccessUrls); do
-          curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version creation `'$FS_PACKAGE_VERSION_NUMBER'` [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)!"}' $notifSuccessUrl
-        done
+        curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version creation `'"$FS_PACKAGE_VERSION_NUMBER"'` [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)!"}' $(notifSuccessUrls)
         
         
         # optionally create tag in repo with the following format: v{major}.{minor}.{build}.{patch}-{valid|skip}-{04txxxxxxxxxxxxxxx}-{branchName}
@@ -224,7 +230,7 @@ steps:
         sfAccessToken=$(echo "$sfOrgDetails" | jq -r '.result.accessToken // empty');
         sfInstanceUrl=$(echo "$sfOrgDetails" | jq -r '.result.instanceUrl // empty');
         
-        npx -p sf-package-inspector@$(packageInspectorVersion) sf-package-inspect --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --command="list-deps" --versionId="$FS_PACKAGE_VERSION_ID" --apiVersion="$(sfApiVersion)"
+        npx -p sf-package-inspector@$(packageInspectorVersion) sf-package-inspect --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --command="list-deps" --versionId="$FS_PACKAGE_VERSION_ID" --apiVersion="$(sfApiVersion)" || true
         
         
   displayName: 'Create Field Service package version'

@@ -73,6 +73,27 @@ steps:
                 continue;
             fi
             
+            
+            # check if subscriber should be notified based on condition to evaluate, e.g. '[[ ${BUILD_REASON,,} =~ ^schedule$ ]] && echo 1 || echo 0'
+            
+            SUBSCRIBER_CONDITION_EXPRESSION=$(echo $SUBSCRIBER_TO_NOTIFY | jq -r '.condition // empty')
+            
+            if [[ ${SUBSCRIBER_CONDITION_EXPRESSION:+1} ]]; then
+                
+                echo "Found subscriber condition to evaluate: ${SUBSCRIBER_CONDITION_EXPRESSION}"
+                
+                SUBSCRIBER_CONDITION_SHOULD_BE_EXECUTED="$(eval $SUBSCRIBER_CONDITION_EXPRESSION)";
+                
+                if [[ ${SUBSCRIBER_CONDITION_SHOULD_BE_EXECUTED:+1} && ( $SUBSCRIBER_CONDITION_SHOULD_BE_EXECUTED -eq 1 || ${SUBSCRIBER_CONDITION_SHOULD_BE_EXECUTED,,} =~ ^true$ ) ]]; then
+                    echo "Going to trigger current subscriber with pipeline '$SUBSCRIBER_PIPELINE_NAME' due to condition expression being evaluated as: ${SUBSCRIBER_CONDITION_SHOULD_BE_EXECUTED}"
+                else
+                    echo "Skipping current subscriber with pipeline '$SUBSCRIBER_PIPELINE_NAME' due to condition expression being evaluated as: ${SUBSCRIBER_CONDITION_SHOULD_BE_EXECUTED}!"
+                    continue;
+                fi
+                
+            fi
+            
+            
             # split pipeline name to separate folder
             subscriberPipelineFolder="$(echo $SUBSCRIBER_PIPELINE_NAME | cut -d "/" -f1)";
             subscriberPipelineName="$(echo $SUBSCRIBER_PIPELINE_NAME | cut -d "/" -f2)";
