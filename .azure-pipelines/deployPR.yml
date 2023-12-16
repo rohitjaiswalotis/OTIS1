@@ -98,6 +98,8 @@ stages:
                 steps:
                 
                 - template: templates/init.yml
+                  parameters:
+                    useCache: false
                   
                 - task: DownloadSEcureFile@1
                   name: authFile

@@ -1,4 +1,12 @@
 
+parameters:
+
+- name: useCache
+  displayName: Use Cache?
+  type: boolean
+  default: true
+
+
 steps:
 
 - checkout: self
@@ -13,13 +21,15 @@ steps:
   displayName: 'Get dev hub private key'
 
 
-- task: Cache@2
-  inputs:
-    key: 'npm | "$(Agent.OS)" | package.json'
-    restoreKeys: |
-      npm | "$(Agent.OS)"
-    path: $(npm_config_cache)
-  displayName: Configure npm cache
+- ${{ if eq(parameters.useCache, true) }}:
+  
+  - task: Cache@2
+    inputs:
+      key: 'npm | "$(Agent.OS)" | package.json'
+      restoreKeys: |
+        npm | "$(Agent.OS)"
+      path: $(npm_config_cache)
+    displayName: Configure npm cache
 
 
 - task: Npm@1
