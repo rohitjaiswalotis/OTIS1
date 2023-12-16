@@ -36,3 +36,9 @@ steps:
   displayName: 'Install sfdx plugins'
 
 
+- bash: |
+        echo "Tracing system variables..."
+        echo "BUILD_REASON=$BUILD_REASON"
+  
+  displayName: 'Trace'
+

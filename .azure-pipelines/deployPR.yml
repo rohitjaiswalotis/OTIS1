@@ -97,15 +97,7 @@ stages:
                 
                 steps:
                 
-                - checkout: self
-                  fetchDepth: 0
-                  persistCredentials: true
-
-                - task: Npm@1
-                  inputs:
-                    command: 'custom'
-                    customCommand: 'install @salesforce/cli@$(sfdxVersion) --global --loglevel verbose'
-                  displayName: sfdx npm installation
+                - template: templates/init.yml
                   
                 - task: DownloadSEcureFile@1
                   name: authFile
@@ -196,9 +188,7 @@ stages:
                   
                 - bash: |
                         
-                        for notifErrorUrl in $(notifErrorUrls); do
-                          curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; **$(fsPackageName)** `$(Build.SourceBranchName)` - PR deployment [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `$(OrgAliasDevFS)` org by $(Build.RequestedFor)!"}' $notifErrorUrl
-                        done
+                        curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; **$(fsPackageName)** `$(Build.SourceBranchName)` - PR deployment [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `$(OrgAliasDevFS)` org by $(Build.RequestedFor)!"}' $(notifErrorUrls)
                         
                   displayName: 'Send Notification re Failed Deployment'
                   condition: failed()
