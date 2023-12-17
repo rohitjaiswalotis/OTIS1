@@ -53,6 +53,11 @@ steps:
         fi
         
         
+        # include common utils
+        chmod +x $(commonUtils)
+        source $(commonUtils)
+        
+        
         echo "Applying transformation to project config..."
         
         PROJECT_CONFIG_FILE="$(projectConfigFile)"
@@ -152,7 +157,9 @@ steps:
             echo "$DX_ERROR_MESSAGE"
           fi
           
-          curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version creation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)! <pre>'"${DX_ERROR_MESSAGE:-unknown error}"'<\/pre>"}' $(notifErrorUrls)
+          DX_ERROR_MESSAGE_ESCAPED=$(escapeJson "$DX_ERROR_MESSAGE");
+          
+          curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; &#x1F4E6; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version creation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)! <pre>'"${DX_ERROR_MESSAGE_ESCAPED:-unknown error}"'<\/pre>"}' $(notifErrorUrls)
           
           exit 1
           
@@ -178,7 +185,7 @@ steps:
         
         FS_PACKAGE_VERSION_NUMBER=$(echo "$FS_PACKAGE_VERSION_DETAILS" | jq -r '.result.Version // empty')
         
-        curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version creation `'"$FS_PACKAGE_VERSION_NUMBER"'` [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)!"}' $(notifSuccessUrls)
+        curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; &#x1F4E6; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version creation `'"$FS_PACKAGE_VERSION_NUMBER"'` [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)!"}' $(notifSuccessUrls)
         
         
         # optionally create tag in repo with the following format: v{major}.{minor}.{build}.{patch}-{valid|skip}-{04txxxxxxxxxxxxxxx}-{branchName}
