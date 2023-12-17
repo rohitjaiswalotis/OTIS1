@@ -22,6 +22,10 @@ variables:
   value: scripts/reconcileProfiles.sh
 
 
+- name: commonUtils
+  value: scripts/commonUtils.sh
+
+
 - name: clientUtils
   value: scripts/clientUtils.sh
 
