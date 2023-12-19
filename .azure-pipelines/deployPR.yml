@@ -207,5 +207,5 @@ stages:
                         subscribers: $(subs_deployPR_FsNAA)
                       ${{ else }}:
                         subscribers: $(subs_deployPR_FsGlobal)
-                    
+                      active: $(enableSubsDeployPR)
                   

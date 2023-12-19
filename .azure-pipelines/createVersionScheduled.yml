@@ -137,6 +137,7 @@ stages:
                     subscribers: $(subs_pkgVersion_FsNAA)
                   ${{ else }}:
                     subscribers: $(subs_pkgVersion_FsGlobal)
+                  active: $(enableSubsPkgVersion)
               
             
             - ${{ if eq(parameters.shouldInstall, true) }}:
