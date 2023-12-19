@@ -571,9 +571,9 @@
         </rules>
         <rules>
             <name>Update_SPR_and_Review</name>
-            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditionLogic>1 AND 3 AND (2 OR 4) AND 5 AND 6</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.Mark_For_Supervisor_Review__c</leftValueReference>
+                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -581,20 +581,41 @@
             </conditions>
             <conditions>
                 <leftValueReference>$Record.Fixed_Issue__c</leftValueReference>
-                <operator>IsChanged</operator>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>No</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Not Complete</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Fixed_Issue__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Partially</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
+                <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.UnitStatusOnSiteDeparture__c</leftValueReference>
-                <operator>IsChanged</operator>
+                <leftValueReference>$Record.FS_WorkOderType__c</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <stringValue>Service Request</stringValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Update_Reason_and_SPR</targetReference>
+                <targetReference>Get_Pending_SA</targetReference>
             </connector>
             <label>Update SPR and Review</label>
         </rules>
@@ -602,28 +623,28 @@
             <name>WOLI_Items_Present</name>
             <conditionLogic>(1 OR 2) AND (3 OR 4) AND 5 AND 6</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.Mark_For_Supervisor_Review__c</leftValueReference>
+                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.Mark_For_Supervisor_Review__c</leftValueReference>
+                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.Reason__c</leftValueReference>
+                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.Reason__c</leftValueReference>
+                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -659,28 +680,7 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.Reason__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Access</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Reason__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Technical</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Reason__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Parts needed</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Reason__c</leftValueReference>
+                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue>Actual Duration Inadequate</stringValue>
@@ -694,17 +694,38 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.Reason__c</leftValueReference>
+                <leftValueReference>$Record.Status</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <stringValue>Need New Visit On Site</stringValue>
+                    <stringValue>On Hold</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>$Record.Status</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <stringValue>On Hold</stringValue>
+                    <stringValue>Closed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Unassigned</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Next Action Required</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Safety Check Lone Worker</stringValue>
                 </rightValue>
             </conditions>
             <connector>
