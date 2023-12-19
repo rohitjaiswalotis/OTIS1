@@ -5,6 +5,11 @@ parameters:
   displayName: JSON-array with subscribers, i.e. pipelines to be triggered
   type: string
 
+- name: active
+  displayName: Is Active?
+  type: string
+  default: true
+
 - name: enableDebugMode
   displayName: Debug Mode?
   type: boolean
@@ -21,8 +26,17 @@ steps:
         
         # enable "debug" mode
         if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
-          set -x
+            set -x
         fi
+        
+        
+        SUBSCRIBERS_NOTIFICATION_ENABLED="${{ parameters.active }}";
+        
+        if [[ ! "${SUBSCRIBERS_NOTIFICATION_ENABLED,,}" =~ ^true$ ]] ; then
+            echo "WARNING: Early Exit - Subscription is disabled in current context!";
+            exit 0;
+        fi
+        
         
         SUBSCRIBERS_POOL='${{ parameters.subscribers }}';
         
