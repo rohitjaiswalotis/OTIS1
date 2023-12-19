@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <choices>
+        <name>ByBuilding</name>
+        <choiceText>By Building</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>By Building</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ByUnit</name>
+        <choiceText>By Unit</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>By Unit</stringValue>
+        </value>
+    </choices>
+    <choices>
         <name>TechnicalData</name>
         <choiceText>Technical data</choiceText>
         <dataType>String</dataType>
@@ -17,30 +33,132 @@
         </value>
     </choices>
     <decisions>
-        <name>Which_search_bar_used</name>
-        <label>Which search bar used?</label>
-        <locationX>541</locationX>
-        <locationY>293</locationY>
+        <name>IfBuildingMatchFound</name>
+        <label>If Building Match Found?</label>
+        <locationX>488</locationX>
+        <locationY>865</locationY>
         <defaultConnector>
-            <targetReference>Get_Building_Location</targetReference>
+            <targetReference>UnitMismatchScreen</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>By building</defaultConnectorLabel>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
-            <name>By_Unit</name>
+            <name>Yes_0</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Search_by_Unit_Number</leftValueReference>
-                <operator>NotEqualTo</operator>
+                <leftValueReference>BuildingId</leftValueReference>
+                <operator>IsNull</operator>
                 <rightValue>
-                    <stringValue></stringValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_Unit</targetReference>
+                <targetReference>ScreenBuildingList</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IfUnitMatchFound</name>
+        <label>If Unit Match Found?</label>
+        <locationX>166</locationX>
+        <locationY>876</locationY>
+        <defaultConnector>
+            <targetReference>UnitMismatchScreen</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>UnitId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Link_to_the_unit</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IfUnitMatchFound_0</name>
+        <label>If Unit Match Found?</label>
+        <locationX>627</locationX>
+        <locationY>1343</locationY>
+        <defaultConnector>
+            <targetReference>UnitMismatchScreen</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_0_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>UnitId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Result_list_of_Units</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Which_search_bar_used_0</name>
+        <label>Which search bar used?</label>
+        <locationX>377</locationX>
+        <locationY>425</locationY>
+        <defaultConnectorLabel>Default</defaultConnectorLabel>
+        <rules>
+            <name>By_Unit1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Select_the_Option_to_search_by</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ByUnit</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SearchbyUnitScreen</targetReference>
             </connector>
             <label>By Unit</label>
         </rules>
+        <rules>
+            <name>By_Building</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Select_the_Option_to_search_by</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>ByBuilding</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SearchByBuildingNameScreen</targetReference>
+            </connector>
+            <label>By Building</label>
+        </rules>
     </decisions>
+    <dynamicChoiceSets>
+        <name>ListOfBuilding</name>
+        <dataType>String</dataType>
+        <displayField>Name</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>Contains</operator>
+            <value>
+                <elementReference>SearchBuildingName</elementReference>
+            </value>
+        </filters>
+        <object>Location</object>
+        <valueField>Id</valueField>
+    </dynamicChoiceSets>
     <dynamicChoiceSets>
         <name>UnitsRelatedToTheBuildingSelected</name>
         <dataType>String</dataType>
@@ -50,7 +168,7 @@
             <field>LocationId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>BuildingId</elementReference>
+                <elementReference>Buildings</elementReference>
             </value>
         </filters>
         <object>Asset</object>
@@ -188,20 +306,20 @@
     </processMetadataValues>
     <processType>FieldServiceMobile</processType>
     <recordLookups>
-        <name>Get_Building_Location</name>
-        <label>Get Building (Location)</label>
-        <locationX>646</locationX>
-        <locationY>407</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <name>FS_GetBuilding</name>
+        <label>Get Building</label>
+        <locationX>485</locationX>
+        <locationY>693</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Result_list_of_Units</targetReference>
+            <targetReference>IfBuildingMatchFound</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Name</field>
             <operator>Contains</operator>
             <value>
-                <elementReference>Search_by_Building</elementReference>
+                <elementReference>SearchBuildingName</elementReference>
             </value>
         </filters>
         <object>Location</object>
@@ -211,20 +329,47 @@
         </outputAssignments>
     </recordLookups>
     <recordLookups>
-        <name>Get_Unit</name>
+        <name>Get_Unit_0</name>
         <label>Get Unit</label>
-        <locationX>410</locationX>
-        <locationY>401</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <locationX>273</locationX>
+        <locationY>684</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Link_to_the_unit</targetReference>
+            <targetReference>IfUnitMatchFound</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Name</field>
             <operator>Contains</operator>
             <value>
-                <elementReference>Search_by_Unit_Number</elementReference>
+                <elementReference>SearchUnitNumber</elementReference>
+            </value>
+        </filters>
+        <object>Asset</object>
+        <outputAssignments>
+            <assignToReference>UnitId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>UnitName</assignToReference>
+            <field>Name</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Unit_for_Building</name>
+        <label>Get Unit</label>
+        <locationX>631</locationX>
+        <locationY>1166</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>IfUnitMatchFound_0</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>LocationId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Buildings</elementReference>
             </value>
         </filters>
         <object>Asset</object>
@@ -240,83 +385,174 @@
     <screens>
         <name>Link_to_the_unit</name>
         <label>Link to the unit trough Salesforce app</label>
-        <locationX>543</locationX>
-        <locationY>739</locationY>
+        <locationX>50</locationX>
+        <locationY>1000</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <fields>
-            <name>Adel_0</name>
-            <fieldText>&lt;p&gt;Link to the unit &lt;a href=&quot;https://test.salesforce.com/{!UnitId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot;&gt;{!UnitName}&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://test.salesforce.com/{!UnitId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot;&gt;{!UnitsRelatedToTheBuildingSelected}&lt;/a&gt;&lt;/p&gt;</fieldText>
+            <name>LinkUnit</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;Link To The Unit : &lt;/strong&gt; &lt;a href=&quot;https://test.salesforce.com/{!UnitId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot;&gt;{!UnitName}&lt;/a&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
+        <nextOrFinishButtonLabel>Finish</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Link_to_the_unit_0</name>
+        <label>Link to the unit trough Salesforce app</label>
+        <locationX>629</locationX>
+        <locationY>1660</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>LinkBuildingUnit</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;Link To The Unit : &lt;/strong&gt; &lt;a href=&quot;https://test.salesforce.com/{!UnitId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot;&gt;{!List_of_units}&lt;/a&gt;&lt;a href=&quot;https://test.salesforce.com/{!UnitId}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;color: rgb(0, 0, 0);&quot;&gt;﻿&lt;/a&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <nextOrFinishButtonLabel>Finish</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Result_list_of_Units</name>
         <label>Result list of Units</label>
-        <locationX>646</locationX>
-        <locationY>566</locationY>
+        <locationX>802</locationX>
+        <locationY>1461</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Link_to_the_unit</targetReference>
+            <targetReference>Link_to_the_unit_0</targetReference>
         </connector>
         <fields>
             <name>List_of_units</name>
             <choiceReferences>UnitsRelatedToTheBuildingSelected</choiceReferences>
             <dataType>String</dataType>
-            <fieldText>List of units:</fieldText>
+            <fieldText>List Of Units:</fieldText>
             <fieldType>RadioButtons</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>Search_Unit</name>
-        <label>Search Unit</label>
-        <locationX>547</locationX>
-        <locationY>148</locationY>
+        <name>ScreenBuildingList</name>
+        <label>Building List</label>
+        <locationX>629</locationX>
+        <locationY>991</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Which_search_bar_used</targetReference>
+            <targetReference>Get_Unit_for_Building</targetReference>
         </connector>
         <fields>
-            <name>Search_by_Unit_Number</name>
+            <name>Buildings</name>
+            <choiceReferences>ListOfBuilding</choiceReferences>
             <dataType>String</dataType>
-            <defaultValue>
-                <stringValue></stringValue>
-            </defaultValue>
-            <fieldText>Search by Unit Number</fieldText>
-            <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>false</isRequired>
-        </fields>
-        <fields>
-            <name>Search_by_Building</name>
-            <dataType>String</dataType>
-            <defaultValue>
-                <stringValue></stringValue>
-            </defaultValue>
-            <fieldText>Search by Building</fieldText>
-            <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>false</isRequired>
+            <fieldText>Buildings</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Search_options</name>
+        <label>Search options</label>
+        <locationX>397</locationX>
+        <locationY>287</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Which_search_bar_used_0</targetReference>
+        </connector>
+        <fields>
+            <name>Select_the_Option_to_search_by</name>
+            <choiceReferences>ByUnit</choiceReferences>
+            <choiceReferences>ByBuilding</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Select The Option To Search By :</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>SearchByBuildingNameScreen</name>
+        <label>Search by Building Name Screen</label>
+        <locationX>483</locationX>
+        <locationY>513</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>FS_GetBuilding</targetReference>
+        </connector>
+        <fields>
+            <name>SearchBuildingName</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <stringValue></stringValue>
+            </defaultValue>
+            <fieldText>Search Building Name :</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>SearchbyUnitScreen</name>
+        <label>Search by Unit Screen</label>
+        <locationX>269</locationX>
+        <locationY>525</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Get_Unit_0</targetReference>
+        </connector>
+        <fields>
+            <name>SearchUnitNumber</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <stringValue></stringValue>
+            </defaultValue>
+            <fieldText>Search Unit Number :</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>UnitMismatchScreen</name>
+        <label>Unit Mismatch Screen</label>
+        <locationX>334</locationX>
+        <locationY>1187</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>UnitNotFound</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 18px;&quot;&gt;No Records Found!&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <nextOrFinishButtonLabel>Finish</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>73</locationX>
-        <locationY>131</locationY>
+        <locationX>177</locationX>
+        <locationY>126</locationY>
         <connector>
-            <targetReference>Search_Unit</targetReference>
+            <targetReference>Search_options</targetReference>
         </connector>
     </start>
     <status>Active</status>
