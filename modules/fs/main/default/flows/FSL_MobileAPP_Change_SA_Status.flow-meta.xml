@@ -11,14 +11,7 @@
             <value>
                 <elementReference>CurrentTime</elementReference>
             </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>RecordServiceAppointment.AppxSAEndTime__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>MaxTimeCalculation</elementReference>
-            </value>
-        </assignmentItems>
+        </assignmentItems>        
         <assignmentItems>
             <assignToReference>RecordServiceAppointment.Status</assignToReference>
             <operator>Assign</operator>
@@ -520,7 +513,6 @@
         <queriedFields>Status</queriedFields>
         <queriedFields>ActualEndTime</queriedFields>
         <queriedFields>ActualStartTime</queriedFields>
-        <queriedFields>AppxSAEndTime__c</queriedFields>
         <queriedFields>MaxDuration__c</queriedFields>
     </recordLookups>
     <recordLookups>
