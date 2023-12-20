@@ -1,10 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <assignments>
+        <name>Assign_Actual_Start_Time</name>
+        <label>Assign Actual Start Time</label>
+        <locationX>397</locationX>
+        <locationY>402</locationY>
+        <assignmentItems>
+            <assignToReference>RecordServiceAppointment.ActualStartTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>CurrentTime</elementReference>
+            </value>
+        </assignmentItems>        
+        <assignmentItems>
+            <assignToReference>RecordServiceAppointment.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Status</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Service_Appointment_Status</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Assign_new_SA_Status</name>
         <label>Assign new SA Status</label>
-        <locationX>768</locationX>
-        <locationY>388</locationY>
+        <locationX>861</locationX>
+        <locationY>528</locationY>
         <assignmentItems>
             <assignToReference>RecordServiceAppointment.Status</assignToReference>
             <operator>Assign</operator>
@@ -24,78 +47,38 @@
         </connector>
     </assignments>
     <assignments>
-        <name>Build_the_list</name>
-        <label>Build the list</label>
-        <locationX>1221</locationX>
-        <locationY>460</locationY>
+        <name>Assign_new_SA_Status_0</name>
+        <label>Assign new SA Status</label>
+        <locationX>769</locationX>
+        <locationY>877</locationY>
         <assignmentItems>
-            <assignToReference>ListOfWoliToComplete</assignToReference>
-            <operator>Add</operator>
+            <assignToReference>RecordServiceAppointment.Status</assignToReference>
+            <operator>Assign</operator>
             <value>
-                <stringValue>Description - </stringValue>
+                <elementReference>Status</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>ListOfWoliToComplete</assignToReference>
-            <operator>Add</operator>
+            <assignToReference>RecordServiceAppointment.ActualEndTime</assignToReference>
+            <operator>Assign</operator>
             <value>
-                <elementReference>WoliToUpdate.Description</elementReference>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
             </value>
         </assignmentItems>
+        <connector>
+            <targetReference>Update_WOLI_to_Complete_Status</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Build_Woli_list</name>
+        <label>Build Woli list</label>
+        <locationX>1431</locationX>
+        <locationY>687</locationY>
         <assignmentItems>
             <assignToReference>ListOfWoliToComplete</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>BR</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>ListOfWoliToComplete</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Status - </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>ListOfWoliToComplete</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>WoliToUpdate.Status</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>ListOfWoliToComplete</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>BR</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>ListOfWoliToComplete</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>Type - </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>ListOfWoliToComplete</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>WoliToUpdate.Type__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>ListOfWoliToComplete</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>BR</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>ListOfWoliToComplete</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>WOLI No - </stringValue>
+                <stringValue>Number : </stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -116,11 +99,159 @@
             <assignToReference>ListOfWoliToComplete</assignToReference>
             <operator>Add</operator>
             <value>
+                <stringValue>Type : </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ListOfWoliToComplete</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>WoliToUpdate.Type__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ListOfWoliToComplete</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>BR</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ListOfWoliToComplete</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Status : </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ListOfWoliToComplete</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>WoliToUpdate.Status</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ListOfWoliToComplete</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>BR</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ListOfWoliToComplete</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Description : </stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ListOfWoliToComplete</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>WoliToUpdate.Description</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ListOfWoliToComplete</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>BR</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>RecordWOLI.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>WoliToUpdate.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>RecordWOLI.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>CollRecordWoliToUpdate</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>RecordWOLI</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ListOfWoliToComplete</assignToReference>
+            <operator>Add</operator>
+            <value>
                 <elementReference>BR</elementReference>
             </value>
         </assignmentItems>
         <connector>
             <targetReference>Loop_WOLI_not_Completed_for_diplay</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>If_No</name>
+        <label>If No</label>
+        <locationX>1386</locationX>
+        <locationY>193</locationY>
+        <assignmentItems>
+            <assignToReference>RecordWorkOrder.Fixed_Issue__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>No</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>All_WOLI_completed</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>If_Partially</name>
+        <label>If Partially</label>
+        <locationX>1256</locationX>
+        <locationY>194</locationY>
+        <assignmentItems>
+            <assignToReference>RecordWorkOrder.Fixed_Issue__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Partially</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>All_WOLI_completed</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>If_Yes</name>
+        <label>If Yes</label>
+        <locationX>1112</locationX>
+        <locationY>189</locationY>
+        <assignmentItems>
+            <assignToReference>RecordWorkOrder.Fixed_Issue__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>YesValue</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>All_WOLI_completed</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_Status_other_Complete</name>
+        <label>Update Status other Complete</label>
+        <locationX>685</locationX>
+        <locationY>381</locationY>
+        <assignmentItems>
+            <assignToReference>RecordServiceAppointment.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Status</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Service_Appointment_Status</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -131,13 +262,37 @@
             <elementReference>RecordServiceAppointment.Status</elementReference>
         </value>
     </choices>
+    <choices>
+        <name>No</name>
+        <choiceText>No</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>No</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Partially</name>
+        <choiceText>Partially</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Partially</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>YesValue</name>
+        <choiceText>Yes</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Yes</stringValue>
+        </value>
+    </choices>
     <decisions>
         <name>All_WOLI_completed</name>
         <label>All WOLI completed?</label>
-        <locationX>912</locationX>
-        <locationY>317</locationY>
+        <locationX>1193</locationX>
+        <locationY>352</locationY>
         <defaultConnector>
-            <targetReference>Get_Work_order_Line_Item</targetReference>
+            <targetReference>Get_WOLI_Records</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -157,12 +312,86 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Complete_all_major_tasks</name>
+        <label>Complete all major tasks?</label>
+        <locationX>1028</locationX>
+        <locationY>909</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes_complete</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Complete_remaining_major_tasks</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_new_SA_Status_0</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Issue_Not_Fixed</name>
+        <label>Issue Not Fixed?</label>
+        <locationX>1203</locationX>
+        <locationY>34</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>No1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>RadioButtonFixedIssue</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>No</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>If_No</targetReference>
+            </connector>
+            <label>No</label>
+        </rules>
+        <rules>
+            <name>Yes_Issue_Fixed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>RadioButtonFixedIssue</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Yes</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>If_Yes</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+        <rules>
+            <name>Partially1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>RadioButtonFixedIssue</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Partially</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>If_Partially</targetReference>
+            </connector>
+            <label>Partially</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Wich_Status</name>
         <label>Wich Status?</label>
-        <locationX>591</locationX>
-        <locationY>287</locationY>
+        <locationX>776</locationX>
+        <locationY>268</locationY>
         <defaultConnector>
-            <targetReference>Assign_new_SA_Status</targetReference>
+            <targetReference>Update_Status_other_Complete</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -176,13 +405,36 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_Work_Order</targetReference>
+                <targetReference>FixedIssue1</targetReference>
             </connector>
             <label>Completed</label>
+        </rules>
+        <rules>
+            <name>InProgress</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>In Progress</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Actual_Start_Time</targetReference>
+            </connector>
+            <label>InProgress</label>
         </rules>
     </decisions>
     <description>- Let the mechanic change the Service appointment status.
 - If major Woli are not completed, a screen will display an error and suggest to the mechanic to complete them all by checking a checkbox. The Woli status will be updated to &quot;Completed&quot; .</description>
+    <dynamicChoiceSets>
+        <name>RadioFixedIssue</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>Fixed_Issue__c</picklistField>
+        <picklistObject>WorkOrder</picklistObject>
+    </dynamicChoiceSets>
     <dynamicChoiceSets>
         <name>ServiceAppointmentStatus</name>
         <dataType>Picklist</dataType>
@@ -192,18 +444,28 @@
         <picklistObject>ServiceAppointment</picklistObject>
     </dynamicChoiceSets>
     <environments>Default</environments>
+    <formulas>
+        <name>CurrentTime</name>
+        <dataType>DateTime</dataType>
+        <expression>NOW()</expression>
+    </formulas>
+    <formulas>
+        <name>MaxTimeCalculation</name>
+        <dataType>DateTime</dataType>
+        <expression>NOW()+ ({!RecordServiceAppointment.MaxDuration__c}/1440)</expression>
+    </formulas>
     <interviewLabel>Change SA Staus {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Change SA Status</label>
     <loops>
         <name>Loop_WOLI_not_Completed_for_diplay</name>
         <label>Loop WOLI not Completed for diplay</label>
-        <locationX>1032</locationX>
-        <locationY>457</locationY>
+        <locationX>1310</locationX>
+        <locationY>550</locationY>
         <assignNextValueToReference>WoliToUpdate</assignNextValueToReference>
         <collectionReference>CollRecordWoli</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>Build_the_list</targetReference>
+            <targetReference>Build_Woli_list</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>Error_Screen</targetReference>
@@ -231,8 +493,8 @@
     <recordLookups>
         <name>Get_Service_appointement_current_status</name>
         <label>Get Service appointement current status</label>
-        <locationX>360</locationX>
-        <locationY>286</locationY>
+        <locationX>361</locationX>
+        <locationY>165</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Change_Status</targetReference>
@@ -250,15 +512,64 @@
         <queriedFields>Id</queriedFields>
         <queriedFields>Status</queriedFields>
         <queriedFields>ActualEndTime</queriedFields>
+        <queriedFields>ActualStartTime</queriedFields>
+        <queriedFields>MaxDuration__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_WOLI_Records</name>
+        <label>Get WOLI Records</label>
+        <locationX>1087</locationX>
+        <locationY>508</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_WOLI_not_Completed_for_diplay</targetReference>
+        </connector>
+        <filterLogic>1 AND 2 AND 3 AND 4</filterLogic>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>New</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Type__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Major</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>WorkOrderId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>RecordWorkOrder.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Is_Task_Chargeable__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Yes</stringValue>
+            </value>
+        </filters>
+        <object>WorkOrderLineItem</object>
+        <outputReference>CollRecordWoli</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>LineItemNumber</queriedFields>
+        <queriedFields>Status</queriedFields>
+        <queriedFields>Type__c</queriedFields>
+        <queriedFields>Description</queriedFields>
+        <queriedFields>WorkOrderId</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>Get_Work_Order</name>
         <label>Get Work Order</label>
-        <locationX>770</locationX>
-        <locationY>203</locationY>
+        <locationX>627</locationX>
+        <locationY>173</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>All_WOLI_completed</targetReference>
+            <targetReference>Wich_Status</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -273,71 +584,45 @@
         <queriedFields>Id</queriedFields>
         <queriedFields>Total_Major_Items_Completed__c</queriedFields>
         <queriedFields>Total_Major_Line_Items__c</queriedFields>
-    </recordLookups>
-    <recordLookups>
-        <name>Get_Work_order_Line_Item</name>
-        <label>Get Work order Line Item</label>
-        <locationX>921</locationX>
-        <locationY>458</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Loop_WOLI_not_Completed_for_diplay</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>WorkOrderId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>ParentId</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>Type__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Major</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Status</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>New</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Is_Task_Chargeable__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>No</stringValue>
-            </value>
-        </filters>
-        <object>WorkOrderLineItem</object>
-        <outputReference>CollRecordWoli</outputReference>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>Type__c</queriedFields>
-        <queriedFields>WorkOrderId</queriedFields>
-        <queriedFields>Description</queriedFields>
-        <queriedFields>Status</queriedFields>
-        <queriedFields>LineItemNumber</queriedFields>
+        <queriedFields>Fixed_Issue__c</queriedFields>
     </recordLookups>
     <recordUpdates>
         <name>Update_Service_Appointment_Status</name>
         <label>Update Service Appointment Status</label>
-        <locationX>768</locationX>
-        <locationY>522</locationY>
+        <locationX>681</locationX>
+        <locationY>528</locationY>
+        <connector>
+            <targetReference>Update_Work_Order</targetReference>
+        </connector>
         <inputReference>RecordServiceAppointment</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_WOLI_to_Complete_Status</name>
+        <label>Update WOLI to Complete Status</label>
+        <locationX>675</locationX>
+        <locationY>768</locationY>
+        <connector>
+            <targetReference>Update_Service_Appointment_Status</targetReference>
+        </connector>
+        <inputReference>CollRecordWoliToUpdate</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Work_Order</name>
+        <label>Update Work Order</label>
+        <locationX>374</locationX>
+        <locationY>645</locationY>
+        <inputReference>RecordWorkOrder</inputReference>
     </recordUpdates>
     <screens>
         <name>Change_Status</name>
         <label>Change Status</label>
-        <locationX>470</locationX>
-        <locationY>286</locationY>
+        <locationX>489</locationX>
+        <locationY>171</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Wich_Status</targetReference>
+            <targetReference>Get_Work_Order</targetReference>
         </connector>
         <fields>
             <name>Status</name>
@@ -347,7 +632,6 @@
             <defaultSelectedChoiceReference>DefaultServiceAppointmentStatus</defaultSelectedChoiceReference>
             <fieldText>Status</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -356,27 +640,66 @@
     <screens>
         <name>Error_Screen</name>
         <label>Error Screen</label>
-        <locationX>1033</locationX>
-        <locationY>732</locationY>
+        <locationX>1036</locationX>
+        <locationY>734</locationY>
         <allowBack>true</allowBack>
-        <allowFinish>false</allowFinish>
-        <allowPause>false</allowPause>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Complete_all_major_tasks</targetReference>
+        </connector>
         <fields>
             <name>ErrorCompleteMajorWOLI</name>
-            <fieldText>&lt;p&gt;&lt;strong&gt;To complete you service appointment, please complete first all major tasks:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;{!ListOfWoliToComplete}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong&gt;To Complete Your Service Appointment, Please Complete All Major Tasks:&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>WOLIListToComplete</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!ListOfWoliToComplete}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Complete_remaining_major_tasks</name>
+            <dataType>Boolean</dataType>
+            <fieldText>Complete Remaining Major Tasks</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>FixedIssue1</name>
+        <label>FixedIssue1</label>
+        <locationX>949</locationX>
+        <locationY>32</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Issue_Not_Fixed</targetReference>
+        </connector>
+        <fields>
+            <name>RadioButtonFixedIssue</name>
+            <choiceReferences>No</choiceReferences>
+            <choiceReferences>YesValue</choiceReferences>
+            <choiceReferences>Partially</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Fixed Issue?</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>234</locationX>
-        <locationY>175</locationY>
+        <locationX>236</locationX>
+        <locationY>15</locationY>
         <connector>
             <targetReference>Get_Service_appointement_current_status</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <textTemplates>
         <name>BR</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
@@ -413,10 +736,35 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>NoValue</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>No</stringValue>
+        </value>
+    </variables>
+    <variables>
         <name>ParentId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>PendingSARecords</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
+    </variables>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
@@ -449,6 +797,17 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>wolicount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
     </variables>
     <variables>
         <name>WoliToUpdate</name>
