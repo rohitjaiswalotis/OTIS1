@@ -1,17 +1,9 @@
-name: 'Push Field Service Package Version into Set of Japan Orgs by Schedule'
+name: 'Push Field Service Package Version Global into Set of Orgs'
 
 
 trigger: none
 
 pr: none
-
-#schedules:
-#- cron: '0 4 * * *'
-#  displayName: Nightly Field Service Package Version Bulk Push to Japan
-#  branches:
-#    include:
-#    - dev-jpn
-#  always: false
 
 
 parameters:
@@ -19,7 +11,7 @@ parameters:
 - name: versionToPushOrgAuthFiles
   displayName: Auth Files for Orgs to upgrade (comma-separated)
   type: string
-  default: "authFile_devJpn,authFile_jpnPool1,authFile_jpnPool2,authFile_jpnPool3"
+  default: "none"
 
 - name: versionToPushExpression
   displayName: Package version expression to upgrade to
@@ -29,7 +21,7 @@ parameters:
 - name: versionWhereCondition
   displayName: Where Condition for version to upgrade
   type: string
-  default: "Branch IN ('dev-jpn')"
+  default: "Branch IN ('dev')"
 
 - name: shouldInstallThirdParties
   displayName: Install Third Parties?
@@ -83,11 +75,8 @@ stages:
   
   - template: templates/bulkPushVersion.yml
     parameters:
-      localizationDomain: "Japan"
-      ${{ if eq(parameters.versionToPushOrgAuthFiles, 'default') }}:
-        versionToPushOrgAuthFiles: $(push_FsJpn_toJpn)
-      ${{ else }}:
-        versionToPushOrgAuthFiles: ${{ parameters.versionToPushOrgAuthFiles }}
+      localizationDomain: "Global"
+      versionToPushOrgAuthFiles: ${{ parameters.versionToPushOrgAuthFiles }}
       versionToPushExpression: ${{ parameters.versionToPushExpression }}
       versionWhereCondition: ${{ parameters.versionWhereCondition }}
       autoInstallDependencies: ${{ parameters.autoInstallDependencies }}

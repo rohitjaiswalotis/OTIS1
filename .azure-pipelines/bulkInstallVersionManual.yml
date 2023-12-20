@@ -82,6 +82,11 @@ parameters:
   type: boolean
   default: false
 
+- name: shouldRunAqaTests
+  displayName: Run AQA Tests?
+  type: boolean
+  default: false
+
 - name: shouldRunTestsBefore
   displayName: Run Tests Before?
   type: boolean
@@ -92,10 +97,15 @@ parameters:
   type: boolean
   default: false
 
-- name: concurrentTestsExecution
-  displayName: Parallel Tests Mode?
+- name: runTestsBeforeAsConcurrent
+  displayName: Concurrent Tests Before?
   type: boolean
-  default: false
+  default: true
+
+- name: runTestsAfterAsConcurrent
+  displayName: Concurrent Tests After?
+  type: boolean
+  default: true
 
 - name: shouldGenerateTestsReport
   displayName: Generate Tests Report?
@@ -144,7 +154,7 @@ stages:
                 - template: templates/runTests.yml
                   parameters:
                     targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
-                    concurrentExecution: ${{ parameters.concurrentTestsExecution }}
+                    concurrentExecution: ${{ parameters.runTestsBeforeAsConcurrent }}
                     continueOnError: true
                     enableDebugMode: ${{ parameters.enableDebugMode }}
                     
@@ -188,13 +198,20 @@ stages:
                     targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
                     enableDebugMode: ${{ parameters.enableDebugMode }}
                     
+                  
+              - ${{ if eq(parameters.shouldRunAqaTests, true) }}:
+                
+                - template: templates/runAQA.yml
+                  parameters:
+                    targetOrgAuthVariableGroup: ${{ split(targetOrgAuthFileName, '_')[1] }}
+                  
                 
               - ${{ if eq(parameters.shouldRunTestsAfter, true) }}:
                 
                 - template: templates/runTests.yml
                   parameters:
                     targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
-                    concurrentExecution: ${{ parameters.concurrentTestsExecution }}
+                    concurrentExecution: ${{ parameters.runTestsAfterAsConcurrent }}
                     continueOnError: true
                     enableDebugMode: ${{ parameters.enableDebugMode }}
                     

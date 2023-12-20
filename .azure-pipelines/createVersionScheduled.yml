@@ -48,50 +48,10 @@ parameters:
   type: boolean
   default: true
 
-- name: shouldInstall
-  displayName: Install Package Version?
-  type: boolean
-  default: true
-
-- name: shouldInstallThirdParties
-  displayName: Install Third Parties?
-  type: boolean
-  default: true
-
-- name: autoInstallDependencies
-  displayName: Auto Install Dependencies?
-  type: boolean
-  default: false
-
-- name: shouldRunAqaTests
-  displayName: Run AQA Tests?
-  type: boolean
-  default: false
-
-- name: shouldRunTestsBefore
-  displayName: Run Tests Before?
-  type: boolean
-  default: true
-
-- name: shouldRunTestsAfter
-  displayName: Run Tests After?
-  type: boolean
-  default: true
-
 
 variables:
   
   - template: templates/variables.yml
-  
-  - name: targetOrgName
-    ${{ if eq(variables['Build.SourceBranchName'], 'dev-jpn') }}:
-      value: 'avgJpn'
-    ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-emea') }}:
-      value: 'avgEMEA'
-    ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-naa') }}:
-      value: 'avgNAA'
-    ${{ else }}:
-      value: 'avgCore'
 
 
 stages:
@@ -140,58 +100,3 @@ stages:
                   active: $(enableSubsPkgVersion)
               
             
-            - ${{ if eq(parameters.shouldInstall, true) }}:
-              
-              - task: DownloadSEcureFile@1
-                name: targetOrgAuthFile
-                inputs:
-                  secureFile: authFile_$(targetOrgName)
-                displayName: 'Get Target Org auth file' 
-                
-              
-              - ${{ if eq(parameters.shouldRunTestsBefore, true) }}:
-                
-                - template: templates/runTests.yml
-                  parameters:
-                    targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
-                    concurrentExecution: true
-                    continueOnError: true
-                
-              
-              - ${{ if eq(parameters.shouldInstallThirdParties, true) }}:
-                
-                - template: templates/installThirdParties.yml
-                  parameters:
-                    targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
-                    continueOnError: true
-                  
-                
-              - template: templates/installVersion.yml
-                parameters:
-                  ${{ if eq(variables['Build.SourceBranchName'], 'dev-jpn') }}:
-                    localizationDomain: "Japan"
-                  ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-emea') }}:
-                    localizationDomain: "EMEA"
-                  ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-naa') }}:
-                    localizationDomain: "NAA"
-                  ${{ else }}:
-                    localizationDomain: "Global"
-                  targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
-                  autoInstallDependencies: ${{ parameters.autoInstallDependencies }}
-                  
-                
-              - ${{ if eq(parameters.shouldRunAqaTests, true) }}:
-                
-                - template: templates/runAQA.yml
-                  parameters:
-                    targetOrgAuthVariableGroup: $(targetOrgName)
-                
-              
-              - ${{ if eq(parameters.shouldRunTestsAfter, true) }}:
-                
-                - template: templates/runTests.yml
-                  parameters:
-                    targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
-                    concurrentExecution: false
-                
-              
