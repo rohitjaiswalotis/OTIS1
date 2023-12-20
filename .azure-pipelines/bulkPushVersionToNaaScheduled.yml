@@ -31,6 +31,26 @@ parameters:
   type: string
   default: "Branch IN ('dev-naa')"
 
+- name: shouldInstallThirdParties
+  displayName: Install Third Parties?
+  type: boolean
+  default: true
+
+- name: autoInstallDependencies
+  displayName: Auto Install Dependencies?
+  type: boolean
+  default: false
+
+- name: installOnlyDependencies
+  displayName: Install Only Dependencies?
+  type: boolean
+  default: false
+
+- name: shouldRunAqaTests
+  displayName: Run AQA Tests?
+  type: boolean
+  default: false
+
 - name: shouldRunTestsBefore
   displayName: Run Tests Before?
   type: boolean
@@ -38,6 +58,16 @@ parameters:
 
 - name: shouldRunTestsAfter
   displayName: Run Tests After?
+  type: boolean
+  default: true
+
+- name: runTestsBeforeAsConcurrent
+  displayName: Concurrent Tests Before?
+  type: boolean
+  default: true
+
+- name: runTestsAfterAsConcurrent
+  displayName: Concurrent Tests After?
   type: boolean
   default: true
 
@@ -60,7 +90,13 @@ stages:
         versionToPushOrgAuthFiles: ${{ parameters.versionToPushOrgAuthFiles }}
       versionToPushExpression: ${{ parameters.versionToPushExpression }}
       versionWhereCondition: ${{ parameters.versionWhereCondition }}
+      autoInstallDependencies: ${{ parameters.autoInstallDependencies }}
+      installOnlyDependencies: ${{ parameters.installOnlyDependencies }}
+      shouldInstallThirdParties: ${{ parameters.shouldInstallThirdParties }}
       shouldRunTestsBefore: ${{ parameters.shouldRunTestsBefore }}
+      runTestsBeforeAsConcurrent: ${{ parameters.runTestsBeforeAsConcurrent }}
       shouldRunTestsAfter: ${{ parameters.shouldRunTestsAfter }}
+      runTestsAfterAsConcurrent: ${{ parameters.runTestsAfterAsConcurrent }}
+      shouldRunAqaTests: ${{ parameters.shouldRunAqaTests }}
 
 
