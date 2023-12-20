@@ -153,10 +153,15 @@ parameters:
   type: boolean
   default: false
 
-- name: concurrentTestsExecution
-  displayName: Parallel Tests Mode?
+- name: runTestsBeforeAsConcurrent
+  displayName: Concurrent Tests Before?
   type: boolean
-  default: false
+  default: true
+
+- name: runTestsAfterAsConcurrent
+  displayName: Concurrent Tests After?
+  type: boolean
+  default: true
 
 - name: shouldGenerateTestsReport
   displayName: Generate Tests Report?
@@ -225,7 +230,7 @@ stages:
                     targetOrgToken: ${{ parameters.targetOrgToken }}
                   ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
                     targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
-                  concurrentExecution: ${{ parameters.concurrentTestsExecution }}
+                  concurrentExecution: ${{ parameters.runTestsBeforeAsConcurrent }}
                   continueOnError: true
                   enableDebugMode: ${{ parameters.enableDebugMode }}
                   
@@ -315,7 +320,7 @@ stages:
                     targetOrgToken: ${{ parameters.targetOrgToken }}
                   ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
                     targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
-                  concurrentExecution: ${{ parameters.concurrentTestsExecution }}
+                  concurrentExecution: ${{ parameters.runTestsAfterAsConcurrent }}
                   continueOnError: false
                   enableDebugMode: ${{ parameters.enableDebugMode }}
                 
