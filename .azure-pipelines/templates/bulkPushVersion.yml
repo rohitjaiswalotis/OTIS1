@@ -35,6 +35,11 @@ parameters:
   type: boolean
   default: false
 
+- name: shouldRunAqaTests
+  displayName: Run AQA Tests?
+  type: boolean
+  default: false
+
 - name: shouldRunTestsBefore
   displayName: Run Tests Before?
   type: boolean
@@ -42,6 +47,16 @@ parameters:
 
 - name: shouldRunTestsAfter
   displayName: Run Tests After?
+  type: boolean
+  default: true
+
+- name: runTestsBeforeAsConcurrent
+  displayName: Concurrent Tests Before?
+  type: boolean
+  default: true
+
+- name: runTestsAfterAsConcurrent
+  displayName: Concurrent Tests After?
   type: boolean
   default: true
 
@@ -133,7 +148,7 @@ stages:
                 - template: runTests.yml
                   parameters:
                     targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
-                    concurrentExecution: true
+                    concurrentExecution: ${{ parameters.runTestsBeforeAsConcurrent }}
                     continueOnError: true
                 
               
@@ -151,14 +166,21 @@ stages:
                   targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
                   autoInstallDependencies: ${{ parameters.autoInstallDependencies }}
                   installOnlyDependencies: ${{ parameters.installOnlyDependencies }}
+                  
                 
-              
+              - ${{ if eq(parameters.shouldRunAqaTests, true) }}:
+                
+                - template: runAQA.yml
+                  parameters:
+                    targetOrgAuthVariableGroup: ${{ split(targetOrgAuthFileName, '_')[1] }}
+                  
+                
               - ${{ if eq(parameters.shouldRunTestsAfter, true) }}:
                 
                 - template: runTests.yml
                   parameters:
                     targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
-                    concurrentExecution: true
+                    concurrentExecution: ${{ parameters.runTestsAfterAsConcurrent }}
                     continueOnError: true
 
 
