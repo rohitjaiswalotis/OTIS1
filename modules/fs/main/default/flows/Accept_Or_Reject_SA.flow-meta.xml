@@ -94,6 +94,12 @@
         <locationX>50</locationX>
         <locationY>431</locationY>
         <inputAssignments>
+            <field>EarliestStartTime</field>
+            <value>
+                <elementReference>$Record.Initial_ETA__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Status</field>
             <value>
                 <stringValue>Accepted</stringValue>
