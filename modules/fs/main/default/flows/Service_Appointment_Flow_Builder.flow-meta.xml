@@ -610,13 +610,13 @@
         <locationX>2162</locationX>
         <locationY>647</locationY>
         <inputAssignments>
-            <field>Mark_For_Supervisor_Review__c</field>
+            <field>FS_Mark_For_Supervisor_Review__c</field>
             <value>
                 <booleanValue>true</booleanValue>
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Reason__c</field>
+            <field>FS_System_Reason__c</field>
             <value>
                 <stringValue>Actual Duration Inadequate</stringValue>
             </value>
@@ -635,7 +635,7 @@
         <locationX>1898</locationX>
         <locationY>647</locationY>
         <inputAssignments>
-            <field>Mark_For_Supervisor_Review__c</field>
+            <field>FS_Mark_For_Supervisor_Review__c</field>
             <value>
                 <booleanValue>false</booleanValue>
             </value>
