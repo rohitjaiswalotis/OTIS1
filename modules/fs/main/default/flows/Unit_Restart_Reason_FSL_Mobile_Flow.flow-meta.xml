@@ -3,8 +3,8 @@
     <assignments>
         <name>Update_Shutdown_Data</name>
         <label>Update Shutdown Data</label>
-        <locationX>252</locationX>
-        <locationY>730</locationY>
+        <locationX>50</locationX>
+        <locationY>674</locationY>
         <assignmentItems>
             <assignToReference>LatestUnitShutdownLog.Projected_Restart_Reason__c</assignToReference>
             <operator>Assign</operator>
@@ -26,8 +26,8 @@
     <decisions>
         <name>Check_if_Shutdown_log_present</name>
         <label>Check if Shutdown log present</label>
-        <locationX>232</locationX>
-        <locationY>528</locationY>
+        <locationX>314</locationX>
+        <locationY>566</locationY>
         <defaultConnector>
             <targetReference>No_Logs2</targetReference>
         </defaultConnector>
@@ -51,8 +51,8 @@
     <decisions>
         <name>Check_The_Status</name>
         <label>Check The Status</label>
-        <locationX>451</locationX>
-        <locationY>281</locationY>
+        <locationX>710</locationX>
+        <locationY>242</locationY>
         <defaultConnector>
             <targetReference>footer</targetReference>
         </defaultConnector>
@@ -85,7 +85,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>FREE_FORM_CANVAS</stringValue>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -98,8 +98,8 @@
     <recordLookups>
         <name>get_latest_Unit_Shutdown_log</name>
         <label>get latest Unit Shutdown log</label>
-        <locationX>239</locationX>
-        <locationY>434</locationY>
+        <locationX>314</locationX>
+        <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_if_Shutdown_log_present</targetReference>
@@ -109,7 +109,7 @@
         </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>AssetId</field>
+            <field>Id</field>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>Id</elementReference>
@@ -125,9 +125,9 @@
     </recordLookups>
     <recordLookups>
         <name>Get_Unit_Data</name>
-        <label>Get Current Unit Data</label>
-        <locationX>454</locationX>
-        <locationY>167</locationY>
+        <label>Get Parent Unit Status</label>
+        <locationX>710</locationX>
+        <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_The_Status</targetReference>
@@ -143,17 +143,17 @@
                 <elementReference>Id</elementReference>
             </value>
         </filters>
-        <object>Asset</object>
+        <object>AssetDowntimePeriod</object>
         <outputAssignments>
             <assignToReference>OpStatus</assignToReference>
-            <field>OperationalStatus__c</field>
+            <field>UnitStatus__c</field>
         </outputAssignments>
     </recordLookups>
     <recordUpdates>
         <name>Update_Shutdown_Restart_Time</name>
         <label>Update Shutdown Restart Time</label>
-        <locationX>528</locationX>
-        <locationY>730</locationY>
+        <locationX>50</locationX>
+        <locationY>782</locationY>
         <faultConnector>
             <targetReference>erriorr</targetReference>
         </faultConnector>
@@ -162,8 +162,8 @@
     <screens>
         <name>erriorr</name>
         <label>erriorr</label>
-        <locationX>529</locationX>
-        <locationY>912</locationY>
+        <locationX>314</locationX>
+        <locationY>890</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -172,14 +172,15 @@
             <fieldText>&lt;p&gt;{!$Flow.FaultMessage}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
+        <nextOrFinishButtonLabel>Close</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Error</name>
         <label>Error</label>
-        <locationX>61</locationX>
-        <locationY>435</locationY>
+        <locationX>842</locationX>
+        <locationY>566</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -188,14 +189,15 @@
             <fieldText>&lt;p&gt;{!$Flow.FaultMessage}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
+        <nextOrFinishButtonLabel>Close</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>footer</name>
         <label>footer</label>
-        <locationX>740</locationX>
-        <locationY>281</locationY>
+        <locationX>1106</locationX>
+        <locationY>350</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -204,14 +206,15 @@
             <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Unit is &apos;In Service&apos;. &lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
+        <nextOrFinishButtonLabel>Close</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>No_Logs2</name>
         <label>No Logs2</label>
-        <locationX>64</locationX>
-        <locationY>630</locationY>
+        <locationX>578</locationX>
+        <locationY>674</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -220,14 +223,15 @@
             <fieldText>&lt;p&gt;No Shutdown Log Exists for this Unit&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
+        <nextOrFinishButtonLabel>Close</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Screen</name>
         <label>Screen</label>
-        <locationX>464</locationX>
-        <locationY>434</locationY>
+        <locationX>314</locationX>
+        <locationY>350</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -245,7 +249,7 @@
             <fieldText>Restart Date</fieldText>
             <fieldType>InputField</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>Reason</name>
@@ -255,14 +259,15 @@
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
         </fields>
+        <nextOrFinishButtonLabel>Save</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>tes2</name>
         <label>Error2</label>
-        <locationX>240</locationX>
-        <locationY>170</locationY>
+        <locationX>1370</locationX>
+        <locationY>242</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -275,8 +280,8 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>330</locationX>
-        <locationY>48</locationY>
+        <locationX>584</locationX>
+        <locationY>0</locationY>
         <connector>
             <targetReference>Get_Unit_Data</targetReference>
         </connector>
