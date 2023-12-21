@@ -1,0 +1,470 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignments>
+        <name>Assign_Back_In_service</name>
+        <label>Assign Back In service</label>
+        <locationX>314</locationX>
+        <locationY>674</locationY>
+        <assignmentItems>
+            <assignToReference>storeShutdownLogRecords.BackInServiceDateTime__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Back_In_Service_Date_Time</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>storeShutdownLogRecords.BackinServiceBy__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Back_In_Service_By</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Unit_Recrod</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Unit_Status</name>
+        <label>Assign Unit Status</label>
+        <locationX>314</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>storeAssetRecord.OperationalStatus__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>In Service</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>storeAssetRecord.OperationalStatusReason__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>In Service</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>storeAssetRecord.BackinServiceBy__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Back_In_Service_By</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>storeAssetRecord.UpdatedByIntegration__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_Back_In_service</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Unit_Status_and_Reason</name>
+        <label>Assign Unit Status and Reason</label>
+        <locationX>50</locationX>
+        <locationY>674</locationY>
+        <assignmentItems>
+            <assignToReference>storeAssetRecord.OperationalStatus__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Shutdown</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>storeAssetRecord.OperationalStatusReason__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Operational_Status_Reason</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>storeAssetRecord.Shutdown_Reported_By__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Shutdown_Reported_By</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Unit</targetReference>
+        </connector>
+    </assignments>
+    <choices>
+        <name>AwaitingCustomerProposalSignature</name>
+        <choiceText>Awaiting Customer Proposal Signature</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Awaiting Customer Proposal Signature</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ShutdownduetoCustomerRequest</name>
+        <choiceText>Shutdown due to Customer Request</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Shutdown due to Customer Request</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ShutdownduetoOtherReason</name>
+        <choiceText>Shutdown due to Other Reason</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Shutdown due to Other Reason</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ShutdownduetoSafetyJudgement</name>
+        <choiceText>Shutdown due to Safety Judgement</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Shutdown due to Safety Judgement</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ShutdownforDisasterEarthquake</name>
+        <choiceText>Shutdown for Disaster - Earthquake</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Shutdown for Disaster - Earthquake</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ShutdownforDisasterOther</name>
+        <choiceText>Shutdown for Disaster - Other</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Shutdown for Disaster - Other</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ShutdownforGovernmentInspection</name>
+        <choiceText>Shutdown for Government Inspection</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Shutdown for Government Inspection</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ShutdownforInvestigation</name>
+        <choiceText>Shutdown for Investigation</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Shutdown for Investigation</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ShutdownforParts</name>
+        <choiceText>Shutdown for Parts</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Shutdown for Parts</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ShutdownforRepair</name>
+        <choiceText>Shutdown for Repair</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Shutdown for Repair</stringValue>
+        </value>
+    </choices>
+    <decisions>
+        <name>Unit_Status_Check</name>
+        <label>Unit Status Check</label>
+        <locationX>314</locationX>
+        <locationY>350</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>In_Service_Unit</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>storeAssetRecord.OperationalStatus__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>In Service</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Shutdown_Unit</targetReference>
+            </connector>
+            <label>In Service Unit</label>
+        </rules>
+        <rules>
+            <name>Unit_Shutdown</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>storeAssetRecord.OperationalStatus__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Shutdown</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Back_In_Service</targetReference>
+            </connector>
+            <label>Unit Shutdown</label>
+        </rules>
+    </decisions>
+    <dynamicChoiceSets>
+        <name>UserChoiceRecSet</name>
+        <dataType>String</dataType>
+        <displayField>Name</displayField>
+        <object>ServiceResource</object>
+        <valueField>Id</valueField>
+    </dynamicChoiceSets>
+    <environments>Default</environments>
+    <formulas>
+        <name>CurrentUser</name>
+        <dataType>String</dataType>
+        <expression>{!$User.Id}</expression>
+    </formulas>
+    <interviewLabel>FSL Mobile Unit Shutdown {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>FSL Mobile Unit Shutdown</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>FieldServiceMobile</processType>
+    <recordCreates>
+        <name>Shutdown_Unit_Log</name>
+        <label>Shutdown Unit Log</label>
+        <locationX>50</locationX>
+        <locationY>566</locationY>
+        <connector>
+            <targetReference>Assign_Unit_Status_and_Reason</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>AssetId</field>
+            <value>
+                <elementReference>storeAssetRecord.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>EndTime</field>
+            <value>
+                <elementReference>ShutdownDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ShutdownReportedBy__c</field>
+            <value>
+                <elementReference>Shutdown_Reported_By</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>StartTime</field>
+            <value>
+                <elementReference>ShutdownDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UnitShutdownReason__c</field>
+            <value>
+                <elementReference>Operational_Status_Reason</elementReference>
+            </value>
+        </inputAssignments>
+        <object>AssetDowntimePeriod</object>
+    </recordCreates>
+    <recordLookups>
+        <name>Get_Unit_Records</name>
+        <label>Get Unit Records</label>
+        <locationX>314</locationX>
+        <locationY>134</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Unit_Shutdown_Log_Rec</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </filters>
+        <object>Asset</object>
+        <outputReference>storeAssetRecord</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>OperationalStatus__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Unit_Shutdown_Log_Rec</name>
+        <label>Get Unit Shutdown Log Rec</label>
+        <locationX>314</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Unit_Status_Check</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AssetId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>storeAssetRecord.Id</elementReference>
+            </value>
+        </filters>
+        <object>AssetDowntimePeriod</object>
+        <outputReference>storeShutdownLogRecords</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>ShutdownReportedBy__c</queriedFields>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_shutdown_log</name>
+        <label>Update shutdown log</label>
+        <locationX>314</locationX>
+        <locationY>890</locationY>
+        <inputReference>storeShutdownLogRecords</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Unit</name>
+        <label>Update Unit</label>
+        <locationX>50</locationX>
+        <locationY>782</locationY>
+        <inputReference>storeAssetRecord</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Unit_Recrod</name>
+        <label>Update Unit Recrod</label>
+        <locationX>314</locationX>
+        <locationY>782</locationY>
+        <connector>
+            <targetReference>Update_shutdown_log</targetReference>
+        </connector>
+        <inputReference>storeAssetRecord</inputReference>
+    </recordUpdates>
+    <screens>
+        <name>Back_In_Service</name>
+        <label>Back In Service</label>
+        <locationX>314</locationX>
+        <locationY>458</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Assign_Unit_Status</targetReference>
+        </connector>
+        <fields>
+            <name>Back_In_Service_By</name>
+            <choiceReferences>UserChoiceRecSet</choiceReferences>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>CurrentUser</elementReference>
+            </defaultValue>
+            <fieldText>Back In Service By</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Back_In_Service_Date_Time</name>
+            <dataType>DateTime</dataType>
+            <fieldText>Back In Service Date/Time</fieldText>
+            <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Shutdown_Unit</name>
+        <label>Shutdown Unit</label>
+        <locationX>50</locationX>
+        <locationY>458</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Shutdown_Unit_Log</targetReference>
+        </connector>
+        <fields>
+            <name>Operational_Status_Reason</name>
+            <choiceReferences>ShutdownforParts</choiceReferences>
+            <choiceReferences>ShutdownforRepair</choiceReferences>
+            <choiceReferences>ShutdownforInvestigation</choiceReferences>
+            <choiceReferences>ShutdownduetoSafetyJudgement</choiceReferences>
+            <choiceReferences>ShutdownforGovernmentInspection</choiceReferences>
+            <choiceReferences>ShutdownforDisasterEarthquake</choiceReferences>
+            <choiceReferences>ShutdownforDisasterOther</choiceReferences>
+            <choiceReferences>ShutdownduetoCustomerRequest</choiceReferences>
+            <choiceReferences>ShutdownduetoOtherReason</choiceReferences>
+            <choiceReferences>AwaitingCustomerProposalSignature</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Operational Status Reason</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Shutdown_Reported_By</name>
+            <choiceReferences>UserChoiceRecSet</choiceReferences>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>CurrentUser</elementReference>
+            </defaultValue>
+            <fieldText>Shutdown Reported By</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>ShutdownDateTime</name>
+            <dataType>DateTime</dataType>
+            <fieldText>Shutdown Date/Time</fieldText>
+            <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+        </fields>
+        <nextOrFinishButtonLabel>Save</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>188</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Unit_Records</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>Id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>storeAssetRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Asset</objectType>
+    </variables>
+    <variables>
+        <name>storeShutdownLogRecords</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>AssetDowntimePeriod</objectType>
+    </variables>
+</Flow>
