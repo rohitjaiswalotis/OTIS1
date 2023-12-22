@@ -52,22 +52,22 @@ parameters:
   default: false
 
 - name: shouldRunTestsBefore
-  displayName: Run Tests Before?
-  type: boolean
-  default: true
-
-- name: shouldRunTestsAfter
-  displayName: Run Tests After?
+  displayName: Run Tests (Before)?
   type: boolean
   default: true
 
 - name: runTestsBeforeAsConcurrent
-  displayName: Concurrent Tests Before?
+  displayName: Concurrent Tests (Before)?
+  type: boolean
+  default: true
+
+- name: shouldRunTestsAfter
+  displayName: Run Tests (After)?
   type: boolean
   default: true
 
 - name: runTestsAfterAsConcurrent
-  displayName: Concurrent Tests After?
+  displayName: Concurrent Tests (After)?
   type: boolean
   default: true
 

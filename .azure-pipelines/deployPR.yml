@@ -190,7 +190,7 @@ stages:
                   
                 - bash: |
                         
-                        curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; **$(fsPackageName)** `$(Build.SourceBranchName)` - PR deployment [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `$(OrgAliasDevFS)` org by $(Build.RequestedFor)!"}' $(notifErrorUrls)
+                        curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - PR deployment [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `$(OrgAliasDevFS)` org by $(Build.RequestedFor)!"}' $(notifErrorUrls)
                         
                   displayName: 'Send Notification re Failed Deployment'
                   condition: failed()
@@ -205,7 +205,9 @@ stages:
                         subscribers: $(subs_deployPR_FsEMEA)
                       ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-naa') }}:
                         subscribers: $(subs_deployPR_FsNAA)
-                      ${{ else }}:
-                        subscribers: $(subs_deployPR_FsGlobal)
+                      ${{ elseif eq(variables['Build.SourceBranchName'], 'dev') }}:
+                        subscribers: $(subs_deployPR_FsGlobal_Dev)
+                      ${{ elseif eq(variables['Build.SourceBranchName'], 'master') }}:
+                        subscribers: $(subs_deployPR_FsGlobal_Master)
                       active: $(enableSubsDeployPR)
                   

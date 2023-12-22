@@ -330,7 +330,7 @@ steps:
           # early exit - error when grabbing installed packages from target org
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
             echo "ERROR: Cannot install dependencies for $(fsPackageName) package $FS_PACKAGE_VERSION_NUMBER ($FS_PACKAGE_VERSION_ID) into target org as '$TARGET_ORG_USERNAME' user!"
-            curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') dependencies installation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!"}' $(notifErrorUrls)
+            curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') dependencies installation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!"}' $(notifErrorUrls)
             exit 1
           fi
           
@@ -399,7 +399,7 @@ steps:
           
           echo "Early exit after successfully installing dependencies, since no package version installation has been requested."
           
-          curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` - dependencies for package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!"}' $(notifSuccessUrls)
+          curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - dependencies for package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!"}' $(notifSuccessUrls)
           
           exit 0;
           
@@ -463,7 +463,7 @@ steps:
           
           DX_INSTALL_ERROR_MESSAGE_ESCAPED=$(escapeJson "$DX_INSTALL_ERROR_MESSAGE");
           
-          curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)! <pre>'"${DX_INSTALL_ERROR_MESSAGE_ESCAPED:-unknown error}"'<\/pre>"}' $(notifErrorUrls)
+          curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)! <pre>'"${DX_INSTALL_ERROR_MESSAGE_ESCAPED:-unknown error}"'<\/pre>"}' $(notifErrorUrls)
           
           exit 1;
           
@@ -488,7 +488,7 @@ steps:
           
         fi
         
-        curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!"}' $(notifSuccessUrls)
+        curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!"}' $(notifSuccessUrls)
         
         # get packages installed into target org again
         echo "Fetching packages available in target org after Field Service package install/upgrade..."
