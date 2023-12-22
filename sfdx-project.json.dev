@@ -20,7 +20,8 @@
         },
         {
           "package": "OTIS Global CC Core",
-          "versionNumber": "1.8.0.RELEASED"
+          "versionNumber": "1.8.0.LATEST",
+          "branch": "dev"
         }
       ],
       "unpackagedMetadata": {
@@ -58,9 +59,9 @@
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "59.0",
-  
   "customScope": {
-    "name": "FS",
+    "name": "",
+    "name_commented": "FS",
     "exclusions": {
       "classes": [],
       "objects": [],
@@ -78,5 +79,4 @@
       "dashboards": []
     }
   }
-  
 }

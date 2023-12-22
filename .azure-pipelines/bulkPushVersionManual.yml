@@ -1,4 +1,4 @@
-name: 'Push Core Package Version into Set of Orgs'
+name: 'Push Field Service Package Version into Set of Orgs'
 
 
 trigger: none
