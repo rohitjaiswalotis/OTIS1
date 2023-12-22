@@ -1,4 +1,4 @@
-name: 'Push Field Service Package Version Global into Set of Orgs'
+name: 'Push Core Package Version into Set of Orgs'
 
 
 trigger: none
@@ -8,20 +8,28 @@ pr: none
 
 parameters:
 
+- name: localizationDomain
+  displayName: Localization Domain
+  type: string
+
 - name: versionToPushOrgAuthFiles
   displayName: Auth Files for Orgs to upgrade (comma-separated)
   type: string
-  default: "none"
 
 - name: versionToPushExpression
   displayName: Package version expression to upgrade to
   type: string
-  default: "X.* (Beta ?)"
+  default: "none"   # e.g. "X.* (Beta ?)"
+
+- name: versionBranch
+  displayName: Branch for version to upgrade
+  type: string
+  default: "none"   # e.g. 'dev-naa'
 
 - name: versionWhereCondition
   displayName: Where Condition for version to upgrade
   type: string
-  default: "Branch IN ('dev')"
+  default: "none"   # e.g. "Branch IN ('dev-naa')"
 
 - name: shouldInstallThirdParties
   displayName: Install Third Parties?
@@ -71,21 +79,42 @@ variables:
 
 stages:
 
-- ${{ if not(eq(parameters.versionToPushOrgAuthFiles, 'none')) }}:
-  
   - template: templates/bulkPushVersion.yml
+    
     parameters:
-      localizationDomain: "Global"
+      
+      localizationDomain: ${{ parameters.localizationDomain }}
+      
       versionToPushOrgAuthFiles: ${{ parameters.versionToPushOrgAuthFiles }}
-      versionToPushExpression: ${{ parameters.versionToPushExpression }}
-      versionWhereCondition: ${{ parameters.versionWhereCondition }}
+      
+      ${{ if ne(parameters.versionToPushExpression, 'none') }}:
+        
+        versionToPushExpression: ${{ parameters.versionToPushExpression }}
+        
+        ${{ if eq(parameters.versionWhereCondition, 'none') }}:
+          
+          ${{ if ne(parameters.versionBranch, 'none') }}:
+            versionWhereCondition: "Branch IN ('${{ parameters.versionBranch }}')"
+          
+        ${{ else }}:
+          
+          ${{ if eq(parameters.versionBranch, 'none') }}:
+            versionWhereCondition: ${{ parameters.versionWhereCondition }}
+          
+          ${{ else }}:
+            versionWhereCondition: "(${{ parameters.versionWhereCondition }}) AND Branch IN ('${{ parameters.versionBranch }}')"
+        
+      
       autoInstallDependencies: ${{ parameters.autoInstallDependencies }}
       installOnlyDependencies: ${{ parameters.installOnlyDependencies }}
       shouldInstallThirdParties: ${{ parameters.shouldInstallThirdParties }}
+      
       shouldRunTestsBefore: ${{ parameters.shouldRunTestsBefore }}
       runTestsBeforeAsConcurrent: ${{ parameters.runTestsBeforeAsConcurrent }}
+      
       shouldRunTestsAfter: ${{ parameters.shouldRunTestsAfter }}
       runTestsAfterAsConcurrent: ${{ parameters.runTestsAfterAsConcurrent }}
+      
       shouldRunAqaTests: ${{ parameters.shouldRunAqaTests }}
 
 

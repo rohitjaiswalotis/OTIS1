@@ -38,10 +38,25 @@ schedules:
 
 parameters:
 
+- name: envProfile
+  displayName: Environment profile
+  type: string
+  default: default
+
 - name: skipValidation
   displayName: Skip validation for package?
   type: boolean
   default: false
+
+- name: branchMarker
+  displayName: Branch marker for package
+  type: string
+  default: default
+
+- name: createTag
+  displayName: Create tag for version?
+  type: boolean
+  default: true
 
 - name: shouldNotifySubscribers
   displayName: Notify Subscribers?
@@ -79,9 +94,13 @@ stages:
             
             - template: templates/createVersion.yml
               parameters:
-                branchMarker: ${{ variables['Build.SourceBranchName'] }}
+                envProfile: ${{ parameters.envProfile }}
                 skipValidation: ${{ parameters.skipValidation }}
-                createTag: true
+                ${{ if eq(parameters.branchMarker, 'default') }}:
+                  branchMarker: ${{ variables['Build.SourceBranchName'] }}
+                ${{ elseif not( eq(parameters.branchMarker, 'none') ) }}:
+                  branchMarker: ${{ parameters.branchMarker }}
+                createTag: ${{ parameters.createTag }}
                 numberOfRetries: 1
               
               
@@ -95,8 +114,10 @@ stages:
                     subscribers: $(subs_pkgVersion_FsEMEA)
                   ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-naa') }}:
                     subscribers: $(subs_pkgVersion_FsNAA)
-                  ${{ else }}:
-                    subscribers: $(subs_pkgVersion_FsGlobal)
+                  ${{ elseif eq(variables['Build.SourceBranchName'], 'dev') }}:
+                    subscribers: $(subs_pkgVersion_FsGlobal_Dev)
+                  ${{ elseif eq(variables['Build.SourceBranchName'], 'master') }}:
+                    subscribers: $(subs_pkgVersion_FsGlobal_Master)
                   active: $(enableSubsPkgVersion)
               
             

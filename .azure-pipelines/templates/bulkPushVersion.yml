@@ -10,6 +10,7 @@ parameters:
 - name: versionToPushOrgAuthFiles
   displayName: Auth Files for Orgs to upgrade (comma-separated)
   type: string
+  default: none
 
 - name: versionToPushExpression
   displayName: Package version expression to upgrade to
@@ -41,22 +42,22 @@ parameters:
   default: false
 
 - name: shouldRunTestsBefore
-  displayName: Run Tests Before?
-  type: boolean
-  default: true
-
-- name: shouldRunTestsAfter
-  displayName: Run Tests After?
+  displayName: Run Tests (Before)?
   type: boolean
   default: true
 
 - name: runTestsBeforeAsConcurrent
-  displayName: Concurrent Tests Before?
+  displayName: Concurrent Tests (Before)?
+  type: boolean
+  default: true
+
+- name: shouldRunTestsAfter
+  displayName: Run Tests (After)?
   type: boolean
   default: true
 
 - name: runTestsAfterAsConcurrent
-  displayName: Concurrent Tests After?
+  displayName: Concurrent Tests (After)?
   type: boolean
   default: true
 
@@ -133,6 +134,7 @@ stages:
                     echo "##vso[task.setvariable variable=FS_PACKAGE_VERSION_ID]${FS_PACKAGE_VERSION_ID}"
                     
               displayName: 'Evaluate Version by Expression'
+              condition: ${{ ne(lower(parameters.versionToPushExpression), 'none') }}
             
             
             - ${{ each targetOrgAuthFileName in split(parameters.versionToPushOrgAuthFiles, ',')}}:
