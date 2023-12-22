@@ -10,11 +10,11 @@ parameters:
 - name: versionToPushOrgAuthFiles
   displayName: Auth Files for Orgs to upgrade (comma-separated)
   type: string
-  default: none
 
 - name: versionToPushExpression
   displayName: Package version expression to upgrade to
   type: string
+  default: none
 
 - name: versionWhereCondition
   displayName: Where Condition for version to upgrade
