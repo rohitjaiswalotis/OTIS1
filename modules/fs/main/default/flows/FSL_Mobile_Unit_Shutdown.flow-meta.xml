@@ -4,7 +4,7 @@
         <name>Assign_Back_In_service</name>
         <label>Assign Back In service</label>
         <locationX>314</locationX>
-        <locationY>674</locationY>
+        <locationY>782</locationY>
         <assignmentItems>
             <assignToReference>storeShutdownLogRecords.BackInServiceDateTime__c</assignToReference>
             <operator>Assign</operator>
@@ -19,6 +19,13 @@
                 <elementReference>Back_In_Service_By</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>storeShutdownLogRecords.WorkOrderForUnitInService__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>WORecords.Id</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Update_Unit_Recrod</targetReference>
         </connector>
@@ -27,7 +34,7 @@
         <name>Assign_Unit_Status</name>
         <label>Assign Unit Status</label>
         <locationX>314</locationX>
-        <locationY>566</locationY>
+        <locationY>674</locationY>
         <assignmentItems>
             <assignToReference>storeAssetRecord.OperationalStatus__c</assignToReference>
             <operator>Assign</operator>
@@ -64,7 +71,7 @@
         <name>Assign_Unit_Status_and_Reason</name>
         <label>Assign Unit Status and Reason</label>
         <locationX>50</locationX>
-        <locationY>674</locationY>
+        <locationY>782</locationY>
         <assignmentItems>
             <assignToReference>storeAssetRecord.OperationalStatus__c</assignToReference>
             <operator>Assign</operator>
@@ -174,7 +181,7 @@
         <name>Unit_Status_Check</name>
         <label>Unit Status Check</label>
         <locationX>314</locationX>
-        <locationY>350</locationY>
+        <locationY>458</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>In_Service_Unit</name>
@@ -221,7 +228,7 @@
         <expression>{!$User.Id}</expression>
     </formulas>
     <interviewLabel>FSL Mobile Unit Shutdown {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>FSL Mobile Unit Shutdown</label>
+    <label>FSL Mobile Unit Status Update Flow</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -245,7 +252,7 @@
         <name>Shutdown_Unit_Log</name>
         <label>Shutdown Unit Log</label>
         <locationX>50</locationX>
-        <locationY>566</locationY>
+        <locationY>674</locationY>
         <connector>
             <targetReference>Assign_Unit_Status_and_Reason</targetReference>
         </connector>
@@ -279,8 +286,44 @@
                 <elementReference>Operational_Status_Reason</elementReference>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <field>WorkOrder__c</field>
+            <value>
+                <elementReference>WORecords.Id</elementReference>
+            </value>
+        </inputAssignments>
         <object>AssetDowntimePeriod</object>
     </recordCreates>
+    <recordLookups>
+        <name>Get_Related_WO</name>
+        <label>Get Related WO</label>
+        <locationX>314</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Unit_Shutdown_Log_Rec</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AssetId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>storeAssetRecord.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Closed</stringValue>
+            </value>
+        </filters>
+        <object>WorkOrder</object>
+        <outputReference>WORecords</outputReference>
+        <queriedFields>Id</queriedFields>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+    </recordLookups>
     <recordLookups>
         <name>Get_Unit_Records</name>
         <label>Get Unit Records</label>
@@ -288,7 +331,7 @@
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Unit_Shutdown_Log_Rec</targetReference>
+            <targetReference>Get_Related_WO</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -307,7 +350,7 @@
         <name>Get_Unit_Shutdown_Log_Rec</name>
         <label>Get Unit Shutdown Log Rec</label>
         <locationX>314</locationX>
-        <locationY>242</locationY>
+        <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Unit_Status_Check</targetReference>
@@ -324,26 +367,30 @@
         <outputReference>storeShutdownLogRecords</outputReference>
         <queriedFields>Id</queriedFields>
         <queriedFields>ShutdownReportedBy__c</queriedFields>
+        <queriedFields>WorkOrder__c</queriedFields>
+        <queriedFields>WorkOrderForUnitInService__c</queriedFields>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
     </recordLookups>
     <recordUpdates>
         <name>Update_shutdown_log</name>
         <label>Update shutdown log</label>
         <locationX>314</locationX>
-        <locationY>890</locationY>
+        <locationY>998</locationY>
         <inputReference>storeShutdownLogRecords</inputReference>
     </recordUpdates>
     <recordUpdates>
         <name>Update_Unit</name>
         <label>Update Unit</label>
         <locationX>50</locationX>
-        <locationY>782</locationY>
+        <locationY>890</locationY>
         <inputReference>storeAssetRecord</inputReference>
     </recordUpdates>
     <recordUpdates>
         <name>Update_Unit_Recrod</name>
         <label>Update Unit Recrod</label>
         <locationX>314</locationX>
-        <locationY>782</locationY>
+        <locationY>890</locationY>
         <connector>
             <targetReference>Update_shutdown_log</targetReference>
         </connector>
@@ -353,7 +400,7 @@
         <name>Back_In_Service</name>
         <label>Back In Service</label>
         <locationX>314</locationX>
-        <locationY>458</locationY>
+        <locationY>566</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -387,7 +434,7 @@
         <name>Shutdown_Unit</name>
         <label>Shutdown Unit</label>
         <locationX>50</locationX>
-        <locationY>458</locationY>
+        <locationY>566</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -466,5 +513,13 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>AssetDowntimePeriod</objectType>
+    </variables>
+    <variables>
+        <name>WORecords</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrder</objectType>
     </variables>
 </Flow>
