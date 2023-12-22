@@ -58,6 +58,16 @@ steps:
         source $(commonUtils)
         
         
+        # define notification icons
+        if [[ ${BUILD_REASON,,} =~ ^schedule$ ]] ; then
+          NOTIFICATION_ICON="&#x1F4E6; &#x231A;"
+        elif [[ ${BUILD_REASON,,} =~ ^manual$ ]] ; then
+          NOTIFICATION_ICON="&#x1F4E6; &#x270B;"
+        else
+          NOTIFICATION_ICON="&#x1F4E6;"
+        fi
+        
+        
         echo "Applying transformation to project config..."
         
         PROJECT_CONFIG_FILE="$(projectConfigFile)"
@@ -159,7 +169,7 @@ steps:
           
           DX_ERROR_MESSAGE_ESCAPED=$(escapeJson "$DX_ERROR_MESSAGE");
           
-          curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; &#x1F4E6; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version creation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)! <pre>'"${DX_ERROR_MESSAGE_ESCAPED:-unknown error}"'<\/pre>"}' $(notifErrorUrls)
+          curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; '"$NOTIFICATION_ICON"' **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version creation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)! <pre>'"${DX_ERROR_MESSAGE_ESCAPED:-unknown error}"'<\/pre>"}' $(notifErrorUrls)
           
           exit 1
           
@@ -185,7 +195,7 @@ steps:
         
         FS_PACKAGE_VERSION_NUMBER=$(echo "$FS_PACKAGE_VERSION_DETAILS" | jq -r '.result.Version // empty')
         
-        curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; &#x1F4E6; **$(fsPackageName)** `$(Build.SourceBranchName)` - package version creation `'"$FS_PACKAGE_VERSION_NUMBER"'` [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)!"}' $(notifSuccessUrls)
+        curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; '"$NOTIFICATION_ICON"' **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version creation `'"$FS_PACKAGE_VERSION_NUMBER"'` [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)!"}' $(notifSuccessUrls)
         
         
         # optionally create tag in repo with the following format: v{major}.{minor}.{build}.{patch}-{valid|skip}-{04txxxxxxxxxxxxxxx}-{branchName}
