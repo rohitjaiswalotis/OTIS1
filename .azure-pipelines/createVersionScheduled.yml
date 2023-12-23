@@ -115,9 +115,9 @@ stages:
                   ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-naa') }}:
                     subscribers: $(subs_pkgVersion_FsNAA)
                   ${{ elseif eq(variables['Build.SourceBranchName'], 'dev') }}:
-                    subscribers: $(subs_pkgVersion_FsGlobal_Dev)
+                    subscribers: $(subs_pkgVersion_FsStable)
                   ${{ elseif eq(variables['Build.SourceBranchName'], 'master') }}:
-                    subscribers: $(subs_pkgVersion_FsGlobal_Master)
+                    subscribers: $(subs_pkgVersion_FsRelease)
                   active: $(enableSubsPkgVersion)
               
             
