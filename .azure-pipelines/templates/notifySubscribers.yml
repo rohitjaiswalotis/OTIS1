@@ -30,6 +30,11 @@ steps:
         fi
         
         
+        # include common utils
+        chmod +x $(commonUtils)
+        source $(commonUtils)
+        
+        
         SUBSCRIBERS_NOTIFICATION_ENABLED="${{ parameters.active }}";
         
         if [[ ! "${SUBSCRIBERS_NOTIFICATION_ENABLED,,}" =~ ^true$ ]] ; then
@@ -129,11 +134,15 @@ steps:
             fi
             
             
+            SUBSCRIBER_PIPELINE_TRIGGER_ERROR_FILE=$(mktemp);
+            
             # trigger subscriber pipeline (suppressing errors)
             set +e
-            SUBSCRIBER_PIPELINE_TRIGGER_RESPONSE=$(eval "az pipelines run --branch=\"$SUBSCRIBER_PIPELINE_BRANCH\" --name=\"$subscriberPipelineName\" $SUBSCRIBER_PIPELINE_FOLDER_PATH $SUBSCRIBER_PIPELINE_PARAMETERS_ARG"); SUBSCRIBER_PIPELINE_TRIGGER_CODE=$?;
+            SUBSCRIBER_PIPELINE_TRIGGER_RESPONSE=$(eval "az pipelines run --branch=\"$SUBSCRIBER_PIPELINE_BRANCH\" --name=\"$subscriberPipelineName\" $SUBSCRIBER_PIPELINE_FOLDER_PATH $SUBSCRIBER_PIPELINE_PARAMETERS_ARG 2> $SUBSCRIBER_PIPELINE_TRIGGER_ERROR_FILE"); SUBSCRIBER_PIPELINE_TRIGGER_CODE=$?;
             set -e
-            echo $SUBSCRIBER_PIPELINE_TRIGGER_RESPONSE
+            
+            echo "$SUBSCRIBER_PIPELINE_TRIGGER_RESPONSE"
+            
             
             # grab pipeline run id from response
             SUBSCRIBER_PIPELINE_RUN_ID=$(echo $SUBSCRIBER_PIPELINE_TRIGGER_RESPONSE | jq -r ".id");
@@ -141,9 +150,22 @@ steps:
             
             # generate web link to triggered subscriber pipeline from pieces
             if [[ ${SUBSCRIBER_PIPELINE_RUN_ID:+1} && $SUBSCRIBER_PIPELINE_TRIGGER_CODE -eq 0 ]]; then
+                
+                echo "Successfully triggered pipeline '$SUBSCRIBER_PIPELINE_NAME' on branch '$SUBSCRIBER_PIPELINE_BRANCH' with params [$SUBSCRIBER_PIPELINE_PARAMETERS] to notify subscriber."
                 echo "Subscriber Notify Pipeline Web Url ($SUBSCRIBER_PIPELINE_NAME): $(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$SUBSCRIBER_PIPELINE_RUN_ID"
+                
             else
-                echo "WARNING: Cannot trigger pipeline '$SUBSCRIBER_PIPELINE_NAME' to notify subscriber."
+                
+                SUBSCRIBER_PIPELINE_TRIGGER_ERROR="$(cat $SUBSCRIBER_PIPELINE_TRIGGER_ERROR_FILE)"
+                SUBSCRIBER_PIPELINE_TRIGGER_ERROR_DETAILS="${SUBSCRIBER_PIPELINE_TRIGGER_ERROR:-${SUBSCRIBER_PIPELINE_TRIGGER_RESPONSE:-unknown}}"
+                
+                echo "WARNING: Cannot trigger pipeline '$SUBSCRIBER_PIPELINE_NAME' on branch '$SUBSCRIBER_PIPELINE_BRANCH' with params [$SUBSCRIBER_PIPELINE_PARAMETERS] to notify subscriber."
+                echo "$SUBSCRIBER_PIPELINE_TRIGGER_ERROR_DETAILS"
+                
+                set +e
+                curl -H 'Content-Type: application/json' -d '{"text": "&#x2757; &#x1F4DE; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - cannot trigger pipeline **'"$SUBSCRIBER_PIPELINE_NAME"'** on branch `'$SUBSCRIBER_PIPELINE_BRANCH'` with params `'"$(escapeJson "$SUBSCRIBER_PIPELINE_PARAMETERS")"'` to notify [subscriber]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)! <pre>'"$(escapeJson "$SUBSCRIBER_PIPELINE_TRIGGER_ERROR_DETAILS")"'<\/pre>"}' $(notifErrorUrls)
+                set -e
+                
             fi
             
         done

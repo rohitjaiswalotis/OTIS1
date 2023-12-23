@@ -206,8 +206,8 @@ stages:
                       ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-naa') }}:
                         subscribers: $(subs_deployPR_FsNAA)
                       ${{ elseif eq(variables['Build.SourceBranchName'], 'dev') }}:
-                        subscribers: $(subs_deployPR_FsGlobal_Dev)
+                        subscribers: $(subs_deployPR_FsStable)
                       ${{ elseif eq(variables['Build.SourceBranchName'], 'master') }}:
-                        subscribers: $(subs_deployPR_FsGlobal_Master)
+                        subscribers: $(subs_deployPR_FsRelease)
                       active: $(enableSubsDeployPR)
                   
