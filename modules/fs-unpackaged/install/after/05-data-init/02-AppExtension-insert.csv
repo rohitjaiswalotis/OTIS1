@@ -1,0 +1,5 @@
+"FieldServiceMobileSettingsId","AppExtensionName","Type","LaunchValue","ScopedToObjectTypes","AppExtensionLabel"
+"$SF_SR_VAR_MOBILE_SETTING_ID","Unit Restart Time Form","Flow","Unit_Restart_Reason_FSL_Mobile_Flow","AssetDowntimePeriod","Project Restart Date"
+"$SF_SR_VAR_MOBILE_SETTING_ID","Update_GeoCode_Unit","Flow","FS_Update_Unit_Building_Location_FSL_Flow","Asset","Update GeoCode"
+"$SF_SR_VAR_MOBILE_SETTING_ID","Update Unit Status","Flow","FSL_Mobile_Unit_Shutdown","Asset","Update Unit Status"
+"$SF_SR_VAR_MOBILE_SETTING_ID","View Report","iOS","salesforce1://v1/sObject/$SF_SR_VAR_KPI_DASHBOARDS_MECHANICS_ID/view","ServiceAppointment","Open KPI Dashboards"
