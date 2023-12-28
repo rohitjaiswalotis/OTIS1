@@ -58,10 +58,30 @@ parameters:
   type: boolean
   default: true
 
+- name: promoteVersion
+  displayName: Promote package version?
+  type: boolean
+  default: false
+
 - name: shouldNotifySubscribers
   displayName: Notify Subscribers?
   type: boolean
   default: true
+
+- name: numberOfRetries
+  displayName: Number of Retries?
+  type: number
+  default: 1
+
+- name: savePackageDumpAsArtifact
+  displayName: Save Package Dump as Artifact?
+  type: boolean
+  default: false
+
+- name: enableDebugMode
+  displayName: Debug Mode?
+  type: boolean
+  default: false
 
 
 variables:
@@ -101,7 +121,16 @@ stages:
                 ${{ elseif not( eq(parameters.branchMarker, 'none') ) }}:
                   branchMarker: ${{ parameters.branchMarker }}
                 createTag: ${{ parameters.createTag }}
-                numberOfRetries: 1
+                numberOfRetries: ${{ parameters.numberOfRetries }}
+                savePackageDumpAsArtifact: ${{ parameters.savePackageDumpAsArtifact }}
+                enableDebugMode: ${{ parameters.enableDebugMode }}
+                
+              
+            - ${{ if eq(parameters.promoteVersion, true) }}:
+              
+              - template: templates/promoteVersion.yml
+                parameters:
+                  enableDebugMode: ${{ parameters.enableDebugMode }}
               
               
             - ${{ if eq(parameters.shouldNotifySubscribers, true) }}:
@@ -119,5 +148,6 @@ stages:
                   ${{ elseif eq(variables['Build.SourceBranchName'], 'master') }}:
                     subscribers: $(subs_pkgVersion_FsRelease)
                   active: $(enableSubsPkgVersion)
+                  enableDebugMode: ${{ parameters.enableDebugMode }}
               
             
