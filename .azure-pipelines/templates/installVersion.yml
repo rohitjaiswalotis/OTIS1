@@ -393,13 +393,14 @@ steps:
           
           echo "Running pre-$PACKAGE_ACTION_TYPE steps..."
           
-          # enable exit on error
-          set -e
+          bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$PACKAGE_ACTION_TYPE/before" -a "targetOrg" -w "$(pwd)"; DX_STATUS_CODE=$?;
           
-          bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$PACKAGE_ACTION_TYPE/before" -a "targetOrg" -w "$(pwd)"
-          
-          # disable exit on error
-          set +e
+          # early exit - error when executing before install scripts against target org
+          if [[ "$DX_STATUS_CODE" != "0" ]]; then
+            echo "ERROR: Cannot execute before install scripts for $(fsPackageName) package $FS_PACKAGE_VERSION_NUMBER ($FS_PACKAGE_VERSION_ID) against target org as '$TARGET_ORG_USERNAME' user!"
+            curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') before install scripts [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) against `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifErrorUrls)
+            exit 1
+          fi
           
         else
           
@@ -426,7 +427,7 @@ steps:
         fi
         
         
-        # actuall installation
+        # actual installation
         echo "Actually installing '$(fsPackageName)' package version $FS_PACKAGE_VERSION_NUMBER ($FS_PACKAGE_VERSION_ID)..."
         
         packageInstallMaxRetryAttempts=$(packageRetryNumber);
@@ -494,13 +495,14 @@ steps:
           
           echo "Running post-$PACKAGE_ACTION_TYPE steps..."
           
-          # enable exit on error
-          set -e
+          bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$PACKAGE_ACTION_TYPE/after" -a "targetOrg" -w "$(pwd)"; DX_STATUS_CODE=$?;
           
-          bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$PACKAGE_ACTION_TYPE/after" -a "targetOrg" -w "$(pwd)"
-          
-          # disable exit on error
-          set +e
+          # early exit - error when executing after install scripts against target org
+          if [[ "$DX_STATUS_CODE" != "0" ]]; then
+            echo "ERROR: Cannot execute after install scripts for $(fsPackageName) package $FS_PACKAGE_VERSION_NUMBER ($FS_PACKAGE_VERSION_ID) against target org as '$TARGET_ORG_USERNAME' user!"
+            curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') after install scripts [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) against `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifErrorUrls)
+            exit 1
+          fi
           
         else
           
