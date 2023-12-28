@@ -13,6 +13,9 @@
           "package": "FSL@246.0.84"
         },
         {
+          "package": "Salesforce Mobile Apps@1.20.0"
+        },
+        {
           "package": "Salesforce Maps@246.9"
         },
         {
@@ -50,6 +53,7 @@
   ],
   "packageAliases": {
     "FSL@246.0.84": "04t3y000001SkcUAAS",
+    "Salesforce Mobile Apps@1.20.0": "04t3A000001DdcGQAS",
     "Salesforce Maps@246.9": "04t4P000002fQreQAE",
     "Salesforce Field Service App@1.52": "04t1R0000016Ya8QAE",
     "OTIS Global CC Core": "0HoDn000000TNCsKAO",
