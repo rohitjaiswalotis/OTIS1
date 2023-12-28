@@ -246,7 +246,7 @@ steps:
           # COMMENTED FOR NOW: pre-destruct: run destructive operation before deploy
           #sf force source deploy -u "targetOrg" --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --predestructivechanges="destruct/destructiveChangesPre.xml" -w 1000 --verbose
           
-          # actuall deployment
+          # actual deployment
           sf force source deploy --sourcepath="$(packageBaseDir)" -u "targetOrg" --ignorewarnings -w 1000 --verbose
           
           # COMMENTED FOR NOW: post-destruct: run destructive operation after deploy
