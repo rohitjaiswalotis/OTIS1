@@ -8,6 +8,7 @@ set -e
 
 JSFORCE_RUNNER_VERSION="${JSFORCERUNNERVERSION:-latest}";
 POSTMAN_RUNNER_VERSION="${POSTMANRUNNERVERSION:-latest}";
+SFDMU_PLUGIN_VERSION="${SFDMUVERSION:-latest}";
 
 SF_API_VERSION="${SFAPIVERSION:-59.0}";
 
@@ -602,7 +603,7 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 		[ -o errexit ] && metaStep_backup_errexit='set -e' || metaStep_backup_errexit='set +e'; set +e
 		
 		
-		while true; do 		
+		while true; do 	
 			
 			if [[ -f "${file}/package.xml" ]]; then
 				echo "Deploying metadata in classic/old format (package.xml has been detected inside folder)..."
@@ -1185,6 +1186,73 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 		# restore 'exit on error' flag state
 		eval "$dataStep_backup_errexit"
         
+		
+	# handle data SFDMU execution step: expected content of the directory to be in format acceptable by SFDMU pugin, i.e. with export.json file and bunch of csvs inside
+    elif [[ ${sfTargetOrgAlias:+1} && -d "$file" && "${file,,}" =~ ^.*/${STEP_INDEX_REGEX}-datasfdmu(-.*)?$ ]]; then
+		
+		echo "Step has been identified as SFDMU data ingestion."
+		
+		pushd $file
+		
+		echo "Installing sfdmu plugin if no originally installed version is available ..."
+		(sf plugins | grep -i "sfdmu") || (echo "y" | sf plugins install sfdmu@$SFDMU_PLUGIN_VERSION)
+		
+		dataStepMaxRetryAttempts=1;
+		dataStepRetryDelay=30;
+		dataStepResultCode=0;
+		dataStepRetryCounter=0;
+		
+		# backup current error switcher value and disable exit on error
+		[ -o errexit ] && dataStep_backup_errexit='set -e' || dataStep_backup_errexit='set +e'; set +e
+		
+		
+		while true; do 	
+			
+			sf sfdmu:run --sourceusername="csvfile" --targetusername="$sfTargetOrgAlias" --apiversion="$SF_API_VERSION" --verbose; dataStepResultCode=$?;
+			
+			# success
+			if [[ $dataStepResultCode -eq 0 ]]; then
+				break;
+				
+			# failure
+			else
+				
+				echo "ERROR: Data SFDMU load failure!"
+				
+				if [[ -f "CSVIssuesReport.csv" ]]; then
+					cat CSVIssuesReport.csv
+				fi
+				
+				# ignore failure
+				if [[ "${stepFailureIgnore,,}" =~ ^true$ ]]; then
+					echo "Failure has been ignored."
+					break;
+				fi
+				
+				# retry if not run out of attempts
+				if [[ $dataStepRetryCounter -lt $dataStepMaxRetryAttempts ]]; then
+					
+					dataStepRetryCounter=$(( $dataStepRetryCounter + 1 ));
+					echo "Retrying data SFDMU load after failure in ${dataStepRetryDelay} seconds (attempt ${dataStepRetryCounter}/${dataStepMaxRetryAttempts})..."
+					sleep $dataStepRetryDelay;
+					
+				# run out of retry attempts: exit with error code
+				else
+					
+					echo "ERROR: Run out of retry attempts (max=${dataStepMaxRetryAttempts})"
+					exit $dataStepResultCode;
+					
+				fi
+				
+			fi
+			
+		done
+		
+		# restore 'exit on error' flag state
+		eval "$dataStep_backup_errexit"
+		
+		popd
+		
         
     # handle groovy execution step: run all non-hidden top level groovy files inside directory
     elif [[ -d "$file" && "${file,,}" =~ ^.*/${STEP_INDEX_REGEX}-groovy(-.*)?$ ]]; then
