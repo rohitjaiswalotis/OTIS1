@@ -19,7 +19,7 @@
 		{
 			"query": "SELECT Id, maps__SettingsGroup__c, maps__EntityId__c FROM maps__SettingsGroupAssignment__c WHERE maps__SettingsGroup__r.Name = 'Folder Permission'",
 			"operation": "Upsert",
-			"externalId": "maps__EntityId__c"
+			"externalId": "maps__EntityId__c;maps__SettingsGroup__r.Name"
 		},
 		
 		{
