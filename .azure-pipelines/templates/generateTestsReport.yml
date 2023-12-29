@@ -102,7 +102,7 @@ steps:
           
           DX_STATUS_CODE=$(sf sfpowerkit:auth:login -a targetOrg -u "${TARGET_ORG_USERNAME,,}" -p "${TARGET_ORG_PASSWORD}" -r "${TARGET_ORG_URL}" --json | jq .status);
           
-          # early exit - error when autorizing to target org by creds
+          # early exit - error when authorizing to target org by creds
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
             echo "Error when logging in to target org by creds as user '$TARGET_ORG_USERNAME'!"
             exit 1;
@@ -115,7 +115,7 @@ steps:
           DX_AUTH_RESPONSE=$(sf org login sfdx-url -f "$TARGET_ORG_AUTH_FILE" -a targetOrg --json);
           DX_STATUS_CODE=$(echo "$DX_AUTH_RESPONSE" | jq .status);
           
-          # early exit - error when autorizing to target org by auth url
+          # early exit - error when authorizing to target org by auth url
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
             echo "Error when logging in to target org by auth url!"
             exit 1;
@@ -134,7 +134,7 @@ steps:
           DX_STATUS_CODE=$(sf org login access-token -a targetOrg --instance-url="$TARGET_ORG_URL" --json --no-prompt | jq .status);
           unset SF_ACCESS_TOKEN SFDX_ACCESS_TOKEN
           
-          # early exit - error when autorizing to target org by creds
+          # early exit - error when authorizing to target org by creds
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
             echo "Error when logging in to target org by token!"
             exit 1;

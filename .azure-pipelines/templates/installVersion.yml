@@ -208,7 +208,7 @@ steps:
           
           DX_STATUS_CODE=$(sf sfpowerkit:auth:login -a targetOrg -u "${TARGET_ORG_USERNAME,,}" -p "${TARGET_ORG_PASSWORD}" -r "${TARGET_ORG_URL}" --json | jq .status);
           
-          # early exit - error when autorizing to target org by creds
+          # early exit - error when authorizing to target org by creds
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
             echo "Error when logging in to target org by creds as user '$TARGET_ORG_USERNAME'!"
             exit 1;
@@ -222,7 +222,7 @@ steps:
           DX_AUTH_RESPONSE=$(sf org login sfdx-url -f "$TARGET_ORG_AUTH_FILE" -a targetOrg --json);
           DX_STATUS_CODE=$(echo "$DX_AUTH_RESPONSE" | jq .status);
           
-          # early exit - error when autorizing to target org by auth url
+          # early exit - error when authorizing to target org by auth url
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
             echo "Error when logging in to target org by auth url!"
             echo "$DX_AUTH_RESPONSE" | jq .
@@ -245,7 +245,7 @@ steps:
           DX_STATUS_CODE=$(sf org login access-token -a targetOrg --instance-url="$TARGET_ORG_URL" --json --no-prompt | jq .status);
           unset SF_ACCESS_TOKEN SFDX_ACCESS_TOKEN
           
-          # early exit - error when autorizing to target org by token
+          # early exit - error when authorizing to target org by token
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
             echo "Error when logging in to target org by token!"
             exit 1;
@@ -306,7 +306,7 @@ steps:
         
         DX_STATUS_CODE=$(sf org login jwt --client-id $(devHubClientId) --jwt-key-file $(devHubPrivateKey.secureFilePath) --username $(devHubUsername) -r $(devHubUrl) -a devHub --json | jq .status);
         
-        # early exit - error when autorizing to dev hub
+        # early exit - error when authorizing to dev hub
         if [[ "$DX_STATUS_CODE" != "0" ]]; then
           echo "Cannot log in to dev hub as '$(devHubUsername)'"
           exit 1
@@ -418,7 +418,7 @@ steps:
           DX_LIST_INSTALLED_PACKAGES_RESPONSE=$(sf package installed list --target-org="targetOrg");
           echo "$DX_LIST_INSTALLED_PACKAGES_RESPONSE"
           
-          curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - dependencies for package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Installed Packages:**<pre>'"$(escapeJson "$DX_LIST_INSTALLED_PACKAGES_RESPONSE")"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifSuccessUrls)
+          curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - dependencies for package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Installed Packages:**<pre style=\"font-size:10px\">'"$(escapeJson "$DX_LIST_INSTALLED_PACKAGES_RESPONSE")"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifSuccessUrls)
           
           echo "Early exit after successfully installing dependencies, since no package version installation has been requested."
           
@@ -525,12 +525,12 @@ steps:
         sfAccessToken=$(echo "$sfOrgDetails" | jq -r '.result.accessToken // empty');
         sfInstanceUrl=$(echo "$sfOrgDetails" | jq -r '.result.instanceUrl // empty');
         
-        FS_PACKAGE_VERSION_DEPENDENCIES=$(npx -p sf-package-inspector@$(packageInspectorVersion) sf-package-inspect --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --command="list-deps" --versionId="$FS_PACKAGE_VERSION_ID" --apiVersion="$(sfApiVersion)" || true)
+        FS_PACKAGE_VERSION_DEPENDENCIES=$(npx -p sf-package-inspector@$(packageInspectorVersion) sf-package-inspect --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --command="list-deps" --versionId="$FS_PACKAGE_VERSION_ID" --apiVersion="$(sfApiVersion)" || echo "unknown")
         echo "$FS_PACKAGE_VERSION_DEPENDENCIES"
         
         
         # send success notif re package version install
-        curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Installed Packages:**<pre>'"$(escapeJson "$DX_LIST_INSTALLED_PACKAGES_RESPONSE")"'<\/pre> **Version Dependencies:**<pre>'"$(escapeJson "${FS_PACKAGE_VERSION_DEPENDENCIES:-unknown}")"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifSuccessUrls)
+        curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Installed Packages:**<pre style=\"font-size:10px\">'"$(escapeJson "$DX_LIST_INSTALLED_PACKAGES_RESPONSE")"'<\/pre> **Version Dependencies:**<pre>'"$(escapeJson "${FS_PACKAGE_VERSION_DEPENDENCIES// /&nbsp;}")"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifSuccessUrls)
         
         
   displayName: 'Install/Upgrade Field Service Package into Target Org'
