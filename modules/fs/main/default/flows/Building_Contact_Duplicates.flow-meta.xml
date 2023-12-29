@@ -17,6 +17,16 @@
             <targetReference>looping_building_contacts</targetReference>
         </connector>
     </assignments>
+    <customErrors>
+        <name>Contact_Already_exists</name>
+        <label>Contact Already exists</label>
+        <locationX>50</locationX>
+        <locationY>995</locationY>
+        <customErrorMessages>
+            <errorMessage>You can&apos;t save this record because a duplicate record already exists. To save, use different information.</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
     <decisions>
         <name>Decisio_2</name>
         <label>Decisio 2</label>
