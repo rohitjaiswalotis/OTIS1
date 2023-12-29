@@ -57,7 +57,7 @@ steps:
         
         DX_STATUS_CODE=$(sf org login jwt --client-id $(devHubClientId) --jwt-key-file $(devHubPrivateKey.secureFilePath) --username $(devHubUsername) -r $(devHubUrl) -a devHub --json | jq .status);
         
-        # early exit - error when autorizing to dev hub
+        # early exit - error when authorizing to dev hub
         if [[ "$DX_STATUS_CODE" != "0" ]]; then
           echo "Cannot log in to dev hub as '$(devHubUsername)'"
           exit 1

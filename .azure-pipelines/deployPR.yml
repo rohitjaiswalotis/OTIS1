@@ -123,10 +123,25 @@ stages:
                   
                 - script: |
                         
-                        sf org login sfdx-url -f $(authFile.secureFilePath) -a $(OrgAliasDevFS)
+                        DX_AUTH_RESPONSE=$(sf org login sfdx-url -f "$(authFile.secureFilePath)" -a "$(OrgAliasDevFS)" --json);
+                        DX_STATUS_CODE=$(echo "$DX_AUTH_RESPONSE" | jq .status);
+                        
+                        # early exit - error when authorizing to target org by auth url
+                        if [[ "$DX_STATUS_CODE" != "0" ]]; then
+                          echo "Error when logging into $(OrgAliasDevFS) org by auth url!"
+                          echo "$DX_AUTH_RESPONSE" | jq .
+                          exit 1;
+                        fi
+                        
+                        TARGET_ORG_USERNAME=$(echo "$DX_AUTH_RESPONSE" | jq -r .result.username);
+                        
+                        echo "Successfully logged into $(OrgAliasDevFS) org by auth url as user '${TARGET_ORG_USERNAME:-unknown}'"
                         
                         echo "List of already installed packages in $(OrgAliasDevFS) org: "
                         sf package installed list --target-org="$(OrgAliasDevFS)"
+                        
+                        # set variable to pass username to next steps
+                        echo "##vso[task.setvariable variable=TARGET_ORG_USERNAME]$TARGET_ORG_USERNAME"
                         
                   displayName: 'Authenticate to devFS'
                   
@@ -153,14 +168,72 @@ stages:
                         echo "Running pre-$(deploymentActionType) steps..."
                         bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$(deploymentActionType)/before" -a "$(OrgAliasDevFS)" -w "$(pwd)"
                         
-                        echo "Running destructive operation before deploy into $(OrgAliasDevFS)..."
-                        sf force source deploy -u $(OrgAliasDevFS) --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --predestructivechanges="destruct/destructiveChangesPre.xml" -w 1000 --verbose
+                        # disable exit on error
+                        set +e
                         
-                        echo "Actually deploying artifacts into $(OrgAliasDevFS)..."
-                        sf force source deploy --sourcepath="$(packageBaseDir)" -u $(OrgAliasDevFS) --testlevel RunLocalTests --junit --coverageformatters cobertura --ignorewarnings -w 1000 --verbose
+                        DEPLOYMENT_LOG_FILE=$(mktemp)
                         
-                        echo "Running destructive operation after deploy into $(OrgAliasDevFS)..."
-                        sf force source deploy -u $(OrgAliasDevFS) --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --postdestructivechanges="destruct/destructiveChangesPost.xml" -w 1000 --verbose
+                        deployMaxRetryAttempts=$(deployRetryNumber);
+                        deployRetryDelay=$(deployRetryTimeout);
+                        deployRetryCounter=0;
+                        
+                        DX_DEPLOY_STATUS_CODE=0;
+                        
+                        while true; do 
+                          
+                          if [[ "$DX_DEPLOY_STATUS_CODE" == "0" ]]; then
+                            echo "Running destructive operation before deploy into $(OrgAliasDevFS)..."
+                            sf force source deploy -u $(OrgAliasDevFS) --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --predestructivechanges="destruct/destructiveChangesPre.xml" -w 1000 --verbose 2>&1 | tee $DEPLOYMENT_LOG_FILE; DX_DEPLOY_STATUS_CODE=${PIPESTATUS[0]};
+                          fi
+                          
+                          if [[ "$DX_DEPLOY_STATUS_CODE" == "0" ]]; then
+                            echo "Actually deploying artifacts into $(OrgAliasDevFS)..."
+                            sf force source deploy --sourcepath="$(packageBaseDir)" -u $(OrgAliasDevFS) --testlevel RunLocalTests --junit --coverageformatters cobertura --ignorewarnings -w 1000 --verbose 2>&1 | tee $DEPLOYMENT_LOG_FILE; DX_DEPLOY_STATUS_CODE=${PIPESTATUS[0]};
+                          fi
+                          
+                          if [[ "$DX_DEPLOY_STATUS_CODE" == "0" ]]; then
+                            echo "Running destructive operation after deploy into $(OrgAliasDevFS)..."
+                            sf force source deploy -u $(OrgAliasDevFS) --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --postdestructivechanges="destruct/destructiveChangesPost.xml" -w 1000 --verbose 2>&1 | tee $DEPLOYMENT_LOG_FILE; DX_DEPLOY_STATUS_CODE=${PIPESTATUS[0]};
+                          fi
+                          
+                          # successful deployment - exit from retry loop
+                          if [[ "$DX_DEPLOY_STATUS_CODE" == "0" ]]; then
+                            break;
+                          fi
+                          
+                          cat $DEPLOYMENT_LOG_FILE | grep -i -E -e "$(deployRetryErrorRegex)" -q; DX_DEPLOY_ERROR_TEMPORARY=$?;
+                          
+                          # permanent error - exit from retry loop
+                          if [[ "$DX_DEPLOY_ERROR_TEMPORARY" != "0" ]]; then
+                            break;
+                          fi
+                          
+                          # retry if not run out of attempts
+                          if [[ $deployRetryCounter -lt $deployMaxRetryAttempts ]]; then
+                            
+                            deployRetryCounter=$(( $deployRetryCounter + 1 ));
+                            echo "Retrying deployment after temporarily failure in ${deployRetryDelay} seconds (attempt ${deployRetryCounter}/${deployMaxRetryAttempts})..."
+                            sleep $deployRetryDelay;
+                            
+                          else
+                            
+                            echo "ERROR: Run out of retry attempts (max=${deployMaxRetryAttempts})"
+                            break;
+                            
+                          fi
+                          
+                        done
+                        
+                        # early exit - deployment error
+                        if [[ "$DX_DEPLOY_STATUS_CODE" != "0" ]]; then
+                          
+                          echo "Error when deploying '$(fsPackageName)' codebase into $(OrgAliasDevFS) org as user '$TARGET_ORG_USERNAME'!"
+                          exit 1;
+                          
+                        fi
+                        
+                        # enable exit on error
+                        set -e
                         
                         echo "Running post-$(deploymentActionType) steps..."
                         bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$(deploymentActionType)/after" -a "$(OrgAliasDevFS)" -w "$(pwd)"

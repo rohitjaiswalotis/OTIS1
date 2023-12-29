@@ -163,7 +163,19 @@ stages:
                       validationOrgAlias=$(validationOrgAlias)
                       
                       # authorize to validation org
-                      sf org login sfdx-url -f "$validationOrgAuthFile" -a "$validationOrgAlias"
+                      DX_AUTH_RESPONSE=$(sf org login sfdx-url -f "$validationOrgAuthFile" -a "$validationOrgAlias" --json);
+                      DX_STATUS_CODE=$(echo "$DX_AUTH_RESPONSE" | jq .status);
+                      
+                      # early exit - error when authorizing to target org by auth url
+                      if [[ "$DX_STATUS_CODE" != "0" ]]; then
+                        echo "Error when logging into $validationOrgAlias org by auth url!"
+                        echo "$DX_AUTH_RESPONSE" | jq .
+                        exit 1;
+                      fi
+                      
+                      TARGET_ORG_USERNAME=$(echo "$DX_AUTH_RESPONSE" | jq -r .result.username);
+                      
+                      echo "Successfully logged into $validationOrgAlias org by auth url as user '${TARGET_ORG_USERNAME:-unknown}'"
                       
                       rm -f $validationOrgAuthFile
                       
