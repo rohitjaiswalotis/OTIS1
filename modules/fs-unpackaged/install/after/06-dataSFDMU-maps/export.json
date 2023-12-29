@@ -35,21 +35,21 @@
 		},
 		
 		{
-			"query": "SELECT Id, Name, CreatedDate, maps__ActivityFilter__c, maps__AdvancedOptions__c, maps__BaseObject__c, maps__ColorAssignmentType__c, maps__ColorAssignment__c, maps__ColorsAssignedDynamically__c, maps__CustomQuery__c, maps__Description__c, maps__FilterLogic__c, maps__Folder__c, maps__IconColor__c, maps__MaxQuerySizeExternal__c, maps__MaxQuerySize__c, maps__Order__c, maps__OrgWide__c, maps__OwnerFilterId__c, maps__PicklistField__c, maps__ProximityOptions__c, maps__QueryKey__c, maps__Query__c, maps__RefreshInterval__c, maps__RoleId__c, maps__RowLimit__c, maps__RowOrderDirection__c, maps__RowOrder__c, maps__ShapeAssignment__c, maps__ShapeField__c, maps__Tooltip10__c, maps__Tooltip11__c, maps__Tooltip12__c, maps__Tooltip13__c, maps__Tooltip14__c, maps__Tooltip15__c, maps__Tooltip1__c, maps__Tooltip2__c, maps__Tooltip3__c, maps__Tooltip4__c, maps__Tooltip5__c, maps__Tooltip6__c, maps__Tooltip7__c, maps__Tooltip8__c, maps__Tooltip9__c, maps__QueryComponents__c, maps__RelatedListCount__c FROM maps__MarkerLayer__c  WHERE maps__BaseObject__r.Name IN ('ServiceAppointment', 'ServiceResource', 'Location') AND maps__Folder__r.Name = 'Otis Layers'",
+			"query": "SELECT Id, Name, CreatedDate, maps__ActivityFilter__c, maps__AdvancedOptions__c, maps__BaseObject__c, maps__ColorAssignmentType__c, maps__ColorAssignment__c, maps__ColorsAssignedDynamically__c, maps__CustomQuery__c, maps__Description__c, maps__FilterLogic__c, maps__Folder__c, maps__IconColor__c, maps__MaxQuerySizeExternal__c, maps__MaxQuerySize__c, maps__Order__c, maps__OrgWide__c, maps__OwnerFilterId__c, maps__PicklistField__c, maps__ProximityOptions__c, maps__QueryKey__c, maps__Query__c, maps__RefreshInterval__c, maps__RoleId__c, maps__RowLimit__c, maps__RowOrderDirection__c, maps__RowOrder__c, maps__ShapeAssignment__c, maps__ShapeField__c, maps__Tooltip10__c, maps__Tooltip11__c, maps__Tooltip12__c, maps__Tooltip13__c, maps__Tooltip14__c, maps__Tooltip15__c, maps__Tooltip1__c, maps__Tooltip2__c, maps__Tooltip3__c, maps__Tooltip4__c, maps__Tooltip5__c, maps__Tooltip6__c, maps__Tooltip7__c, maps__Tooltip8__c, maps__Tooltip9__c, maps__QueryComponents__c, maps__RelatedListCount__c FROM maps__MarkerLayer__c WHERE maps__BaseObject__r.Name IN ('ServiceAppointment', 'ServiceResource', 'Location') AND maps__Folder__r.Name = 'Otis Layers'",
 			"operation": "Upsert",
-			"externalId": "Name"
+			"externalId": "Name;maps__BaseObject__r.Name;maps__Folder__r.Name"
 		},
 		
 		{
 			"query": "SELECT Id, Name, maps__MarkerLayer__c, maps__BaseObject__c, maps__CrossField__c, maps__CrossFilterLogic__c, maps__CrossObject__c, maps__Field__c, maps__GrandparentField__c, maps__Index__c, maps__MarkerLayerRelatedList__c, maps__Operator__c, maps__ParentField__c, maps__Parent__c, maps__Type__c, maps__Value2__c, maps__Value__c FROM  maps__MarkerLayerComponent__c WHERE maps__MarkerLayer__r.maps__BaseObject__r.Name IN ('ServiceAppointment', 'ServiceResource', 'Location') AND maps__MarkerLayer__r.maps__Folder__r.Name = 'Otis Layers'",
 			"operation": "Upsert",
-			"externalId": "Name"
+			"externalId": "maps__BaseObject__c;maps__MarkerLayer__r.Name;maps__Field__c;maps__Operator__c;maps__Value__c;maps__Type__c;maps__Value__c;maps__CrossObject__c"
 		},
 		
 		{
 			"query": "SELECT Id, Name, maps__SavedQuery__c, maps__Column1__c, maps__Column2__c, maps__Column3__c, maps__Column4__c, maps__Column5__c, maps__ListLabel__c, maps__NumToDisplay__c, maps__Order__c, maps__ReferenceField__c, maps__RelatedSort__c FROM maps__MarkerLayerRelatedList__c WHERE maps__SavedQuery__r.maps__BaseObject__r.Name IN ('ServiceAppointment', 'ServiceResource', 'Location') AND maps__SavedQuery__r.maps__Folder__r.Name = 'Otis Layers'",
 			"operation": "Upsert",
-			"externalId": "Name"
+			"externalId": "Name;maps__SavedQuery__r.Name"
 		}
 		
 	]
