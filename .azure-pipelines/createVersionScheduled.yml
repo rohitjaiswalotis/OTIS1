@@ -69,7 +69,7 @@ parameters:
   default: true
 
 - name: numberOfRetries
-  displayName: Number of Retries?
+  displayName: Number of Retries
   type: number
   default: 1
 
