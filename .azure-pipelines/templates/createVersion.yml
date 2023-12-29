@@ -125,7 +125,7 @@ steps:
         
         DX_STATUS_CODE=$(sf org login jwt --client-id $(devHubClientId) --jwt-key-file $(devHubPrivateKey.secureFilePath) --username $(devHubUsername) -r $(devHubUrl) -a devHub --json | jq .status);
         
-        # early exit - error when autorizing to dev hub
+        # early exit - error when authorizing to dev hub
         if [[ "$DX_STATUS_CODE" != "0" ]]; then
           echo "Cannot log in to dev hub as '$(devHubUsername)'"
           exit 1
@@ -278,11 +278,11 @@ steps:
         sfAccessToken=$(echo "$sfOrgDetails" | jq -r '.result.accessToken // empty');
         sfInstanceUrl=$(echo "$sfOrgDetails" | jq -r '.result.instanceUrl // empty');
         
-        FS_PACKAGE_VERSION_DEPENDENCIES=$(npx -p sf-package-inspector@$(packageInspectorVersion) sf-package-inspect --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --command="list-deps" --versionId="$FS_PACKAGE_VERSION_ID" --apiVersion="$(sfApiVersion)" || true)
+        FS_PACKAGE_VERSION_DEPENDENCIES=$(npx -p sf-package-inspector@$(packageInspectorVersion) sf-package-inspect --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --command="list-deps" --versionId="$FS_PACKAGE_VERSION_ID" --apiVersion="$(sfApiVersion)" || echo "unknown")
         echo "$FS_PACKAGE_VERSION_DEPENDENCIES"
         
         # send success notif re package version creation
-        curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; '"$NOTIFICATION_ICON"' **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version creation `'"$FS_PACKAGE_VERSION_NUMBER"'` [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)!\n\n**Version Details:**<pre>'"$(escapeJson "$FS_PACKAGE_VERSION_DETAILS")"'<\/pre> **Version Dependencies:**<pre>'"$(escapeJson "${FS_PACKAGE_VERSION_DEPENDENCIES:-unknown}")"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifSuccessUrls)
+        curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; '"$NOTIFICATION_ICON"' **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version creation `'"$FS_PACKAGE_VERSION_NUMBER"'` [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)!\n\n**Version Details:**<pre>'"$(escapeJson "${FS_PACKAGE_VERSION_DETAILS// /&nbsp;}")"'<\/pre> **Version Dependencies:**<pre>'"$(escapeJson "${FS_PACKAGE_VERSION_DEPENDENCIES// /&nbsp;}")"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifSuccessUrls)
         
         
   displayName: 'Create Field Service package version'
