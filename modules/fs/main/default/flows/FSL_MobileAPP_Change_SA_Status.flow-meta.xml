@@ -548,7 +548,7 @@
     <formulas>
         <name>MaxTimeCalculation</name>
         <dataType>DateTime</dataType>
-        <expression>NOW()+ ({!WorkTypeRecord.FS_MaxDuration__c}/1440)</expression>
+        <expression>NOW()+ ({!WorkTypeRecord.MinimumCrewSize}/1440)</expression>
     </formulas>
     <interviewLabel>Change SA Staus {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Change SA Status</label>
@@ -748,8 +748,8 @@
         <object>WorkType</object>
         <outputReference>WorkTypeRecord</outputReference>
         <queriedFields>Id</queriedFields>
-        <queriedFields>FS_MinDuration__c</queriedFields>
-        <queriedFields>FS_MaxDuration__c</queriedFields>
+        <queriedFields>EstimatedDuration</queriedFields>
+        <queriedFields>MinimumCrewSize</queriedFields>
     </recordLookups>
     <recordUpdates>
         <name>Update_Service_Appointment_Status</name>
