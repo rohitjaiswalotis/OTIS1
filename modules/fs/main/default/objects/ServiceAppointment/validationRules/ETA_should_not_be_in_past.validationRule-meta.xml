@@ -2,6 +2,6 @@
 <ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>ETA_should_not_be_in_past</fullName>
     <active>true</active>
-    <errorConditionFormula>IF( Initial_ETA__c &lt; NOW(),true,false)</errorConditionFormula>
+    <errorConditionFormula>IF  ( ISCHANGED(Initial_ETA__c)&amp;&amp; Initial_ETA__c &lt; NOW(),true,false)</errorConditionFormula>
     <errorMessage>Initial ETA date/time should not be in past.</errorMessage>
 </ValidationRule>
