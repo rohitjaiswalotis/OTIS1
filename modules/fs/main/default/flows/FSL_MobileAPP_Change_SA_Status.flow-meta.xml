@@ -29,7 +29,7 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>RecordServiceAppointment.AppxSAEndTime__c</assignToReference>
+            <assignToReference>RecordServiceAppointment.SchedEndTime</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>MaxTimeCalculation</elementReference>
@@ -624,7 +624,7 @@
         <queriedFields>Status</queriedFields>
         <queriedFields>ActualEndTime</queriedFields>
         <queriedFields>ActualStartTime</queriedFields>
-        <queriedFields>AppxSAEndTime__c</queriedFields>
+        <queriedFields>SchedEndTime</queriedFields>
         <queriedFields>WorkTypeId</queriedFields>
     </recordLookups>
     <recordLookups>
@@ -797,7 +797,6 @@
             <defaultSelectedChoiceReference>DefaultServiceAppointmentStatus</defaultSelectedChoiceReference>
             <fieldText>Status</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -829,7 +828,6 @@
             <dataType>Boolean</dataType>
             <fieldText>Complete Remaining Major Tasks</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -854,7 +852,6 @@
             <dataType>String</dataType>
             <fieldText>Fixed Issue?</fieldText>
             <fieldType>RadioButtons</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
