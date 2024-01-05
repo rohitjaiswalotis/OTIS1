@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Review_Items_for_SVP</fullName>
+    <columns>Name</columns>
+    <columns>Subject</columns>
+    <columns>Status</columns>
+    <columns>Priority</columns>
+    <columns>FS_Mark_For_Supervisor_Review__c</columns>
+    <columns>Comments__c</columns>
+    <columns>Reason__c</columns>
+    <columns>FS_System_Reason__c</columns>
+    <columns>LastModifiedDate</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>FS_Mark_For_Supervisor_Review__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>Review Items For SVP</label>
+</ListView>
