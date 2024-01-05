@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Send_Notification_to_supervisor_and_mechanic</name>
         <label>Send Notification to supervisor and mechanic</label>
-        <locationX>165</locationX>
-        <locationY>1032</locationY>
+        <locationX>143</locationX>
+        <locationY>1332</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -45,20 +45,13 @@
     <assignments>
         <name>Assign_Notification_Data</name>
         <label>Assign Notification Data</label>
-        <locationX>297</locationX>
-        <locationY>708</locationY>
+        <locationX>275</locationX>
+        <locationY>1008</locationY>
         <assignmentItems>
             <assignToReference>RecepientIds</assignToReference>
             <operator>Add</operator>
             <value>
                 <elementReference>$Record.RelatedRecordId</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>RecepientIds</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>Get_SuperVisor.Id</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -72,10 +65,26 @@
             <targetReference>Get_Custom_Notification</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>assign_Supervisor</name>
+        <label>assign Supervisor</label>
+        <locationX>363</locationX>
+        <locationY>816</locationY>
+        <assignmentItems>
+            <assignToReference>RecepientIds</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>add_supervisor_Id.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>add_supervisor_Id</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>Check_if_Login_history_exist</name>
         <label>Check if Login history exist</label>
-        <locationX>451</locationX>
+        <locationX>473</locationX>
         <locationY>384</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -104,8 +113,8 @@
     <decisions>
         <name>location_updated1</name>
         <label>location updated ?</label>
-        <locationX>297</locationX>
-        <locationY>924</locationY>
+        <locationX>275</locationX>
+        <locationY>1224</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>no</name>
@@ -131,6 +140,20 @@
     </formulas>
     <interviewLabel>NotifySupervisorAndMechanicOnLocDisable {!$Flow.CurrentDateTime}</interviewLabel>
     <label>NotifySupervisorAndMechanicOnLocDisable</label>
+    <loops>
+        <name>add_supervisor_Id</name>
+        <label>add supervisor Id</label>
+        <locationX>275</locationX>
+        <locationY>708</locationY>
+        <collectionReference>Get_SuperVisor</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>assign_Supervisor</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Assign_Notification_Data</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -153,8 +176,8 @@
     <recordLookups>
         <name>Get_Custom_Notification</name>
         <label>Get Custom Notification</label>
-        <locationX>297</locationX>
-        <locationY>816</locationY>
+        <locationX>275</locationX>
+        <locationY>1116</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>location_updated1</targetReference>
@@ -174,7 +197,7 @@
     <recordLookups>
         <name>Get_Last_Login_History</name>
         <label>Get Last Login History</label>
-        <locationX>451</locationX>
+        <locationX>473</locationX>
         <locationY>276</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -204,11 +227,11 @@
     <recordLookups>
         <name>Get_SuperVisor</name>
         <label>Get SuperVisor</label>
-        <locationX>297</locationX>
+        <locationX>275</locationX>
         <locationY>600</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Assign_Notification_Data</targetReference>
+            <targetReference>add_supervisor_Id</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -218,14 +241,21 @@
                 <elementReference>Get_User_Role.ParentRoleId</elementReference>
             </value>
         </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>User</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
         <name>Get_User_Role</name>
         <label>Get User Role</label>
-        <locationX>297</locationX>
+        <locationX>275</locationX>
         <locationY>492</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
