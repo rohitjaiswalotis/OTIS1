@@ -684,6 +684,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 				apexStepResultCode=0;
 				apexStepRetryCounter=0;
 				
+				apexFileName="$(basename -- "$apexFile")";
+				
 				while true; do 
 					
 					APEX_EXEC_RESPONSE=$(cat $beforeEachApexFile <(echo) $apexFile <(echo) $afterEachApexFile | sf apex run --target-org "$sfTargetOrgAlias" --api-version="$SF_API_VERSION" --json | sed '/[Ss]tart typing [Aa]pex code/d');
@@ -691,6 +693,9 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 					
 					# success
 					if [[ $apexStepResultCode -eq 0 ]]; then
+						
+						echo "Apex script '$apexFileName' has been successfully executed."
+						
 						break;
 						
 					# apex exec fail
@@ -702,12 +707,15 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 						if [[ "${APEX_EXEC_EXCEPTION_MESSAGE,,}" =~ ^apexscriptreturnvalueexception:.*$ ]]; then
 							
 							echo "$APEX_EXEC_EXCEPTION_MESSAGE" | grep -oi "\{.*\}" | jq -r '. | to_entries | .[] | .key + "=" + (.value | @sh)' >> ${stepReturnProperties}
+							
+							echo "Apex script '$apexFileName' has been successfully executed."
+							
 							break;
 							
 						# actual exception
 						else
 							
-							echo "ERROR: Apex script execution failure - ${apexFile}!"
+							echo "ERROR: Apex script '$apexFileName' execution failure!"
 							echo "$APEX_EXEC_RESPONSE" | jq .
 							
 							# ignore failure
@@ -720,7 +728,7 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 							if [[ $apexStepRetryCounter -lt $apexStepMaxRetryAttempts ]]; then
 								
 								apexStepRetryCounter=$(( $apexStepRetryCounter + 1 ));
-								echo "Retrying apex script execution ($apexFile) after failure in ${apexStepRetryDelay} seconds (attempt ${apexStepRetryCounter}/${apexStepMaxRetryAttempts})..."
+								echo "Retrying apex script execution ($apexFileName) after failure in ${apexStepRetryDelay} seconds (attempt ${apexStepRetryCounter}/${apexStepMaxRetryAttempts})..."
 								sleep $apexStepRetryDelay;
 								
 							# run out of retry attempts: exit with error code

@@ -117,10 +117,7 @@ if (psa.isEmpty()) {
 	return;
 }
 
-// actually create permission set group assignments (suppressing failures if any)
-Database.insert(
-	psa, 
-	false
-);
+// actually create permission set group assignments
+insert psa;
 
 
