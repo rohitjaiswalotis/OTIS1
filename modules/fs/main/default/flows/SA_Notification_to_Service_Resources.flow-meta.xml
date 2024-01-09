@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Notification_to_Supervisor</name>
         <label>Notification to Supervisor</label>
-        <locationX>490</locationX>
-        <locationY>1979</locationY>
+        <locationX>138</locationX>
+        <locationY>1487</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <connector>
@@ -47,8 +47,8 @@
     <actionCalls>
         <name>Notification_to_Supervisor1</name>
         <label>Notification to Supervisor</label>
-        <locationX>798</locationX>
-        <locationY>1787</locationY>
+        <locationX>578</locationX>
+        <locationY>1187</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -87,47 +87,38 @@
     </actionCalls>
     <apiVersion>59.0</apiVersion>
     <assignments>
-        <name>Copy_1_of_Assign_Supervisor</name>
-        <label>Copy 1 of Assign Supervisor</label>
-        <locationX>578</locationX>
-        <locationY>1595</locationY>
+        <name>Assign_SupervisorId</name>
+        <label>Assign SupervisorId</label>
+        <locationX>138</locationX>
+        <locationY>1271</locationY>
         <assignmentItems>
             <assignToReference>SupervisorId</assignToReference>
             <operator>Add</operator>
             <value>
-                <elementReference>Check_the_Field_Status.CreatedById</elementReference>
+                <elementReference>Loop_Service_Resources.IndividualCoverage__r.Supervisor__r.RelatedRecordId</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Check_the_Field_Status</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Copy_1_of_Copy_1_of_Assign_Supervisor</name>
-        <label>Copy 1 of Copy 1 of Assign Supervisor</label>
-        <locationX>1018</locationX>
-        <locationY>1079</locationY>
-        <assignmentItems>
-            <assignToReference>SupervisorId</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>Copy_1_of_Check_the_Field_Status.CreatedById</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Copy_1_of_Check_the_Field_Status</targetReference>
+            <targetReference>Get_Records_3</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Notification_Data</name>
         <label>Notification Data</label>
-        <locationX>930</locationX>
-        <locationY>1355</locationY>
+        <locationX>710</locationX>
+        <locationY>755</locationY>
         <assignmentItems>
             <assignToReference>LocationDisableTemplate</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>{!locationTemplate}  has not enabled GeoLocation</stringValue>
+                <stringValue>{!locationTemplate}  has not enabled Location</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>SupervisorId</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>get_Resource_Data.IndividualCoverage__r.Supervisor__r.RelatedRecordId</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -153,7 +144,7 @@
     <decisions>
         <name>Check_Resource_Type</name>
         <label>Check Resource Type</label>
-        <locationX>622</locationX>
+        <locationX>270</locationX>
         <locationY>1163</locationY>
         <defaultConnector>
             <targetReference>Loop_Service_Resources</targetReference>
@@ -177,79 +168,15 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>SA_History</targetReference>
+                <targetReference>Assign_SupervisorId</targetReference>
             </connector>
             <label>Mechanic</label>
         </rules>
     </decisions>
     <decisions>
-        <name>Check_Status</name>
-        <label>Check Status</label>
-        <locationX>710</locationX>
-        <locationY>1487</locationY>
-        <defaultConnector>
-            <targetReference>Check_the_Field_Status</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Status</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Check_the_Field_Status.Field</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Status</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Check_the_Field_Status.NewValue</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Dispatched</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Copy_1_of_Assign_Supervisor</targetReference>
-            </connector>
-            <label>Status</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Copy_1_of_Check_Status</name>
-        <label>Copy 1 of Check Status</label>
-        <locationX>1150</locationX>
-        <locationY>971</locationY>
-        <defaultConnector>
-            <targetReference>Copy_1_of_Check_the_Field_Status</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Copy_1_of_Status</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Copy_1_of_Check_the_Field_Status.Field</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Status</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Copy_1_of_Check_the_Field_Status.NewValue</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Scheduled</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Copy_1_of_Copy_1_of_Assign_Supervisor</targetReference>
-            </connector>
-            <label>Copy 1 of Status</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>ETA_greater_than_LTA</name>
         <label>ETA greater than LTA?</label>
-        <locationX>754</locationX>
+        <locationX>644</locationX>
         <locationY>431</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -290,7 +217,7 @@
         </rules>
         <rules>
             <name>Status_Changed_by_Mechanic</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND 2 AND (3 OR 4)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Status</leftValueReference>
                 <operator>IsChanged</operator>
@@ -305,6 +232,20 @@
                     <stringValue>Field Service Mechanic</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Rejected</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Canceled</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>get_user_data</targetReference>
             </connector>
@@ -314,8 +255,8 @@
     <decisions>
         <name>geolocation_enable_check</name>
         <label>geolocation  enable check</label>
-        <locationX>930</locationX>
-        <locationY>1679</locationY>
+        <locationX>710</locationX>
+        <locationY>1079</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Disabled</name>
@@ -369,34 +310,6 @@
     <interviewLabel>SA Notification to Service Resources {!$Flow.CurrentDateTime}</interviewLabel>
     <label>SA Notification to Service Resources</label>
     <loops>
-        <name>Check_the_Field_Status</name>
-        <label>Check the Field Status</label>
-        <locationX>490</locationX>
-        <locationY>1379</locationY>
-        <collectionReference>SA_History</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>Check_Status</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>Get_Records_3</targetReference>
-        </noMoreValuesConnector>
-    </loops>
-    <loops>
-        <name>Copy_1_of_Check_the_Field_Status</name>
-        <label>Copy 1 of Check the Field Status</label>
-        <locationX>930</locationX>
-        <locationY>863</locationY>
-        <collectionReference>Copy_1_of_SA_History</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>Copy_1_of_Check_Status</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>Notification_Data</targetReference>
-        </noMoreValuesConnector>
-    </loops>
-    <loops>
         <name>Loop_Assigned_Resource</name>
         <label>Loop Assigned Resource</label>
         <locationX>50</locationX>
@@ -441,34 +354,9 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
-        <name>Copy_1_of_SA_History</name>
-        <label>Copy 1 of SA History</label>
-        <locationX>930</locationX>
-        <locationY>755</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Copy_1_of_Check_the_Field_Status</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>ServiceAppointmentId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Id</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>ServiceAppointmentHistory</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>NewValue</queriedFields>
-        <queriedFields>Field</queriedFields>
-        <queriedFields>CreatedById</queriedFields>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
         <name>Get_Assigned_Resource</name>
         <label>Get Assigned Resource</label>
-        <locationX>754</locationX>
+        <locationX>644</locationX>
         <locationY>323</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -493,8 +381,8 @@
     <recordLookups>
         <name>get_custom_Notification</name>
         <label>get custom Notification</label>
-        <locationX>930</locationX>
-        <locationY>1463</locationY>
+        <locationX>710</locationX>
+        <locationY>863</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Location_history</targetReference>
@@ -514,8 +402,8 @@
     <recordLookups>
         <name>Get_Records_3</name>
         <label>Get Records 3</label>
-        <locationX>490</locationX>
-        <locationY>1871</locationY>
+        <locationX>138</locationX>
+        <locationY>1379</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Notification_to_Supervisor</targetReference>
@@ -535,11 +423,11 @@
     <recordLookups>
         <name>get_Resource_Data</name>
         <label>get Resource Data</label>
-        <locationX>930</locationX>
+        <locationX>710</locationX>
         <locationY>647</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Copy_1_of_SA_History</targetReference>
+            <targetReference>Notification_Data</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -577,7 +465,7 @@
     <recordLookups>
         <name>get_user_data</name>
         <label>get user data</label>
-        <locationX>930</locationX>
+        <locationX>710</locationX>
         <locationY>539</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -598,8 +486,8 @@
     <recordLookups>
         <name>Location_history</name>
         <label>Location history</label>
-        <locationX>930</locationX>
-        <locationY>1571</locationY>
+        <locationX>710</locationX>
+        <locationY>971</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>geolocation_enable_check</targetReference>
@@ -632,33 +520,8 @@
         <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
-    <recordLookups>
-        <name>SA_History</name>
-        <label>SA History</label>
-        <locationX>490</locationX>
-        <locationY>1271</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Check_the_Field_Status</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>ServiceAppointmentId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Id</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>ServiceAppointmentHistory</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>NewValue</queriedFields>
-        <queriedFields>Field</queriedFields>
-        <queriedFields>CreatedById</queriedFields>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <start>
-        <locationX>628</locationX>
+        <locationX>518</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_Assigned_Resource</targetReference>
