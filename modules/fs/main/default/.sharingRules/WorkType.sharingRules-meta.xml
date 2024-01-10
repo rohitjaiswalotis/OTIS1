@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>FS_Mechanic</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>FS Mechanic</label>
+        <sharedTo>
+            <role>Mechanic</role>
+        </sharedTo>
+        <criteriaItems>
+            <field>EstimatedDuration</field>
+            <operation>notEqual</operation>
+            <value></value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Name</field>
+            <operation>notEqual</operation>
+            <value></value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+</SharingRules>
