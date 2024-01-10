@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>59.0</apiVersion>
+    <description>on Unit Object</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>Today</name>
+        <dataType>Date</dataType>
+        <expression>Today()</expression>
+    </formulas>
+    <interviewLabel>Scheduled Route switching {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Scheduled Route switching</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>Action #1: Replace Current Route with Next Route
+Action #2: Mark Next Route and Effective Date as BLANK</description>
+        <name>Copy_1_of_Update_Current_Route</name>
+        <label>Copy 1 of Update Current Route</label>
+        <locationX>176</locationX>
+        <locationY>252</locationY>
+        <connector>
+            <targetReference>Update_Current_Route</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>FS_Effective_Date__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Today</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>RouteName__c</field>
+            <value>
+                <elementReference>$Record.FS_Next_Route__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Action #1: Replace Current Route with Next Route
+Action #2: Mark Next Route and Effective Date as BLANK</description>
+        <name>Update_Current_Route</name>
+        <label>Update Current Route</label>
+        <locationX>176</locationX>
+        <locationY>360</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>FS_Effective_Date__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Today</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>FS_Effective_Date__c</field>
+        </inputAssignments>
+        <inputAssignments>
+            <field>FS_Next_Route__c</field>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Update_Current_Route</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>FS_Next_Route__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>FS_Effective_Date__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <object>Asset</object>
+        <schedule>
+            <frequency>Daily</frequency>
+            <startDate>2023-12-08</startDate>
+            <startTime>22:00:00.000Z</startTime>
+        </schedule>
+        <triggerType>Scheduled</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
