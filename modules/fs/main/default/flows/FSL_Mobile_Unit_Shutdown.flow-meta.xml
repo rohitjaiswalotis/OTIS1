@@ -50,17 +50,24 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>storeAssetRecord.BackinServiceBy__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Back_In_Service_By</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
             <assignToReference>storeAssetRecord.UpdatedByIntegration__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>storeAssetRecord.BackInServiceDateTime__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Back_In_Service_Date_Time</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>storeAssetRecord.BackinServiceBy__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Back_In_Service_By</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -84,13 +91,6 @@
             <operator>Assign</operator>
             <value>
                 <elementReference>Operational_Status_Reason</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>storeAssetRecord.Shutdown_Reported_By__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Shutdown_Reported_By</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -222,6 +222,11 @@
         <valueField>Id</valueField>
     </dynamicChoiceSets>
     <environments>Default</environments>
+    <formulas>
+        <name>CurrentDateTime</name>
+        <dataType>DateTime</dataType>
+        <expression>NOW()</expression>
+    </formulas>
     <formulas>
         <name>CurrentUser</name>
         <dataType>String</dataType>
@@ -416,16 +421,21 @@
             </defaultValue>
             <fieldText>Back In Service By</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>Back_In_Service_Date_Time</name>
             <dataType>DateTime</dataType>
+            <defaultValue>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </defaultValue>
             <fieldText>Back In Service Date/Time</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
+            <validationRule>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;font-size: 11.36px; font-family: Arial, Helvetica, sans-serif; color: rgb(0, 0, 0);&quot;&gt;Back In Service date/time should not be in future.&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <formulaExpression>{!Back_In_Service_Date_Time} &lt; {!CurrentDateTime}</formulaExpression>
+            </validationRule>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -456,7 +466,6 @@
             <dataType>String</dataType>
             <fieldText>Operational Status Reason</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -468,15 +477,16 @@
             </defaultValue>
             <fieldText>Shutdown Reported By</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>ShutdownDateTime</name>
             <dataType>DateTime</dataType>
+            <defaultValue>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </defaultValue>
             <fieldText>Shutdown Date/Time</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <nextOrFinishButtonLabel>Save</nextOrFinishButtonLabel>
