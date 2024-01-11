@@ -39,6 +39,56 @@
             <label>If Populated</label>
         </rules>
     </decisions>
+	<decisions>
+        <name>Condition_Check</name>
+        <label>Condition Check</label>
+        <locationX>5022</locationX>
+        <locationY>276</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Till_Now_SA_Is_Not_Complete</name>
+            <conditionLogic>1 AND (2 OR 3 OR 4) AND 5</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>In Progress</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Cannot Complete</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Canceled</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AppxSAEndTime__c</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <elementReference>CurrentTime</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Udate_WO_Safety_Check</targetReference>
+            </connector>
+            <label>Till Now SA Is Not Complete</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>If_Get_records_returns_Blank_Collection</name>
         <label>If Get records returns Blank Collection</label>
@@ -247,6 +297,16 @@
     </decisions>
     <environments>Default</environments>
     <formulas>
+        <name>CurrentTime</name>
+        <dataType>DateTime</dataType>
+        <expression>NOW()</expression>
+    </formulas>
+    <formulas>
+        <name>GanttIconURL</name>
+        <dataType>String</dataType>
+        <expression>LEFT({!$Api.Partner_Server_URL_260}, FIND( &apos;/services&apos;, {!$Api.Partner_Server_URL_260}))+&apos;resource/IconForSafetyCheck?&apos;</expression>
+    </formulas>
+    <formulas>
         <name>NewScheduledEndTime</name>
         <dataType>DateTime</dataType>
         <expression>NOW() + ({!$Record.Mechanic_ETA_Minutes__c}/1440) +({!$Record.DurationInMinutes}/1440)</expression>
@@ -429,6 +489,26 @@
         </inputAssignments>
         <inputReference>$Record</inputReference>
     </recordUpdates>
+	<recordUpdates>
+        <name>Clear_GanttIcon_on_Completion</name>
+        <label>Clear GanttIcon on Completion</label>
+        <locationX>2162</locationX>
+        <locationY>708</locationY>
+        <inputAssignments>
+            <field>FSL__GanttIcon__c</field>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>ClearGanttIconOnCompletion</name>
+        <label>Clear GanttIcon On Completion</label>
+        <locationX>2426</locationX>
+        <locationY>708</locationY>
+        <inputAssignments>
+            <field>FSL__GanttIcon__c</field>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
     <recordUpdates>
         <name>Populate_Address_field_on_SA</name>
         <label>Populate Address field on SA</label>
@@ -469,6 +549,28 @@
         </inputAssignments>
         <inputReference>$Record</inputReference>
     </recordUpdates>
+	<recordUpdates>
+        <name>Udate_WO_Safety_Check</name>
+        <label>Udate WO Safety Check</label>
+        <locationX>4890</locationX>
+        <locationY>384</locationY>
+        <connector>
+            <targetReference>Update_Gantt_Icon_on_SA</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FS_Mark_For_Supervisor_Review__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>FS_System_Reason__c</field>
+            <value>
+                <stringValue>Safety Check Lone Worker</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.WorkOrder__r</inputReference>
+    </recordUpdates>
     <recordUpdates>
         <name>Update_Asset</name>
         <label>Update Asset</label>
@@ -481,6 +583,22 @@
             <field>Unit__c</field>
             <value>
                 <elementReference>$Record.WorkOrder__r.Asset.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+	<recordUpdates>
+        <name>Update_Gantt_Icon_on_SA</name>
+        <label>Update Gantt Icon on SA</label>
+        <locationX>4890</locationX>
+        <locationY>492</locationY>
+        <connector>
+            <targetReference>SendCustomNotificationToMaintenanceSupervisor</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FSL__GanttIcon__c</field>
+            <value>
+                <elementReference>GanttIconURL</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -607,16 +725,19 @@
     <recordUpdates>
         <name>updating_reason_on_WO</name>
         <label>Updating Reason On WO</label>
-        <locationX>2162</locationX>
-        <locationY>647</locationY>
+        <locationX>2426</locationX>
+        <locationY>600</locationY>
+        <connector>
+            <targetReference>ClearGanttIconOnCompletion</targetReference>
+        </connector>
         <inputAssignments>
-            <field>Mark_For_Supervisor_Review__c</field>
+            <field>FS_Mark_For_Supervisor_Review__c</field>
             <value>
                 <booleanValue>true</booleanValue>
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Reason__c</field>
+            <field>FS_System_Reason__c</field>
             <value>
                 <stringValue>Actual Duration Inadequate</stringValue>
             </value>
@@ -632,10 +753,13 @@
     <recordUpdates>
         <name>Updating_Wo</name>
         <label>Updating Wo</label>
-        <locationX>1898</locationX>
-        <locationY>647</locationY>
+        <locationX>2162</locationX>
+        <locationY>600</locationY>
+        <connector>
+            <targetReference>Clear_GanttIcon_on_Completion</targetReference>
+        </connector>
         <inputAssignments>
-            <field>Mark_For_Supervisor_Review__c</field>
+            <field>FS_Mark_For_Supervisor_Review__c</field>
             <value>
                 <booleanValue>false</booleanValue>
             </value>
@@ -672,9 +796,57 @@
         </connector>
         <object>ServiceAppointment</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
+		<scheduledPaths>
+            <name>Safety_Check_Worker</name>
+            <connector>
+                <targetReference>Condition_Check</targetReference>
+            </connector>
+            <label>Safety Check Worker</label>
+            <offsetNumber>1</offsetNumber>
+            <offsetUnit>Minutes</offsetUnit>
+            <recordField>AppxSAEndTime__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+	<subflows>
+        <name>SendCustomNotificationToMaintenanceSupervisor</name>
+        <label>SendCustomNotificationToMaintenanceSupervisor</label>
+        <locationX>4890</locationX>
+        <locationY>600</locationY>
+        <flowName>SendCustomNotification</flowName>
+        <inputAssignments>
+            <name>CustomNotificationTypeName</name>
+            <value>
+                <stringValue>FS_NotifySpvAboutSafetyCheck</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>NotificationBody</name>
+            <value>
+                <stringValue>There Is A Safety Check Alert For This Work Order -  {!$Record.WorkOrder__r.WorkOrderNumber}.</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>NotificationTitle</name>
+            <value>
+                <stringValue>{!$Record.WorkOrder__r.WorkOrderNumber} - Action Needed!</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>RecipientId</name>
+            <value>
+                <elementReference>$Record.ServiceTerritory.FieldSupervisor__r.RelatedRecordId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>TargetId</name>
+            <value>
+                <elementReference>$Record.WorkOrder__r.Id</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
     <variables>
         <name>AssignedResourceRecordCollection</name>
         <dataType>SObject</dataType>
