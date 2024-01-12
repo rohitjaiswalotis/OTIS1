@@ -4,8 +4,8 @@
     <assignments>
         <name>Copy_1_of_Assign_SA_to_a_Variable</name>
         <label>Copy 1 of Assign SA to a Variable</label>
-        <locationX>2492</locationX>
-        <locationY>2748</locationY>
+        <locationX>2624</locationX>
+        <locationY>3132</locationY>
         <assignmentItems>
             <assignToReference>storeSAids</assignToReference>
             <operator>Add</operator>
@@ -63,9 +63,53 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Check_If_Resource_Present</name>
+        <label>Check If Resource Present</label>
+        <locationX>3702</locationX>
+        <locationY>1356</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes3</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Notification_for_timeframe_Extented</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_If_Resource_Present2</name>
+        <label>Check If Resource Present</label>
+        <locationX>3790</locationX>
+        <locationY>2256</locationY>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes4</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Notification_for_timeframe_Extented</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Check_With_Due_Date</name>
         <label>Check With Due Date</label>
-        <locationX>3658</locationX>
+        <locationX>3790</locationX>
         <locationY>600</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -130,12 +174,12 @@
     <decisions>
         <name>Condition_Check</name>
         <label>Condition Check</label>
-        <locationX>5022</locationX>
+        <locationX>5286</locationX>
         <locationY>276</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Till_Now_SA_Is_Not_Complete</name>
-            <conditionLogic>1 AND (2 OR 3 OR 4) AND 5</conditionLogic>
+            <conditionLogic>1 AND (2 OR 3 OR 4) AND 5 AND 6</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Status</leftValueReference>
                 <operator>EqualTo</operator>
@@ -171,6 +215,13 @@
                     <elementReference>CurrentTime</elementReference>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Udate_WO_Safety_Check</targetReference>
             </connector>
@@ -180,8 +231,8 @@
     <decisions>
         <name>Copy_1_of_Check_if_WO_is_Missed_Visit</name>
         <label>Copy 1 of Check if WO is Missed Visit</label>
-        <locationX>2404</locationX>
-        <locationY>3048</locationY>
+        <locationX>2536</locationX>
+        <locationY>3432</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Copy_1_of_Yes</name>
@@ -209,8 +260,8 @@
     <decisions>
         <name>Copy_1_of_IF_WO_with_missed_Visit_is_there_in_pending_state</name>
         <label>Copy 1 of IF WO with missed Visit is there in pending state</label>
-        <locationX>2206</locationX>
-        <locationY>3156</locationY>
+        <locationX>2338</locationX>
+        <locationY>3540</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_Update_Unit_Missed_Visit_false</targetReference>
         </defaultConnector>
@@ -231,8 +282,8 @@
     <decisions>
         <name>Current_Time_less_Than_DueDate</name>
         <label>Current Time less Than DueDate</label>
-        <locationX>3658</locationX>
-        <locationY>1740</locationY>
+        <locationX>3790</locationX>
+        <locationY>1932</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Current_Time_WIthin_Due_Date</name>
@@ -315,7 +366,7 @@
     <decisions>
         <name>Jeopardy_Check</name>
         <label>Jeopardy Check</label>
-        <locationX>3658</locationX>
+        <locationX>3790</locationX>
         <locationY>708</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -432,7 +483,7 @@
     <decisions>
         <name>SA_Decision</name>
         <label>SA Decision</label>
-        <locationX>2404</locationX>
+        <locationX>2536</locationX>
         <locationY>492</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -577,7 +628,7 @@
         </rules>
         <rules>
             <name>Check_SA_Scheduled_Time</name>
-            <conditionLogic>1 AND 2 AND (3 OR 4)</conditionLogic>
+            <conditionLogic>1 AND 2 AND (3 OR 4) AND (5 OR 6)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.DueDate</leftValueReference>
                 <operator>IsChanged</operator>
@@ -606,6 +657,20 @@
                     <stringValue>None</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Check_With_Due_Date</targetReference>
             </connector>
@@ -615,7 +680,7 @@
     <decisions>
         <name>TimeFrame_Extended_in_WO</name>
         <label>TimeFrame Extended in WO</label>
-        <locationX>3614</locationX>
+        <locationX>3746</locationX>
         <locationY>924</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -688,15 +753,15 @@
     <formulas>
         <name>UpdatedEndTime</name>
         <dataType>DateTime</dataType>
-        <expression>{!$Record.SchedEndTime}+{!SLATime}</expression>
+        <expression>{!$Record.DueDate}+{!SLATime}</expression>
     </formulas>
     <interviewLabel>Service Appointment Flow {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Service Appointment Flow</label>
     <loops>
         <name>Copy_1_of_For_Each_SA</name>
         <label>Copy 1 of For Each SA</label>
-        <locationX>2404</locationX>
-        <locationY>2640</locationY>
+        <locationX>2536</locationX>
+        <locationY>3024</locationY>
         <collectionReference>Copy_1_of_Get_SA_associated_with_Unit</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -800,8 +865,8 @@
     <recordLookups>
         <name>Copy_1_of_Get_Related_WO</name>
         <label>Copy 1 of Get Related WO</label>
-        <locationX>2404</locationX>
-        <locationY>2940</locationY>
+        <locationX>2536</locationX>
+        <locationY>3324</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Copy_1_of_Check_if_WO_is_Missed_Visit</targetReference>
@@ -835,8 +900,8 @@
     <recordLookups>
         <name>Copy_1_of_Get_SA_associated_with_Unit</name>
         <label>Copy 1 of Get SA associated with Unit</label>
-        <locationX>2404</locationX>
-        <locationY>2532</locationY>
+        <locationX>2536</locationX>
+        <locationY>2916</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Copy_1_of_For_Each_SA</targetReference>
@@ -898,7 +963,7 @@
     <recordLookups>
         <name>Get_Days_with_SLA</name>
         <label>Get Days with  SLA</label>
-        <locationX>3570</locationX>
+        <locationX>3702</locationX>
         <locationY>1032</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1013,8 +1078,8 @@
     <recordUpdates>
         <name>Copy_1_of_Update_Unit_Missed_Visit_false</name>
         <label>Copy 1 of Update Unit Missed Visit false</label>
-        <locationX>2338</locationX>
-        <locationY>3264</locationY>
+        <locationX>2470</locationX>
+        <locationY>3648</locationY>
         <inputAssignments>
             <field>FS_MissedVisit__c</field>
             <value>
@@ -1079,7 +1144,7 @@
     <recordUpdates>
         <name>Udate_WO_Safety_Check</name>
         <label>Udate WO Safety Check</label>
-        <locationX>4890</locationX>
+        <locationX>5154</locationX>
         <locationY>384</locationY>
         <connector>
             <targetReference>Update_Gantt_Icon_on_SA</targetReference>
@@ -1117,7 +1182,7 @@
     <recordUpdates>
         <name>Update_Gantt_Icon_on_SA</name>
         <label>Update Gantt Icon on SA</label>
-        <locationX>4890</locationX>
+        <locationX>5154</locationX>
         <locationY>492</locationY>
         <connector>
             <targetReference>SendCustomNotificationToMaintenanceSupervisor</targetReference>
@@ -1133,7 +1198,7 @@
     <recordUpdates>
         <name>Update_Initial_Time_of_SA</name>
         <label>Update Initial Time of SA</label>
-        <locationX>2404</locationX>
+        <locationX>2536</locationX>
         <locationY>276</locationY>
         <connector>
             <targetReference>Update_SA_FS_Unit_Priority</targetReference>
@@ -1218,7 +1283,7 @@
     <recordUpdates>
         <name>Update_Jeopardy_True</name>
         <label>Update Jeopardy True</label>
-        <locationX>3614</locationX>
+        <locationX>3746</locationX>
         <locationY>816</locationY>
         <connector>
             <targetReference>TimeFrame_Extended_in_WO</targetReference>
@@ -1234,8 +1299,11 @@
     <recordUpdates>
         <name>Update_Missed_Visit_in_Unit</name>
         <label>Update Missed Visit in Unit</label>
-        <locationX>3658</locationX>
-        <locationY>2064</locationY>
+        <locationX>3790</locationX>
+        <locationY>2148</locationY>
+        <connector>
+            <targetReference>Check_If_Resource_Present2</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -1255,10 +1323,10 @@
     <recordUpdates>
         <name>Update_Missed_Visit_in_WO</name>
         <label>Update Missed Visit in WO</label>
-        <locationX>3658</locationX>
-        <locationY>1848</locationY>
+        <locationX>3790</locationX>
+        <locationY>2040</locationY>
         <connector>
-            <targetReference>Notification_for_timeframe_Extented</targetReference>
+            <targetReference>Update_Missed_Visit_in_Unit</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1298,7 +1366,7 @@
     <recordUpdates>
         <name>Update_SA_DueDate</name>
         <label>Update SA DueDate</label>
-        <locationX>3570</locationX>
+        <locationX>3702</locationX>
         <locationY>1140</locationY>
         <connector>
             <targetReference>Update_WO_With_TimeFrame_Extended</targetReference>
@@ -1314,7 +1382,7 @@
     <recordUpdates>
         <name>Update_SA_FS_Unit_Priority</name>
         <label>Update SA FS Unit Priority</label>
-        <locationX>2404</locationX>
+        <locationX>2536</locationX>
         <locationY>384</locationY>
         <connector>
             <targetReference>SA_Decision</targetReference>
@@ -1330,10 +1398,10 @@
     <recordUpdates>
         <name>Update_WO_With_TimeFrame_Extended</name>
         <label>Update WO With TimeFrame Extended</label>
-        <locationX>3570</locationX>
+        <locationX>3702</locationX>
         <locationY>1248</locationY>
         <connector>
-            <targetReference>Copy_1_of_Notification_for_timeframe_Extented</targetReference>
+            <targetReference>Check_If_Resource_Present</targetReference>
         </connector>
         <inputAssignments>
             <field>FS_MissedVisit__c</field>
@@ -1434,7 +1502,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>3587</locationX>
+        <locationX>3785</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Update_Initial_Time_of_SA</targetReference>
@@ -1459,7 +1527,7 @@
         <name>Copy_1_of_Notification_for_timeframe_Extented</name>
         <label>Copy 1 of Notification for timeframe Extented</label>
         <locationX>3570</locationX>
-        <locationY>1356</locationY>
+        <locationY>1464</locationY>
         <flowName>SendCustomNotification</flowName>
         <inputAssignments>
             <name>CustomNotificationTypeName</name>
@@ -1533,10 +1601,7 @@
         <name>Notification_for_timeframe_Extented</name>
         <label>Notification for Missed Visit</label>
         <locationX>3658</locationX>
-        <locationY>1956</locationY>
-        <connector>
-            <targetReference>Update_Missed_Visit_in_Unit</targetReference>
-        </connector>
+        <locationY>2364</locationY>
         <flowName>SendCustomNotification</flowName>
         <inputAssignments>
             <name>CustomNotificationTypeName</name>
@@ -1609,7 +1674,7 @@
     <subflows>
         <name>SendCustomNotificationToMaintenanceSupervisor</name>
         <label>SendCustomNotificationToMaintenanceSupervisor</label>
-        <locationX>4890</locationX>
+        <locationX>5154</locationX>
         <locationY>600</locationY>
         <flowName>SendCustomNotification</flowName>
         <inputAssignments>
