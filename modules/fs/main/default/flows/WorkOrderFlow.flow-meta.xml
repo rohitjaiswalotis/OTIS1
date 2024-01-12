@@ -2,9 +2,25 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>59.0</apiVersion>
     <assignments>
+        <name>Count_OF_Pending_SA</name>
+        <label>Count OF Pending SA</label>
+        <locationX>974</locationX>
+        <locationY>539</locationY>
+        <assignmentItems>
+            <assignToReference>CountPendingSA</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>Get_Pending_SA</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Check_Count</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Skill_Found</name>
         <label>Skill Found</label>
-        <locationX>4098</locationX>
+        <locationX>4890</locationX>
         <locationY>1079</locationY>
         <assignmentItems>
             <assignToReference>SkillFound</assignToReference>
@@ -20,7 +36,7 @@
     <assignments>
         <name>Value_Assign</name>
         <label>Value Assign</label>
-        <locationX>4406</locationX>
+        <locationX>5198</locationX>
         <locationY>539</locationY>
         <assignmentItems>
             <assignToReference>AdvSkillSplitterV2</assignToReference>
@@ -34,10 +50,118 @@
             <targetReference>Loop_Skill_Check_Revert</targetReference>
         </connector>
     </assignments>
+    <customErrors>
+        <description>throws the error</description>
+        <name>ErrorScreen</name>
+        <label>ErrorScreen</label>
+        <locationX>314</locationX>
+        <locationY>539</locationY>
+        <customErrorMessages>
+            <errorMessage>You Should Give the Rejection Comment to cancel the Work Order</errorMessage>
+            <fieldSelection>FS_CancellationReason__c</fieldSelection>
+            <isFieldError>true</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <customErrors>
+        <name>ErrorScreen1</name>
+        <label>ErrorScreen</label>
+        <locationX>314</locationX>
+        <locationY>863</locationY>
+        <customErrorMessages>
+            <errorMessage>Service Appointment Present with status as InProgress/Completed/Travelling</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <decisions>
+        <name>Check_Count</name>
+        <label>Check Count</label>
+        <locationX>974</locationX>
+        <locationY>647</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Less_than_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>CountPendingSA</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <numberValue>1.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Reason_and_SPR</targetReference>
+            </connector>
+            <label>Less than 1</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_for_RC</name>
+        <label>Check for RC</label>
+        <locationX>182</locationX>
+        <locationY>431</locationY>
+        <defaultConnector>
+            <targetReference>ErrorScreen</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Not Present</defaultConnectorLabel>
+        <rules>
+            <name>Present</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.FS_CancellationReason__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>FetchReleatedSA</targetReference>
+            </connector>
+            <label>Present</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>CheckforInprogressSA</name>
+        <label>Check for Inprogress SA</label>
+        <locationX>226</locationX>
+        <locationY>755</locationY>
+        <defaultConnector>
+            <targetReference>ErrorScreen1</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>NoProgressSA</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>LoopReleatedSA.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Travelling</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>LoopReleatedSA.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Dispatched</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>LoopReleatedSA.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>LoopReleatedSA</targetReference>
+            </connector>
+            <label>No Progress SA</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>DetectionofFieldChange</name>
         <label>Detection of Field Change</label>
-        <locationX>3020</locationX>
+        <locationX>3812</locationX>
         <locationY>431</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -361,7 +485,7 @@
     <decisions>
         <name>If_Get_SA_has_any_Value</name>
         <label>If Get SA has any Value</label>
-        <locationX>5594</locationX>
+        <locationX>6386</locationX>
         <locationY>539</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -383,7 +507,7 @@
     <decisions>
         <name>If_SA_status_is_in_Progress</name>
         <label>If SA status is in Progress</label>
-        <locationX>1810</locationX>
+        <locationX>2602</locationX>
         <locationY>863</locationY>
         <defaultConnectorLabel>in Progress</defaultConnectorLabel>
         <rules>
@@ -426,7 +550,7 @@
     <decisions>
         <name>Is_Skill_Found</name>
         <label>Is Skill Found</label>
-        <locationX>4010</locationX>
+        <locationX>4802</locationX>
         <locationY>1355</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -448,7 +572,7 @@
     <decisions>
         <name>Skill_Is_Present</name>
         <label>Skill Is Present</label>
-        <locationX>4230</locationX>
+        <locationX>5022</locationX>
         <locationY>971</locationY>
         <defaultConnector>
             <targetReference>Loop_Skill_Check_Revert</targetReference>
@@ -473,7 +597,7 @@
     <decisions>
         <name>Skill_requirement_Value</name>
         <label>Skill requirement Value?</label>
-        <locationX>2470</locationX>
+        <locationX>3262</locationX>
         <locationY>755</locationY>
         <defaultConnector>
             <targetReference>Looping_All_Selected_Values_of_AdditionalSkills_Field</targetReference>
@@ -498,7 +622,7 @@
     <decisions>
         <name>Skill_requirement_Value_v2</name>
         <label>Skill requirement Value v2</label>
-        <locationX>3350</locationX>
+        <locationX>4142</locationX>
         <locationY>755</locationY>
         <defaultConnector>
             <targetReference>Looping_All_Selected_Values_of_AdditionalSkills_Field_v2</targetReference>
@@ -523,14 +647,36 @@
     <decisions>
         <name>Update_Work_Order_decision</name>
         <label>Update Work Order decision</label>
-        <locationX>3020</locationX>
+        <locationX>3482</locationX>
         <locationY>323</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>CancelledWO</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Canceled by Otis</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Canceled by Otis</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_for_RC</targetReference>
+            </connector>
+            <label>Cancelled WO</label>
+        </rules>
         <rules>
             <name>Update_work_order_reason</name>
             <conditionLogic>(1 AND 2 )AND( 3 AND 4 AND 5)</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.Mark_For_Supervisor_Review__c</leftValueReference>
+                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -571,9 +717,9 @@
         </rules>
         <rules>
             <name>Update_SPR_and_Review</name>
-            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditionLogic>1 AND 3 AND (2 OR 4) AND 5 AND 6</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.Mark_For_Supervisor_Review__c</leftValueReference>
+                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -581,20 +727,41 @@
             </conditions>
             <conditions>
                 <leftValueReference>$Record.Fixed_Issue__c</leftValueReference>
-                <operator>IsChanged</operator>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>No</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Not Complete</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Fixed_Issue__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Partially</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
+                <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.UnitStatusOnSiteDeparture__c</leftValueReference>
-                <operator>IsChanged</operator>
+                <leftValueReference>$Record.FS_WorkOderType__c</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <stringValue>Service Request</stringValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Update_Reason_and_SPR</targetReference>
+                <targetReference>Get_Pending_SA</targetReference>
             </connector>
             <label>Update SPR and Review</label>
         </rules>
@@ -602,28 +769,28 @@
             <name>WOLI_Items_Present</name>
             <conditionLogic>(1 OR 2) AND (3 OR 4) AND 5 AND 6</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.Mark_For_Supervisor_Review__c</leftValueReference>
+                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.Mark_For_Supervisor_Review__c</leftValueReference>
+                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.Reason__c</leftValueReference>
+                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.Reason__c</leftValueReference>
+                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -659,28 +826,7 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.Reason__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Access</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Reason__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Technical</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Reason__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Parts needed</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Reason__c</leftValueReference>
+                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue>Actual Duration Inadequate</stringValue>
@@ -694,17 +840,45 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.Reason__c</leftValueReference>
+                <leftValueReference>$Record.Status</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <stringValue>Need New Visit On Site</stringValue>
+                    <stringValue>On Hold</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>$Record.Status</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <stringValue>On Hold</stringValue>
+                    <stringValue>Closed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Unassigned</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Next Action Required</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Safety Check Lone Worker</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Reason__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Need Supervisor Review and Action</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -832,7 +1006,7 @@
     <loops>
         <name>Loop_SA</name>
         <label>Loop SA</label>
-        <locationX>1634</locationX>
+        <locationX>2426</locationX>
         <locationY>755</locationY>
         <collectionReference>FetchSA</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -846,7 +1020,7 @@
     <loops>
         <name>Loop_Skill_Check_Revert</name>
         <label>Loop Skill Check Revert</label>
-        <locationX>4010</locationX>
+        <locationX>4802</locationX>
         <locationY>863</locationY>
         <collectionReference>AdvSkillSplitterV2</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -860,7 +1034,7 @@
     <loops>
         <name>Looping_All_Selected_Values_of_AdditionalSkills_Field</name>
         <label>Looping All Selected Values of AdditionalSkills Field</label>
-        <locationX>2250</locationX>
+        <locationX>3042</locationX>
         <locationY>647</locationY>
         <collectionReference>String_splitting_with_subflow.SplitResults</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -871,7 +1045,7 @@
     <loops>
         <name>Looping_All_Selected_Values_of_AdditionalSkills_Field_v2</name>
         <label>Looping All Selected Values of AdditionalSkills Field v2</label>
-        <locationX>3130</locationX>
+        <locationX>3922</locationX>
         <locationY>647</locationY>
         <collectionReference>AdvSkillSplitter</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -882,6 +1056,17 @@
             <isGoTo>true</isGoTo>
             <targetReference>UpdatingWOPartStatus</targetReference>
         </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>LoopReleatedSA</name>
+        <label>Loop SA</label>
+        <locationX>50</locationX>
+        <locationY>647</locationY>
+        <collectionReference>FetchReleatedSA</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>CheckforInprogressSA</targetReference>
+        </nextValueConnector>
     </loops>
     <processMetadataValues>
         <name>BuilderType</name>
@@ -905,7 +1090,7 @@
     <recordCreates>
         <name>Create_New_SA</name>
         <label>Create New SA</label>
-        <locationX>5462</locationX>
+        <locationX>6254</locationX>
         <locationY>647</locationY>
         <inputAssignments>
             <field>DueDate</field>
@@ -943,7 +1128,7 @@
     <recordCreates>
         <name>Create_Repair_Skills_Required_Record_v2</name>
         <label>Create Repair Skills Required Record v2</label>
-        <locationX>3218</locationX>
+        <locationX>4010</locationX>
         <locationY>863</locationY>
         <connector>
             <targetReference>Looping_All_Selected_Values_of_AdditionalSkills_Field_v2</targetReference>
@@ -972,7 +1157,7 @@
     <recordCreates>
         <name>Create_Skill_Requirement</name>
         <label>Create Skill Requirement</label>
-        <locationX>2514</locationX>
+        <locationX>3306</locationX>
         <locationY>539</locationY>
         <connector>
             <targetReference>Update_WO_Part_Status</targetReference>
@@ -1001,7 +1186,7 @@
     <recordCreates>
         <name>CreateSkillsRequiredRecord</name>
         <label>Create Repair Skills Required Record</label>
-        <locationX>2338</locationX>
+        <locationX>3130</locationX>
         <locationY>863</locationY>
         <connector>
             <targetReference>Looping_All_Selected_Values_of_AdditionalSkills_Field</targetReference>
@@ -1030,7 +1215,7 @@
     <recordCreates>
         <name>Creation_of_SA_Record</name>
         <label>Creation of SA Record</label>
-        <locationX>2514</locationX>
+        <locationX>3306</locationX>
         <locationY>755</locationY>
         <inputAssignments>
             <field>DueDate</field>
@@ -1068,7 +1253,7 @@
     <recordCreates>
         <name>CreationOfSAOnAnotherVisit</name>
         <label>Creation Of SA On Another Visit</label>
-        <locationX>5198</locationX>
+        <locationX>5990</locationX>
         <locationY>431</locationY>
         <assignRecordIdToReference>NewlyCreatedSA</assignRecordIdToReference>
         <connector>
@@ -1115,7 +1300,7 @@
     <recordCreates>
         <name>SA_Creation_after_Part_Delivery</name>
         <label>SA Creation after Part Delivery</label>
-        <locationX>1634</locationX>
+        <locationX>2426</locationX>
         <locationY>1247</locationY>
         <inputAssignments>
             <field>DueDate</field>
@@ -1153,7 +1338,7 @@
     <recordDeletes>
         <name>DeleteSkillRequiredRelatedRecordsFromWOHasContextMenu</name>
         <label>Delete SkillRequired related records from WO has context menu</label>
-        <locationX>3878</locationX>
+        <locationX>4670</locationX>
         <locationY>1463</locationY>
         <connector>
             <targetReference>Update_Addtional_Skill</targetReference>
@@ -1169,13 +1354,13 @@
         <object>SkillRequirement</object>
     </recordDeletes>
     <recordLookups>
-        <name>FetchSA</name>
-        <label>Fetch SA</label>
-        <locationX>1634</locationX>
-        <locationY>647</locationY>
+        <name>FetchReleatedSA</name>
+        <label>Fetch Releated SA</label>
+        <locationX>50</locationX>
+        <locationY>539</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Loop_SA</targetReference>
+            <targetReference>LoopReleatedSA</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1190,9 +1375,69 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>FetchSA</name>
+        <label>Fetch SA</label>
+        <locationX>2426</locationX>
+        <locationY>647</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_SA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ParentRecordId</field>
+            <operator>EqualTo</operator>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ServiceAppointment</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Pending_SA</name>
+        <label>Get Pending SA</label>
+        <locationX>974</locationX>
+        <locationY>431</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Count_OF_Pending_SA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>WorkOrder__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Cannot Complete</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Canceled</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ServiceAppointment</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_SA</name>
         <label>Get SA</label>
-        <locationX>5594</locationX>
+        <locationX>6386</locationX>
         <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1248,7 +1493,7 @@
     <recordUpdates>
         <name>Change_SA_status_to_Cancelled</name>
         <label>Change SA status to Cancelled</label>
-        <locationX>4010</locationX>
+        <locationX>4802</locationX>
         <locationY>647</locationY>
         <connector>
             <targetReference>Additional_Skill_String_Splitter_v2</targetReference>
@@ -1285,7 +1530,7 @@
     <recordUpdates>
         <name>Set_WO_status_to_OnHold_and_PartsStatus_to_WaitingForParts</name>
         <label>Set WO status to OnHold and PartsStatus to WaitingForParts</label>
-        <locationX>4010</locationX>
+        <locationX>4802</locationX>
         <locationY>539</locationY>
         <connector>
             <targetReference>Change_SA_status_to_Cancelled</targetReference>
@@ -1307,8 +1552,16 @@
     <recordUpdates>
         <name>Update_Addtional_Skill</name>
         <label>Update Addtional Skill</label>
-        <locationX>3878</locationX>
+        <locationX>4670</locationX>
         <locationY>1571</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
         <inputAssignments>
             <field>AdditionalSkills__c</field>
         </inputAssignments>
@@ -1317,7 +1570,7 @@
     <recordUpdates>
         <name>Update_Part_Status_for_Forecast_Part_Delivery_Date</name>
         <label>Update Part Status for Forecast Part Delivery Date</label>
-        <locationX>1106</locationX>
+        <locationX>1898</locationX>
         <locationY>539</locationY>
         <inputAssignments>
             <field>PartsStatus__c</field>
@@ -1330,7 +1583,7 @@
     <recordUpdates>
         <name>Update_Part_Status_for_Forecast_Part_Delivery_Date_Null</name>
         <label>Update Part Status for Forecast Part Delivery Date Null</label>
-        <locationX>4670</locationX>
+        <locationX>5462</locationX>
         <locationY>539</locationY>
         <inputAssignments>
             <field>PartsStatus__c</field>
@@ -1343,7 +1596,7 @@
     <recordUpdates>
         <name>Update_Part_Status_for_Forecast_Part_Delivery_Date_v2</name>
         <label>Update Part Status for Forecast Part Delivery Date v2</label>
-        <locationX>3394</locationX>
+        <locationX>4186</locationX>
         <locationY>539</locationY>
         <connector>
             <isGoTo>true</isGoTo>
@@ -1360,40 +1613,18 @@
     <recordUpdates>
         <name>Update_Reason_and_SPR</name>
         <label>Update Reason and SPR</label>
-        <locationX>314</locationX>
-        <locationY>431</locationY>
-        <filterLogic>(1 OR 2) OR 3</filterLogic>
-        <filters>
-            <field>Fixed_Issue__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>No</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Fixed_Issue__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Partially</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>UnitStatusOnSiteDeparture__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Shutdown</stringValue>
-            </value>
-        </filters>
+        <locationX>842</locationX>
+        <locationY>755</locationY>
         <inputAssignments>
-            <field>Mark_For_Supervisor_Review__c</field>
+            <field>FS_Mark_For_Supervisor_Review__c</field>
             <value>
                 <booleanValue>true</booleanValue>
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Reason__c</field>
+            <field>FS_System_Reason__c</field>
             <value>
-                <stringValue>Unit Issue</stringValue>
+                <stringValue>Next Action Required</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1407,18 +1638,18 @@
     <recordUpdates>
         <name>Update_Reason_if_Review_checkbox_is_False</name>
         <label>Update Reason if Review checkbox is False</label>
-        <locationX>50</locationX>
+        <locationX>578</locationX>
         <locationY>431</locationY>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>Mark_For_Supervisor_Review__c</field>
+            <field>FS_Mark_For_Supervisor_Review__c</field>
             <operator>EqualTo</operator>
             <value>
                 <booleanValue>false</booleanValue>
             </value>
         </filters>
         <inputAssignments>
-            <field>Reason__c</field>
+            <field>FS_System_Reason__c</field>
             <value>
                 <stringValue></stringValue>
             </value>
@@ -1434,18 +1665,18 @@
     <recordUpdates>
         <name>Update_Supervisor_Review_and_Reason</name>
         <label>Update Supervisor Review and Reason</label>
-        <locationX>578</locationX>
+        <locationX>1370</locationX>
         <locationY>431</locationY>
         <inputAssignments>
-            <field>Mark_For_Supervisor_Review__c</field>
+            <field>FS_Mark_For_Supervisor_Review__c</field>
             <value>
                 <booleanValue>true</booleanValue>
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Reason__c</field>
+            <field>FS_System_Reason__c</field>
             <value>
-                <stringValue>Chargeability</stringValue>
+                <stringValue>Chargeability Context</stringValue>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -1453,16 +1684,16 @@
     <recordUpdates>
         <name>Update_Supervisor_Review_and_Reason_to_empty</name>
         <label>Update Supervisor Review and Reason to empty</label>
-        <locationX>842</locationX>
+        <locationX>1634</locationX>
         <locationY>431</locationY>
         <inputAssignments>
-            <field>Mark_For_Supervisor_Review__c</field>
+            <field>FS_Mark_For_Supervisor_Review__c</field>
             <value>
                 <booleanValue>false</booleanValue>
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Reason__c</field>
+            <field>FS_System_Reason__c</field>
             <value>
                 <stringValue></stringValue>
             </value>
@@ -1472,7 +1703,7 @@
     <recordUpdates>
         <name>Update_WO_Part_Status</name>
         <label>Update WO Part Status</label>
-        <locationX>2514</locationX>
+        <locationX>3306</locationX>
         <locationY>647</locationY>
         <connector>
             <targetReference>Creation_of_SA_Record</targetReference>
@@ -1488,7 +1719,7 @@
     <recordUpdates>
         <name>UpdatingSAStatus</name>
         <label>Updating SA Status</label>
-        <locationX>5198</locationX>
+        <locationX>5990</locationX>
         <locationY>647</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1509,7 +1740,7 @@
     <recordUpdates>
         <name>UpdatingWoFields</name>
         <label>Updating Wo Fields</label>
-        <locationX>5198</locationX>
+        <locationX>5990</locationX>
         <locationY>539</locationY>
         <connector>
             <targetReference>UpdatingSAStatus</targetReference>
@@ -1532,7 +1763,7 @@
         <description>When Actual Part deliver date is filled this automation gonna happen .</description>
         <name>UpdatingWOPartStatus</name>
         <label>Updating WO Part Status</label>
-        <locationX>1634</locationX>
+        <locationX>2426</locationX>
         <locationY>539</locationY>
         <connector>
             <targetReference>FetchSA</targetReference>
@@ -1546,7 +1777,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>2894</locationX>
+        <locationX>3356</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Update_Work_Order_decision</targetReference>
@@ -1595,10 +1826,10 @@
             </value>
         </filters>
         <filters>
-            <field>Status</field>
+            <field>SvcReqAssignedMechanic__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>Closed</stringValue>
+                <stringValue></stringValue>
             </value>
         </filters>
         <object>WorkOrder</object>
@@ -1609,12 +1840,18 @@
     <subflows>
         <name>Additional_Skill_String_Splitter</name>
         <label>Additional Skill String Splitter</label>
-        <locationX>3130</locationX>
+        <locationX>3922</locationX>
         <locationY>539</locationY>
         <connector>
             <targetReference>Looping_All_Selected_Values_of_AdditionalSkills_Field_v2</targetReference>
         </connector>
         <flowName>SUB_CommonLogicForStringSplitter</flowName>
+        <inputAssignments>
+            <name>flowSeparator</name>
+            <value>
+                <stringValue>;</stringValue>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <name>varT_StringToSplit</name>
             <value>
@@ -1629,12 +1866,18 @@
     <subflows>
         <name>Additional_Skill_String_Splitter_v2</name>
         <label>Additional Skill String Splitter v2</label>
-        <locationX>4010</locationX>
+        <locationX>4802</locationX>
         <locationY>755</locationY>
         <connector>
             <targetReference>Loop_Skill_Check_Revert</targetReference>
         </connector>
         <flowName>SUB_CommonLogicForStringSplitter</flowName>
+        <inputAssignments>
+            <name>flowSeparator</name>
+            <value>
+                <stringValue>;</stringValue>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <name>varT_StringToSplit</name>
             <value>
@@ -1649,12 +1892,18 @@
     <subflows>
         <name>String_splitting_with_subflow</name>
         <label>String splitting with subflow</label>
-        <locationX>2250</locationX>
+        <locationX>3042</locationX>
         <locationY>539</locationY>
         <connector>
             <targetReference>Looping_All_Selected_Values_of_AdditionalSkills_Field</targetReference>
         </connector>
         <flowName>SUB_CommonLogicForStringSplitter</flowName>
+        <inputAssignments>
+            <name>flowSeparator</name>
+            <value>
+                <stringValue>;</stringValue>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <name>varT_StringToSplit</name>
             <value>
@@ -1676,6 +1925,17 @@
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>CountPendingSA</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
     </variables>
     <variables>
         <name>NewlyCreatedSA</name>
