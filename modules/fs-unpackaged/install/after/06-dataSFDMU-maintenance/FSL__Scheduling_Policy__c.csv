@@ -1,0 +1,6 @@
+Id,Name,FSL__Daily_Optimization__c,FSL__Description__c,FSL__Fix_Overlaps__c,FSL__Service_Priority_Weight__c,FSL__Travel_Mode__c,FSL__Commit_Mode__c
+a0aDO000000WB2AYAW,Emergency,false,This policy is used in order to schedule emergencies from the emergency action,false,,false,AlwaysCommit
+a0aDO000000WB2BYAW,Reduce Travel,true,SLA to be respected and reduction of travel time,false,,false,AlwaysCommit
+a0aDO000000WB2CYAW,Focus on Service Request,false,"High level of priority. When in conflict with Maintenance WO, SR would get the priority",false,,false,AlwaysCommit
+a0aDO000000WB2DYAW,Limited Resource,false,Less resources with a re-evaluation of work order priorities.,false,,false,AlwaysCommit
+a0aDO000000WB2EYAW,Customer First,false,This policy balances great customer service with travel minimization. Appointments are graded first by the customer\'s selection of a preferred employee and by the ability to provide the service as soon as possible. Travel minimization is considered as a second priority.,true,,false,AlwaysCommit

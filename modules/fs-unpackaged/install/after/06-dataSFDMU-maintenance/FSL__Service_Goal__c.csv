@@ -1,0 +1,9 @@
+Id,Name,FSL__Custom_Logic_Data__c,FSL__Custom_Type__c,FSL__Ignore_Home_Base_Coordinates__c,FSL__Object_Group_Field__c,FSL__Prioritize_Resource__c,FSL__Resource_Group_Field__c,FSL__Resource_Priority_Field__c,FSL__Skill_Type__c,RecordTypeId,RecordType.$$DeveloperName$NamespacePrefix$SobjectType
+a0cDO000000J4QEYA0,Minimize Travel,,,false,,Least Qualified,,fsl__priority__c,,012Dn000001nUGpIAM,Objective_Minimize_Travel;FSL;FSL__Service_Goal__c
+a0cDO000000J4QFYA0,Minimize Overtime,,,false,,Least Qualified,,fsl__priority__c,,012Dn000001nUGoIAM,Objective_Minimize_Overtime;FSL;FSL__Service_Goal__c
+a0cDO000000J4QGYA0,Skill Level,,,false,,Least Qualified,,fsl__priority__c,,012Dn000001nUGsIAM,Objective_Skill_Level;FSL;FSL__Service_Goal__c
+a0cDO000000J4QHYA0,Resource Priority,,,false,,Least Qualified,,fsl__priority__c,,012Dn000001nUGrIAM,Objective_Resource_Priority;FSL;FSL__Service_Goal__c
+a0cDO000000J4QIYA0,Prefer Contractor Resources,,,false,,Least Qualified,,contractor_priority__c,,012Dn000001nUGrIAM,Objective_Resource_Priority;FSL;FSL__Service_Goal__c
+a0cDO000000J4QJYA0,Same Site,,,false,,Least Qualified,,fsl__priority__c,,012DQ0000008WoYYAU,Objective_Same_Site;FSL;FSL__Service_Goal__c
+a0cDO000000J4QCYA0,Preferred Service Resource,,,false,,Least Qualified,,fsl__priority__c,,012Dn000001nUGqIAM,Objective_PreferredEngineer;FSL;FSL__Service_Goal__c
+a0cDO000000J4QDYA0,ASAP,,,false,,Least Qualified,,fsl__priority__c,,012Dn000001nUGmIAM,Objective_Asap;FSL;FSL__Service_Goal__c

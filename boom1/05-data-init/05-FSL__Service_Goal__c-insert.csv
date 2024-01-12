@@ -1,9 +1,0 @@
-Name,FSL__Custom_Logic_Data__c,FSL__Custom_Type__c,FSL__Ignore_Home_Base_Coordinates__c,FSL__Object_Group_Field__c,FSL__Prioritize_Resource__c,FSL__Resource_Group_Field__c,FSL__Resource_Priority_Field__c,FSL__Skill_Type__c,RecordType.Name
-Preferred Service Resource,,,false,,Least Qualified,,fsl__priority__c,,Preferred Resource
-ASAP,,,false,,Least Qualified,,fsl__priority__c,,ASAP
-Minimize Travel,,,false,,Least Qualified,,fsl__priority__c,,Minimize Travel
-Minimize Overtime,,,false,,Least Qualified,,fsl__priority__c,,Minimize Overtime
-Skill Level,,,false,,Least Qualified,,fsl__priority__c,,Skill Level
-Resource Priority,,,false,,Least Qualified,,fsl__priority__c,,Resource Priority
-Prefer Contractor Resources,,,false,,Least Qualified,,contractor_priority__c,,Resource Priority
-Same Site,,,false,,Least Qualified,,fsl__priority__c,,Same Site
