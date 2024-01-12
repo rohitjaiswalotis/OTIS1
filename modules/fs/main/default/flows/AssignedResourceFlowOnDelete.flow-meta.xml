@@ -36,6 +36,13 @@
                 <elementReference>$Record.ServiceAppointmentId</elementReference>
             </value>
         </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Canceled</stringValue>
+            </value>
+        </filters>
         <inputAssignments>
             <field>AssignedServiceResource__c</field>
         </inputAssignments>
