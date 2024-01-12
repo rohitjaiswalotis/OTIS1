@@ -1,27 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <assignments>
-        <name>Error_Message_Assignment</name>
-        <label>Error Message Assignment</label>
-        <locationX>50</locationX>
-        <locationY>782</locationY>
-        <assignmentItems>
-            <assignToReference>ErrorMessageVar</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>The Length of the Service Request Notes should not be greater then 75 character.</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <isGoTo>true</isGoTo>
-            <targetReference>SA_Closeout2</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>Fields_Assignments</name>
         <label>Fields Assignments</label>
-        <locationX>446</locationX>
-        <locationY>998</locationY>
+        <locationX>182</locationX>
+        <locationY>890</locationY>
         <assignmentItems>
             <assignToReference>WorkOrderStatus</assignToReference>
             <operator>Assign</operator>
@@ -179,8 +162,8 @@
     <decisions>
         <name>Check_Operation_Status_Reason</name>
         <label>Check Operation Status Reason</label>
-        <locationX>578</locationX>
-        <locationY>890</locationY>
+        <locationX>314</locationX>
+        <locationY>782</locationY>
         <defaultConnector>
             <targetReference>Update_SA</targetReference>
         </defaultConnector>
@@ -204,7 +187,7 @@
     <decisions>
         <name>Check_ParentRecordType</name>
         <label>Check ParentRecordType</label>
-        <locationX>1106</locationX>
+        <locationX>842</locationX>
         <locationY>242</locationY>
         <defaultConnector>
             <targetReference>SA_Error_Closeout_Message</targetReference>
@@ -234,35 +217,10 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Check_SR_Note_Length</name>
-        <label>Check SR Note Length</label>
-        <locationX>314</locationX>
-        <locationY>674</locationY>
-        <defaultConnector>
-            <targetReference>Get_WorkPerformedCode</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>if_greater_then_75</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>SRCloseoutNotesLength</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>75.0</numberValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Error_Message_Assignment</targetReference>
-            </connector>
-            <label>if greater then 75</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>Check_Unit_Operational_Status</name>
         <label>Check Unit Operational Status</label>
-        <locationX>578</locationX>
-        <locationY>1730</locationY>
+        <locationX>314</locationX>
+        <locationY>1514</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>If_Unit_Shutdown</name>
@@ -303,12 +261,12 @@
         </rules>
     </decisions>
     <dynamicChoiceSets>
-        <name>CategoryPicklistCollectionSet</name>
+        <name>CategoryPicklistCollection</name>
         <dataType>Picklist</dataType>
         <displayField xsi:nil="true"/>
         <object xsi:nil="true"/>
-        <picklistField>NAA_Category__c</picklistField>
-        <picklistObject>ServiceAppointment</picklistObject>
+        <picklistField>Category__c</picklistField>
+        <picklistObject>WorkOrder</picklistObject>
     </dynamicChoiceSets>
     <dynamicChoiceSets>
         <name>ComponentCodeValues</name>
@@ -401,8 +359,8 @@
     <recordCreates>
         <name>Create_UnitShutDown_Log</name>
         <label>Create UnitShutDown Log</label>
-        <locationX>578</locationX>
-        <locationY>1838</locationY>
+        <locationX>314</locationX>
+        <locationY>1622</locationY>
         <inputAssignments>
             <field>AssetId</field>
             <value>
@@ -466,7 +424,7 @@
     <recordLookups>
         <name>Get_SA_Record</name>
         <label>Get SA Record</label>
-        <locationX>1106</locationX>
+        <locationX>842</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -492,8 +450,8 @@
     <recordLookups>
         <name>Get_UnitShutdownLog_Record</name>
         <label>Get UnitShutdownLog Record</label>
-        <locationX>446</locationX>
-        <locationY>1106</locationY>
+        <locationX>182</locationX>
+        <locationY>998</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Update_SA</targetReference>
@@ -517,8 +475,8 @@
     <recordLookups>
         <name>Get_WorkPerformedCode</name>
         <label>Get WorkPerformedCode</label>
-        <locationX>578</locationX>
-        <locationY>782</locationY>
+        <locationX>314</locationX>
+        <locationY>674</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_Operation_Status_Reason</targetReference>
@@ -536,40 +494,12 @@
         <queriedFields>Id</queriedFields>
     </recordLookups>
     <recordUpdates>
-        <name>Update_Case</name>
-        <label>Update Case</label>
-        <locationX>578</locationX>
-        <locationY>1514</locationY>
-        <connector>
-            <targetReference>Update_Unit</targetReference>
-        </connector>
-        <faultConnector>
-            <isGoTo>true</isGoTo>
-            <targetReference>ErrorScreen</targetReference>
-        </faultConnector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>WorkOrder__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>SA_Record.ParentRecordId</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>AssetId</field>
-            <value>
-                <elementReference>Units</elementReference>
-            </value>
-        </inputAssignments>
-        <object>Case</object>
-    </recordUpdates>
-    <recordUpdates>
         <name>Update_Related_Work_Order</name>
         <label>Update Related Work Order</label>
-        <locationX>578</locationX>
-        <locationY>1406</locationY>
+        <locationX>314</locationX>
+        <locationY>1298</locationY>
         <connector>
-            <targetReference>Update_Case</targetReference>
+            <targetReference>Update_Unit</targetReference>
         </connector>
         <faultConnector>
             <targetReference>ErrorScreen</targetReference>
@@ -582,12 +512,6 @@
                 <elementReference>SA_Record.ParentRecordId</elementReference>
             </value>
         </filters>
-        <inputAssignments>
-            <field>AssetId</field>
-            <value>
-                <elementReference>Units</elementReference>
-            </value>
-        </inputAssignments>
         <inputAssignments>
             <field>Category__c</field>
             <value>
@@ -635,8 +559,8 @@
     <recordUpdates>
         <name>Update_SA</name>
         <label>Update SA</label>
-        <locationX>578</locationX>
-        <locationY>1298</locationY>
+        <locationX>314</locationX>
+        <locationY>1190</locationY>
         <connector>
             <targetReference>Update_Related_Work_Order</targetReference>
         </connector>
@@ -665,8 +589,8 @@
     <recordUpdates>
         <name>Update_Unit</name>
         <label>Update Unit</label>
-        <locationX>578</locationX>
-        <locationY>1622</locationY>
+        <locationX>314</locationX>
+        <locationY>1406</locationY>
         <connector>
             <targetReference>Check_Unit_Operational_Status</targetReference>
         </connector>
@@ -699,8 +623,8 @@
     <recordUpdates>
         <name>Update_UnitShutdownLog</name>
         <label>Update UnitShutdownLog</label>
-        <locationX>314</locationX>
-        <locationY>1838</locationY>
+        <locationX>50</locationX>
+        <locationY>1622</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -732,8 +656,8 @@
     <screens>
         <name>ErrorScreen</name>
         <label>ErrorScreen</label>
-        <locationX>1634</locationX>
-        <locationY>1514</locationY>
+        <locationX>1106</locationX>
+        <locationY>1406</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -775,7 +699,7 @@
         </fields>
         <fields>
             <name>Category</name>
-            <choiceReferences>CategoryPicklistCollectionSet</choiceReferences>
+            <choiceReferences>CategoryPicklistCollection</choiceReferences>
             <dataType>String</dataType>
             <fieldText>Category</fieldText>
             <fieldType>DropdownBox</fieldType>
@@ -816,7 +740,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Check_SR_Note_Length</targetReference>
+            <targetReference>Get_WorkPerformedCode</targetReference>
         </connector>
         <fields>
             <name>Copy_1_of_AppointmentNumber</name>
@@ -876,18 +800,13 @@
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
         </fields>
-        <fields>
-            <name>ErrorMessage</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(234, 10, 10); font-size: 11px;&quot;&gt;{!ErrorMessageVar}&lt;/strong&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <screens>
         <name>SA_Error_Closeout_Message</name>
         <label>SA Error Closeout Message</label>
-        <locationX>1898</locationX>
+        <locationX>1370</locationX>
         <locationY>350</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -901,7 +820,7 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>980</locationX>
+        <locationX>716</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_SA_Record</targetReference>
