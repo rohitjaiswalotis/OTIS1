@@ -44,10 +44,10 @@
     <decisions>
         <name>BannerShowNew</name>
         <label>BannerShowNew</label>
-        <locationX>446</locationX>
+        <locationX>314</locationX>
         <locationY>458</locationY>
         <defaultConnector>
-            <targetReference>errorMsg</targetReference>
+            <targetReference>Copy_1_of_Signature_Required</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -60,39 +60,10 @@
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>storedSA.Status</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Completed</stringValue>
-                </rightValue>
-            </conditions>
             <connector>
                 <targetReference>check_Fields</targetReference>
             </connector>
             <label>SignatureValueIsPresent</label>
-        </rules>
-        <rules>
-            <name>SignatureValueisNotPresent</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>signatureValue</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>storedSA.Status</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Completed</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Copy_1_of_Signature_Required</targetReference>
-            </connector>
-            <label>SignatureValueisNotPresent</label>
         </rules>
     </decisions>
     <decisions>
@@ -120,7 +91,7 @@
     <decisions>
         <name>Copy_1_of_Capture_Signature</name>
         <label>Capture Signature 2</label>
-        <locationX>490</locationX>
+        <locationX>578</locationX>
         <locationY>674</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_check_Fields</targetReference>
@@ -172,7 +143,7 @@
     <recordLookups>
         <name>get_SA_records</name>
         <label>get SA records</label>
-        <locationX>446</locationX>
+        <locationX>314</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -190,12 +161,11 @@
         <outputReference>storedSA</outputReference>
         <queriedFields>Id</queriedFields>
         <queriedFields>ParentRecordId</queriedFields>
-        <queriedFields>Status</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>getUnit</name>
         <label>getUnit</label>
-        <locationX>446</locationX>
+        <locationX>314</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -218,7 +188,7 @@
     <recordLookups>
         <name>Work_Order</name>
         <label>Work Order</label>
-        <locationX>446</locationX>
+        <locationX>314</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -241,7 +211,7 @@
     <recordUpdates>
         <name>Copy_1_of_Update_SA_3</name>
         <label>Update SA 1</label>
-        <locationX>138</locationX>
+        <locationX>182</locationX>
         <locationY>890</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -262,7 +232,7 @@
     <recordUpdates>
         <name>Update_SA_3</name>
         <label>Update SA 2</label>
-        <locationX>578</locationX>
+        <locationX>710</locationX>
         <locationY>890</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -293,7 +263,7 @@
         </connector>
         <fields>
             <name>Textnew</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(34, 8, 8); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, system-ui, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;, &amp;quot;Segoe UI Web&amp;quot;, sans-serif; font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;Signature is required on service report for this SA&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, system-ui, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;, &amp;quot;Segoe UI Web&amp;quot;, sans-serif; color: rgb(228, 20, 20);&quot;&gt;Signature is required on service report for this SA&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -313,7 +283,7 @@
     <screens>
         <name>Copy_1_of_check_Fields</name>
         <label>Generate SR</label>
-        <locationX>578</locationX>
+        <locationX>710</locationX>
         <locationY>782</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -336,7 +306,7 @@
     <screens>
         <name>Copy_1_of_No_Signature_Reason</name>
         <label>Generate SR</label>
-        <locationX>138</locationX>
+        <locationX>182</locationX>
         <locationY>782</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -359,7 +329,7 @@
     <screens>
         <name>Copy_1_of_Signature_Required</name>
         <label>Generate SR</label>
-        <locationX>490</locationX>
+        <locationX>578</locationX>
         <locationY>566</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -381,30 +351,14 @@
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
-    <screens>
-        <name>errorMsg</name>
-        <label>errorMsg</label>
-        <locationX>842</locationX>
-        <locationY>566</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <fields>
-            <name>textMsg</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 14px; font-family: serif; color: rgb(37, 4, 4);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;&lt;/strong&gt;&lt;strong style=&quot;font-size: 14px; font-family: serif; color: rgb(24, 7, 7);&quot;&gt;The Service Appointment is not Completed, You can not generate the Service report.&lt;/strong&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
     <start>
-        <locationX>320</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>get_SA_records</targetReference>
         </connector>
     </start>
-    <status>Obsolete</status>
+    <status>Active</status>
     <variables>
         <name>GetServiceReportLay</name>
         <dataType>SObject</dataType>
