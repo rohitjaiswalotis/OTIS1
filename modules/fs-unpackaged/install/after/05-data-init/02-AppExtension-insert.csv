@@ -4,3 +4,4 @@
 "$SF_SR_VAR_MOBILE_SETTING_ID","Update Unit Status","Flow","FSL_Mobile_Unit_Shutdown","Asset","Update Unit Status"
 "$SF_SR_VAR_MOBILE_SETTING_ID","View Report","iOS","salesforce1://v1/sObject/$SF_SR_VAR_KPI_DASHBOARDS_MECHANICS_ID/view","ServiceAppointment","Open KPI Dashboards"
 "$SF_SR_VAR_MOBILE_SETTING_ID","Service Appointment Building Contact","Flow","Service_Appointment_Building_Contact","ServiceAppointment","Service Appointment Building Contact"
+"$SF_SR_VAR_MOBILE_SETTING_ID","Service_Report_Flow","Flow","Create_SR","ServiceAppointment","Create Service Report"
