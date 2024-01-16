@@ -322,9 +322,9 @@ IF({!$Record.Asset.FS_LowUsage__c}=true,&quot;Low Usage&quot;, &quot;Regular Mai
         </filters>
         <filters>
             <field>SvcReqAssignedMechanic__c</field>
-            <operator>EqualTo</operator>
+            <operator>IsNull</operator>
             <value>
-                <stringValue></stringValue>
+                <booleanValue>true</booleanValue>
             </value>
         </filters>
         <object>WorkOrder</object>

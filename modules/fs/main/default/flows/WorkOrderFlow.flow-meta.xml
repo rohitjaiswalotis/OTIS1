@@ -1827,9 +1827,9 @@
         </filters>
         <filters>
             <field>SvcReqAssignedMechanic__c</field>
-            <operator>EqualTo</operator>
+            <operator>IsNull</operator>
             <value>
-                <stringValue></stringValue>
+                <booleanValue>true</booleanValue>
             </value>
         </filters>
         <object>WorkOrder</object>
