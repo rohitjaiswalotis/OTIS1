@@ -41,64 +41,9 @@
         </value>
     </choices>
     <decisions>
-        <name>Check_For_Country</name>
-        <label>Check For Country</label>
-        <locationX>1370</locationX>
-        <locationY>650</locationY>
-        <defaultConnector>
-            <targetReference>Copy_2_of_Select_Service_reportlanguage</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Japan</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>StoreCountry</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Japan</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Copy_1_of_Check_Work_Type</targetReference>
-            </connector>
-            <label>Japan</label>
-        </rules>
-        <rules>
-            <name>France</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>StoreCountry</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>France</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Copy_2_of_Check_Work_Type</targetReference>
-            </connector>
-            <label>France</label>
-        </rules>
-        <rules>
-            <name>Switzerland</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>StoreCountry</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Switzerland</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Check_Work_Type</targetReference>
-            </connector>
-            <label>Switzerland</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>Check_if_Desktop_or_Mobile</name>
         <label>Check if Desktop or Mobile</label>
-        <locationX>1370</locationX>
+        <locationX>314</locationX>
         <locationY>134</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -132,117 +77,6 @@
             <label>Desktop</label>
         </rules>
     </decisions>
-    <decisions>
-        <name>Check_Work_Type</name>
-        <label>Check Work Type</label>
-        <locationX>1898</locationX>
-        <locationY>758</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Repair</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>storeWoTypeName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Repair</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>get_Service_Report_Templates</targetReference>
-            </connector>
-            <label>Repair</label>
-        </rules>
-        <rules>
-            <name>Maintenance</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>storeWoTypeName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Maintenance</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Copy_2_of_get_Service_Report_Template</targetReference>
-            </connector>
-            <label>Maintenance</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Copy_1_of_Check_Work_Type</name>
-        <label>Copy 1 of Check Work Type</label>
-        <locationX>314</locationX>
-        <locationY>758</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Copy_1_of_Repair</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>storeWoTypeName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Repair</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Copy_1_of_get_Service_Report_Template</targetReference>
-            </connector>
-            <label>Copy 1 of Repair</label>
-        </rules>
-        <rules>
-            <name>Copy_1_of_Maintenance</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>storeWoTypeName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Maintenance</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Copy_1_of_Copy_2_of_get_Service_Report_Template</targetReference>
-            </connector>
-            <label>Copy 1 of Maintenance</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Copy_2_of_Check_Work_Type</name>
-        <label>Copy 2 of Check Work Type</label>
-        <locationX>1106</locationX>
-        <locationY>758</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Copy_2_of_Repair</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>storeWoTypeName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Repair</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Copy_3_of_get_Service_Report_Template</targetReference>
-            </connector>
-            <label>Copy 2 of Repair</label>
-        </rules>
-        <rules>
-            <name>Copy_2_of_Maintenance</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>storeWoTypeName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Maintenance</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Copy_2_of_Copy_2_of_get_Service_Report_Template</targetReference>
-            </connector>
-            <label>Copy 2 of Maintenance</label>
-        </rules>
-    </decisions>
     <dynamicChoiceSets>
         <name>LanguageList</name>
         <dataType>Picklist</dataType>
@@ -274,59 +108,13 @@
     </processMetadataValues>
     <processType>FieldServiceMobile</processType>
     <recordLookups>
-        <name>Copy_1_of_Copy_2_of_get_Service_Report_Template</name>
-        <label>Copy 1 of Copy 2 of get Service Report Template</label>
-        <locationX>314</locationX>
-        <locationY>866</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Copy_1_of_Select_Service_reportlanguage</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>DeveloperName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Maintenance - Switzerland</stringValue>
-            </value>
-        </filters>
-        <object>ServiceReportLayout</object>
-        <outputAssignments>
-            <assignToReference>storeSRlayoutId</assignToReference>
-            <field>Id</field>
-        </outputAssignments>
-    </recordLookups>
-    <recordLookups>
-        <name>Copy_1_of_get_Service_Report_Template</name>
-        <label>Copy 1 of get Service Report Template</label>
-        <locationX>50</locationX>
-        <locationY>866</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Copy_1_of_Select_Service_reportlanguage</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>DeveloperName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Repair - France</stringValue>
-            </value>
-        </filters>
-        <object>ServiceReportLayout</object>
-        <outputAssignments>
-            <assignToReference>storeSRlayoutId</assignToReference>
-            <field>Id</field>
-        </outputAssignments>
-    </recordLookups>
-    <recordLookups>
         <name>Copy_1_of_Get_WO</name>
         <label>Copy 1 of Get WO</label>
-        <locationX>1370</locationX>
+        <locationX>314</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Unit_Country</targetReference>
+            <targetReference>Select_Service_reportlanguage</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -340,131 +128,15 @@
         <outputReference>WOID</outputReference>
         <queriedFields>Id</queriedFields>
         <queriedFields>ServiceReportLanguage</queriedFields>
-        <queriedFields>WorkTypeId</queriedFields>
-    </recordLookups>
-    <recordLookups>
-        <name>Copy_2_of_Copy_2_of_get_Service_Report_Template</name>
-        <label>Copy 2 of Copy 2 of get Service Report Template</label>
-        <locationX>1106</locationX>
-        <locationY>866</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Select_Service_reportlanguage</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>DeveloperName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Maintenance - Switzerland</stringValue>
-            </value>
-        </filters>
-        <object>ServiceReportLayout</object>
-        <outputAssignments>
-            <assignToReference>storeSRlayoutId</assignToReference>
-            <field>Id</field>
-        </outputAssignments>
-    </recordLookups>
-    <recordLookups>
-        <name>Copy_2_of_get_Service_Report_Template</name>
-        <label>Copy 2 of get Service Report Template</label>
-        <locationX>1898</locationX>
-        <locationY>866</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Copy_3_of_Select_Service_reportlanguage</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>DeveloperName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Maintenance - Switzerland</stringValue>
-            </value>
-        </filters>
-        <object>ServiceReportLayout</object>
-        <outputAssignments>
-            <assignToReference>storeSRlayoutId</assignToReference>
-            <field>Id</field>
-        </outputAssignments>
-    </recordLookups>
-    <recordLookups>
-        <name>Copy_3_of_get_Service_Report_Template</name>
-        <label>Copy 3 of get Service Report Template</label>
-        <locationX>842</locationX>
-        <locationY>866</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Select_Service_reportlanguage</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>DeveloperName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Repair - France</stringValue>
-            </value>
-        </filters>
-        <object>ServiceReportLayout</object>
-        <outputAssignments>
-            <assignToReference>storeSRlayoutId</assignToReference>
-            <field>Id</field>
-        </outputAssignments>
-    </recordLookups>
-    <recordLookups>
-        <name>get_Service_Report_Templates</name>
-        <label>get Service Report Template</label>
-        <locationX>1634</locationX>
-        <locationY>866</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Copy_3_of_Select_Service_reportlanguage</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>DeveloperName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Repair - Switzerland</stringValue>
-            </value>
-        </filters>
-        <object>ServiceReportLayout</object>
-        <outputAssignments>
-            <assignToReference>storeSRlayoutId</assignToReference>
-            <field>Id</field>
-        </outputAssignments>
-    </recordLookups>
-    <recordLookups>
-        <name>Get_Unit_Country</name>
-        <label>Get Unit Country</label>
-        <locationX>1370</locationX>
-        <locationY>434</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Get_Work_Type</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>WOID.AssetId</elementReference>
-            </value>
-        </filters>
-        <object>Asset</object>
-        <outputAssignments>
-            <assignToReference>StoreCountry</assignToReference>
-            <field>Country</field>
-        </outputAssignments>
     </recordLookups>
     <recordLookups>
         <name>Get_WO</name>
         <label>Get WO</label>
-        <locationX>1106</locationX>
+        <locationX>50</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Unit_Country</targetReference>
+            <targetReference>Select_Service_reportlanguage</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -478,38 +150,12 @@
         <outputReference>WOID</outputReference>
         <queriedFields>Id</queriedFields>
         <queriedFields>ServiceReportLanguage</queriedFields>
-        <queriedFields>ServiceReportTemplateId</queriedFields>
-        <queriedFields>AssetId</queriedFields>
-        <queriedFields>WorkTypeId</queriedFields>
-    </recordLookups>
-    <recordLookups>
-        <name>Get_Work_Type</name>
-        <label>Get Work Type</label>
-        <locationX>1370</locationX>
-        <locationY>542</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Check_For_Country</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>WOID.WorkTypeId</elementReference>
-            </value>
-        </filters>
-        <object>WorkType</object>
-        <outputAssignments>
-            <assignToReference>storeWoTypeName</assignToReference>
-            <field>Name</field>
-        </outputAssignments>
     </recordLookups>
     <recordUpdates>
-        <name>Copy_1_of_Update_WO_with_languages_selected</name>
-        <label>Copy 1 of Update WO with languages selected</label>
-        <locationX>1106</locationX>
-        <locationY>1166</locationY>
+        <name>Update_WO_with_languages_selected</name>
+        <label>Update WO with languages selected</label>
+        <locationX>314</locationX>
+        <locationY>542</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -524,183 +170,18 @@
                 <elementReference>Select_Service_Report_LAnguage</elementReference>
             </value>
         </inputAssignments>
-        <inputAssignments>
-            <field>ServiceReportTemplateId</field>
-            <value>
-                <elementReference>storeSRlayoutId</elementReference>
-            </value>
-        </inputAssignments>
         <object>WorkOrder</object>
     </recordUpdates>
-    <recordUpdates>
-        <name>Copy_2_of_Update_WO_with_languages_selected</name>
-        <label>Copy 2 of Update WO with languages selected</label>
+    <screens>
+        <name>Select_Service_reportlanguage</name>
+        <label>Select Service reportlanguage</label>
         <locationX>314</locationX>
-        <locationY>1166</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>WOID.Id</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>ServiceReportLanguage</field>
-            <value>
-                <elementReference>Copy_1_of_Select_Service_Report_LAnguage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>ServiceReportTemplateId</field>
-            <value>
-                <elementReference>storeSRlayoutId</elementReference>
-            </value>
-        </inputAssignments>
-        <object>WorkOrder</object>
-    </recordUpdates>
-    <recordUpdates>
-        <name>Copy_3_of_Update_WO_with_languages_selected</name>
-        <label>Copy 3 of Update WO with languages selected</label>
-        <locationX>2426</locationX>
-        <locationY>866</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>WOID.Id</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>ServiceReportLanguage</field>
-            <value>
-                <elementReference>Copy_2_of_Select_Service_Report_LAnguage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>ServiceReportTemplateId</field>
-            <value>
-                <elementReference>storeSRlayoutId</elementReference>
-            </value>
-        </inputAssignments>
-        <object>WorkOrder</object>
-    </recordUpdates>
-    <recordUpdates>
-        <name>Update_WO_with_languages_selected</name>
-        <label>Update WO with languages selected</label>
-        <locationX>1898</locationX>
-        <locationY>1166</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>WOID.Id</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>ServiceReportLanguage</field>
-            <value>
-                <elementReference>Copy_3_of_Select_Service_Report_LAnguage</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>ServiceReportTemplateId</field>
-            <value>
-                <elementReference>storeSRlayoutId</elementReference>
-            </value>
-        </inputAssignments>
-        <object>WorkOrder</object>
-    </recordUpdates>
-    <screens>
-        <name>Copy_1_of_Select_Service_reportlanguage</name>
-        <label>Copy 1 of Select Service reportlanguage</label>
-        <locationX>314</locationX>
-        <locationY>1058</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>false</allowPause>
-        <connector>
-            <targetReference>Copy_2_of_Update_WO_with_languages_selected</targetReference>
-        </connector>
-        <fields>
-            <name>Copy_1_of_Select_Service_Report_LAnguage</name>
-            <choiceReferences>English</choiceReferences>
-            <choiceReferences>French</choiceReferences>
-            <choiceReferences>German</choiceReferences>
-            <choiceReferences>Italian</choiceReferences>
-            <dataType>String</dataType>
-            <defaultSelectedChoiceReference>English</defaultSelectedChoiceReference>
-            <fieldText>Select Service Report Language</fieldText>
-            <fieldType>DropdownBox</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
-    <screens>
-        <name>Copy_2_of_Select_Service_reportlanguage</name>
-        <label>Copy 2 of Select Service reportlanguage</label>
-        <locationX>2426</locationX>
-        <locationY>758</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>false</allowPause>
-        <connector>
-            <targetReference>Copy_3_of_Update_WO_with_languages_selected</targetReference>
-        </connector>
-        <fields>
-            <name>Copy_2_of_Select_Service_Report_LAnguage</name>
-            <choiceReferences>English</choiceReferences>
-            <choiceReferences>French</choiceReferences>
-            <choiceReferences>German</choiceReferences>
-            <choiceReferences>Italian</choiceReferences>
-            <dataType>String</dataType>
-            <defaultSelectedChoiceReference>English</defaultSelectedChoiceReference>
-            <fieldText>Select Service Report Language</fieldText>
-            <fieldType>DropdownBox</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
-    <screens>
-        <name>Copy_3_of_Select_Service_reportlanguage</name>
-        <label>Copy 3 of Select Service reportlanguage</label>
-        <locationX>1898</locationX>
-        <locationY>1058</locationY>
+        <locationY>434</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
             <targetReference>Update_WO_with_languages_selected</targetReference>
-        </connector>
-        <fields>
-            <name>Copy_3_of_Select_Service_Report_LAnguage</name>
-            <choiceReferences>English</choiceReferences>
-            <choiceReferences>French</choiceReferences>
-            <choiceReferences>German</choiceReferences>
-            <choiceReferences>Italian</choiceReferences>
-            <dataType>String</dataType>
-            <defaultSelectedChoiceReference>English</defaultSelectedChoiceReference>
-            <fieldText>Select Service Report Language</fieldText>
-            <fieldType>DropdownBox</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
-    <screens>
-        <name>Select_Service_reportlanguage</name>
-        <label>Select Service reportlanguage</label>
-        <locationX>1106</locationX>
-        <locationY>1058</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>false</allowPause>
-        <connector>
-            <targetReference>Copy_1_of_Update_WO_with_languages_selected</targetReference>
         </connector>
         <fields>
             <name>Select_Service_Report_LAnguage</name>
@@ -712,13 +193,14 @@
             <defaultSelectedChoiceReference>English</defaultSelectedChoiceReference>
             <fieldText>Select Service Report Language</fieldText>
             <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>1244</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Check_if_Desktop_or_Mobile</targetReference>
@@ -737,43 +219,6 @@
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>StoreCountry</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>storeSRlayoutId</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>storeSRTemplateId</name>
-        <dataType>SObject</dataType>
-        <isCollection>true</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <objectType>ServiceReportLayout</objectType>
-    </variables>
-    <variables>
-        <name>storeWOtypeId</name>
-        <dataType>SObject</dataType>
-        <isCollection>true</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <objectType>WorkType</objectType>
-    </variables>
-    <variables>
-        <name>storeWoTypeName</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
