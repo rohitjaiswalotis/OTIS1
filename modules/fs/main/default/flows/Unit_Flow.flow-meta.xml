@@ -2,10 +2,77 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>59.0</apiVersion>
     <decisions>
+        <name>Check_if_Changes_Done_in_Checkboxes</name>
+        <label>Check if Changes Done in Checkboxes</label>
+        <locationX>182</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>Decision</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.FS_RebelUnit__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_CancellationAlert__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_CriticalUnit__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_MissedVisit__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_HighFrequencyUnit__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_ProductionUnitMaintenance__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_LowUsage__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_WO</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Decision</name>
         <label>Decision</label>
         <locationX>182</locationX>
-        <locationY>323</locationY>
+        <locationY>623</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Address_Check</name>
@@ -27,7 +94,7 @@
     <formulas>
         <name>AddressAssignment</name>
         <dataType>String</dataType>
-        <expression>IF(ISBLANK({!$Record.Country}), &apos;&apos;, {!$Record.Street} &amp; &quot;, &quot; &amp;{!$Record.City} &amp; &quot;, &quot; &amp;{!$Record.State} &amp; &quot;, &quot;&amp;{!$Record.PostalCode} &amp; &quot;, &quot;  &amp;{!$Record.Country})</expression>
+        <expression>IF( ISCHANGED({!$Record.Country}), {!$Record.Street} &amp; &quot;, &quot; &amp;{!$Record.City} &amp; &quot;, &quot; &amp;{!$Record.State} &amp; &quot;, &quot;&amp;{!$Record.PostalCode} &amp; &quot;, &quot;  &amp;{!$Record.Country},&apos;&apos; )</expression>
     </formulas>
     <interviewLabel>Unit Flow {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Unit Flow</label>
@@ -54,7 +121,7 @@
         <name>Update</name>
         <label>Update</label>
         <locationX>50</locationX>
-        <locationY>431</locationY>
+        <locationY>731</locationY>
         <inputAssignments>
             <field>Address_Text__c</field>
             <value>
@@ -63,11 +130,67 @@
         </inputAssignments>
         <inputReference>$Record</inputReference>
     </recordUpdates>
+    <recordUpdates>
+        <name>Update_WO</name>
+        <label>Update WO</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <connector>
+            <targetReference>Decision</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CaseId</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Canceled by Otis</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Canceled by Customer</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Complete</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Completed - Shutdown</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Closed</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>CaseId</field>
+        </inputAssignments>
+        <inputReference>$Record.WorkOrders</inputReference>
+    </recordUpdates>
     <start>
         <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Decision</targetReference>
+            <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
         </connector>
         <object>Asset</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
