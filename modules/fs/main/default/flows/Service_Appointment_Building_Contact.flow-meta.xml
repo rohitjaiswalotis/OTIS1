@@ -9,7 +9,7 @@
             <assignToReference>BuildingcontactName</assignToReference>
             <operator>Add</operator>
             <value>
-                <stringValue>&lt;br/&gt;&lt;a href=&quot;com.salesforce.fieldservice://v1/sObject/{!contactRecords.Id}/details&quot;&gt;{!contactRecords.Name}&lt;/a&gt;</stringValue>
+                <stringValue>&lt;br/&gt;&lt;a style=&quot;border-bottom: 3px solid grey;padding:3px;&quot; href=&quot;com.salesforce.fieldservice://v1/sObject/{!contactRecords.Id}/details&quot;&gt;{!contactRecords.Name}&lt;/a&gt;&lt;br/&gt;________________________________________________&lt;br/&gt;</stringValue>
             </value>
         </assignmentItems>
         <connector>
