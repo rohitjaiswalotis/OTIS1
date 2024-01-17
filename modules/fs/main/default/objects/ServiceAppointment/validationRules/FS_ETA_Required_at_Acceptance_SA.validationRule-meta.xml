@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>FS_ETA_Required_at_Acceptance_SA</fullName>
-    <active>true</active>
-    <errorConditionFormula>AND(IF(ISPICKVAL(Accept_Reject__c,&quot;Accept&quot;),true, false), IF(ISNULL( Initial_ETA__c), true, false))</errorConditionFormula>
-    <errorMessage>Please Provide an Initial ETA while accepting Service Appointment</errorMessage>
-</ValidationRule>
