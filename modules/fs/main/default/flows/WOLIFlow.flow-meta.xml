@@ -61,7 +61,7 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.WorkOrder.Mark_For_Supervisor_Review__c</leftValueReference>
+                <leftValueReference>$Record.WorkOrder.FS_Mark_For_Supervisor_Review__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -124,15 +124,15 @@
         <locationX>314</locationX>
         <locationY>431</locationY>
         <inputAssignments>
-            <field>Mark_For_Supervisor_Review__c</field>
+            <field>FS_Mark_For_Supervisor_Review__c</field>
             <value>
                 <booleanValue>true</booleanValue>
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Reason__c</field>
+            <field>FS_System_Reason__c</field>
             <value>
-                <stringValue>Chargeability</stringValue>
+                <stringValue>Chargeability Context</stringValue>
             </value>
         </inputAssignments>
         <inputReference>$Record.WorkOrder</inputReference>
@@ -144,16 +144,22 @@
         <locationY>539</locationY>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>Mark_For_Supervisor_Review__c</field>
+            <field>FS_Mark_For_Supervisor_Review__c</field>
             <operator>EqualTo</operator>
             <value>
                 <booleanValue>true</booleanValue>
             </value>
         </filters>
         <inputAssignments>
-            <field>Mark_For_Supervisor_Review__c</field>
+            <field>FS_Mark_For_Supervisor_Review__c</field>
             <value>
                 <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>FS_System_Reason__c</field>
+            <value>
+                <stringValue></stringValue>
             </value>
         </inputAssignments>
         <inputReference>$Record.WorkOrder</inputReference>
