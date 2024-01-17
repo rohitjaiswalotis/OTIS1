@@ -4,7 +4,7 @@
         <name>Fields_Assignments</name>
         <label>Fields Assignments</label>
         <locationX>182</locationX>
-        <locationY>890</locationY>
+        <locationY>998</locationY>
         <assignmentItems>
             <assignToReference>WorkOrderStatus</assignToReference>
             <operator>Assign</operator>
@@ -163,7 +163,7 @@
         <name>Check_Operation_Status_Reason</name>
         <label>Check Operation Status Reason</label>
         <locationX>314</locationX>
-        <locationY>782</locationY>
+        <locationY>890</locationY>
         <defaultConnector>
             <targetReference>Update_SA</targetReference>
         </defaultConnector>
@@ -211,7 +211,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_Current_Unit_Record</targetReference>
+                <targetReference>getWorkOrder</targetReference>
             </connector>
             <label>If WorkOrder</label>
         </rules>
@@ -220,7 +220,7 @@
         <name>Check_Unit_Operational_Status</name>
         <label>Check Unit Operational Status</label>
         <locationX>314</locationX>
-        <locationY>1514</locationY>
+        <locationY>1622</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>If_Unit_Shutdown</name>
@@ -360,7 +360,7 @@
         <name>Create_UnitShutDown_Log</name>
         <label>Create UnitShutDown Log</label>
         <locationX>314</locationX>
-        <locationY>1622</locationY>
+        <locationY>1730</locationY>
         <inputAssignments>
             <field>AssetId</field>
             <value>
@@ -403,7 +403,7 @@
         <name>Get_Current_Unit_Record</name>
         <label>Get Current Unit Record</label>
         <locationX>314</locationX>
-        <locationY>350</locationY>
+        <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>SA_Closeout1</targetReference>
@@ -413,7 +413,7 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>SA_Record.Unit__c</elementReference>
+                <elementReference>WorkOrderRecord.AssetId</elementReference>
             </value>
         </filters>
         <object>Asset</object>
@@ -451,7 +451,7 @@
         <name>Get_UnitShutdownLog_Record</name>
         <label>Get UnitShutdownLog Record</label>
         <locationX>182</locationX>
-        <locationY>998</locationY>
+        <locationY>1106</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Update_SA</targetReference>
@@ -476,7 +476,7 @@
         <name>Get_WorkPerformedCode</name>
         <label>Get WorkPerformedCode</label>
         <locationX>314</locationX>
-        <locationY>674</locationY>
+        <locationY>782</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_Operation_Status_Reason</targetReference>
@@ -493,11 +493,33 @@
         <outputReference>WorkPerformedCodeRecord</outputReference>
         <queriedFields>Id</queriedFields>
     </recordLookups>
+    <recordLookups>
+        <name>getWorkOrder</name>
+        <label>getWorkOrder</label>
+        <locationX>314</locationX>
+        <locationY>350</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Current_Unit_Record</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>SA_Record.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrder</object>
+        <outputReference>WorkOrderRecord</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>AssetId</queriedFields>
+    </recordLookups>
     <recordUpdates>
         <name>Update_Related_Work_Order</name>
         <label>Update Related Work Order</label>
         <locationX>314</locationX>
-        <locationY>1298</locationY>
+        <locationY>1406</locationY>
         <connector>
             <targetReference>Update_Unit</targetReference>
         </connector>
@@ -560,7 +582,7 @@
         <name>Update_SA</name>
         <label>Update SA</label>
         <locationX>314</locationX>
-        <locationY>1190</locationY>
+        <locationY>1298</locationY>
         <connector>
             <targetReference>Update_Related_Work_Order</targetReference>
         </connector>
@@ -590,7 +612,7 @@
         <name>Update_Unit</name>
         <label>Update Unit</label>
         <locationX>314</locationX>
-        <locationY>1406</locationY>
+        <locationY>1514</locationY>
         <connector>
             <targetReference>Check_Unit_Operational_Status</targetReference>
         </connector>
@@ -624,7 +646,7 @@
         <name>Update_UnitShutdownLog</name>
         <label>Update UnitShutdownLog</label>
         <locationX>50</locationX>
-        <locationY>1622</locationY>
+        <locationY>1730</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -657,7 +679,7 @@
         <name>ErrorScreen</name>
         <label>ErrorScreen</label>
         <locationX>1106</locationX>
-        <locationY>1406</locationY>
+        <locationY>1514</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -673,7 +695,7 @@
         <name>SA_Closeout1</name>
         <label>Service Request WO Closeout</label>
         <locationX>314</locationX>
-        <locationY>458</locationY>
+        <locationY>566</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -735,7 +757,7 @@
         <name>SA_Closeout2</name>
         <label>Service Request WO Closeout</label>
         <locationX>314</locationX>
-        <locationY>566</locationY>
+        <locationY>674</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -798,7 +820,7 @@
             <fieldText>Service Request Closeout Notes</fieldText>
             <fieldType>InputField</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -874,6 +896,14 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>WorkOrderRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrder</objectType>
     </variables>
     <variables>
         <name>WorkOrderStatus</name>
