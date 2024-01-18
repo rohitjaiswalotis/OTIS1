@@ -2,95 +2,145 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>59.0</apiVersion>
     <assignments>
-        <name>Assignement</name>
-        <label>Assignement</label>
-        <locationX>270</locationX>
-        <locationY>611</locationY>
+        <name>Assign_Accept_Status</name>
+        <label>Assign Accept Status</label>
+        <locationX>50</locationX>
+        <locationY>782</locationY>
         <assignmentItems>
-            <assignToReference>Number</assignToReference>
-            <operator>Add</operator>
+            <assignToReference>serviceAppointmentRec.Status</assignToReference>
+            <operator>Assign</operator>
             <value>
-                <numberValue>1.0</numberValue>
+                <stringValue>Accepted</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>serviceAppointmentRec.Initial_ETA__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Initial_ETA</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>serviceAppointmentRec.EarliestStartTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Initial_ETA</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>looping_building_contacts</targetReference>
+            <targetReference>Update_Accept_Status</targetReference>
         </connector>
     </assignments>
-    <customErrors>
-        <name>Contact_Already_exists</name>
-        <label>Contact Already exists</label>
-        <locationX>50</locationX>
-        <locationY>995</locationY>
-        <customErrorMessages>
-            <errorMessage>You can&apos;t save this record because a duplicate record already exists. To save, use different information.</errorMessage>
-            <isFieldError>false</isFieldError>
-        </customErrorMessages>
-    </customErrors>
+    <assignments>
+        <name>Assign_Rejected_Status</name>
+        <label>Assign Rejected Status</label>
+        <locationX>578</locationX>
+        <locationY>674</locationY>
+        <assignmentItems>
+            <assignToReference>serviceAppointmentRec.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Rejected</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Reject_Status</targetReference>
+        </connector>
+    </assignments>
+    <choices>
+        <name>Accept</name>
+        <choiceText>Accept</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Accept</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Reject</name>
+        <choiceText>Reject</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Reject</stringValue>
+        </value>
+    </choices>
     <decisions>
-        <name>Decisio_2</name>
-        <label>Decisio 2</label>
-        <locationX>182</locationX>
-        <locationY>887</locationY>
+        <name>Accepted_OR_Rejected</name>
+        <label>Accepted OR Rejected</label>
+        <locationX>578</locationX>
+        <locationY>566</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>If_same_contact_is_there</name>
+            <name>Accepted</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Number</leftValueReference>
-                <operator>GreaterThan</operator>
+                <leftValueReference>Accept_Reject</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <numberValue>0.0</numberValue>
+                    <elementReference>Accept</elementReference>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Contact_Already_exists</targetReference>
+                <targetReference>Provide_Initial_ETA</targetReference>
             </connector>
-            <label>If same contact is there</label>
+            <label>Accepted</label>
+        </rules>
+        <rules>
+            <name>Rejected</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Accept_Reject</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Reject</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Rejected_Status</targetReference>
+            </connector>
+            <label>Rejected</label>
         </rules>
     </decisions>
     <decisions>
-        <name>Decision</name>
-        <label>Decision</label>
-        <locationX>402</locationX>
-        <locationY>503</locationY>
+        <name>SA_Status_Check</name>
+        <label>SA Status Check</label>
+        <locationX>974</locationX>
+        <locationY>350</locationY>
         <defaultConnector>
-            <targetReference>looping_building_contacts</targetReference>
+            <targetReference>SA_already_accepted</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>Contacts_existing</name>
+            <name>Dispatched_Status</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>looping_building_contacts.Contact__c</leftValueReference>
-                <operator>Contains</operator>
+                <leftValueReference>serviceAppointmentRec.Status</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>$Record.Contact__c</elementReference>
+                    <stringValue>Dispatched</stringValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Assignement</targetReference>
+                <targetReference>Accept_OR_Reject</targetReference>
             </connector>
-            <label>Contacts existing</label>
+            <label>Dispatched Status</label>
         </rules>
     </decisions>
+    <dynamicChoiceSets>
+        <name>AcceptOrReject</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>Accept_Reject__c</picklistField>
+        <picklistObject>ServiceAppointment</picklistObject>
+    </dynamicChoiceSets>
     <environments>Default</environments>
-    <interviewLabel>Building Contact Duplicates {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Building Contact Duplicates</label>
-    <loops>
-        <name>looping_building_contacts</name>
-        <label>looping building contacts</label>
-        <locationX>182</locationX>
-        <locationY>395</locationY>
-        <collectionReference>getExistingRecords</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>Decision</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>Decisio_2</targetReference>
-        </noMoreValuesConnector>
-    </loops>
+    <formulas>
+        <name>CurrentDateTime</name>
+        <dataType>DateTime</dataType>
+        <expression>NOW()</expression>
+    </formulas>
+    <interviewLabel>SA-Accept/Reject FSL Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>SA-Accept/Reject FSL Flow</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -109,50 +159,217 @@
             <stringValue>LightningFlowBuilder</stringValue>
         </value>
     </processMetadataValues>
-    <processType>AutoLaunchedFlow</processType>
+    <processType>FieldServiceMobile</processType>
     <recordLookups>
-        <name>getExistingRecords</name>
-        <label>getExistingRecords</label>
-        <locationX>182</locationX>
-        <locationY>287</locationY>
+        <name>Get_Related_Account</name>
+        <label>Get Related Account</label>
+        <locationX>974</locationX>
+        <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>looping_building_contacts</targetReference>
+            <targetReference>SA_Status_Check</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>Building__c</field>
+            <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$Record.Building__c</elementReference>
+                <elementReference>serviceAppointmentRec.AccountId</elementReference>
             </value>
         </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>BuildingContact__c</object>
+        <object>Account</object>
+        <outputReference>AccountRecVar</outputReference>
         <queriedFields>Id</queriedFields>
-        <queriedFields>Contact__c</queriedFields>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <queriedFields>AccountGroupCode__c</queriedFields>
     </recordLookups>
+    <recordLookups>
+        <name>Get_SA_Records</name>
+        <label>Get SA Records</label>
+        <locationX>974</locationX>
+        <locationY>134</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Related_Account</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </filters>
+        <object>ServiceAppointment</object>
+        <outputReference>serviceAppointmentRec</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Status</queriedFields>
+        <queriedFields>AppointmentNumber</queriedFields>
+        <queriedFields>Latest_Time_of_Arrival__c</queriedFields>
+        <queriedFields>AccountId</queriedFields>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_Accept_Status</name>
+        <label>Update Accept Status</label>
+        <locationX>50</locationX>
+        <locationY>890</locationY>
+        <faultConnector>
+            <targetReference>Error_Message</targetReference>
+        </faultConnector>
+        <inputReference>serviceAppointmentRec</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Reject_Status</name>
+        <label>Update Reject Status</label>
+        <locationX>578</locationX>
+        <locationY>782</locationY>
+        <faultConnector>
+            <targetReference>Update_Status_Error</targetReference>
+        </faultConnector>
+        <inputReference>serviceAppointmentRec</inputReference>
+    </recordUpdates>
+    <screens>
+        <name>Accept_OR_Reject</name>
+        <label>Accept OR Reject</label>
+        <locationX>578</locationX>
+        <locationY>458</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Accepted_OR_Rejected</targetReference>
+        </connector>
+        <fields>
+            <name>Appointment_Number</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Appointment Number&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;{!serviceAppointmentRec.AppointmentNumber}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Account_Grp_Code</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Account Group Code&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;{!AccountRecVar.AccountGroupCode__c}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Accept_Reject</name>
+            <choiceReferences>Accept</choiceReferences>
+            <choiceReferences>Reject</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Accept/Reject</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Error_Message</name>
+        <label>Error Message</label>
+        <locationX>314</locationX>
+        <locationY>998</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Error</name>
+            <fieldText>&lt;p&gt;{!$Flow.FaultMessage}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Provide_Initial_ETA</name>
+        <label>Provide Initial ETA</label>
+        <locationX>50</locationX>
+        <locationY>674</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Assign_Accept_Status</targetReference>
+        </connector>
+        <fields>
+            <name>Initial_ETA</name>
+            <dataType>DateTime</dataType>
+            <defaultValue>
+                <elementReference>CurrentDateTime</elementReference>
+            </defaultValue>
+            <fieldText>Initial ETA</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+            <validationRule>
+                <errorMessage>&lt;p&gt;Initial ETA date/time should not be in past.&lt;/p&gt;</errorMessage>
+                <formulaExpression>{!Initial_ETA} &gt; {!CurrentDateTime}</formulaExpression>
+            </validationRule>
+        </fields>
+        <fields>
+            <name>Latest_Time_of_Arrival</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Latest Time of Arrival&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;{!serviceAppointmentRec.Latest_Time_of_Arrival__c}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>SA_already_accepted</name>
+        <label>SA already accepted.</label>
+        <locationX>1370</locationX>
+        <locationY>458</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Status_Message</name>
+            <fieldText>&lt;p&gt;This {!serviceAppointmentRec.AppointmentNumber} is already accepted, please see the notifications for new  assigned ServiceAppointments.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Update_Status_Error</name>
+        <label>Update Status Error</label>
+        <locationX>842</locationX>
+        <locationY>890</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Error1</name>
+            <fieldText>&lt;p&gt;{!$Flow.FaultMessage}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
     <start>
-        <locationX>56</locationX>
+        <locationX>848</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>getExistingRecords</targetReference>
+            <targetReference>Get_SA_Records</targetReference>
         </connector>
-        <object>BuildingContact__c</object>
-        <recordTriggerType>CreateAndUpdate</recordTriggerType>
-        <triggerType>RecordBeforeSave</triggerType>
     </start>
     <status>Active</status>
     <variables>
-        <name>Number</name>
-        <dataType>Number</dataType>
+        <name>AccountRecVar</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Account</objectType>
+    </variables>
+    <variables>
+        <name>Id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>serviceAppointmentRec</name>
+        <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
-        <scale>2</scale>
-        <value>
-            <numberValue>0.0</numberValue>
-        </value>
+        <objectType>ServiceAppointment</objectType>
     </variables>
 </Flow>
