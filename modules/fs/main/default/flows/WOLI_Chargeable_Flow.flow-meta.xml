@@ -125,15 +125,15 @@
         <locationX>50</locationX>
         <locationY>755</locationY>
         <inputAssignments>
-            <field>Mark_For_Supervisor_Review__c</field>
+            <field>FS_Mark_For_Supervisor_Review__c</field>
             <value>
                 <booleanValue>true</booleanValue>
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Reason__c</field>
+            <field>FS_System_Reason__c</field>
             <value>
-                <stringValue>Chargeability</stringValue>
+                <stringValue>Chargeability Context</stringValue>
             </value>
         </inputAssignments>
         <inputReference>$Record.WorkOrder</inputReference>
@@ -202,15 +202,15 @@
         <locationX>314</locationX>
         <locationY>755</locationY>
         <inputAssignments>
-            <field>Mark_For_Supervisor_Review__c</field>
+            <field>FS_Mark_For_Supervisor_Review__c</field>
             <value>
                 <booleanValue>true</booleanValue>
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Reason__c</field>
+            <field>FS_System_Reason__c</field>
             <value>
-                <stringValue>Chargeability</stringValue>
+                <stringValue>Chargeability Context</stringValue>
             </value>
         </inputAssignments>
         <inputReference>$Record.WorkOrder</inputReference>
