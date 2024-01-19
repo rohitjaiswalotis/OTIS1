@@ -124,14 +124,6 @@
             <label>Dispatched Status</label>
         </rules>
     </decisions>
-    <dynamicChoiceSets>
-        <name>AcceptOrReject</name>
-        <dataType>Picklist</dataType>
-        <displayField xsi:nil="true"/>
-        <object xsi:nil="true"/>
-        <picklistField>Accept_Reject__c</picklistField>
-        <picklistObject>ServiceAppointment</picklistObject>
-    </dynamicChoiceSets>
     <environments>Default</environments>
     <formulas>
         <name>CurrentDateTime</name>
