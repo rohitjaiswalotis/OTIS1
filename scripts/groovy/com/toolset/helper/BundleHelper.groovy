@@ -49,6 +49,7 @@ public class BundleHelper {
 	private static final String FILE_EXTENSION_REPORT_FOLDER = 'reportFolder-meta.xml';
 	private static final String FILE_EXTENSION_DASHBOARD_FOLDER = 'dashboardFolder-meta.xml';
 	private static final String FILE_EXTENSION_DASHBOARD = 'dashboard-meta.xml';
+	private static final String FILE_EXTENSION_FLOW = 'flow-meta.xml';
 	
 	public static final String FILE_SUFFIX_META_DESCRIPTOR = "-meta.xml";
 	
@@ -1203,6 +1204,36 @@ public class BundleHelper {
 			eachDashboardClosure.call(
 				dashboardName, 
 				dashboardRoot
+			);
+			
+		}
+		
+	}
+	
+	
+	
+	// loop through flows
+	public static void forEachFlow(File flowsDir, Closure eachFlowClosure) {
+		
+		if (!flowsDir.exists()) {
+			return;
+		}
+		
+		flowsDir.traverse(type: FileType.FILES, nameFilter: ~/(?i).*\.${FILE_EXTENSION_FLOW}(\..*)?/) { flowFile ->
+			
+			// evaluate flow name based on file name - just by removing file extension
+			def flowName = flowFile.name.substring(0, flowFile.name.toLowerCase().lastIndexOf(".${FILE_EXTENSION_FLOW.toLowerCase()}"));
+			
+			def flowRoot = new XmlSlurper().parseText(readFile(flowFile));
+			
+			// parse api version from flow file
+			def apiVersion = flowRoot == null ? null : getApiVersionFromDescriptor(flowRoot);
+			
+			eachFlowClosure.call(
+				flowName, 
+				flowFile,
+				flowRoot,
+				apiVersion
 			);
 			
 		}
