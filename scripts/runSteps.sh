@@ -319,6 +319,13 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
         sfApexAfterEachScriptName=$(getProperty $stepProperties "sf.apex.afterEach" "$sfApexAfterEachScriptName")
         
         sfTargetOrg=$(getProperty $stepProperties "sf.targetOrg" "$sfTargetOrg")
+		
+		stepRetryAttempts=$(getProperty $stepProperties "retry.attempts")
+		stepRetryDelay=$(getProperty $stepProperties "retry.delay")
+		
+		stepRetryAttempts=${stepRetryAttempts:-$STEP_MAX_RETRY_ATTEMPTS}
+		stepRetryDelay=${stepRetryDelay:-$STEP_RETRY_DELAY}
+		
         
         # handle 'exit'
         if [[ ${stepExit:+1} ]]; then
@@ -355,8 +362,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 		
 		echo "Running step init script (bash)..."
 		
-		bashStepInitMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-		bashStepInitRetryDelay=$STEP_RETRY_DELAY;
+		bashStepInitMaxRetryAttempts=$stepRetryAttempts;
+		bashStepInitRetryDelay=$stepRetryDelay;
 		bashStepInitResultCode=0;
 		bashStepInitRetryCounter=0;
 		
@@ -409,8 +416,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 		
 		echo "Running step init script (groovy)..."
 		
-		groovyStepInitMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-		groovyStepInitRetryDelay=$STEP_RETRY_DELAY;
+		groovyStepInitMaxRetryAttempts=$stepRetryAttempts;
+		groovyStepInitRetryDelay=$stepRetryDelay;
 		groovyStepInitResultCode=0;
 		groovyStepInitRetryCounter=0;
 		
@@ -478,8 +485,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
     # grab org auth info: access token and instance url
     if [[ ${PARAM_ORG_ALIAS:+1} ]]; then
         
-		orgAuthInfoMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-		orgAuthInfoRetryDelay=$STEP_RETRY_DELAY;
+		orgAuthInfoMaxRetryAttempts=$stepRetryAttempts;
+		orgAuthInfoRetryDelay=$stepRetryDelay;
 		orgAuthInfoRetryCounter=0;
 		
 		# backup current error switcher value and disable exit on error
@@ -533,8 +540,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
     # grab optinal org2 auth info: access token and instance url
     if [[ ${PARAM_ORG2_ALIAS:+1} ]]; then
         
-		org2AuthInfoMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-		org2AuthInfoRetryDelay=$STEP_RETRY_DELAY;
+		org2AuthInfoMaxRetryAttempts=$stepRetryAttempts;
+		org2AuthInfoRetryDelay=$stepRetryDelay;
 		org2AuthInfoRetryCounter=0;
 		
 		# backup current error switcher value and disable exit on error
@@ -594,8 +601,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
         
         echo "Step has been identified as metadata deployment."
         
-		metaStepMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-		metaStepRetryDelay=$STEP_RETRY_DELAY;
+		metaStepMaxRetryAttempts=$stepRetryAttempts;
+		metaStepRetryDelay=$stepRetryDelay;
 		metaStepResultCode=0;
 		metaStepRetryCounter=0;
 		
@@ -679,8 +686,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
             
             if [[ -f "$apexFile" && "${apexFile}" =~ ^.*/[^/.][^/]*$ && "${apexFile}" != "${beforeEachApexFile}" && "${apexFile}" != "${afterEachApexFile}" ]]; then
                 
-				apexStepMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-				apexStepRetryDelay=$STEP_RETRY_DELAY;
+				apexStepMaxRetryAttempts=$stepRetryAttempts;
+				apexStepRetryDelay=$stepRetryDelay;
 				apexStepResultCode=0;
 				apexStepRetryCounter=0;
 				
@@ -766,8 +773,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
             
             if [[ -f "$bashFile" && "${bashFile}" =~ ^.*/[^/.][^/]*$ ]]; then 
 				
-				bashStepMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-				bashStepRetryDelay=$STEP_RETRY_DELAY;
+				bashStepMaxRetryAttempts=$stepRetryAttempts;
+				bashStepRetryDelay=$stepRetryDelay;
 				bashStepResultCode=0;
 				bashStepRetryCounter=0;
 				
@@ -840,8 +847,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 			
             if [[ -f "$jsFile" && "${jsFile}" =~ ^[^.].*$ ]]; then 
 				
-				nodeStepMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-				nodeStepRetryDelay=$STEP_RETRY_DELAY;
+				nodeStepMaxRetryAttempts=$stepRetryAttempts;
+				nodeStepRetryDelay=$stepRetryDelay;
 				nodeStepResultCode=0;
 				nodeStepRetryCounter=0;
 				
@@ -916,8 +923,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 			
             if [[ -f "$jsFile" && "${jsFile}" =~ ^[^.].*$ ]]; then 
 				
-				jsforceStepMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-				jsforceStepRetryDelay=$STEP_RETRY_DELAY;
+				jsforceStepMaxRetryAttempts=$stepRetryAttempts;
+				jsforceStepRetryDelay=$stepRetryDelay;
 				jsforceStepResultCode=0;
 				jsforceStepRetryCounter=0;
 				
@@ -992,8 +999,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 			
             if [[ -f "$pyFile" && "${pyFile}" =~ ^[^.].*$ ]]; then 
 				
-				pythonStepMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-				pythonStepRetryDelay=$STEP_RETRY_DELAY;
+				pythonStepMaxRetryAttempts=$stepRetryAttempts;
+				pythonStepRetryDelay=$stepRetryDelay;
 				pythonStepResultCode=0;
 				pythonStepRetryCounter=0;
 				
@@ -1141,8 +1148,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
                     continue;
                 fi
 				
-				dataStepMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-				dataStepRetryDelay=$STEP_RETRY_DELAY;
+				dataStepMaxRetryAttempts=$stepRetryAttempts;
+				dataStepRetryDelay=$stepRetryDelay;
 				dataStepResultCode=0;
 				dataStepRetryCounter=0;
 				
@@ -1280,8 +1287,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 			
             if [[ -f "$groovyFile" && "${groovyFile}" =~ ^[^.].*$ ]]; then 
 				
-				groovyStepMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-				groovyStepRetryDelay=$STEP_RETRY_DELAY;
+				groovyStepMaxRetryAttempts=$stepRetryAttempts;
+				groovyStepRetryDelay=$stepRetryDelay;
 				groovyStepResultCode=0;
 				groovyStepRetryCounter=0;
 				
@@ -1353,8 +1360,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 			
             if [[ -f "$antFile" && "${antFile}" =~ ^[^.].*$ ]]; then 
 				
-				antStepMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-				antStepRetryDelay=$STEP_RETRY_DELAY;
+				antStepMaxRetryAttempts=$stepRetryAttempts;
+				antStepRetryDelay=$stepRetryDelay;
 				antStepResultCode=0;
 				antStepRetryCounter=0;
 				

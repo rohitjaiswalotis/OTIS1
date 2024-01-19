@@ -66,6 +66,8 @@
   "customScope": {
     "name": "",
     "name_commented": "FS",
+    "minApi": "49.0",
+    "maxApi": "59.0",
     "exclusions": {
       "classes": [],
       "objects": [],
