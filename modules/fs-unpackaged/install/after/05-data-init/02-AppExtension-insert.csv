@@ -1,3 +1,4 @@
 "FieldServiceMobileSettingsId","AppExtensionName","Type","LaunchValue","ScopedToObjectTypes","AppExtensionLabel"
 "$SF_SR_VAR_MOBILE_SETTING_ID","Unit Search Bar","Flow","FSL_MobileAPP_Unit_search_bar","ServiceAppointment","Unit search bar"
 "$SF_SR_VAR_MOBILE_SETTING_ID","Pin/Unpin SA","Flow","Change_Pinn_Service_Appointment","ServiceAppointment","Pin/Unpin Service Appointment"
+"$SF_SR_VAR_MOBILE_SETTING_ID","Change SA Status","Flow","FSL_MobileAPP_Change_SA_Status","ServiceAppointment","Change SA Status"
