@@ -608,14 +608,14 @@
             <name>Mechanic_ETA_Updated</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.Mechanic_ETA_Minutes__c</leftValueReference>
+                <leftValueReference>$Record.FS_Initial_ETA__c</leftValueReference>
                 <operator>IsChanged</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.Mechanic_ETA_Minutes__c</leftValueReference>
+                <leftValueReference>$Record.FS_Initial_ETA__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -738,12 +738,7 @@
     <formulas>
         <name>NewScheduledEndTime</name>
         <dataType>DateTime</dataType>
-        <expression>NOW() + ({!$Record.Mechanic_ETA_Minutes__c}/1440) +({!$Record.DurationInMinutes}/1440)</expression>
-    </formulas>
-    <formulas>
-        <name>NewScheduledStartTime</name>
-        <dataType>DateTime</dataType>
-        <expression>NOW() + ({!$Record.Mechanic_ETA_Minutes__c}/1440)</expression>
+        <expression>{!$Record.SchedStartTime} +({!$Record.DurationInMinutes}/1440)</expression>
     </formulas>
     <formulas>
         <name>PopulateGanttLabel</name>
