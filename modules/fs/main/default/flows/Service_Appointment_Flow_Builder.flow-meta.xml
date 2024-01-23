@@ -805,7 +805,7 @@
         <locationX>842</locationX>
         <locationY>816</locationY>
         <connector>
-            <targetReference>Send_Notification_when_resouces_is_assigned</targetReference>
+            <targetReference>Update_Mechanic_Name</targetReference>
         </connector>
         <inputAssignments>
             <field>ServiceAppointmentId</field>
@@ -1071,6 +1071,22 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
+        <name>Copy_1_of_Update_Mechanic_Name</name>
+        <label>Copy 1 of Update Mechanic Name</label>
+        <locationX>1106</locationX>
+        <locationY>1032</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Send_Notification_when_resouces_is_assigned</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Assigned_Mechanic_Name__c</field>
+            <value>
+                <elementReference>$Record.AssignedServiceResource__r.Name</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>Copy_1_of_Update_Unit_Missed_Visit_false</name>
         <label>Copy 1 of Update Unit Missed Visit false</label>
         <locationX>2470</locationX>
@@ -1292,6 +1308,22 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
+        <name>Update_Mechanic_Name</name>
+        <label>Update Mechanic Name</label>
+        <locationX>842</locationX>
+        <locationY>924</locationY>
+        <connector>
+            <targetReference>Send_Notification_when_resouces_is_assigned</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Assigned_Mechanic_Name__c</field>
+            <value>
+                <elementReference>$Record.AssignedServiceResource__r.Name</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>Update_Missed_Visit_in_Unit</name>
         <label>Update Missed Visit in Unit</label>
         <locationX>3790</locationX>
@@ -1412,7 +1444,7 @@
         <locationX>1106</locationX>
         <locationY>924</locationY>
         <connector>
-            <targetReference>Copy_1_of_Send_Notification_when_resouces_is_assigned</targetReference>
+            <targetReference>Copy_1_of_Update_Mechanic_Name</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
