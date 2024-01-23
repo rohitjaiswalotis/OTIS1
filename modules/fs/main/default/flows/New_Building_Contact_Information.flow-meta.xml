@@ -137,6 +137,18 @@
             <targetReference>ErrorDisplay</targetReference>
         </faultConnector>
         <inputAssignments>
+            <field>AccountId</field>
+            <value>
+                <elementReference>BuildingRecord.Account__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ContactType__c</field>
+            <value>
+                <stringValue>Building</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Email</field>
             <value>
                 <elementReference>Primary_Email</elementReference>
