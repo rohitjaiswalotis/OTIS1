@@ -98,9 +98,9 @@
       "externalId": "Name"
     },
     {
-      "query": "SELECT ComponentCode__c, ComponentDescription__c, Id, Name, Status__c FROM ComponentCode__c",
+      "query": "SELECT Id, Name, ComponentCode__c, Status__c, Category__c, ComponentDescription__c FROM ComponentCode__c",
       "operation": "Upsert",
-      "externalId": "Name"
+      "externalId": "ComponentCode__c"
     },
     {
       "query": "SELECT Name, OperatingHours__c, ResourceType__c, ServiceResource__c, ServiceTerritory__c, TimeZone__c FROM RouteResource__c",
