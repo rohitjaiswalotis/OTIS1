@@ -1387,6 +1387,9 @@
         <filters>
             <field>ParentRecordId</field>
             <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>ServiceAppointment</object>
