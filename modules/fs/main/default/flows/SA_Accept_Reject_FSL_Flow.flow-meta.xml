@@ -290,8 +290,8 @@
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <validationRule>
-                <errorMessage>&lt;p&gt;Initial ETA date/time should not be in past.&lt;/p&gt;</errorMessage>
-                <formulaExpression>{!Initial_ETA} &gt; {!CurrentDateTime}</formulaExpression>
+                <errorMessage>&lt;p&gt;Initial ETA date/time should not be null and should not be in the past.&lt;/p&gt;</errorMessage>
+                <formulaExpression>({!Initial_ETA} &gt; {!CurrentDateTime})</formulaExpression>
             </validationRule>
         </fields>
         <fields>
