@@ -4,7 +4,7 @@
         <name>Notification_to_Supervisor</name>
         <label>Notification to Supervisor</label>
         <locationX>138</locationX>
-        <locationY>1487</locationY>
+        <locationY>2627</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <connector>
@@ -47,10 +47,13 @@
     <actionCalls>
         <name>Notification_to_Supervisor1</name>
         <label>Notification to Supervisor</label>
-        <locationX>578</locationX>
-        <locationY>1187</locationY>
+        <locationX>94</locationX>
+        <locationY>1295</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
+        <connector>
+            <targetReference>ETA_greater_than_LTA</targetReference>
+        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>customNotifTypeId</name>
@@ -90,7 +93,7 @@
         <name>Assign_SupervisorId</name>
         <label>Assign SupervisorId</label>
         <locationX>138</locationX>
-        <locationY>1271</locationY>
+        <locationY>2411</locationY>
         <assignmentItems>
             <assignToReference>SupervisorId</assignToReference>
             <operator>Add</operator>
@@ -105,8 +108,8 @@
     <assignments>
         <name>Notification_Data</name>
         <label>Notification Data</label>
-        <locationX>710</locationX>
-        <locationY>755</locationY>
+        <locationX>226</locationX>
+        <locationY>863</locationY>
         <assignmentItems>
             <assignToReference>LocationDisableTemplate</assignToReference>
             <operator>Assign</operator>
@@ -121,6 +124,13 @@
                 <elementReference>get_Resource_Data.IndividualCoverage__r.Supervisor__r.RelatedRecordId</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>SupervisorId</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>get_Resource_Data.RelatedRecordId</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>get_custom_Notification</targetReference>
         </connector>
@@ -129,7 +139,7 @@
         <name>Service_Recource_Ids</name>
         <label>Service Recource Ids</label>
         <locationX>138</locationX>
-        <locationY>755</locationY>
+        <locationY>1895</locationY>
         <assignmentItems>
             <assignToReference>ServiceResIds</assignToReference>
             <operator>Add</operator>
@@ -142,10 +152,35 @@
         </connector>
     </assignments>
     <decisions>
+        <name>check_if_modified_by_mechanic</name>
+        <label>check if modified by mechanic</label>
+        <locationX>380</locationX>
+        <locationY>539</locationY>
+        <defaultConnector>
+            <targetReference>ETA_greater_than_LTA</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>if_mechanic</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.LastModifiedBy.Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Field Service Mechanic</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>get_user_data</targetReference>
+            </connector>
+            <label>if mechanic</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Check_Resource_Type</name>
         <label>Check Resource Type</label>
         <locationX>270</locationX>
-        <locationY>1163</locationY>
+        <locationY>2303</locationY>
         <defaultConnector>
             <targetReference>Loop_Service_Resources</targetReference>
         </defaultConnector>
@@ -176,8 +211,8 @@
     <decisions>
         <name>ETA_greater_than_LTA</name>
         <label>ETA greater than LTA?</label>
-        <locationX>644</locationX>
-        <locationY>431</locationY>
+        <locationX>380</locationX>
+        <locationY>1571</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Yes</name>
@@ -215,48 +250,15 @@
             </connector>
             <label>Yes</label>
         </rules>
-        <rules>
-            <name>Status_Changed_by_Mechanic</name>
-            <conditionLogic>1 AND 2 AND (3 OR 4)</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.Status</leftValueReference>
-                <operator>IsChanged</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.LastModifiedBy.Profile.Name</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Field Service Mechanic</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Status</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Rejected</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Status</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Canceled</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>get_user_data</targetReference>
-            </connector>
-            <label>Status Changed by Mechanic</label>
-        </rules>
     </decisions>
     <decisions>
         <name>geolocation_enable_check</name>
         <label>geolocation  enable check</label>
-        <locationX>710</locationX>
-        <locationY>1079</locationY>
+        <locationX>226</locationX>
+        <locationY>1187</locationY>
+        <defaultConnector>
+            <targetReference>ETA_greater_than_LTA</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Disabled</name>
@@ -278,7 +280,7 @@
         <name>Is_Resource_Exist</name>
         <label>Is Resource Exist?</label>
         <locationX>182</locationX>
-        <locationY>539</locationY>
+        <locationY>1679</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Exist</name>
@@ -294,6 +296,28 @@
                 <targetReference>Loop_Assigned_Resource</targetReference>
             </connector>
             <label>Exist</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>status_change</name>
+        <label>status change</label>
+        <locationX>611</locationX>
+        <locationY>323</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Status_is_updated</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Assigned_Resource</targetReference>
+            </connector>
+            <label>Status is updated</label>
         </rules>
     </decisions>
     <environments>Default</environments>
@@ -313,7 +337,7 @@
         <name>Loop_Assigned_Resource</name>
         <label>Loop Assigned Resource</label>
         <locationX>50</locationX>
-        <locationY>647</locationY>
+        <locationY>1787</locationY>
         <collectionReference>Get_Assigned_Resource</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -327,7 +351,7 @@
         <name>Loop_Service_Resources</name>
         <label>Loop Service Resources</label>
         <locationX>50</locationX>
-        <locationY>1055</locationY>
+        <locationY>2195</locationY>
         <collectionReference>Get_Service_Resources</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -356,11 +380,11 @@
     <recordLookups>
         <name>Get_Assigned_Resource</name>
         <label>Get Assigned Resource</label>
-        <locationX>644</locationX>
-        <locationY>323</locationY>
+        <locationX>380</locationX>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>ETA_greater_than_LTA</targetReference>
+            <targetReference>check_if_modified_by_mechanic</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -381,8 +405,8 @@
     <recordLookups>
         <name>get_custom_Notification</name>
         <label>get custom Notification</label>
-        <locationX>710</locationX>
-        <locationY>863</locationY>
+        <locationX>226</locationX>
+        <locationY>971</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Location_history</targetReference>
@@ -403,7 +427,7 @@
         <name>Get_Records_3</name>
         <label>Get Records 3</label>
         <locationX>138</locationX>
-        <locationY>1379</locationY>
+        <locationY>2519</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Notification_to_Supervisor</targetReference>
@@ -423,8 +447,8 @@
     <recordLookups>
         <name>get_Resource_Data</name>
         <label>get Resource Data</label>
-        <locationX>710</locationX>
-        <locationY>647</locationY>
+        <locationX>226</locationX>
+        <locationY>755</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Notification_Data</targetReference>
@@ -445,7 +469,7 @@
         <name>Get_Service_Resources</name>
         <label>Get Service Resources</label>
         <locationX>50</locationX>
-        <locationY>947</locationY>
+        <locationY>2087</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Loop_Service_Resources</targetReference>
@@ -465,8 +489,8 @@
     <recordLookups>
         <name>get_user_data</name>
         <label>get user data</label>
-        <locationX>710</locationX>
-        <locationY>539</locationY>
+        <locationX>226</locationX>
+        <locationY>647</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>get_Resource_Data</targetReference>
@@ -486,8 +510,8 @@
     <recordLookups>
         <name>Location_history</name>
         <label>Location history</label>
-        <locationX>710</locationX>
-        <locationY>971</locationY>
+        <locationX>226</locationX>
+        <locationY>1079</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>geolocation_enable_check</targetReference>
@@ -521,10 +545,10 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>518</locationX>
+        <locationX>485</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Assigned_Resource</targetReference>
+            <targetReference>status_change</targetReference>
         </connector>
         <object>ServiceAppointment</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
