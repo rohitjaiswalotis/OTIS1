@@ -28,11 +28,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>FSL__GanttPalette__c.Unit_Priority__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>FSL__Gantt_Filter__c.FSL__Hidden__c</field>
         <readable>true</readable>
     </fieldPermissions>
