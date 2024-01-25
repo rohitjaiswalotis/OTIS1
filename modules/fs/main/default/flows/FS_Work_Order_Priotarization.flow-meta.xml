@@ -47,7 +47,7 @@
         <limit>1</limit>
         <sortOptions>
             <doesPutEmptyStringAndNullFirst>false</doesPutEmptyStringAndNullFirst>
-            <sortOrder>Asc</sortOrder>
+            <sortOrder>Desc</sortOrder>
         </sortOptions>
     </collectionProcessors>
     <decisions>
@@ -303,13 +303,6 @@ IF({!$Record.Asset.FS_LowUsage__c}=true,&quot;Low Usage&quot;, &quot;Regular Mai
             <field>Status</field>
             <operator>NotEqualTo</operator>
             <value>
-                <stringValue>Completed - Shutdown</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Status</field>
-            <operator>NotEqualTo</operator>
-            <value>
                 <stringValue>Closed</stringValue>
             </value>
         </filters>
@@ -325,6 +318,13 @@ IF({!$Record.Asset.FS_LowUsage__c}=true,&quot;Low Usage&quot;, &quot;Regular Mai
             <operator>IsNull</operator>
             <value>
                 <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Cannot Complete</stringValue>
             </value>
         </filters>
         <object>WorkOrder</object>
