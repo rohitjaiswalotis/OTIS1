@@ -132,7 +132,7 @@
             <name>If_Prior</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Get_Actual_System_Reason.MasterLabel</leftValueReference>
+                <leftValueReference>Get_Actual_System_Reason.Label</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <elementReference>PriorReason</elementReference>
