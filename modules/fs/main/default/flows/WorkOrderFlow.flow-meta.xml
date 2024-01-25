@@ -50,6 +50,28 @@
             <targetReference>Loop_Skill_Check_Revert</targetReference>
         </connector>
     </assignments>
+    <customErrors>
+        <description>throws the error</description>
+        <name>ErrorScreen</name>
+        <label>ErrorScreen</label>
+        <locationX>314</locationX>
+        <locationY>539</locationY>
+        <customErrorMessages>
+            <errorMessage>You Should Give the Rejection Comment to cancel the Work Order</errorMessage>
+            <fieldSelection>FS_CancellationReason__c</fieldSelection>
+            <isFieldError>true</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <customErrors>
+        <name>ErrorScreen1</name>
+        <label>ErrorScreen</label>
+        <locationX>314</locationX>
+        <locationY>863</locationY>
+        <customErrorMessages>
+            <errorMessage>Service Appointment Present with status as InProgress/Completed/Travelling</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
     <decisions>
         <name>Check_Count</name>
         <label>Check Count</label>
