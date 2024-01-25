@@ -50,28 +50,6 @@
             <targetReference>Loop_Skill_Check_Revert</targetReference>
         </connector>
     </assignments>
-    <customErrors>
-        <description>throws the error</description>
-        <name>ErrorScreen</name>
-        <label>ErrorScreen</label>
-        <locationX>314</locationX>
-        <locationY>539</locationY>
-        <customErrorMessages>
-            <errorMessage>You Should Give the Rejection Comment to cancel the Work Order</errorMessage>
-            <fieldSelection>FS_CancellationReason__c</fieldSelection>
-            <isFieldError>true</isFieldError>
-        </customErrorMessages>
-    </customErrors>
-    <customErrors>
-        <name>ErrorScreen1</name>
-        <label>ErrorScreen</label>
-        <locationX>314</locationX>
-        <locationY>863</locationY>
-        <customErrorMessages>
-            <errorMessage>Service Appointment Present with status as InProgress/Completed/Travelling</errorMessage>
-            <isFieldError>false</isFieldError>
-        </customErrorMessages>
-    </customErrors>
     <decisions>
         <name>Check_Count</name>
         <label>Check Count</label>
@@ -89,7 +67,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Update_Reason_and_SPR</targetReference>
+                <targetReference>Get_New_System_Reason</targetReference>
             </connector>
             <label>Less than 1</label>
         </rules>
@@ -135,7 +113,7 @@
                 <leftValueReference>LoopReleatedSA.Status</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <stringValue>Travelling</stringValue>
+                    <stringValue>En Route</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -517,14 +495,14 @@
                 <leftValueReference>Loop_SA.Status</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <stringValue>In Progress</stringValue>
+                    <stringValue>Onsite</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>Loop_SA.Status</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <stringValue>Travelling</stringValue>
+                    <stringValue>En Route</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -657,14 +635,14 @@
                 <leftValueReference>$Record__Prior.Status</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <stringValue>Canceled by Otis</stringValue>
+                    <stringValue>Canceled</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>$Record.Status</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Canceled by Otis</stringValue>
+                    <stringValue>Canceled</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -693,7 +671,7 @@
                 <leftValueReference>$Record.Status</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <stringValue>Not Complete</stringValue>
+                    <stringValue>Cannot Complete</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -736,7 +714,7 @@
                 <leftValueReference>$Record.Status</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <stringValue>Not Complete</stringValue>
+                    <stringValue>Cannot Complete</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -767,7 +745,7 @@
         </rules>
         <rules>
             <name>WOLI_Items_Present</name>
-            <conditionLogic>(1 OR 2) AND (3 OR 4) AND 5 AND 6</conditionLogic>
+            <conditionLogic>(1 OR 2) AND (3 OR 4) AND 5 AND 6 AND 7</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
                 <operator>EqualTo</operator>
@@ -810,14 +788,21 @@
                     <numberValue>0.0</numberValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Unassigned</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
-                <targetReference>Update_Supervisor_Review_and_Reason</targetReference>
+                <targetReference>Get_New_System_Reason_2</targetReference>
             </connector>
             <label>WOLI Items Present</label>
         </rules>
         <rules>
             <name>WOLI_Empty</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND 2 AND (3 OR 4) AND (5 OR 6) AND 7</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Total_WOLI_with_Checked_Review__c</leftValueReference>
                 <operator>EqualTo</operator>
@@ -826,31 +811,38 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
-                <operator>NotEqualTo</operator>
+                <leftValueReference>$Record__Prior.Total_WOLI_with_Checked_Review__c</leftValueReference>
+                <operator>GreaterThan</operator>
                 <rightValue>
-                    <stringValue>Actual Duration Inadequate</stringValue>
+                    <numberValue>0.0</numberValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.AdditionalSkills__c</leftValueReference>
+                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.Status</leftValueReference>
-                <operator>NotEqualTo</operator>
+                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>On Hold</stringValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.Status</leftValueReference>
-                <operator>NotEqualTo</operator>
+                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Closed</stringValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -858,27 +850,6 @@
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue>Unassigned</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Next Action Required</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Safety Check Lone Worker</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Reason__c</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Need Supervisor Review and Action</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -914,7 +885,7 @@
                 <leftValueReference>$Record.Status</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>On Hold</stringValue>
+                    <stringValue>Cannot Complete</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -929,7 +900,7 @@
                 <leftValueReference>$Record.Status</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Not Complete</stringValue>
+                    <stringValue>Cannot Complete</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -958,7 +929,7 @@
                 <leftValueReference>$Record.Status</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Not Complete</stringValue>
+                    <stringValue>Cannot Complete</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -1479,14 +1450,14 @@
             <field>Status</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>Travelling</stringValue>
+                <stringValue>En Route</stringValue>
             </value>
         </filters>
         <filters>
             <field>Status</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>In Progress</stringValue>
+                <stringValue>Onsite</stringValue>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -1547,7 +1518,7 @@
         <inputAssignments>
             <field>Status</field>
             <value>
-                <stringValue>On Hold</stringValue>
+                <stringValue>Cannot Complete</stringValue>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -1617,7 +1588,7 @@
         <name>Update_Reason_and_SPR</name>
         <label>Update Reason and SPR</label>
         <locationX>842</locationX>
-        <locationY>755</locationY>
+        <locationY>863</locationY>
         <inputAssignments>
             <field>FS_Mark_For_Supervisor_Review__c</field>
             <value>
@@ -1627,13 +1598,13 @@
         <inputAssignments>
             <field>FS_System_Reason__c</field>
             <value>
-                <stringValue>Next Action Required</stringValue>
+                <elementReference>UpdatedSystemReason</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>Status</field>
             <value>
-                <stringValue>Not Complete</stringValue>
+                <stringValue>Cannot Complete</stringValue>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -1660,7 +1631,7 @@
         <inputAssignments>
             <field>Status</field>
             <value>
-                <stringValue>Complete</stringValue>
+                <stringValue>Closed</stringValue>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -1669,7 +1640,7 @@
         <name>Update_Supervisor_Review_and_Reason</name>
         <label>Update Supervisor Review and Reason</label>
         <locationX>1370</locationX>
-        <locationY>431</locationY>
+        <locationY>539</locationY>
         <inputAssignments>
             <field>FS_Mark_For_Supervisor_Review__c</field>
             <value>
@@ -1679,7 +1650,7 @@
         <inputAssignments>
             <field>FS_System_Reason__c</field>
             <value>
-                <stringValue>Chargeability Context</stringValue>
+                <elementReference>UpdatedSystemReason</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -1790,13 +1761,6 @@
             <field>Status</field>
             <operator>NotEqualTo</operator>
             <value>
-                <stringValue>Completed - Shutdown</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Status</field>
-            <operator>NotEqualTo</operator>
-            <value>
                 <stringValue>Closed</stringValue>
             </value>
         </filters>
@@ -1804,14 +1768,7 @@
             <field>Status</field>
             <operator>NotEqualTo</operator>
             <value>
-                <stringValue>Canceled by Otis</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Status</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue>Canceled by Customer</stringValue>
+                <stringValue>Canceled</stringValue>
             </value>
         </filters>
         <filters>
@@ -1893,6 +1850,58 @@
         </outputAssignments>
     </subflows>
     <subflows>
+        <name>Get_New_System_Reason</name>
+        <label>Get New System Reason</label>
+        <locationX>842</locationX>
+        <locationY>755</locationY>
+        <connector>
+            <targetReference>Update_Reason_and_SPR</targetReference>
+        </connector>
+        <flowName>FS_SubFlowSystemReasonPriority</flowName>
+        <inputAssignments>
+            <name>Prio_Sys_Reason_From_WO</name>
+            <value>
+                <elementReference>$Record__Prior.FS_System_Reason__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Sys_Reason_From_WO</name>
+            <value>
+                <elementReference>$Record.FS_System_Reason__c</elementReference>
+            </value>
+        </inputAssignments>
+        <outputAssignments>
+            <assignToReference>UpdatedSystemReason</assignToReference>
+            <name>FinalSystemReason</name>
+        </outputAssignments>
+    </subflows>
+    <subflows>
+        <name>Get_New_System_Reason_2</name>
+        <label>Get New System Reason 2</label>
+        <locationX>1370</locationX>
+        <locationY>431</locationY>
+        <connector>
+            <targetReference>Update_Supervisor_Review_and_Reason</targetReference>
+        </connector>
+        <flowName>FS_SubFlowSystemReasonPriority</flowName>
+        <inputAssignments>
+            <name>Prio_Sys_Reason_From_WO</name>
+            <value>
+                <elementReference>$Record__Prior.FS_System_Reason__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Sys_Reason_From_WO</name>
+            <value>
+                <elementReference>$Record.FS_System_Reason__c</elementReference>
+            </value>
+        </inputAssignments>
+        <outputAssignments>
+            <assignToReference>UpdatedSystemReason</assignToReference>
+            <name>FinalSystemReason</name>
+        </outputAssignments>
+    </subflows>
+    <subflows>
         <name>String_splitting_with_subflow</name>
         <label>String splitting with subflow</label>
         <locationX>3042</locationX>
@@ -1956,5 +1965,12 @@
         <value>
             <booleanValue>false</booleanValue>
         </value>
+    </variables>
+    <variables>
+        <name>UpdatedSystemReason</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>
