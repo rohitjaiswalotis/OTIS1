@@ -14,21 +14,21 @@ schedules:
     - dev
   always: false
 
-- cron: '0 2 * * *'
+- cron: '0 0 * * *'
   displayName: Nightly Field Service Japan Package Version Build
   branches:
     include:
     - dev-jpn
   always: false
 
-- cron: '0 3 * * *'
+- cron: '0 2 * * *'
   displayName: Nightly Field Service EMEA Package Version Build
   branches:
     include:
     - dev-emea
   always: false
 
-- cron: '0 4 * * *'
+- cron: '0 3 * * *'
   displayName: Nightly Field Service NAA Package Version Build
   branches:
     include:
