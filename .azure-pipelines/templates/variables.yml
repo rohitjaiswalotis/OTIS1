@@ -30,6 +30,10 @@ variables:
   value: scripts/clientUtils.sh
 
 
+- name: configProps
+  value: scripts/configProps.sh
+
+
 - name: rulesValidationScript
   value: modules/common/rules/validation
 

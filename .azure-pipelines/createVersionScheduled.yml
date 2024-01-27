@@ -43,6 +43,21 @@ parameters:
   type: string
   default: default
 
+- name: versionName
+  displayName: Package version name
+  type: string
+  default: none
+
+- name: versionNumber
+  displayName: Package version number
+  type: string
+  default: none
+
+- name: versionDescription
+  displayName: Package version description
+  type: string
+  default: none
+
 - name: skipValidation
   displayName: Skip validation for package?
   type: boolean
@@ -116,6 +131,9 @@ stages:
               parameters:
                 envProfile: ${{ parameters.envProfile }}
                 skipValidation: ${{ parameters.skipValidation }}
+                versionName: ${{ parameters.versionName }}
+                versionNumber: ${{ parameters.versionNumber }}
+                versionDescription: ${{ parameters.versionDescription }}
                 ${{ if eq(parameters.branchMarker, 'default') }}:
                   branchMarker: ${{ variables['Build.SourceBranchName'] }}
                 ${{ elseif not( eq(parameters.branchMarker, 'none') ) }}:
