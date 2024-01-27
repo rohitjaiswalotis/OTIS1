@@ -6,6 +6,21 @@ parameters:
   type: string
   default: default
 
+- name: versionName
+  displayName: Package version name
+  type: string
+  default: none
+
+- name: versionNumber
+  displayName: Package version number
+  type: string
+  default: none
+
+- name: versionDescription
+  displayName: Package version description
+  type: string
+  default: none
+
 - name: skipValidation
   displayName: Skip validation for package?
   type: boolean
@@ -56,6 +71,10 @@ steps:
         # include common utils
         chmod +x $(commonUtils)
         source $(commonUtils)
+        
+        # include config props
+        chmod +x $(configProps)
+        source $(configProps)
         
         
         # define notification icons
@@ -109,6 +128,48 @@ steps:
         cat $PROJECT_CONFIG_FILE
         
         
+        if [[ ! -f "$PROJECT_CONFIG_FILE" ]]; then
+          echo "Cannot find project config file '$PROJECT_CONFIG_FILE'"
+          exit 1
+        fi
+        
+        
+        echo "Parsing project config file '$PROJECT_CONFIG_FILE'..."
+        
+        DX_PACKAGE_CONFIG=$(cat $PROJECT_CONFIG_FILE | jq -c ".packageDirectories[] | select(.package == \"$(fsPackageName)\")");
+        
+        
+        if [[ ! ${DX_PACKAGE_CONFIG:+1} ]]; then 
+          echo "Cannot find package '$(fsPackageName)' in project config file '$PROJECT_CONFIG_FILE'"
+          exit 1
+        fi
+        
+        
+        # parse package version name from project config (if not provided)
+        if [[ "${{parameters.versionName}}" =~ ^none$ ]] ; then
+          PACKAGE_VERSION_NAME=$(echo $DX_PACKAGE_CONFIG | jq -r '.versionName // empty');
+          echo "Parsed package version name from config: $PACKAGE_VERSION_NAME"
+        else
+          PACKAGE_VERSION_NAME="${{parameters.versionName}}"
+        fi
+        
+        # parse package version number from project config (if not provided)
+        if [[ "${{parameters.versionNumber}}" =~ ^none$ ]] ; then
+          PACKAGE_VERSION_NUMBER=$(echo $DX_PACKAGE_CONFIG | jq -r '.versionNumber // empty');
+          echo "Parsed package version number from config: $PACKAGE_VERSION_NUMBER"
+        else
+          PACKAGE_VERSION_NUMBER="${{parameters.versionNumber}}"
+        fi
+        
+        # parse package version description from project config (if not provided)
+        if [[ "${{parameters.versionDescription}}" =~ ^none$ ]] ; then
+          PACKAGE_VERSION_DESCRIPTION=$(echo $DX_PACKAGE_CONFIG | jq -r '.versionDescription // empty');
+          echo "Parsed package version description from config: $PACKAGE_VERSION_DESCRIPTION"
+        else
+          PACKAGE_VERSION_DESCRIPTION="${{parameters.versionDescription}}"
+        fi
+        
+        
         echo "Applying transformation to source code..."
         
         TESTS_METADATA_DIR="$(packageBaseDir)-tests-meta/main"
@@ -151,7 +212,7 @@ steps:
         fi
         
         
-        DX_PACKAGE_VERSION_CREATE_RESPONSE=$(sf package version create $PACKAGE_VALIDATION_MODE --package "$(fsPackageName)" -x --wait 600 -v devHub --branch="$PACKAGE_BRANCH_MARKER" --tag="$(Build.SourceVersion)" --verbose --json -r);
+        DX_PACKAGE_VERSION_CREATE_RESPONSE=$(sf package version create $PACKAGE_VALIDATION_MODE --package "$(fsPackageName)" --version-name="$PACKAGE_VERSION_NAME" --version-number="$PACKAGE_VERSION_NUMBER" --version-description="$PACKAGE_VERSION_DESCRIPTION" -x --wait 600 -v devHub --branch="$PACKAGE_BRANCH_MARKER" --tag="$(Build.SourceVersion)" --verbose --json -r);
         
         echo "$DX_PACKAGE_VERSION_CREATE_RESPONSE" | jq .
         

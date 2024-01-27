@@ -4,7 +4,7 @@
       "path": "modules/fs",
       "default": true,
       "package": "OTIS Field Service",
-      "versionName": "OTIS Field Service",
+      "versionName": "QA ($CONF_PROP_GIT_BRANCH) $CONF_PROP_UTC_DATETIME",
       "versionDescription": "OTIS Field Service",
       "versionNumber": "1.0.0.NEXT",
       "definitionFile": "config/core/shape.json",
