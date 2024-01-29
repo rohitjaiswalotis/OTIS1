@@ -3,7 +3,7 @@ final String WORK_TYPE_NAME = 'Default Work Type';
 
 
 // check if work type with predefined name already exist
-Id workTypeId = [ SELECT Id FROM WorkType WHERE Name = :WORK_TYPE_NAME LIMIT 1 ]?.Id;
+Id workTypeId = [ SELECT Id FROM WorkType WHERE Name = :WORK_TYPE_NAME ORDER BY CreatedDate ASC LIMIT 1 ]?.Id;
 
 
 // create new predefined work type if not exist
