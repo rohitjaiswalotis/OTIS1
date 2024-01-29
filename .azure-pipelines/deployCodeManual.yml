@@ -108,6 +108,11 @@ parameters:
   - after
   - none
 
+- name: scriptParams
+  displayName: Script Params (json)
+  type: string
+  default: none
+
 - name: shouldDataBeLoaded
   displayName: Load Data?
   type: boolean
@@ -253,6 +258,7 @@ stages:
                   targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
                 deploymentMode: ${{ parameters.deploymentMode }}
                 actionPhase: ${{ parameters.actionPhase }}
+                scriptParams: ${{ parameters.scriptParams }}
                 enableDebugMode: ${{ parameters.enableDebugMode }}
                 
                 

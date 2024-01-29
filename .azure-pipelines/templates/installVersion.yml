@@ -82,6 +82,11 @@ parameters:
   - after
   - none
 
+- name: scriptParams
+  displayName: Script Params (json)
+  type: string
+  default: none
+
 - name: enableDebugMode
   displayName: Debug Mode?
   type: boolean
@@ -389,11 +394,32 @@ steps:
         fi
         
         
+        # transforming script params (if provided)
+        if [[ '${{parameters.scriptParams}}' =~ ^none$ ]] ; then
+          
+          echo "No script params passed."
+          
+          SCRIPT_PARAMS_FILE="none"
+          
+        else
+          
+          echo "Transforming provided script params..."
+          echo '${{parameters.scriptParams}}'
+          
+          SCRIPT_PARAMS_FILE=$(mktemp)
+          echo '${{parameters.scriptParams}}' | jq -r '. | to_entries | .[] | .key + "=" + (.value | @sh)' > $SCRIPT_PARAMS_FILE
+          
+          echo "Generated script params properties file: "
+          cat $SCRIPT_PARAMS_FILE
+          
+        fi
+        
+        
         if [[ "${{ parameters.actionPhase }}" =~ ^before$ || "${{ parameters.actionPhase }}" =~ ^both$ ]] ; then
           
           echo "Running pre-$PACKAGE_ACTION_TYPE steps..."
           
-          bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$PACKAGE_ACTION_TYPE/before" -a "targetOrg" -w "$(pwd)"; DX_STATUS_CODE=$?;
+          bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$PACKAGE_ACTION_TYPE/before" -a "targetOrg" -w "$(pwd)" -c "$SCRIPT_PARAMS_FILE"; DX_STATUS_CODE=$?;
           
           # early exit - error when executing before install scripts against target org
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
@@ -495,7 +521,7 @@ steps:
           
           echo "Running post-$PACKAGE_ACTION_TYPE steps..."
           
-          bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$PACKAGE_ACTION_TYPE/after" -a "targetOrg" -w "$(pwd)"; DX_STATUS_CODE=$?;
+          bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$PACKAGE_ACTION_TYPE/after" -a "targetOrg" -w "$(pwd)" -c "$SCRIPT_PARAMS_FILE"; DX_STATUS_CODE=$?;
           
           # early exit - error when executing after install scripts against target org
           if [[ "$DX_STATUS_CODE" != "0" ]]; then

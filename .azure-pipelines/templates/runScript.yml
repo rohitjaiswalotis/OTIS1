@@ -11,7 +11,7 @@ parameters:
   default: all
   
 - name: scriptParams
-  displayName: Script params (json)
+  displayName: Script Params (json)
   type: string
   default: none
   
