@@ -219,6 +219,8 @@
         <dataType>String</dataType>
         <displayField>Name</displayField>
         <object>ServiceResource</object>
+        <sortField>Name</sortField>
+        <sortOrder>Asc</sortOrder>
         <valueField>Id</valueField>
     </dynamicChoiceSets>
     <environments>Default</environments>
@@ -421,6 +423,7 @@
             </defaultValue>
             <fieldText>Back In Service By</fieldText>
             <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -431,6 +434,7 @@
             </defaultValue>
             <fieldText>Back In Service Date/Time</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <validationRule>
                 <errorMessage>&lt;p&gt;&lt;span style=&quot;font-size: 11.36px; font-family: Arial, Helvetica, sans-serif; color: rgb(0, 0, 0);&quot;&gt;Back In Service date/time should not be in future.&lt;/span&gt;&lt;/p&gt;</errorMessage>
@@ -466,6 +470,7 @@
             <dataType>String</dataType>
             <fieldText>Operational Status Reason</fieldText>
             <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -477,6 +482,7 @@
             </defaultValue>
             <fieldText>Shutdown Reported By</fieldText>
             <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -487,6 +493,7 @@
             </defaultValue>
             <fieldText>Shutdown Date/Time</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <nextOrFinishButtonLabel>Save</nextOrFinishButtonLabel>
