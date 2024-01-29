@@ -284,6 +284,17 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
         continue;
     fi
     
+    # parse step type and check if it is not disabled
+    if [[ "${file,,}" =~ ^.*/${STEP_INDEX_REGEX}-([^-]+)(-.*)?$ ]]; then 
+        STEP_TYPE="${BASH_REMATCH[1]}";
+        echo "Current step type: $STEP_TYPE";
+        if [[ ${PARAM_DISABLED_STEP_TYPES:+1} && ",${PARAM_DISABLED_STEP_TYPES^^}," =~ .*\,${STEP_TYPE^^}\,.* ]]; then
+            echo "Skipped current step since '${STEP_TYPE}' type is disabled."
+            continue;
+        fi
+    fi
+    
+    
     echo "Current step structure:"
     ls -la $file
     
@@ -597,7 +608,7 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
     
     
     # handle metadata deployment step (classic vs source)
-    if [[ ${sfTargetOrgAlias:+1} && -d "$file" && "${file,,}" =~ ^.*/${STEP_INDEX_REGEX}-meta(-.*)?$ ]]; then
+    if [[ ${sfTargetOrgAlias:+1} && -d "$file" && "${file,,}" =~ ^.*/${STEP_INDEX_REGEX}-meta(data)?(-.*)?$ ]]; then
         
         echo "Step has been identified as metadata deployment."
         
@@ -828,7 +839,7 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
         
         
     # handle node execution step: run all non-hidden top level js files inside directory
-    elif [[ -d "$file" && "${file,,}" =~ ^.*/${STEP_INDEX_REGEX}-node(-.*)?$ ]]; then
+    elif [[ -d "$file" && "${file,,}" =~ ^.*/${STEP_INDEX_REGEX}-(node|puppeteer)(-.*)?$ ]]; then
         
         echo "Step has been identified as nodejs execution."
         
