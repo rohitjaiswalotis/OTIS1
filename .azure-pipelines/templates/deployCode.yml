@@ -52,6 +52,11 @@ parameters:
   - after
   - none
 
+- name: scriptParams
+  displayName: Script Params (json)
+  type: string
+  default: none
+
 - name: enableDebugMode
   displayName: Debug Mode?
   type: boolean
@@ -230,11 +235,32 @@ steps:
           
         else
           
+          # transforming script params (if provided)
+          if [[ '${{parameters.scriptParams}}' =~ ^none$ ]] ; then
+            
+            echo "No script params passed."
+            
+            SCRIPT_PARAMS_FILE="none"
+            
+          else
+            
+            echo "Transforming provided script params..."
+            echo '${{parameters.scriptParams}}'
+            
+            SCRIPT_PARAMS_FILE=$(mktemp)
+            echo '${{parameters.scriptParams}}' | jq -r '. | to_entries | .[] | .key + "=" + (.value | @sh)' > $SCRIPT_PARAMS_FILE
+            
+            echo "Generated script params properties file: "
+            cat $SCRIPT_PARAMS_FILE
+            
+          fi
+          
+          
           if [[ "${{ parameters.actionPhase }}" =~ ^before$ || "${{ parameters.actionPhase }}" =~ ^both$ ]] ; then
             
             echo "Running pre-$DEPLOYMENT_ACTION_TYPE steps..."
             
-            bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$DEPLOYMENT_ACTION_TYPE/before" -a "targetOrg" -w "$(pwd)"
+            bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$DEPLOYMENT_ACTION_TYPE/before" -a "targetOrg" -w "$(pwd)" -c "$SCRIPT_PARAMS_FILE"
             
           else
             
@@ -257,7 +283,7 @@ steps:
             
             echo "Running post-$DEPLOYMENT_ACTION_TYPE steps..."
             
-            bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$DEPLOYMENT_ACTION_TYPE/after" -a "targetOrg" -w "$(pwd)"
+            bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$DEPLOYMENT_ACTION_TYPE/after" -a "targetOrg" -w "$(pwd)" -c "$SCRIPT_PARAMS_FILE"
             
           else
             
