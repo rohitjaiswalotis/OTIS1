@@ -138,6 +138,11 @@ parameters:
   - after
   - none
 
+- name: scriptParams
+  displayName: Script Params (json)
+  type: string
+  default: none
+
 - name: shouldDataBeLoaded
   displayName: Load Data?
   type: boolean
@@ -288,6 +293,7 @@ stages:
                 actionPhase: ${{ parameters.actionPhase }}
                 autoInstallDependencies: ${{ parameters.autoInstallDependencies }}
                 installOnlyDependencies: ${{ parameters.installOnlyDependencies }}
+                scriptParams: ${{ parameters.scriptParams }}
                 enableDebugMode: ${{ parameters.enableDebugMode }}
                 
                 
