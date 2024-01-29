@@ -146,7 +146,7 @@ steps:
         # enable exit on error
         set -e
         
-        npm run import-test-data targetOrg --loglevel verbose
+        npm run import-sample-data targetOrg --loglevel verbose
         
         # disable exit on error
         set +e
