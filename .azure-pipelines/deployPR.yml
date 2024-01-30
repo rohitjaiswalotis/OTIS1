@@ -177,9 +177,9 @@ stages:
                         deployRetryDelay=$(deployRetryTimeout);
                         deployRetryCounter=0;
                         
-                        DX_DEPLOY_STATUS_CODE=0;
-                        
                         while true; do 
+                          
+                          DX_DEPLOY_STATUS_CODE=0;
                           
                           if [[ "$DX_DEPLOY_STATUS_CODE" == "0" ]]; then
                             echo "Running destructive operation before deploy into $(OrgAliasDevFS)..."
