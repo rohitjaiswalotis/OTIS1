@@ -1001,7 +1001,7 @@
         <locationY>384</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Update_SA_FS_Unit_Priority</targetReference>
+            <targetReference>Update_SA_Priority_For_Gantt_Palette</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1446,15 +1446,15 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
-        <name>Update_SA_FS_Unit_Priority</name>
-        <label>Update SA FS Unit Priority</label>
+        <name>Update_SA_Priority_For_Gantt_Palette</name>
+        <label>Update SA Priority For Gantt Palette</label>
         <locationX>2536</locationX>
         <locationY>492</locationY>
         <connector>
             <targetReference>SA_Decision</targetReference>
         </connector>
         <inputAssignments>
-            <field>FS_PriorityForGanttPalette_c__c</field>
+            <field>FS_PriorityForGanttPalette__c</field>
             <value>
                 <elementReference>Get_WO.FS_Priority__c</elementReference>
             </value>
