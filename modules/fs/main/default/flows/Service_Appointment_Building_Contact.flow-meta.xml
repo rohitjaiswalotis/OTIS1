@@ -72,6 +72,7 @@
             <label>No</label>
         </rules>
     </decisions>
+    <description>US#913834.This flow is used to display Building Contact information in Field Service Mobile.</description>
     <environments>Default</environments>
     <interviewLabel>Service Appointment Building Contact {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Service Appointment Building Contact</label>
