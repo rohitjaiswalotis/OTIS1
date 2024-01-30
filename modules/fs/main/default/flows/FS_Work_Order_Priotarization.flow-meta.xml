@@ -47,7 +47,7 @@
         <limit>1</limit>
         <sortOptions>
             <doesPutEmptyStringAndNullFirst>false</doesPutEmptyStringAndNullFirst>
-            <sortOrder>Desc</sortOrder>
+            <sortOrder>Asc</sortOrder>
         </sortOptions>
     </collectionProcessors>
     <decisions>
@@ -86,12 +86,19 @@
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Yes</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.FS_MissedVisit__c</leftValueReference>
-                <operator>IsNull</operator>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <booleanValue>false</booleanValue>
+                    <stringValue>Missed Visit</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_MissedVisit__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Timeframe Extended</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -200,13 +207,6 @@ IF({!$Record.Asset.FS_LowUsage__c}=true,&quot;Low Usage&quot;, &quot;Regular Mai
             <targetReference>For_Each_Usage</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
-        <filters>
-            <field>FS_CountryCode__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Asset.Country</elementReference>
-            </value>
-        </filters>
         <filters>
             <field>Label</field>
             <operator>In</operator>
@@ -318,13 +318,6 @@ IF({!$Record.Asset.FS_LowUsage__c}=true,&quot;Low Usage&quot;, &quot;Regular Mai
             <operator>IsNull</operator>
             <value>
                 <booleanValue>true</booleanValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Status</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue>Cannot Complete</stringValue>
             </value>
         </filters>
         <object>WorkOrder</object>
