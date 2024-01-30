@@ -4,16 +4,32 @@
         <name>assignBuildingContact</name>
         <label>assignBuildingContact</label>
         <locationX>358</locationX>
-        <locationY>1190</locationY>
+        <locationY>1082</locationY>
+        <assignmentItems>
+            <assignToReference>contactId</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>contactrecord.Contact__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>BuildingLoop</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>contactAssign</name>
+        <label>contactAssign</label>
+        <locationX>358</locationX>
+        <locationY>1490</locationY>
         <assignmentItems>
             <assignToReference>BuildingcontactName</assignToReference>
             <operator>Add</operator>
             <value>
-                <stringValue>&lt;br/&gt;&lt;a href=&quot;com.salesforce.fieldservice://v1/sObject/{!contactRecords.Id}/details&quot;&gt;{!contactRecords.Name}&lt;/a&gt;&lt;br/&gt;&lt;b&gt;___________________________________&lt;/b&gt;&lt;br/&gt;</stringValue>
+                <stringValue>&lt;br/&gt;&lt;a href=&quot;com.salesforce.fieldservice://v1/sObject/{!contactvar.Id}/details&quot;&gt;{!contactvar.Name}&lt;/a&gt;&lt;br/&gt;&lt;b&gt;___________________________________&lt;/b&gt;&lt;br/&gt;</stringValue>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>contactInfo</targetReference>
+            <targetReference>contactLoop</targetReference>
         </connector>
     </assignments>
     <decisions>
@@ -60,15 +76,30 @@
     <interviewLabel>Service Appointment Building Contact {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Service Appointment Building Contact</label>
     <loops>
-        <name>contactInfo</name>
-        <label>contactInfo</label>
+        <name>BuildingLoop</name>
+        <label>BuildingLoop</label>
         <locationX>270</locationX>
         <locationY>974</locationY>
         <assignNextValueToReference>contactrecord</assignNextValueToReference>
         <collectionReference>buildingContactRecord</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>contactDetails</targetReference>
+            <targetReference>assignBuildingContact</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>getContact</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>contactLoop</name>
+        <label>contactLoop</label>
+        <locationX>270</locationX>
+        <locationY>1382</locationY>
+        <assignNextValueToReference>contactvar</assignNextValueToReference>
+        <collectionReference>contactCollection</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>contactAssign</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>Contact_Info</targetReference>
@@ -121,7 +152,7 @@
         <locationY>866</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>contactInfo</targetReference>
+            <targetReference>BuildingLoop</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -136,28 +167,6 @@
         <queriedFields>Id</queriedFields>
         <queriedFields>Name</queriedFields>
         <queriedFields>Contact__c</queriedFields>
-    </recordLookups>
-    <recordLookups>
-        <name>contactDetails</name>
-        <label>contactDetails</label>
-        <locationX>358</locationX>
-        <locationY>1082</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>assignBuildingContact</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>contactrecord.Contact__c</elementReference>
-            </value>
-        </filters>
-        <object>Contact</object>
-        <outputReference>contactRecords</outputReference>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>Name</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>get_Service_Appoinment</name>
@@ -181,6 +190,28 @@
         <queriedFields>Id</queriedFields>
         <queriedFields>ParentRecordId</queriedFields>
         <queriedFields>Unit__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>getContact</name>
+        <label>getContact</label>
+        <locationX>270</locationX>
+        <locationY>1274</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>contactLoop</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>contactId</elementReference>
+            </value>
+        </filters>
+        <object>Contact</object>
+        <outputReference>contactCollection</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>unitdetails</name>
@@ -218,7 +249,7 @@
         <name>Contact_Info</name>
         <label>Building Contact Information</label>
         <locationX>270</locationX>
-        <locationY>1382</locationY>
+        <locationY>1682</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -227,8 +258,8 @@
             <fieldText>&lt;p&gt;{!BuildingcontactName}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>error_Flow</name>
@@ -276,6 +307,21 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Location</objectType>
+    </variables>
+    <variables>
+        <name>contactCollection</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Contact</objectType>
+    </variables>
+    <variables>
+        <name>contactId</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>contactrecord</name>
