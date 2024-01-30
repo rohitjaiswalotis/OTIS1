@@ -368,7 +368,7 @@
         <connector>
             <targetReference>For_Each_WO</targetReference>
         </connector>
-        <filterLogic>1  AND 7 AND (2 OR 3 OR 4 OR 5 OR 6 )</filterLogic>
+        <filterLogic>1  AND 2 AND ( 3 OR 4 OR 5 OR 6 )</filterLogic>
         <filters>
             <field>AssetId</field>
             <operator>EqualTo</operator>
@@ -377,45 +377,38 @@
             </value>
         </filters>
         <filters>
-            <field>StatusCategory</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue>Completed</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>StatusCategory</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue>InProgress</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>StatusCategory</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue>CannotComplete</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>StatusCategory</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue>Canceled</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>StatusCategory</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue>Closed</stringValue>
-            </value>
-        </filters>
-        <filters>
             <field>FS_WorkOderType__c</field>
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Maintenance</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Assigned</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Unassigned</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>On Hold</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Cannot Complete</stringValue>
             </value>
         </filters>
         <object>WorkOrder</object>
