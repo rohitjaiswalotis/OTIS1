@@ -143,6 +143,8 @@ done
 # actually reconcile user permissions against org
 if [[ ${LOCAL_PROFILES_LIST:+1} ]]; then
 	
+	export SFPOWERKIT_NOHEADER=true;
+	
 	sf sfpowerkit:source:profile:reconcile -u "${PARAM_ORG_ALIAS}" \
 		--folder ${LOCAL_WORKING_DIR}/userPermissions \
 		-d ${LOCAL_WORKING_DIR}/reconciledUserPermissions \
