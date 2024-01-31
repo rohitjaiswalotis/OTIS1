@@ -181,35 +181,6 @@
             </connector>
             <label>Cannot Complete</label>
         </rules>
-        <rules>
-            <name>Complete</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.Status</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Completed</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.WorkOrder__r.Fixed_Issue__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Yes</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Status</leftValueReference>
-                <operator>IsChanged</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Update_Related_WO7</targetReference>
-            </connector>
-            <label>Complete</label>
-        </rules>
     </decisions>
     <description>Work Order Status changes when related Service Appointment status is changed by the Mechanic</description>
     <environments>Default</environments>
@@ -312,27 +283,8 @@
         </inputAssignments>
         <inputReference>$Record.WorkOrder__r</inputReference>
     </recordUpdates>
-    <recordUpdates>
-        <name>Update_Related_WO7</name>
-        <label>Update Related WO</label>
-        <locationX>1634</locationX>
-        <locationY>431</locationY>
-        <inputAssignments>
-            <field>Status</field>
-            <value>
-                <stringValue>Closed</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>SvcReqAssignedMechanic__c</field>
-            <value>
-                <elementReference>$Record.AssignedServiceResource__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record.WorkOrder__r</inputReference>
-    </recordUpdates>
     <start>
-        <locationX>848</locationX>
+        <locationX>716</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Check_SA_Status</targetReference>
