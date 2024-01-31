@@ -103,7 +103,7 @@ Action #2: Mark Next Route and Effective Date as BLANK</description>
         <schedule>
             <frequency>Daily</frequency>
             <startDate>2023-12-08</startDate>
-            <startTime>22:00:00.000Z</startTime>
+            <startTime>02:00:00.000Z</startTime>
         </schedule>
         <triggerType>Scheduled</triggerType>
     </start>
