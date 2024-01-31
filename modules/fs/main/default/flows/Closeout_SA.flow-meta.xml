@@ -3,8 +3,8 @@
     <assignments>
         <name>Fields_Assignments</name>
         <label>Fields Assignments</label>
-        <locationX>182</locationX>
-        <locationY>998</locationY>
+        <locationX>50</locationX>
+        <locationY>890</locationY>
         <assignmentItems>
             <assignToReference>WorkOrderStatus</assignToReference>
             <operator>Assign</operator>
@@ -20,7 +20,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Get_UnitShutdownLog_Record</targetReference>
+            <targetReference>Get_WorkPerformedCode</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -160,16 +160,16 @@
         </value>
     </choices>
     <decisions>
-        <name>Check_Operation_Status_Reason</name>
-        <label>Check Operation Status Reason</label>
-        <locationX>314</locationX>
-        <locationY>890</locationY>
+        <name>Check_Operation_Status_Reason_Value</name>
+        <label>Check Operation Status Reason Value</label>
+        <locationX>842</locationX>
+        <locationY>674</locationY>
         <defaultConnector>
-            <targetReference>Update_SA</targetReference>
+            <targetReference>SA_Closeout2_0</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>If_Shutdown</name>
+            <name>If_Operational_is_Shutdown</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>Operational_Status_Reason</leftValueReference>
@@ -179,15 +179,15 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Fields_Assignments</targetReference>
+                <targetReference>SA_Closeout2</targetReference>
             </connector>
-            <label>If Shutdown</label>
+            <label>If Operational is Shutdown</label>
         </rules>
     </decisions>
     <decisions>
         <name>Check_ParentRecordType</name>
         <label>Check ParentRecordType</label>
-        <locationX>842</locationX>
+        <locationX>2162</locationX>
         <locationY>242</locationY>
         <defaultConnector>
             <targetReference>SA_Error_Closeout_Message</targetReference>
@@ -214,50 +214,6 @@
                 <targetReference>getWorkOrder</targetReference>
             </connector>
             <label>If WorkOrder</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Check_Unit_Operational_Status</name>
-        <label>Check Unit Operational Status</label>
-        <locationX>314</locationX>
-        <locationY>1622</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>If_Unit_Shutdown</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>OperationalStatusVar</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Shutdown</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>UnitShutdownLogId</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Update_UnitShutdownLog</targetReference>
-            </connector>
-            <label>If Unit Shutdown</label>
-        </rules>
-        <rules>
-            <name>If_Unit_InService</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>OperationalStatusVar</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>In Service</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Create_UnitShutDown_Log</targetReference>
-            </connector>
-            <label>If Unit InService</label>
         </rules>
     </decisions>
     <dynamicChoiceSets>
@@ -359,8 +315,11 @@
     <recordCreates>
         <name>Create_UnitShutDown_Log</name>
         <label>Create UnitShutDown Log</label>
-        <locationX>314</locationX>
-        <locationY>1730</locationY>
+        <locationX>50</locationX>
+        <locationY>1430</locationY>
+        <faultConnector>
+            <targetReference>ErrorScreen</targetReference>
+        </faultConnector>
         <inputAssignments>
             <field>AssetId</field>
             <value>
@@ -370,7 +329,7 @@
         <inputAssignments>
             <field>EndTime</field>
             <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
+                <elementReference>Projected_Restart_Date</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -402,7 +361,7 @@
     <recordLookups>
         <name>Get_Current_Unit_Record</name>
         <label>Get Current Unit Record</label>
-        <locationX>314</locationX>
+        <locationX>842</locationX>
         <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -424,7 +383,7 @@
     <recordLookups>
         <name>Get_SA_Record</name>
         <label>Get SA Record</label>
-        <locationX>842</locationX>
+        <locationX>2162</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -448,14 +407,18 @@
         <queriedFields>Status</queriedFields>
     </recordLookups>
     <recordLookups>
-        <name>Get_UnitShutdownLog_Record</name>
+        <name>Get_UnitShutdownLog_Record_0</name>
         <label>Get UnitShutdownLog Record</label>
-        <locationX>182</locationX>
-        <locationY>1106</locationY>
+        <locationX>1634</locationX>
+        <locationY>890</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Update_SA</targetReference>
+            <targetReference>Get_WorkPerformedCode_0</targetReference>
         </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>ErrorScreen</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>AssetId</field>
@@ -475,12 +438,16 @@
     <recordLookups>
         <name>Get_WorkPerformedCode</name>
         <label>Get WorkPerformedCode</label>
-        <locationX>314</locationX>
-        <locationY>782</locationY>
+        <locationX>50</locationX>
+        <locationY>998</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Check_Operation_Status_Reason</targetReference>
+            <targetReference>Update_SA</targetReference>
         </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>ErrorScreen</targetReference>
+        </faultConnector>
         <filterLogic>or</filterLogic>
         <filters>
             <field>WorkPerformedDescription__c</field>
@@ -494,9 +461,34 @@
         <queriedFields>Id</queriedFields>
     </recordLookups>
     <recordLookups>
+        <name>Get_WorkPerformedCode_0</name>
+        <label>Get WorkPerformedCode</label>
+        <locationX>1634</locationX>
+        <locationY>998</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Update_SA_0</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>ErrorScreen</targetReference>
+        </faultConnector>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>WorkPerformedDescription__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Work_Performed_0</elementReference>
+            </value>
+        </filters>
+        <object>WorkPerformedCode__c</object>
+        <outputReference>WorkPerformedCodeRecord</outputReference>
+        <queriedFields>Id</queriedFields>
+    </recordLookups>
+    <recordLookups>
         <name>getWorkOrder</name>
         <label>getWorkOrder</label>
-        <locationX>314</locationX>
+        <locationX>842</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -518,12 +510,13 @@
     <recordUpdates>
         <name>Update_Related_Work_Order</name>
         <label>Update Related Work Order</label>
-        <locationX>314</locationX>
-        <locationY>1406</locationY>
+        <locationX>50</locationX>
+        <locationY>1214</locationY>
         <connector>
             <targetReference>Update_Unit</targetReference>
         </connector>
         <faultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>ErrorScreen</targetReference>
         </faultConnector>
         <filterLogic>and</filterLogic>
@@ -579,13 +572,115 @@
         <object>WorkOrder</object>
     </recordUpdates>
     <recordUpdates>
+        <name>Update_Related_Work_Order_0</name>
+        <label>Update Related Work Order</label>
+        <locationX>1634</locationX>
+        <locationY>1214</locationY>
+        <connector>
+            <targetReference>Update_Unit_0</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>ErrorScreen</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>SA_Record.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Category__c</field>
+            <value>
+                <elementReference>Category</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ComponentCode__c</field>
+            <value>
+                <elementReference>Component_Code_0</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <elementReference>WorkOrderStatus</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SvcReqCloseoutNoteByMechanic__c</field>
+            <value>
+                <elementReference>Service_Request_Closeout_Notes_0</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UnitMisused__c</field>
+            <value>
+                <elementReference>Unit_Misused</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UnitOccupied__c</field>
+            <value>
+                <elementReference>Unit_Occupied</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WorkPerformed__c</field>
+            <value>
+                <elementReference>WorkPerformedCodeRecord.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
         <name>Update_SA</name>
         <label>Update SA</label>
-        <locationX>314</locationX>
-        <locationY>1298</locationY>
+        <locationX>50</locationX>
+        <locationY>1106</locationY>
         <connector>
             <targetReference>Update_Related_Work_Order</targetReference>
         </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>ErrorScreen</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>SA_Record.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Unit__c</field>
+            <value>
+                <elementReference>Units</elementReference>
+            </value>
+        </inputAssignments>
+        <object>ServiceAppointment</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_SA_0</name>
+        <label>Update SA</label>
+        <locationX>1634</locationX>
+        <locationY>1106</locationY>
+        <connector>
+            <targetReference>Update_Related_Work_Order_0</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>ErrorScreen</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -611,10 +706,44 @@
     <recordUpdates>
         <name>Update_Unit</name>
         <label>Update Unit</label>
-        <locationX>314</locationX>
-        <locationY>1514</locationY>
+        <locationX>50</locationX>
+        <locationY>1322</locationY>
         <connector>
-            <targetReference>Check_Unit_Operational_Status</targetReference>
+            <targetReference>Create_UnitShutDown_Log</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>ErrorScreen</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Units</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>OperationalStatusReason__c</field>
+            <value>
+                <elementReference>Operational_Status_Reason</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OperationalStatus__c</field>
+            <value>
+                <elementReference>OperationalStatusVar</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Asset</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Unit_0</name>
+        <label>Update Unit</label>
+        <locationX>1634</locationX>
+        <locationY>1322</locationY>
+        <connector>
+            <targetReference>Update_UnitShutdownLog</targetReference>
         </connector>
         <faultConnector>
             <isGoTo>true</isGoTo>
@@ -645,8 +774,12 @@
     <recordUpdates>
         <name>Update_UnitShutdownLog</name>
         <label>Update UnitShutdownLog</label>
-        <locationX>50</locationX>
-        <locationY>1730</locationY>
+        <locationX>1634</locationX>
+        <locationY>1430</locationY>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>ErrorScreen</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -678,8 +811,8 @@
     <screens>
         <name>ErrorScreen</name>
         <label>ErrorScreen</label>
-        <locationX>1106</locationX>
-        <locationY>1514</locationY>
+        <locationX>314</locationX>
+        <locationY>1538</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -694,13 +827,13 @@
     <screens>
         <name>SA_Closeout1</name>
         <label>Service Request WO Closeout</label>
-        <locationX>314</locationX>
+        <locationX>842</locationX>
         <locationY>566</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>SA_Closeout2</targetReference>
+            <targetReference>Check_Operation_Status_Reason_Value</targetReference>
         </connector>
         <fields>
             <name>AppointmentNumber</name>
@@ -750,19 +883,31 @@
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
+        <fields>
+            <name>Operational_Status_Reason</name>
+            <choiceReferences>OperationalStatusReason</choiceReferences>
+            <dataType>String</dataType>
+            <defaultValue>
+                <stringValue>In Service</stringValue>
+            </defaultValue>
+            <fieldText>Operational Status Reason</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+        </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <screens>
         <name>SA_Closeout2</name>
         <label>Service Request WO Closeout</label>
-        <locationX>314</locationX>
-        <locationY>674</locationY>
+        <locationX>50</locationX>
+        <locationY>782</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Get_WorkPerformedCode</targetReference>
+            <targetReference>Fields_Assignments</targetReference>
         </connector>
         <fields>
             <name>Copy_1_of_AppointmentNumber</name>
@@ -803,16 +948,16 @@
             <isRequired>true</isRequired>
         </fields>
         <fields>
-            <name>Operational_Status_Reason</name>
-            <choiceReferences>OperationalStatusReason</choiceReferences>
-            <dataType>String</dataType>
-            <defaultValue>
-                <stringValue>In Service</stringValue>
-            </defaultValue>
-            <fieldText>Operational Status Reason</fieldText>
-            <fieldType>DropdownBox</fieldType>
+            <name>Projected_Restart_Date</name>
+            <dataType>DateTime</dataType>
+            <fieldText>Projected Restart Date/Time</fieldText>
+            <fieldType>InputField</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
+            <validationRule>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 13, 13); font-size: 12px; background-color: rgb(255, 255, 255);&quot;&gt;Projected Restart date should not be in past&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;.&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <formulaExpression>{!Projected_Restart_Date} &gt; NOW()</formulaExpression>
+            </validationRule>
         </fields>
         <fields>
             <name>Service_Request_Closeout_Notes</name>
@@ -826,9 +971,69 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>SA_Closeout2_0</name>
+        <label>Service Request WO Closeout</label>
+        <locationX>1634</locationX>
+        <locationY>782</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Get_UnitShutdownLog_Record_0</targetReference>
+        </connector>
+        <fields>
+            <name>Copy_1_of_AppointmentNumber_0</name>
+            <fieldText>&lt;p&gt;Appointment Number&lt;/p&gt;&lt;p&gt;&lt;strong&gt;{!SA_Record.AppointmentNumber}&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Component_Code_0</name>
+            <choiceReferences>ComponentCodeValues</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Component Code</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Work_Performed_0</name>
+            <choiceReferences>ADJUSTED</choiceReferences>
+            <choiceReferences>CHECKEDOPERATION</choiceReferences>
+            <choiceReferences>CLEANED</choiceReferences>
+            <choiceReferences>CLEANANDADJUSTED</choiceReferences>
+            <choiceReferences>INSTALLED</choiceReferences>
+            <choiceReferences>LUBRICATED</choiceReferences>
+            <choiceReferences>PAINTED</choiceReferences>
+            <choiceReferences>RELOCATED</choiceReferences>
+            <choiceReferences>REMOVED</choiceReferences>
+            <choiceReferences>REPAIRED</choiceReferences>
+            <choiceReferences>REPAIRS_DUE_TO_MISUSE</choiceReferences>
+            <choiceReferences>REPLACED</choiceReferences>
+            <choiceReferences>RESET_POR</choiceReferences>
+            <choiceReferences>SURVEY</choiceReferences>
+            <choiceReferences>TESTED</choiceReferences>
+            <choiceReferences>TROUBLESHOOT</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Work Performed</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Service_Request_Closeout_Notes_0</name>
+            <dataType>String</dataType>
+            <fieldText>Service Request Closeout Notes</fieldText>
+            <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>SA_Error_Closeout_Message</name>
         <label>SA Error Closeout Message</label>
-        <locationX>1370</locationX>
+        <locationX>3482</locationX>
         <locationY>350</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -842,7 +1047,7 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>716</locationX>
+        <locationX>2036</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_SA_Record</targetReference>
