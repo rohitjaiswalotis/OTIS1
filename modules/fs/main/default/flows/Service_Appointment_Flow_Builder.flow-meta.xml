@@ -1549,6 +1549,12 @@
                 <stringValue>Closed</stringValue>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <field>SvcReqAssignedMechanic__c</field>
+            <value>
+                <elementReference>$Record.AssignedServiceResource__c</elementReference>
+            </value>
+        </inputAssignments>
         <inputReference>$Record.WorkOrder__r</inputReference>
     </recordUpdates>
     <recordUpdates>
