@@ -4,7 +4,7 @@
     <decisions>
         <name>Check_SA_Status</name>
         <label>Check SA Status</label>
-        <locationX>1106</locationX>
+        <locationX>974</locationX>
         <locationY>323</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -17,14 +17,21 @@
                     <stringValue>None</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Update_Related_WO</targetReference>
             </connector>
             <label>None</label>
         </rules>
         <rules>
-            <name>Scheduled</name>
-            <conditionLogic>and</conditionLogic>
+            <name>Scheduled_Or_Dispacthed</name>
+            <conditionLogic>(1 OR 2) AND 3</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Status</leftValueReference>
                 <operator>EqualTo</operator>
@@ -32,14 +39,6 @@
                     <stringValue>Scheduled</stringValue>
                 </rightValue>
             </conditions>
-            <connector>
-                <targetReference>Update_Related_WO1</targetReference>
-            </connector>
-            <label>Scheduled</label>
-        </rules>
-        <rules>
-            <name>Dispatched</name>
-            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Status</leftValueReference>
                 <operator>EqualTo</operator>
@@ -47,10 +46,17 @@
                     <stringValue>Dispatched</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
-                <targetReference>Update_Related_WO2</targetReference>
+                <targetReference>Update_Related_WO1</targetReference>
             </connector>
-            <label>Dispatched</label>
+            <label>Scheduled Or Dispacthed</label>
         </rules>
         <rules>
             <name>En_Route</name>
@@ -60,6 +66,20 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>En Route</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -77,6 +97,27 @@
                     <stringValue>Onsite</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.Reason__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Parts Needed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Update_Related_WO4</targetReference>
             </connector>
@@ -92,6 +133,20 @@
                     <stringValue>Canceled</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Update_Related_WO5</targetReference>
             </connector>
@@ -105,6 +160,20 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Cannot Complete</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -127,6 +196,13 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Yes</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -185,22 +261,9 @@
         <inputReference>$Record.WorkOrder__r</inputReference>
     </recordUpdates>
     <recordUpdates>
-        <name>Update_Related_WO2</name>
-        <label>Update Related WO</label>
-        <locationX>578</locationX>
-        <locationY>431</locationY>
-        <inputAssignments>
-            <field>Status</field>
-            <value>
-                <stringValue>Assigned</stringValue>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record.WorkOrder__r</inputReference>
-    </recordUpdates>
-    <recordUpdates>
         <name>Update_Related_WO3</name>
         <label>Update Related WO</label>
-        <locationX>842</locationX>
+        <locationX>578</locationX>
         <locationY>431</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -213,7 +276,7 @@
     <recordUpdates>
         <name>Update_Related_WO4</name>
         <label>Update Related WO</label>
-        <locationX>1106</locationX>
+        <locationX>842</locationX>
         <locationY>431</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -226,7 +289,7 @@
     <recordUpdates>
         <name>Update_Related_WO5</name>
         <label>Update Related WO</label>
-        <locationX>1370</locationX>
+        <locationX>1106</locationX>
         <locationY>431</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -239,7 +302,7 @@
     <recordUpdates>
         <name>Update_Related_WO6</name>
         <label>Update Related WO</label>
-        <locationX>1634</locationX>
+        <locationX>1370</locationX>
         <locationY>431</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -252,7 +315,7 @@
     <recordUpdates>
         <name>Update_Related_WO7</name>
         <label>Update Related WO</label>
-        <locationX>1898</locationX>
+        <locationX>1634</locationX>
         <locationY>431</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -260,10 +323,16 @@
                 <stringValue>Closed</stringValue>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <field>SvcReqAssignedMechanic__c</field>
+            <value>
+                <elementReference>$Record.AssignedServiceResource__c</elementReference>
+            </value>
+        </inputAssignments>
         <inputReference>$Record.WorkOrder__r</inputReference>
     </recordUpdates>
     <start>
-        <locationX>980</locationX>
+        <locationX>848</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Check_SA_Status</targetReference>
