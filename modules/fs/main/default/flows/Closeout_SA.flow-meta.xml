@@ -801,7 +801,7 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>WorkOrder__c</field>
+            <field>WorkOrderForUnitInService__c</field>
             <value>
                 <elementReference>SA_Record.ParentRecordId</elementReference>
             </value>
