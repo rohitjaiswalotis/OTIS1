@@ -37,6 +37,7 @@ steps:
     command: 'custom'
     customCommand: 'install @salesforce/cli@$(sfdxVersion) --global --loglevel verbose'
   displayName: Install sfdx with npm
+  retryCountOnTaskFailure: 1
 
 
 - bash: |
@@ -44,6 +45,7 @@ steps:
         (sf plugins | grep -i "sfpowerkit") || (echo "y" | sf plugins install sfpowerkit@$(sfPowerkitVersion))
   
   displayName: 'Install sfdx plugins'
+  retryCountOnTaskFailure: 1
 
 
 - bash: |
