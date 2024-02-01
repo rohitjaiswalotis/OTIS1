@@ -187,17 +187,6 @@
             <targetReference>CreateCLI</targetReference>
         </noMoreValuesConnector>
     </loops>
-    <loops>
-        <name>loop_CLI</name>
-        <label>loop CLI</label>
-        <locationX>176</locationX>
-        <locationY>1250</locationY>
-        <collectionReference>ServiceContractLineItem</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>CreateMaintenanceplanandRelatedRecords</targetReference>
-        </nextValueConnector>
-    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -222,9 +211,6 @@
         <label>Create CLI</label>
         <locationX>176</locationX>
         <locationY>1142</locationY>
-        <connector>
-            <targetReference>loop_CLI</targetReference>
-        </connector>
         <inputReference>ServiceContractLineItem</inputReference>
     </recordCreates>
     <recordLookups>
@@ -277,22 +263,6 @@
         </connector>
     </start>
     <status>Draft</status>
-    <subflows>
-        <name>CreateMaintenanceplanandRelatedRecords</name>
-        <label>Create Maintenance plan and Related Records</label>
-        <locationX>264</locationX>
-        <locationY>1358</locationY>
-        <connector>
-            <targetReference>loop_CLI</targetReference>
-        </connector>
-        <flowName>SubflowAutoCreateMaintenancePlanAndRelatedRecords</flowName>
-        <inputAssignments>
-            <name>ContractLineItemRecord</name>
-            <value>
-                <elementReference>loop_CLI</elementReference>
-            </value>
-        </inputAssignments>
-    </subflows>
     <variables>
         <name>ContractUnitSummary</name>
         <dataType>String</dataType>
