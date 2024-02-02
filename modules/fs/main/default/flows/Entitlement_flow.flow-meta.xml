@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>60.0</apiVersion>
+    <apiVersion>59.0</apiVersion>
     <assignments>
         <name>Assign_the_CLI</name>
         <label>Assign the CLI</label>
         <locationX>528</locationX>
-        <locationY>947</locationY>
+        <locationY>839</locationY>
         <assignmentItems>
             <assignToReference>storeCLIName</assignToReference>
             <operator>Add</operator>
@@ -21,7 +21,7 @@
         <name>Store_INT</name>
         <label>Store INT</label>
         <locationX>528</locationX>
-        <locationY>1355</locationY>
+        <locationY>1247</locationY>
         <assignmentItems>
             <assignToReference>storeInt</assignToReference>
             <operator>Assign</operator>
@@ -37,7 +37,7 @@
         <name>store_TPA</name>
         <label>store TPA</label>
         <locationX>264</locationX>
-        <locationY>1355</locationY>
+        <locationY>1247</locationY>
         <assignmentItems>
             <assignToReference>storeTpa</assignToReference>
             <operator>Assign</operator>
@@ -54,6 +54,9 @@
         <label>Decision 3</label>
         <locationX>528</locationX>
         <locationY>647</locationY>
+        <defaultConnector>
+            <targetReference>Assign_the_CLI</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>MF1</name>
@@ -73,14 +76,14 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.Asset.ContractLineItem__r.FS_OptionCategory__c</leftValueReference>
+                <leftValueReference>For_Each_CLI.FS_SalesContractLineItem__r.FS_OptionCategory__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>KeyAccount_SLA</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>For_Each_CLI.Name__c</leftValueReference>
+                <leftValueReference>For_Each_CLI.FS_SalesContractLineItem__r.Name</leftValueReference>
                 <operator>Contains</operator>
                 <rightValue>
                     <stringValue>MF</stringValue>
@@ -154,7 +157,7 @@
         <name>TPA_INT</name>
         <label>TPA/INT</label>
         <locationX>396</locationX>
-        <locationY>1247</locationY>
+        <locationY>1139</locationY>
         <defaultConnector>
             <targetReference>Store_INT</targetReference>
         </defaultConnector>
@@ -219,7 +222,7 @@
         <name>For_NAme</name>
         <label>For NAme</label>
         <locationX>176</locationX>
-        <locationY>1139</locationY>
+        <locationY>1031</locationY>
         <collectionReference>storeCLIName</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -288,7 +291,7 @@
         <name>Get_Milestone</name>
         <label>Get Milestone</label>
         <locationX>176</locationX>
-        <locationY>1955</locationY>
+        <locationY>1847</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Update_Milestone</targetReference>
@@ -323,7 +326,7 @@
         <name>Get_Open_Entitlement</name>
         <label>Get Open Entitlement</label>
         <locationX>176</locationX>
-        <locationY>1739</locationY>
+        <locationY>1631</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Update_WO_Entitlement</targetReference>
@@ -379,7 +382,7 @@
         <name>Update_Milestone</name>
         <label>Update Milestone</label>
         <locationX>176</locationX>
-        <locationY>2063</locationY>
+        <locationY>1955</locationY>
         <inputAssignments>
             <field>CompletionDate</field>
             <value>
@@ -392,7 +395,7 @@
         <name>Update_TPR_Values</name>
         <label>Update TPR Values</label>
         <locationX>176</locationX>
-        <locationY>1631</locationY>
+        <locationY>1523</locationY>
         <connector>
             <targetReference>Get_Open_Entitlement</targetReference>
         </connector>
@@ -414,7 +417,7 @@
         <name>Update_WO_Entitlement</name>
         <label>Update WO with Entitlement</label>
         <locationX>176</locationX>
-        <locationY>1847</locationY>
+        <locationY>1739</locationY>
         <connector>
             <targetReference>Get_Milestone</targetReference>
         </connector>
