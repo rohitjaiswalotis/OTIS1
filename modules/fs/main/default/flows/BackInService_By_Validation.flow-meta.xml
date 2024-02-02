@@ -24,7 +24,7 @@
         </outputParameters>
         <versionSegment>1</versionSegment>
     </actionCalls>
-    <apiVersion>60.0</apiVersion>
+    <apiVersion>59.0</apiVersion>
     <customErrors>
         <description>Back in Service Can&apos;t be in future</description>
         <name>Error</name>
