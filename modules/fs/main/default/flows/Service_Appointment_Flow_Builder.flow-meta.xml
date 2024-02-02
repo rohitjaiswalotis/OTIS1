@@ -2,6 +2,43 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>59.0</apiVersion>
     <assignments>
+        <name>Assign_SA_Completed_to_a_Variable</name>
+        <label>Assign SA Completed to a Variable</label>
+        <locationX>2580</locationX>
+        <locationY>3972</locationY>
+        <assignmentItems>
+            <assignToReference>StorteCompletedSaWOIDs</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>For_Each_Completed_SA.ParentRecordId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>workOrderIDRecordSingleVariable.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>For_Each_Completed_SA.ParentRecordId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>workOrderIDRecordSingleVariable.FS_MissedVisit__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Missed Visit Completed</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>storeAllWOidssList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>workOrderIDRecordSingleVariable</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>For_Each_Completed_SA</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Copy_1_of_Assign_SA_to_a_Variable</name>
         <label>Copy 1 of Assign SA to a Variable</label>
         <locationX>2624</locationX>
@@ -236,7 +273,7 @@
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Copy_1_of_Yes</name>
-            <conditionLogic>or</conditionLogic>
+            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.WorkOrder__r.FS_MissedVisit__c</leftValueReference>
                 <operator>EqualTo</operator>
@@ -253,10 +290,10 @@
     <decisions>
         <name>Copy_1_of_IF_WO_with_missed_Visit_is_there_in_pending_state</name>
         <label>Copy 1 of IF WO with missed Visit is there in pending state</label>
-        <locationX>2338</locationX>
+        <locationX>2316</locationX>
         <locationY>3648</locationY>
         <defaultConnector>
-            <targetReference>Update_Records_25</targetReference>
+            <targetReference>Get_SA_Completedassociated_with_Unit</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -761,6 +798,20 @@
         </noMoreValuesConnector>
     </loops>
     <loops>
+        <name>For_Each_Completed_SA</name>
+        <label>For Each Completed SA</label>
+        <locationX>2492</locationX>
+        <locationY>3864</locationY>
+        <collectionReference>Get_SA_Completedassociated_with_Unit</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Assign_SA_Completed_to_a_Variable</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Update_RecordsWO</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
         <name>Loop_Through_Record_Collection</name>
         <label>Loop Through Record Collection</label>
         <locationX>1502</locationX>
@@ -995,6 +1046,34 @@
         <queriedFields>IsDeleted</queriedFields>
     </recordLookups>
     <recordLookups>
+        <name>Get_SA_Completedassociated_with_Unit</name>
+        <label>Get SA Completed associated with Unit</label>
+        <locationX>2492</locationX>
+        <locationY>3756</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>For_Each_Completed_SA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Unit__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Unit__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ServiceAppointment</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_WO</name>
         <label>Get WO</label>
         <locationX>2536</locationX>
@@ -1097,8 +1176,8 @@
     <recordUpdates>
         <name>Copy_1_of_Update_Unit_Missed_Visit_false</name>
         <label>Copy 1 of Update Unit Missed Visit false</label>
-        <locationX>2470</locationX>
-        <locationY>3864</locationY>
+        <locationX>2492</locationX>
+        <locationY>4380</locationY>
         <inputAssignments>
             <field>FS_MissedVisit__c</field>
             <value>
@@ -1401,8 +1480,8 @@
     <recordUpdates>
         <name>Update_Records_25</name>
         <label>Update Records 25</label>
-        <locationX>2470</locationX>
-        <locationY>3756</locationY>
+        <locationX>2492</locationX>
+        <locationY>4272</locationY>
         <connector>
             <targetReference>Copy_1_of_Update_Unit_Missed_Visit_false</targetReference>
         </connector>
@@ -1428,6 +1507,16 @@
             </value>
         </inputAssignments>
         <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_RecordsWO</name>
+        <label>Update Records WO</label>
+        <locationX>2492</locationX>
+        <locationY>4164</locationY>
+        <connector>
+            <targetReference>Update_Records_25</targetReference>
+        </connector>
+        <inputReference>storeAllWOidssList</inputReference>
     </recordUpdates>
     <recordUpdates>
         <name>Update_SA_DueDate</name>
@@ -1830,10 +1919,49 @@
         <scale>2</scale>
     </variables>
     <variables>
+        <name>storeAllWOidssList</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrder</objectType>
+    </variables>
+    <variables>
         <name>storeSAids</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>storeWOIDforCompletedSA</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
+    </variables>
+    <variables>
+        <name>storeWorkOID</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrder</objectType>
+    </variables>
+    <variables>
+        <name>StorteCompletedSaWOIDs</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>workOrderIDRecordSingleVariable</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrder</objectType>
     </variables>
 </Flow>
