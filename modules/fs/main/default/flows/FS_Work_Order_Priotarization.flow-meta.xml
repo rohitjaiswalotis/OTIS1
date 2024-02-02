@@ -185,13 +185,6 @@ IF({!$Record.Asset.FS_LowUsage__c}=true,&quot;Low Usage&quot;, &quot;Regular Mai
                 <elementReference>storeNumberMultiple</elementReference>
             </value>
         </filters>
-        <filters>
-            <field>FS_CountryCode__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Asset.Country</elementReference>
-            </value>
-        </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>FS_SAPrioritizationMatrix__mdt</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -298,7 +291,7 @@ IF({!$Record.Asset.FS_LowUsage__c}=true,&quot;Low Usage&quot;, &quot;Regular Mai
         <connector>
             <targetReference>Check_if_Case_is_associated</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>(1 OR 2) AND 3</filterLogic>
         <filters>
             <field>Status</field>
             <operator>NotEqualTo</operator>
