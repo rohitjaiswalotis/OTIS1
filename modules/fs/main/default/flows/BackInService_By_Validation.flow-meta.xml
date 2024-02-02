@@ -32,7 +32,7 @@
         <locationX>50</locationX>
         <locationY>647</locationY>
         <customErrorMessages>
-            <errorMessage>Back in Service Can&apos;t be in future.</errorMessage>
+            <errorMessage>Back In Service date/time should not be in future.</errorMessage>
             <isFieldError>false</isFieldError>
         </customErrorMessages>
     </customErrors>
