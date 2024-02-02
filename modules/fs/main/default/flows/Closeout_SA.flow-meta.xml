@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <assignments>
         <name>Fields_Assignments</name>
         <label>Fields Assignments</label>
@@ -216,7 +216,6 @@
             <label>If WorkOrder</label>
         </rules>
     </decisions>
-    <description>US # 936465 - This flow is using to Close the SA.</description>
     <dynamicChoiceSets>
         <name>CategoryPicklistCollection</name>
         <dataType>Picklist</dataType>
