@@ -269,8 +269,6 @@
     <dynamicChoiceSets>
         <name>UnitStatus</name>
         <dataType>Picklist</dataType>
-        <displayField xsi:nil="true"/>
-        <object xsi:nil="true"/>
         <picklistField>Status</picklistField>
         <picklistObject>Asset</picklistObject>
     </dynamicChoiceSets>
