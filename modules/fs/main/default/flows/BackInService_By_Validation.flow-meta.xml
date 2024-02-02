@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>US958348: This Flow is created to validate back in service future date with respect to Unit's timezone.</description>
     <actionCalls>
         <name>ShiftCoverageConstructor</name>
         <label>ShiftCoverageConstructor</label>
