@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-   <assignments>
+    <assignments>
         <name>Assign_Back_In_service</name>
         <label>Assign Back In service</label>
         <locationX>314</locationX>
-        <locationY>782</locationY>
+        <locationY>890</locationY>
         <assignmentItems>
             <assignToReference>storeShutdownLogRecords.BackInServiceDateTime__c</assignToReference>
             <operator>Assign</operator>
@@ -27,7 +27,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Update_Unit_Recrod</targetReference>
+            <targetReference>Update_shutdown_log</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -71,30 +71,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Assign_Back_In_service</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Assign_Unit_Status_and_Reason</name>
-        <label>Assign Unit Status and Reason</label>
-        <locationX>50</locationX>
-        <locationY>782</locationY>
-        <assignmentItems>
-            <assignToReference>storeAssetRecord.OperationalStatus__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Shutdown</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>storeAssetRecord.OperationalStatusReason__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Operational_Status_Reason</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Update_Unit</targetReference>
+            <targetReference>Update_Unit_Recrod</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -219,14 +196,19 @@
         <dataType>String</dataType>
         <displayField>Name</displayField>
         <object>ServiceResource</object>
-        <sortField>Name</sortField>
+        <sortField>GBO_Name__c</sortField>
         <sortOrder>Asc</sortOrder>
         <valueField>Id</valueField>
     </dynamicChoiceSets>
-    <description>US958348: Updated this flow and remove on screen Back in service Validation.</description>
+	 <description>US#958348,#956342: Updated this flow and remove on screen Back in service Validation.</description>
     <environments>Default</environments>
     <formulas>
         <name>CurrentDateTime</name>
+        <dataType>DateTime</dataType>
+        <expression>NOW()</expression>
+    </formulas>
+    <formulas>
+        <name>CurrentTIme</name>
         <dataType>DateTime</dataType>
         <expression>NOW()</expression>
     </formulas>
@@ -256,52 +238,6 @@
         </value>
     </processMetadataValues>
     <processType>FieldServiceMobile</processType>
-    <recordCreates>
-        <name>Shutdown_Unit_Log</name>
-        <label>Shutdown Unit Log</label>
-        <locationX>50</locationX>
-        <locationY>674</locationY>
-        <connector>
-            <targetReference>Assign_Unit_Status_and_Reason</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>AssetId</field>
-            <value>
-                <elementReference>storeAssetRecord.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>EndTime</field>
-            <value>
-                <elementReference>ShutdownDateTime</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>ShutdownReportedBy__c</field>
-            <value>
-                <elementReference>Shutdown_Reported_By</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>StartTime</field>
-            <value>
-                <elementReference>ShutdownDateTime</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>UnitShutdownReason__c</field>
-            <value>
-                <elementReference>Operational_Status_Reason</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>WorkOrder__c</field>
-            <value>
-                <elementReference>WORecords.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <object>AssetDowntimePeriod</object>
-    </recordCreates>
     <recordLookups>
         <name>Get_Related_WO</name>
         <label>Get Related WO</label>
@@ -388,19 +324,12 @@
         <inputReference>storeShutdownLogRecords</inputReference>
     </recordUpdates>
     <recordUpdates>
-        <name>Update_Unit</name>
-        <label>Update Unit</label>
-        <locationX>50</locationX>
-        <locationY>890</locationY>
-        <inputReference>storeAssetRecord</inputReference>
-    </recordUpdates>
-    <recordUpdates>
         <name>Update_Unit_Recrod</name>
         <label>Update Unit Recrod</label>
         <locationX>314</locationX>
-        <locationY>890</locationY>
+        <locationY>782</locationY>
         <connector>
-            <targetReference>Update_shutdown_log</targetReference>
+            <targetReference>Assign_Back_In_service</targetReference>
         </connector>
         <inputReference>storeAssetRecord</inputReference>
     </recordUpdates>
@@ -431,7 +360,7 @@
             <name>Back_In_Service_Date_Time</name>
             <dataType>DateTime</dataType>
             <defaultValue>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
+                <elementReference>CurrentTIme</elementReference>
             </defaultValue>
             <fieldText>Back In Service Date/Time</fieldText>
             <fieldType>InputField</fieldType>
@@ -449,51 +378,12 @@
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
-        <connector>
-            <targetReference>Shutdown_Unit_Log</targetReference>
-        </connector>
         <fields>
-            <name>Operational_Status_Reason</name>
-            <choiceReferences>ShutdownforParts</choiceReferences>
-            <choiceReferences>ShutdownforRepair</choiceReferences>
-            <choiceReferences>ShutdownforInvestigation</choiceReferences>
-            <choiceReferences>ShutdownduetoSafetyJudgement</choiceReferences>
-            <choiceReferences>ShutdownforGovernmentInspection</choiceReferences>
-            <choiceReferences>ShutdownforDisasterEarthquake</choiceReferences>
-            <choiceReferences>ShutdownforDisasterOther</choiceReferences>
-            <choiceReferences>ShutdownduetoCustomerRequest</choiceReferences>
-            <choiceReferences>ShutdownduetoOtherReason</choiceReferences>
-            <choiceReferences>AwaitingCustomerProposalSignature</choiceReferences>
-            <dataType>String</dataType>
-            <fieldText>Operational Status Reason</fieldText>
-            <fieldType>DropdownBox</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
+            <name>Shutdown_Message</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; font-family: &amp;quot;Segoe UI VSS (Regular)&amp;quot;, &amp;quot;Segoe UI&amp;quot;, -apple-system, BlinkMacSystemFont, Roboto, &amp;quot;Helvetica Neue&amp;quot;, Helvetica, Ubuntu, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;, &amp;quot;Segoe UI Symbol&amp;quot;; color: rgb(0, 0, 0);&quot;&gt;You cannot shutdown a unit directly from Unit record page. Please proceed for Service request Closeout from Work order to shutdown a Unit.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
         </fields>
-        <fields>
-            <name>Shutdown_Reported_By</name>
-            <choiceReferences>UserChoiceRecSet</choiceReferences>
-            <dataType>String</dataType>
-            <defaultValue>
-                <elementReference>CurrentUser</elementReference>
-            </defaultValue>
-            <fieldText>Shutdown Reported By</fieldText>
-            <fieldType>DropdownBox</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>ShutdownDateTime</name>
-            <dataType>DateTime</dataType>
-            <defaultValue>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
-            </defaultValue>
-            <fieldText>Shutdown Date/Time</fieldText>
-            <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
-        </fields>
-        <nextOrFinishButtonLabel>Save</nextOrFinishButtonLabel>
+        <nextOrFinishButtonLabel>Ok</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
@@ -506,10 +396,24 @@
     </start>
     <status>Active</status>
     <variables>
+        <name>DummyPath</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>Id</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>OpStatusAfterUpdateUnit</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
