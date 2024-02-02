@@ -44,12 +44,26 @@
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Back_in</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND 2 AND NOT(3)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.BackInServiceDateTime__c</leftValueReference>
                 <operator>IsChanged</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Profile.Name</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>System Administrator</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$User.Email</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>otisintegration</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -80,6 +94,7 @@
             <label>is past</label>
         </rules>
     </decisions>
+    <description>US958348: Back in service date time validation with respect to unit time</description>
     <environments>Default</environments>
     <formulas>
         <name>ShiftCoverageClassMethodDataFormat</name>

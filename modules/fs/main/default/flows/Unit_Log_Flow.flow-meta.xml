@@ -41,6 +41,7 @@
             <label>is Unit In Shutdown</label>
         </rules>
     </decisions>
+    <description>US958348: This Flow is will check if Unit is Shutdown Status it will remove few data which are updating from FSL app.</description>
     <environments>Default</environments>
     <interviewLabel>Unit Log Flow {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Unit Log Flow</label>
