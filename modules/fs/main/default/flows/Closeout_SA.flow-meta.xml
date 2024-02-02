@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <assignments>
         <name>Fields_Assignments</name>
         <label>Fields Assignments</label>
@@ -269,6 +269,8 @@
     <dynamicChoiceSets>
         <name>UnitStatus</name>
         <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
         <picklistField>Status</picklistField>
         <picklistObject>Asset</picklistObject>
     </dynamicChoiceSets>
