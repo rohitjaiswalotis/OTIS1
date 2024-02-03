@@ -5,10 +5,7 @@
     <formulas>
         <name>CalculateEndDate</name>
         <dataType>Date</dataType>
-        <expression>IF ( 
-{!$Record.FS_ContractNumber__r.EndDate} != null,
-ADDMONTHS({!$Record.FS_ContractNumber__r.EndDate},{!$Record.FS_ContractNumber__r.FS_RenewalPeriodYears__c} *12* {!$Record.FS_ContractNumber__r.FS_NumOfRenewals__c}), 
-null)</expression>
+        <expression>ADDMONTHS({!$Record.FS_ContractNumber__r.EndDate},{!$Record.FS_ContractNumber__r.FS_RenewalPeriodYears__c} *12* {!$Record.FS_ContractNumber__r.FS_NumOfRenewals__c})</expression>
     </formulas>
     <formulas>
         <name>Name</name>
@@ -40,7 +37,7 @@ null)</expression>
         <name>Create_Entitlement_Record</name>
         <label>Create Entitlement Record</label>
         <locationX>176</locationX>
-        <locationY>468</locationY>
+        <locationY>576</locationY>
         <connector>
             <targetReference>LineConversion</targetReference>
         </connector>
@@ -59,7 +56,7 @@ null)</expression>
         <inputAssignments>
             <field>EndDate</field>
             <value>
-                <elementReference>ServiceContract.EndDate</elementReference>
+                <elementReference>CalculateEndDate</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -71,7 +68,7 @@ null)</expression>
         <inputAssignments>
             <field>ServiceContractId</field>
             <value>
-                <elementReference>ServiceContract.Id</elementReference>
+                <elementReference>ServiceContractId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -83,7 +80,7 @@ null)</expression>
         <inputAssignments>
             <field>StartDate</field>
             <value>
-                <elementReference>ServiceContract.StartDate</elementReference>
+                <elementReference>$Record.FS_EffectiveDate__c</elementReference>
             </value>
         </inputAssignments>
         <object>Entitlement</object>
@@ -93,7 +90,7 @@ null)</expression>
         <name>CreateServiceContract</name>
         <label>Create Service Contract</label>
         <locationX>176</locationX>
-        <locationY>252</locationY>
+        <locationY>360</locationY>
         <assignRecordIdToReference>ServiceContractId</assignRecordIdToReference>
         <connector>
             <targetReference>Get_SLA_entitlement_ID</targetReference>
@@ -125,7 +122,13 @@ null)</expression>
         <inputAssignments>
             <field>Name</field>
             <value>
-                <elementReference>$Record.FS_ContractNumber__c</elementReference>
+                <elementReference>$Record.Name</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Pricebook2Id</field>
+            <value>
+                <elementReference>Get_Pricebook.Id</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -155,10 +158,28 @@ null)</expression>
         <object>ServiceContract</object>
     </recordCreates>
     <recordLookups>
+        <name>Get_Pricebook</name>
+        <label>Get Pricebook</label>
+        <locationX>176</locationX>
+        <locationY>252</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>CreateServiceContract</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IsStandard</field>
+            <operator>EqualTo</operator>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Pricebook2</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_SLA_entitlement_ID</name>
         <label>Get SLA entitlement ID</label>
         <locationX>176</locationX>
-        <locationY>360</locationY>
+        <locationY>468</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Create_Entitlement_Record</targetReference>
@@ -179,7 +200,7 @@ null)</expression>
         <name>UpdateUnitSummary</name>
         <label>Update Unit Summary</label>
         <locationX>176</locationX>
-        <locationY>684</locationY>
+        <locationY>792</locationY>
         <connector>
             <targetReference>Unit_Update</targetReference>
         </connector>
@@ -192,7 +213,7 @@ null)</expression>
         <inputAssignments>
             <field>FS_ServiceContract__c</field>
             <value>
-                <elementReference>ServiceContract.Id</elementReference>
+                <elementReference>ServiceContractId</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -201,7 +222,7 @@ null)</expression>
         <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>CreateServiceContract</targetReference>
+            <targetReference>Get_Pricebook</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -211,20 +232,27 @@ null)</expression>
                 <stringValue>New</stringValue>
             </value>
         </filters>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>a1HDO000000PshI2AS</stringValue>
+            </value>
+        </filters>
         <object>ContractUnitSummary__c</object>
         <schedule>
             <frequency>Daily</frequency>
-            <startDate>2024-01-30</startDate>
-            <startTime>02:45:00.000Z</startTime>
+            <startDate>2024-02-01</startDate>
+            <startTime>23:45:00.000Z</startTime>
         </schedule>
         <triggerType>Scheduled</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <subflows>
         <name>LineConversion</name>
         <label>LineConversion</label>
         <locationX>176</locationX>
-        <locationY>576</locationY>
+        <locationY>684</locationY>
         <connector>
             <targetReference>UpdateUnitSummary</targetReference>
         </connector>
@@ -233,6 +261,12 @@ null)</expression>
             <name>ContractUnitSummary</name>
             <value>
                 <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Get_Price_Book_ID</name>
+            <value>
+                <elementReference>Get_Pricebook.Id</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -247,18 +281,21 @@ null)</expression>
         <name>Unit_Update</name>
         <label>Unit Update</label>
         <locationX>176</locationX>
-        <locationY>792</locationY>
+        <locationY>900</locationY>
         <flowName>FS_SubFlowUnitUpdateBasedOnSummary</flowName>
+        <inputAssignments>
+            <name>serviceContractIds</name>
+            <value>
+                <stringValue>800DO0000000deVYAQ</stringValue>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <name>UnitId</name>
             <value>
-                <elementReference>$Record.FS_Unit__r.Id</elementReference>
+                <stringValue>02iDO000002aACVYA2</stringValue>
             </value>
         </inputAssignments>
-        <outputAssignments>
-            <assignToReference>UnitId</assignToReference>
-            <name>UnitId</name>
-        </outputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
     </subflows>
     <variables>
         <name>ServiceContract</name>
