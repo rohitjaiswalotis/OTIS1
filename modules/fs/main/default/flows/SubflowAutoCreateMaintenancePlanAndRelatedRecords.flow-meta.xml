@@ -766,7 +766,7 @@
         </outputAssignments>
         <outputAssignments>
             <assignToReference>GenerationTimeframe</assignToReference>
-            <field>GenerationTimeFrameMonths__c</field>
+            <field>GenerationTimeFrame__c</field>
         </outputAssignments>
     </recordLookups>
     <recordLookups>
