@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>59.0</apiVersion>
+    <apiVersion>60.0</apiVersion>
     <assignments>
         <name>Add_To_Final_List</name>
         <label>Add To Final List</label>
         <locationX>358</locationX>
-        <locationY>2354</locationY>
+        <locationY>2462</locationY>
         <assignmentItems>
             <assignToReference>FinalList</assignToReference>
             <operator>Add</operator>
@@ -28,7 +28,7 @@
         <name>Assign_Draft_List</name>
         <label>Assign Draft List</label>
         <locationX>50</locationX>
-        <locationY>1322</locationY>
+        <locationY>1430</locationY>
         <assignmentItems>
             <assignToReference>DraftMaintenanceTemplateList</assignToReference>
             <operator>Assign</operator>
@@ -58,7 +58,7 @@
         <name>Assign_Final_List</name>
         <label>Assign Final List</label>
         <locationX>50</locationX>
-        <locationY>3530</locationY>
+        <locationY>3638</locationY>
         <assignmentItems>
             <assignToReference>FinalList</assignToReference>
             <operator>Add</operator>
@@ -74,7 +74,7 @@
         <name>Assign_Last_Element</name>
         <label>Assign Last Element</label>
         <locationX>50</locationX>
-        <locationY>2630</locationY>
+        <locationY>2738</locationY>
         <assignmentItems>
             <assignToReference>FinalList</assignToReference>
             <operator>Add</operator>
@@ -97,7 +97,7 @@
         <name>Assign_MT_List</name>
         <label>Assign MT List</label>
         <locationX>50</locationX>
-        <locationY>890</locationY>
+        <locationY>998</locationY>
         <assignmentItems>
             <assignToReference>MTList1</assignToReference>
             <operator>Assign</operator>
@@ -120,7 +120,7 @@
         <name>Child_Count_Assign</name>
         <label>Child Count Assign</label>
         <locationX>710</locationX>
-        <locationY>1754</locationY>
+        <locationY>1862</locationY>
         <assignmentItems>
             <assignToReference>CountChild</assignToReference>
             <operator>Add</operator>
@@ -136,7 +136,7 @@
         <name>Count_Record</name>
         <label>Count Record</label>
         <locationX>710</locationX>
-        <locationY>2954</locationY>
+        <locationY>3062</locationY>
         <assignmentItems>
             <assignToReference>Count</assignToReference>
             <operator>Add</operator>
@@ -152,7 +152,7 @@
         <name>Create_MWR_Record</name>
         <label>Create MWR Record</label>
         <locationX>138</locationX>
-        <locationY>3746</locationY>
+        <locationY>3854</locationY>
         <assignmentItems>
             <assignToReference>MaintenanceWorkRuleRecord.NextSuggestedMaintenanceDate</assignToReference>
             <operator>Assign</operator>
@@ -217,7 +217,7 @@
         <name>Parent_Count_Assign</name>
         <label>Parent Count Assign</label>
         <locationX>490</locationX>
-        <locationY>1538</locationY>
+        <locationY>1646</locationY>
         <assignmentItems>
             <assignToReference>Count</assignToReference>
             <operator>Add</operator>
@@ -240,7 +240,7 @@
         <name>Remove_Matched_Phase</name>
         <label>Remove Matched Phase</label>
         <locationX>578</locationX>
-        <locationY>3170</locationY>
+        <locationY>3278</locationY>
         <assignmentItems>
             <assignToReference>FinalList</assignToReference>
             <operator>RemovePosition</operator>
@@ -256,7 +256,7 @@
         <name>Value_Assign</name>
         <label>Value Assign</label>
         <locationX>578</locationX>
-        <locationY>1970</locationY>
+        <locationY>2078</locationY>
         <assignmentItems>
             <assignToReference>FinalList</assignToReference>
             <operator>Add</operator>
@@ -287,7 +287,7 @@
         <elementSubtype>FilterCollectionProcessor</elementSubtype>
         <label>Filter CC and MT</label>
         <locationX>50</locationX>
-        <locationY>1214</locationY>
+        <locationY>1322</locationY>
         <assignNextValueToReference>currentItem_Filter_CC_and_MT</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
         <collectionReference>GetAllMaintenanceTemplate</collectionReference>
@@ -323,7 +323,7 @@
         <elementSubtype>FilterCollectionProcessor</elementSubtype>
         <label>Filter CC and MT are Blank</label>
         <locationX>50</locationX>
-        <locationY>998</locationY>
+        <locationY>1106</locationY>
         <assignNextValueToReference>currentItem_Filter_CC_and_MT_are_Blank</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
         <collectionReference>GetAllMaintenanceTemplate</collectionReference>
@@ -352,7 +352,7 @@
         <elementSubtype>FilterCollectionProcessor</elementSubtype>
         <label>Filter MT Null</label>
         <locationX>50</locationX>
-        <locationY>1106</locationY>
+        <locationY>1214</locationY>
         <assignNextValueToReference>currentItem_Filter_MT_Null</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
         <collectionReference>GetAllMaintenanceTemplate</collectionReference>
@@ -379,7 +379,7 @@
         <name>Check_For_Common_Phase</name>
         <label>Check For Common Phase</label>
         <locationX>710</locationX>
-        <locationY>3062</locationY>
+        <locationY>3170</locationY>
         <defaultConnector>
             <targetReference>Loop_Final_List</targetReference>
         </defaultConnector>
@@ -401,10 +401,32 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Check_Record_Exits_Or_Not</name>
+        <label>Check Record Exits Or Not</label>
+        <locationX>182</locationX>
+        <locationY>782</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Exits</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetAllMaintenanceTemplate</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetAllMaintenanceTemplate</targetReference>
+            </connector>
+            <label>Exits</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Decision</name>
         <label>Decision</label>
         <locationX>710</locationX>
-        <locationY>1862</locationY>
+        <locationY>1970</locationY>
         <defaultConnector>
             <targetReference>Loop_2</targetReference>
         </defaultConnector>
@@ -428,7 +450,7 @@
     <decisions>
         <name>If_Unit_s_Company_Product_Classification_are_not_Blank</name>
         <label>If Unit&apos;s Company &amp; Product Classification are not Blank</label>
-        <locationX>182</locationX>
+        <locationX>380</locationX>
         <locationY>674</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -449,7 +471,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>GetAllMaintenanceTemplate</targetReference>
+                <targetReference>Check_Record_Exits_Or_Not</targetReference>
             </connector>
             <label>If Value Present</label>
         </rules>
@@ -458,7 +480,7 @@
         <name>Var_Added_or_Not</name>
         <label>Var Added or Not</label>
         <locationX>490</locationX>
-        <locationY>2246</locationY>
+        <locationY>2354</locationY>
         <defaultConnector>
             <targetReference>Loop1</targetReference>
         </defaultConnector>
@@ -506,7 +528,7 @@
         <name>Loop1</name>
         <label>Loop 1</label>
         <locationX>50</locationX>
-        <locationY>1430</locationY>
+        <locationY>1538</locationY>
         <collectionReference>DraftMaintenanceTemplateList</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -520,7 +542,7 @@
         <name>Loop_2</name>
         <label>Loop 2</label>
         <locationX>490</locationX>
-        <locationY>1646</locationY>
+        <locationY>1754</locationY>
         <collectionReference>DraftMaintenanceTemplateList2</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -534,7 +556,7 @@
         <name>Loop_Create_MWR</name>
         <label>Loop Create MWR</label>
         <locationX>50</locationX>
-        <locationY>3638</locationY>
+        <locationY>3746</locationY>
         <collectionReference>FinalList</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -548,7 +570,7 @@
         <name>Loop_Draft_List_3</name>
         <label>Loop Draft List 3</label>
         <locationX>50</locationX>
-        <locationY>2738</locationY>
+        <locationY>2846</locationY>
         <collectionReference>DraftMainantananceTemplateList3</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -562,7 +584,7 @@
         <name>Loop_Final_List</name>
         <label>Loop Final List</label>
         <locationX>490</locationX>
-        <locationY>2846</locationY>
+        <locationY>2954</locationY>
         <collectionReference>FinalList</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -595,7 +617,7 @@
         <name>Create_Bulk_MWR</name>
         <label>Create Bulk MWR</label>
         <locationX>50</locationX>
-        <locationY>3938</locationY>
+        <locationY>4046</locationY>
         <connector>
             <targetReference>Update_start_and_end_dates_of_Contract_line_item</targetReference>
         </connector>
@@ -604,7 +626,7 @@
     <recordCreates>
         <name>Create_Maintenance_Asset</name>
         <label>Create Maintenance Asset</label>
-        <locationX>182</locationX>
+        <locationX>380</locationX>
         <locationY>458</locationY>
         <connector>
             <targetReference>Get_Unit</targetReference>
@@ -627,7 +649,7 @@
     <recordCreates>
         <name>Create_Maintenance_Plan</name>
         <label>Create Maintenance Plan</label>
-        <locationX>182</locationX>
+        <locationX>380</locationX>
         <locationY>242</locationY>
         <assignRecordIdToReference>MPId</assignRecordIdToReference>
         <connector>
@@ -710,7 +732,7 @@
     <recordLookups>
         <name>Get_Maintenance_Plan</name>
         <label>Get Maintenance Plan</label>
-        <locationX>182</locationX>
+        <locationX>380</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -731,7 +753,7 @@
     <recordLookups>
         <name>Get_OTIS_Company_Wide_Setting</name>
         <label>Get OTIS Company Wide Setting</label>
-        <locationX>182</locationX>
+        <locationX>380</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -740,17 +762,17 @@
         <object>FS_OTISCompanyWideSettings__mdt</object>
         <outputAssignments>
             <assignToReference>GenerationHorizon</assignToReference>
-            <field>FS_GenerationHorizon__c</field>
+            <field>GenerationHorizon__c</field>
         </outputAssignments>
         <outputAssignments>
             <assignToReference>GenerationTimeframe</assignToReference>
-            <field>FS_GenerationTimeFrameMonths__c</field>
+            <field>GenerationTimeFrameMonths__c</field>
         </outputAssignments>
     </recordLookups>
     <recordLookups>
         <name>Get_Unit</name>
         <label>Get Unit</label>
-        <locationX>182</locationX>
+        <locationX>380</locationX>
         <locationY>566</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -772,7 +794,7 @@
         <name>GetAllMaintenanceTemplate</name>
         <label>Get All Maintenance Template</label>
         <locationX>50</locationX>
-        <locationY>782</locationY>
+        <locationY>890</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Assign_MT_List</targetReference>
@@ -800,7 +822,7 @@
         <name>Update_start_and_end_dates_of_Contract_line_item</name>
         <label>Update start and end dates of Contract line item</label>
         <locationX>50</locationX>
-        <locationY>4046</locationY>
+        <locationY>4154</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -824,13 +846,13 @@
         <object>ContractLineItem</object>
     </recordUpdates>
     <start>
-        <locationX>56</locationX>
+        <locationX>254</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_OTIS_Company_Wide_Setting</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>ContractLineItemRecord</name>
         <dataType>SObject</dataType>
