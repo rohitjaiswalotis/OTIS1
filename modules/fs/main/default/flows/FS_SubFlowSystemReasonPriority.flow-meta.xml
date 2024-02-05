@@ -4,8 +4,8 @@
     <assignments>
         <name>Assignment_4</name>
         <label>Assignment 4</label>
-        <locationX>50</locationX>
-        <locationY>950</locationY>
+        <locationX>666</locationX>
+        <locationY>1058</locationY>
         <assignmentItems>
             <assignToReference>FinalSystemReason</assignToReference>
             <operator>Assign</operator>
@@ -17,8 +17,8 @@
     <assignments>
         <name>Assignment_5</name>
         <label>Assignment 5</label>
-        <locationX>314</locationX>
-        <locationY>950</locationY>
+        <locationX>930</locationX>
+        <locationY>1058</locationY>
         <assignmentItems>
             <assignToReference>FinalSystemReason</assignToReference>
             <operator>Assign</operator>
@@ -28,10 +28,23 @@
         </assignmentItems>
     </assignments>
     <assignments>
+        <name>Assignment_6</name>
+        <label>Assignment 6</label>
+        <locationX>50</locationX>
+        <locationY>242</locationY>
+        <assignmentItems>
+            <assignToReference>FinalSystemReason</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Sys_Reason_From_WO</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>Get_Priority_Value</name>
         <label>Get Priority Value</label>
-        <locationX>314</locationX>
-        <locationY>134</locationY>
+        <locationX>930</locationX>
+        <locationY>242</locationY>
         <assignmentItems>
             <assignToReference>PriorReason</assignToReference>
             <operator>Assign</operator>
@@ -53,8 +66,8 @@
     <assignments>
         <name>Present_Val</name>
         <label>Present Val</label>
-        <locationX>666</locationX>
-        <locationY>566</locationY>
+        <locationX>1282</locationX>
+        <locationY>674</locationY>
         <assignmentItems>
             <assignToReference>PresentVal</assignToReference>
             <operator>Assign</operator>
@@ -69,8 +82,8 @@
     <assignments>
         <name>Prior_Val</name>
         <label>Prior Val</label>
-        <locationX>402</locationX>
-        <locationY>566</locationY>
+        <locationX>1018</locationX>
+        <locationY>674</locationY>
         <assignmentItems>
             <assignToReference>PriorVal</assignToReference>
             <operator>Assign</operator>
@@ -85,8 +98,8 @@
     <decisions>
         <name>Check_For_System_Reason_Priority</name>
         <label>Check For System Reason Priority</label>
-        <locationX>314</locationX>
-        <locationY>842</locationY>
+        <locationX>930</locationX>
+        <locationY>950</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>If_Prior_Greater_Than_Present</name>
@@ -122,8 +135,8 @@
     <decisions>
         <name>Check_Value</name>
         <label>Check Value</label>
-        <locationX>666</locationX>
-        <locationY>458</locationY>
+        <locationX>1282</locationX>
+        <locationY>566</locationY>
         <defaultConnector>
             <targetReference>Get_Actual_System_Reason</targetReference>
         </defaultConnector>
@@ -159,6 +172,57 @@
             <label>If Present</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Checking_the_Value_Null_or_Not</name>
+        <label>Checking the Value Null or Not</label>
+        <locationX>754</locationX>
+        <locationY>134</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>When_Prior_IsNull</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Prio_Sys_Reason_From_WO</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Prio_Sys_Reason_From_WO</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assignment_6</targetReference>
+            </connector>
+            <label>When Prior IsNull</label>
+        </rules>
+        <rules>
+            <name>Is_Not_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Prio_Sys_Reason_From_WO</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Sys_Reason_From_WO</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Priority_Value</targetReference>
+            </connector>
+            <label>Is Not Null</label>
+        </rules>
+    </decisions>
     <description>This Flow will Update the System Reason 1field on WO Level</description>
     <environments>Default</environments>
     <interviewLabel>SubFlow:System Reason Priority {!$Flow.CurrentDateTime}</interviewLabel>
@@ -166,8 +230,8 @@
     <loops>
         <name>Get_Actual_System_Reason</name>
         <label>Get Actual System Reason</label>
-        <locationX>314</locationX>
-        <locationY>350</locationY>
+        <locationX>930</locationX>
+        <locationY>458</locationY>
         <collectionReference>Get_Sys_Reason_Priority_Matrix</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -199,8 +263,8 @@
     <recordLookups>
         <name>Get_Sys_Reason_Priority_Matrix</name>
         <label>Get Sys Reason Priority Matrix</label>
-        <locationX>314</locationX>
-        <locationY>242</locationY>
+        <locationX>930</locationX>
+        <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Actual_System_Reason</targetReference>
@@ -210,10 +274,10 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>188</locationX>
+        <locationX>628</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Priority_Value</targetReference>
+            <targetReference>Checking_the_Value_Null_or_Not</targetReference>
         </connector>
     </start>
     <status>Active</status>

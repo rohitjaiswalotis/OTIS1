@@ -717,26 +717,12 @@
         </rules>
         <rules>
             <name>Update_SPR_and_Review</name>
-            <conditionLogic>1 AND 3 AND (2 OR 4) AND 5 AND 6</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
+            <conditionLogic>(1 OR 2) AND 3</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Fixed_Issue__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>No</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Status</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Cannot Complete</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -747,17 +733,10 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
-                <operator>IsNull</operator>
+                <leftValueReference>$Record.Reason__c</leftValueReference>
+                <operator>NotEqualTo</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.FS_WorkOderType__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Service Request</stringValue>
+                    <stringValue>Parts Needed</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -1883,13 +1862,13 @@
         <inputAssignments>
             <name>Prio_Sys_Reason_From_WO</name>
             <value>
-                <elementReference>$Record__Prior.FS_System_Reason__c</elementReference>
+                <elementReference>$Record.FS_System_Reason__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
             <name>Sys_Reason_From_WO</name>
             <value>
-                <elementReference>$Record.FS_System_Reason__c</elementReference>
+                <stringValue>Next Action Required</stringValue>
             </value>
         </inputAssignments>
         <outputAssignments>

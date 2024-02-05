@@ -4,7 +4,7 @@
     <assignments>
         <name>Assign_SA_Completed_to_a_Variable</name>
         <label>Assign SA Completed to a Variable</label>
-        <locationX>2580</locationX>
+        <locationX>2976</locationX>
         <locationY>3972</locationY>
         <assignmentItems>
             <assignToReference>StorteCompletedSaWOIDs</assignToReference>
@@ -41,7 +41,7 @@
     <assignments>
         <name>Copy_1_of_Assign_SA_to_a_Variable</name>
         <label>Copy 1 of Assign SA to a Variable</label>
-        <locationX>2624</locationX>
+        <locationX>3020</locationX>
         <locationY>3240</locationY>
         <assignmentItems>
             <assignToReference>storeSAids</assignToReference>
@@ -52,6 +52,22 @@
         </assignmentItems>
         <connector>
             <targetReference>Copy_1_of_For_Each_SA</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Count_of_Pending_SA</name>
+        <label>Count of Pending SA</label>
+        <locationX>2558</locationX>
+        <locationY>1032</locationY>
+        <assignmentItems>
+            <assignToReference>CountPendingSA</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>Get_Pending_SA</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Check_Count</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -100,9 +116,96 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Check_Count</name>
+        <label>Check Count</label>
+        <locationX>2558</locationX>
+        <locationY>1140</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Less_than_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>CountPendingSA</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <numberValue>1.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_New_System_reason</targetReference>
+            </connector>
+            <label>Less than 1</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_Fixed_Issue</name>
+        <label>Check Fixed Issue</label>
+        <locationX>2558</locationX>
+        <locationY>816</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>If_Fixed_Issue_Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.Fixed_Issue__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Yes</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Onsite</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Wo</targetReference>
+            </connector>
+            <label>If Fixed Issue Yes</label>
+        </rules>
+        <rules>
+            <name>If_Fixed_Issue_No</name>
+            <conditionLogic>(1 OR 2) AND 3</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.Fixed_Issue__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>No</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.Fixed_Issue__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Partially</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Pending_SA</targetReference>
+            </connector>
+            <label>If Fixed Issue No</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Check_If_Resource_Present</name>
         <label>Check If Resource Present</label>
-        <locationX>3702</locationX>
+        <locationX>4494</locationX>
         <locationY>1464</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -124,7 +227,7 @@
     <decisions>
         <name>Check_If_Resource_Present2</name>
         <label>Check If Resource Present</label>
-        <locationX>3790</locationX>
+        <locationX>4582</locationX>
         <locationY>2364</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -146,7 +249,7 @@
     <decisions>
         <name>Check_With_Due_Date</name>
         <label>Check With Due Date</label>
-        <locationX>3790</locationX>
+        <locationX>4582</locationX>
         <locationY>708</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -211,7 +314,7 @@
     <decisions>
         <name>Condition_Check</name>
         <label>Condition Check</label>
-        <locationX>5286</locationX>
+        <locationX>6078</locationX>
         <locationY>276</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -268,7 +371,7 @@
     <decisions>
         <name>Copy_1_of_Check_if_WO_is_Missed_Visit</name>
         <label>Copy 1 of Check if WO is Missed Visit</label>
-        <locationX>2536</locationX>
+        <locationX>2932</locationX>
         <locationY>3540</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -290,7 +393,7 @@
     <decisions>
         <name>Copy_1_of_IF_WO_with_missed_Visit_is_there_in_pending_state</name>
         <label>Copy 1 of IF WO with missed Visit is there in pending state</label>
-        <locationX>2316</locationX>
+        <locationX>2712</locationX>
         <locationY>3648</locationY>
         <defaultConnector>
             <targetReference>Get_SA_Completedassociated_with_Unit</targetReference>
@@ -312,7 +415,7 @@
     <decisions>
         <name>Current_Time_less_Than_DueDate</name>
         <label>Current Time less Than DueDate</label>
-        <locationX>3790</locationX>
+        <locationX>4582</locationX>
         <locationY>2040</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -396,7 +499,7 @@
     <decisions>
         <name>Jeopardy_Check</name>
         <label>Jeopardy Check</label>
-        <locationX>3790</locationX>
+        <locationX>4582</locationX>
         <locationY>816</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -513,7 +616,7 @@
     <decisions>
         <name>SA_Decision</name>
         <label>SA Decision</label>
-        <locationX>2536</locationX>
+        <locationX>2932</locationX>
         <locationY>600</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -609,7 +712,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Updating_Wo</targetReference>
+                <targetReference>Get_WO_Fixed_Issue</targetReference>
             </connector>
             <label>SA completed within time</label>
         </rules>
@@ -711,7 +814,7 @@
     <decisions>
         <name>TimeFrame_Extended_in_WO</name>
         <label>TimeFrame Extended in WO</label>
-        <locationX>3746</locationX>
+        <locationX>4538</locationX>
         <locationY>1032</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -786,7 +889,7 @@
     <loops>
         <name>Copy_1_of_For_Each_SA</name>
         <label>Copy 1 of For Each SA</label>
-        <locationX>2536</locationX>
+        <locationX>2932</locationX>
         <locationY>3132</locationY>
         <collectionReference>Copy_1_of_Get_SA_associated_with_Unit</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -800,7 +903,7 @@
     <loops>
         <name>For_Each_Completed_SA</name>
         <label>For Each Completed SA</label>
-        <locationX>2492</locationX>
+        <locationX>2888</locationX>
         <locationY>3864</locationY>
         <collectionReference>Get_SA_Completedassociated_with_Unit</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -905,7 +1008,7 @@
     <recordLookups>
         <name>Copy_1_of_Get_Related_WO</name>
         <label>Copy 1 of Get Related WO</label>
-        <locationX>2536</locationX>
+        <locationX>2932</locationX>
         <locationY>3432</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -933,7 +1036,7 @@
     <recordLookups>
         <name>Copy_1_of_Get_SA_associated_with_Unit</name>
         <label>Copy 1 of Get SA associated with Unit</label>
-        <locationX>2536</locationX>
+        <locationX>2932</locationX>
         <locationY>3024</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -996,7 +1099,7 @@
     <recordLookups>
         <name>Get_Days_with_SLA</name>
         <label>Get Days with  SLA</label>
-        <locationX>3702</locationX>
+        <locationX>4494</locationX>
         <locationY>1140</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1015,6 +1118,48 @@
             <assignToReference>SLATime</assignToReference>
             <field>FS_Days_For_SLA2__c</field>
         </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Pending_SA</name>
+        <label>Get Pending SA</label>
+        <locationX>2558</locationX>
+        <locationY>924</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Count_of_Pending_SA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>WorkOrder__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WorkOrder__r.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Cannot Complete</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Canceled</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ServiceAppointment</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
         <name>Get_Related_Assigned_Resource_Record</name>
@@ -1048,7 +1193,7 @@
     <recordLookups>
         <name>Get_SA_Completedassociated_with_Unit</name>
         <label>Get SA Completed associated with Unit</label>
-        <locationX>2492</locationX>
+        <locationX>2888</locationX>
         <locationY>3756</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1076,7 +1221,7 @@
     <recordLookups>
         <name>Get_WO</name>
         <label>Get WO</label>
-        <locationX>2536</locationX>
+        <locationX>2932</locationX>
         <locationY>384</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1093,6 +1238,29 @@
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>WorkOrder</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_WO_Fixed_Issue</name>
+        <label>Get WO Fixed Issue</label>
+        <locationX>2558</locationX>
+        <locationY>708</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_Fixed_Issue</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WorkOrder__r.Id</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrder</object>
+        <outputAssignments>
+            <assignToReference>FixedIssue</assignToReference>
+            <field>Fixed_Issue__c</field>
+        </outputAssignments>
     </recordLookups>
     <recordLookups>
         <name>GetRelatedAssignedResourceRecords</name>
@@ -1134,8 +1302,8 @@
     <recordUpdates>
         <name>Clear_GanttIcon_on_Completion</name>
         <label>Clear GanttIcon on Completion</label>
-        <locationX>2162</locationX>
-        <locationY>816</locationY>
+        <locationX>2426</locationX>
+        <locationY>1464</locationY>
         <connector>
             <targetReference>Copy_1_of_Get_SA_associated_with_Unit</targetReference>
         </connector>
@@ -1147,7 +1315,7 @@
     <recordUpdates>
         <name>ClearGanttIconOnCompletion</name>
         <label>Clear GanttIcon On Completion</label>
-        <locationX>2426</locationX>
+        <locationX>3218</locationX>
         <locationY>816</locationY>
         <connector>
             <targetReference>Copy_1_of_Get_SA_associated_with_Unit</targetReference>
@@ -1176,7 +1344,7 @@
     <recordUpdates>
         <name>Copy_1_of_Update_Unit_Missed_Visit_false</name>
         <label>Copy 1 of Update Unit Missed Visit false</label>
-        <locationX>2492</locationX>
+        <locationX>2888</locationX>
         <locationY>4380</locationY>
         <inputAssignments>
             <field>FS_MissedVisit__c</field>
@@ -1242,7 +1410,7 @@
     <recordUpdates>
         <name>Udate_WO_Safety_Check</name>
         <label>Udate WO Safety Check</label>
-        <locationX>5154</locationX>
+        <locationX>5946</locationX>
         <locationY>384</locationY>
         <connector>
             <targetReference>Update_Gantt_Icon_on_SA</targetReference>
@@ -1280,7 +1448,7 @@
     <recordUpdates>
         <name>Update_Gantt_Icon_on_SA</name>
         <label>Update Gantt Icon on SA</label>
-        <locationX>5154</locationX>
+        <locationX>5946</locationX>
         <locationY>492</locationY>
         <connector>
             <targetReference>SendCustomNotificationToMaintenanceSupervisor</targetReference>
@@ -1296,7 +1464,7 @@
     <recordUpdates>
         <name>Update_Initial_Time_of_SA</name>
         <label>Update Initial Time of SA</label>
-        <locationX>2536</locationX>
+        <locationX>2932</locationX>
         <locationY>276</locationY>
         <connector>
             <targetReference>Get_WO</targetReference>
@@ -1353,7 +1521,7 @@
     <recordUpdates>
         <name>Update_Jeopardy1</name>
         <label>Update Jeopardy</label>
-        <locationX>2954</locationX>
+        <locationX>3746</locationX>
         <locationY>816</locationY>
         <filterLogic>or</filterLogic>
         <filters>
@@ -1381,7 +1549,7 @@
     <recordUpdates>
         <name>Update_Jeopardy_True</name>
         <label>Update Jeopardy True</label>
-        <locationX>3746</locationX>
+        <locationX>4538</locationX>
         <locationY>924</locationY>
         <connector>
             <targetReference>TimeFrame_Extended_in_WO</targetReference>
@@ -1413,7 +1581,7 @@
     <recordUpdates>
         <name>Update_Missed_Visit_in_Unit</name>
         <label>Update Missed Visit in Unit</label>
-        <locationX>3790</locationX>
+        <locationX>4582</locationX>
         <locationY>2256</locationY>
         <connector>
             <targetReference>Check_If_Resource_Present2</targetReference>
@@ -1437,7 +1605,7 @@
     <recordUpdates>
         <name>Update_Missed_Visit_in_WO</name>
         <label>Update Missed Visit in WO</label>
-        <locationX>3790</locationX>
+        <locationX>4582</locationX>
         <locationY>2148</locationY>
         <connector>
             <targetReference>Update_Missed_Visit_in_Unit</targetReference>
@@ -1461,7 +1629,7 @@
     <recordUpdates>
         <name>Update_New_Scheduled_Time</name>
         <label>Update New Scheduled Time</label>
-        <locationX>2690</locationX>
+        <locationX>3482</locationX>
         <locationY>708</locationY>
         <inputAssignments>
             <field>SchedEndTime</field>
@@ -1480,7 +1648,7 @@
     <recordUpdates>
         <name>Update_Records_25</name>
         <label>Update Records 25</label>
-        <locationX>2492</locationX>
+        <locationX>2888</locationX>
         <locationY>4272</locationY>
         <connector>
             <targetReference>Copy_1_of_Update_Unit_Missed_Visit_false</targetReference>
@@ -1511,7 +1679,7 @@
     <recordUpdates>
         <name>Update_RecordsWO</name>
         <label>Update Records WO</label>
-        <locationX>2492</locationX>
+        <locationX>2888</locationX>
         <locationY>4164</locationY>
         <connector>
             <targetReference>Update_Records_25</targetReference>
@@ -1521,7 +1689,7 @@
     <recordUpdates>
         <name>Update_SA_DueDate</name>
         <label>Update SA DueDate</label>
-        <locationX>3702</locationX>
+        <locationX>4494</locationX>
         <locationY>1248</locationY>
         <connector>
             <targetReference>Update_WO_With_TimeFrame_Extended</targetReference>
@@ -1537,7 +1705,7 @@
     <recordUpdates>
         <name>Update_SA_Priority_For_Gantt_Palette</name>
         <label>Update SA Priority For Gantt Palette</label>
-        <locationX>2536</locationX>
+        <locationX>2932</locationX>
         <locationY>492</locationY>
         <connector>
             <targetReference>SA_Decision</targetReference>
@@ -1551,9 +1719,28 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
+        <name>Update_Wo</name>
+        <label>Update Wo</label>
+        <locationX>2162</locationX>
+        <locationY>924</locationY>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Closed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SvcReqAssignedMechanic__c</field>
+            <value>
+                <elementReference>$Record.AssignedServiceResource__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.WorkOrder__r</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>Update_WO_With_TimeFrame_Extended</name>
         <label>Update WO With TimeFrame Extended</label>
-        <locationX>3702</locationX>
+        <locationX>4494</locationX>
         <locationY>1356</locationY>
         <connector>
             <targetReference>Check_If_Resource_Present</targetReference>
@@ -1593,7 +1780,7 @@
     <recordUpdates>
         <name>updating_reason_on_WO</name>
         <label>Updating Reason On WO</label>
-        <locationX>2426</locationX>
+        <locationX>3218</locationX>
         <locationY>708</locationY>
         <connector>
             <targetReference>ClearGanttIconOnCompletion</targetReference>
@@ -1621,27 +1808,27 @@
     <recordUpdates>
         <name>Updating_Wo</name>
         <label>Updating Wo</label>
-        <locationX>2162</locationX>
-        <locationY>708</locationY>
+        <locationX>2426</locationX>
+        <locationY>1356</locationY>
         <connector>
             <targetReference>Clear_GanttIcon_on_Completion</targetReference>
         </connector>
         <inputAssignments>
             <field>FS_Mark_For_Supervisor_Review__c</field>
             <value>
-                <booleanValue>false</booleanValue>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>FS_System_Reason__c</field>
+            <value>
+                <elementReference>UpdatedSystemReason</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>Status</field>
             <value>
-                <stringValue>Closed</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>SvcReqAssignedMechanic__c</field>
-            <value>
-                <elementReference>$Record.AssignedServiceResource__c</elementReference>
+                <stringValue>Cannot Complete</stringValue>
             </value>
         </inputAssignments>
         <inputReference>$Record.WorkOrder__r</inputReference>
@@ -1663,7 +1850,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>3785</locationX>
+        <locationX>4379</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Update_Initial_Time_of_SA</targetReference>
@@ -1687,7 +1874,7 @@
     <subflows>
         <name>Copy_1_of_Notification_for_timeframe_Extented</name>
         <label>Copy 1 of Notification for timeframe Extented</label>
-        <locationX>3570</locationX>
+        <locationX>4362</locationX>
         <locationY>1572</locationY>
         <flowName>SendCustomNotification</flowName>
         <inputAssignments>
@@ -1759,9 +1946,35 @@
         </inputAssignments>
     </subflows>
     <subflows>
+        <name>Get_New_System_reason</name>
+        <label>Get New System reason</label>
+        <locationX>2426</locationX>
+        <locationY>1248</locationY>
+        <connector>
+            <targetReference>Updating_Wo</targetReference>
+        </connector>
+        <flowName>FS_SubFlowSystemReasonPriority</flowName>
+        <inputAssignments>
+            <name>Prio_Sys_Reason_From_WO</name>
+            <value>
+                <elementReference>$Record.WorkOrder__r.FS_System_Reason__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Sys_Reason_From_WO</name>
+            <value>
+                <stringValue>Next Action Required</stringValue>
+            </value>
+        </inputAssignments>
+        <outputAssignments>
+            <assignToReference>UpdatedSystemReason</assignToReference>
+            <name>FinalSystemReason</name>
+        </outputAssignments>
+    </subflows>
+    <subflows>
         <name>Notification_for_timeframe_Extented</name>
         <label>Notification for Missed Visit</label>
-        <locationX>3658</locationX>
+        <locationX>4450</locationX>
         <locationY>2472</locationY>
         <flowName>SendCustomNotification</flowName>
         <inputAssignments>
@@ -1835,7 +2048,7 @@
     <subflows>
         <name>SendCustomNotificationToMaintenanceSupervisor</name>
         <label>SendCustomNotificationToMaintenanceSupervisor</label>
-        <locationX>5154</locationX>
+        <locationX>5946</locationX>
         <locationY>600</locationY>
         <flowName>SendCustomNotification</flowName>
         <inputAssignments>
@@ -1879,6 +2092,7 @@
         <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>&lt;p&gt;Hi !... Work Order has been marked as Timeframe extended&lt;a href=&quot;https://otisdevelopmentaccount--fsemeadev1.sandbox.lightning.force.com/lightning/r/Dashboard/01ZDO0000004USv2AM/view?queryScope=userFolders&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot;&gt;Salesforce1://&lt;/a&gt;&lt;/p&gt;</text>
     </textTemplates>
+    <triggerOrder>1</triggerOrder>
     <variables>
         <name>AssignedResourceRecordCollection</name>
         <dataType>SObject</dataType>
@@ -1894,6 +2108,24 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <scale>2</scale>
+    </variables>
+    <variables>
+        <name>CountPendingSA</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <name>FixedIssue</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>RecordsWithSLA</name>
@@ -1953,6 +2185,13 @@
         <name>StorteCompletedSaWOIDs</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>UpdatedSystemReason</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
