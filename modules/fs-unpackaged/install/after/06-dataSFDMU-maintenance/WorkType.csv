@@ -1,2 +1,11 @@
-Id,Name
-08qDO000000KzasYAC,Default Work Type
+$$Name$DurationType$DurationInMinutes,DurationInMinutes,DurationType,EstimatedDuration,Id,Name,ServiceReportTemplate.MasterLabel,ServiceReportTemplateId,ShouldAutoCreateSvcAppt
+O-Maintenance - Passenger Elevator;Minutes;60,60,Minutes,60,08qDO000000L0JoYAK,O-Maintenance - Passenger Elevator,,,true
+Repair-Switzerland;Minutes;60,60,Minutes,60,08qDO000000L0JpYAK,Repair-Switzerland,,,true
+Maintenance-Switzerland;Minutes;60,60,Minutes,60,08qDO000000L0JqYAK,Maintenance-Switzerland,,,true
+Maintenance -NF;Hours;1800,1800,Hours,30,08qDO000000L0JrYAK,Maintenance -NF,,,true
+Maintenance -VM;Minutes;30,30,Minutes,30,08qDO000000L0JsYAK,Maintenance -VM,,,true
+Maintenance -VC;Minutes;60,60,Minutes,60,08qDO000000L0JtYAK,Maintenance -VC,,,true
+Maintenance -NTC;Minutes;60,60,Minutes,60,08qDO000000L0JuYAK,Maintenance -NTC,,,true
+Maintenance -VP;Minutes;60,60,Minutes,60,08qDO000000L0JvYAK,Maintenance -VP,,,true
+Maintenance -NM;Minutes;60,60,Minutes,60,08qDO000000L0JwYAK,Maintenance -NM,,,true
+Default Work Type;Hours;60,60,Hours,1,08qDO000000KzasYAC,Default Work Type,,,true
