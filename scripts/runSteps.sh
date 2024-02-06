@@ -17,6 +17,8 @@ STEP_INDEX_REGEX="[0-9][0-9a-zA-Z_#@:.]*";
 STEP_MAX_RETRY_ATTEMPTS=${SCRIPTSTEPMAXRETRYATTEMPTS:-2};
 STEP_RETRY_DELAY=${SCRIPTSTEPRETRYDELAY:-10};
 
+STEPS_RUNNER_UTIL=$0;
+
 
 ########################## FUNCTIONS (BEGIN)
 
@@ -253,7 +255,7 @@ fi
 
 if [[ ${PARAM_SCRIPT_PARAMS_FILE:+1} && ! "${PARAM_SCRIPT_PARAMS_FILE,,}" =~ ^none$ && -f "$PARAM_SCRIPT_PARAMS_FILE" ]]; then
     
-    # define scrip params properties (if any) as variables
+    # define script params properties (if any) as variables
     echo "Defining script params properties variables..."
     defineVarsFromProps "$PARAM_SCRIPT_PARAMS_FILE"
     
@@ -475,7 +477,20 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 		
 	fi
 	
-    
+	
+    # handle collection of nested steps
+	if [[ -d "$file" && "${file,,}" =~ ^.*/${STEP_INDEX_REGEX}-(collection|cookbook|script|recipes|steps)(-[^/]*)?$ ]]; then
+		
+		echo "Step has been identified as collection of nested steps: $file"
+		
+		bash $STEPS_RUNNER_UTIL "$@" -d "$file" -o "$file" -w "$PARAM_WORKING_DIR"
+		
+		echo "Finished processing collection of nested steps."
+		continue;
+		
+	fi
+	
+	
     # replace dynamic variables (if any) inside artifacts files
     resolveDynamicEnvVarsInFiles "${file}"
     
