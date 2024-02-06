@@ -288,7 +288,7 @@
         <inputAssignments>
             <name>UnitId</name>
             <value>
-                <elementReference>UnitId</elementReference>
+                <elementReference>$Record.FS_Unit__r.Id</elementReference>
             </value>
         </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>
