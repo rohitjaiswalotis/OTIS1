@@ -404,7 +404,7 @@
         <name>Check_Record_Exits_Or_Not</name>
         <label>Check Record Exits Or Not</label>
         <locationX>182</locationX>
-        <locationY>782</locationY>
+        <locationY>890</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Exits</name>
@@ -417,7 +417,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>GetAllMaintenanceTemplate</targetReference>
+                <targetReference>Assign_MT_List</targetReference>
             </connector>
             <label>Exits</label>
         </rules>
@@ -471,7 +471,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Check_Record_Exits_Or_Not</targetReference>
+                <targetReference>GetAllMaintenanceTemplate</targetReference>
             </connector>
             <label>If Value Present</label>
         </rules>
@@ -793,11 +793,11 @@
     <recordLookups>
         <name>GetAllMaintenanceTemplate</name>
         <label>Get All Maintenance Template</label>
-        <locationX>50</locationX>
-        <locationY>890</locationY>
+        <locationX>182</locationX>
+        <locationY>782</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Assign_MT_List</targetReference>
+            <targetReference>Check_Record_Exits_Or_Not</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
