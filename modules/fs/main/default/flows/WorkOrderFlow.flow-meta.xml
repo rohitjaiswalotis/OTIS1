@@ -1696,9 +1696,6 @@
         <label>Updating Wo Fields</label>
         <locationX>5990</locationX>
         <locationY>539</locationY>
-        <connector>
-            <targetReference>UpdatingSAStatus</targetReference>
-        </connector>
         <inputAssignments>
             <field>Status</field>
             <value>
