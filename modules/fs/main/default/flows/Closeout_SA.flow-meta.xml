@@ -979,7 +979,7 @@
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <validationRule>
-                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 13, 13); font-size: 12px; background-color: rgb(255, 255, 255);&quot;&gt;Projected Restart date should not be in past&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;.&lt;/span&gt;&lt;/p&gt;</errorMessage>
+               <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(240, 10, 10); font-size: 12px; background-color: rgb(255, 255, 255);&quot;&gt;Projected Restart Date&lt;/span&gt;&lt;span style=&quot;color: rgb(240, 10, 10); background-color: rgb(255, 255, 255);&quot;&gt;/Time should not be null and should not be in the past.&lt;/span&gt;&lt;/p&gt;</errorMessage>
                 <formulaExpression>{!Projected_Restart_Date} &gt; NOW()</formulaExpression>
             </validationRule>
         </fields>
