@@ -5,3 +5,4 @@
 "$SF_SR_VAR_MOBILE_SETTING_ID","Unit Search Bar","Flow","FSL_MobileAPP_Unit_search_bar","ServiceAppointment","Unit search bar","/flow/FSL_MobileAPP_Unit_search_bar"
 "$SF_SR_VAR_MOBILE_SETTING_ID","Pin/Unpin SA","Flow","Change_Pinn_Service_Appointment","ServiceAppointment","Pin/Unpin Service Appointment","/flow/Change_Pinn_Service_Appointment"
 "$SF_SR_VAR_MOBILE_SETTING_ID","Declare Parts Missing","Flow","Declare_Parts_Missing_WO","WorkOrder","Declare Parts Missing","/flow/Declare_Parts_Missing_WO"
+"$SF_SR_VAR_MOBILE_SETTING_ID","FS_ChangeWOLIStatus","Flow","FS_ChangeWOLIStatus","WorkOrder","Complete Line Item Status","/flow/FS_ChangeWOLIStatus"
