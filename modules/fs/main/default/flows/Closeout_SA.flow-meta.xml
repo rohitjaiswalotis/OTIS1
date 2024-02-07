@@ -4,7 +4,7 @@
         <name>Fields_Assignments</name>
         <label>Fields Assignments</label>
         <locationX>50</locationX>
-        <locationY>998</locationY>
+        <locationY>1106</locationY>
         <assignmentItems>
             <assignToReference>WorkOrderStatus</assignToReference>
             <operator>Assign</operator>
@@ -216,6 +216,7 @@
             <label>If WorkOrder</label>
         </rules>
     </decisions>
+    <description>US # 936465 - This flow is using to Close the SA.</description>
     <dynamicChoiceSets>
         <name>CategoryPicklistCollection</name>
         <dataType>Picklist</dataType>
@@ -274,7 +275,6 @@
         <picklistField>Status</picklistField>
         <picklistObject>Asset</picklistObject>
     </dynamicChoiceSets>
-	 <description>US # 936465 - This flow is using to Close the SA.</description>
     <environments>Default</environments>
     <formulas>
         <name>CurrentUserId</name>
@@ -317,7 +317,7 @@
         <name>Create_UnitShutDown_Log</name>
         <label>Create UnitShutDown Log</label>
         <locationX>50</locationX>
-        <locationY>1538</locationY>
+        <locationY>1646</locationY>
         <faultConnector>
             <targetReference>ErrorScreen</targetReference>
         </faultConnector>
@@ -406,6 +406,8 @@
         <queriedFields>ParentRecordId</queriedFields>
         <queriedFields>ParentRecordType</queriedFields>
         <queriedFields>Status</queriedFields>
+        <queriedFields>Travel_Time__c</queriedFields>
+        <queriedFields>ActualStartTime</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>Get_Service_Resource</name>
@@ -434,7 +436,7 @@
         <name>Get_UnitShutdownLog_Record_0</name>
         <label>Get UnitShutdownLog Record</label>
         <locationX>1634</locationX>
-        <locationY>998</locationY>
+        <locationY>1106</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_WorkPerformedCode_0</targetReference>
@@ -485,7 +487,7 @@
         <name>Get_WorkPerformedCode</name>
         <label>Get WorkPerformedCode</label>
         <locationX>50</locationX>
-        <locationY>1106</locationY>
+        <locationY>1214</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Update_SA</targetReference>
@@ -510,7 +512,7 @@
         <name>Get_WorkPerformedCode_0</name>
         <label>Get WorkPerformedCode</label>
         <locationX>1634</locationX>
-        <locationY>1106</locationY>
+        <locationY>1214</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Update_SA_0</targetReference>
@@ -535,7 +537,7 @@
         <name>Update_Related_Work_Order</name>
         <label>Update Related Work Order</label>
         <locationX>50</locationX>
-        <locationY>1322</locationY>
+        <locationY>1430</locationY>
         <connector>
             <targetReference>Update_Unit</targetReference>
         </connector>
@@ -599,7 +601,7 @@
         <name>Update_Related_Work_Order_0</name>
         <label>Update Related Work Order</label>
         <locationX>1634</locationX>
-        <locationY>1322</locationY>
+        <locationY>1430</locationY>
         <connector>
             <targetReference>Update_Unit_0</targetReference>
         </connector>
@@ -663,7 +665,7 @@
         <name>Update_SA</name>
         <label>Update SA</label>
         <locationX>50</locationX>
-        <locationY>1214</locationY>
+        <locationY>1322</locationY>
         <connector>
             <targetReference>Update_Related_Work_Order</targetReference>
         </connector>
@@ -680,9 +682,21 @@
             </value>
         </filters>
         <inputAssignments>
+            <field>ActualEndTime</field>
+            <value>
+                <elementReference>Work_End_Time</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Status</field>
             <value>
                 <stringValue>Completed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Travel_Time__c</field>
+            <value>
+                <elementReference>Travel_Time_Minutes</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -697,7 +711,7 @@
         <name>Update_SA_0</name>
         <label>Update SA</label>
         <locationX>1634</locationX>
-        <locationY>1214</locationY>
+        <locationY>1322</locationY>
         <connector>
             <targetReference>Update_Related_Work_Order_0</targetReference>
         </connector>
@@ -714,9 +728,21 @@
             </value>
         </filters>
         <inputAssignments>
+            <field>ActualEndTime</field>
+            <value>
+                <elementReference>Copy_1_of_Work_End_Time</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Status</field>
             <value>
                 <stringValue>Completed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Travel_Time__c</field>
+            <value>
+                <elementReference>Copy_1_of_Travel_Time_Minutes</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -731,7 +757,7 @@
         <name>Update_Unit</name>
         <label>Update Unit</label>
         <locationX>50</locationX>
-        <locationY>1430</locationY>
+        <locationY>1538</locationY>
         <connector>
             <targetReference>Create_UnitShutDown_Log</targetReference>
         </connector>
@@ -765,7 +791,7 @@
         <name>Update_Unit_0</name>
         <label>Update Unit</label>
         <locationX>1634</locationX>
-        <locationY>1430</locationY>
+        <locationY>1538</locationY>
         <connector>
             <targetReference>Update_UnitShutdownLog</targetReference>
         </connector>
@@ -799,7 +825,7 @@
         <name>Update_UnitShutdownLog</name>
         <label>Update UnitShutdownLog</label>
         <locationX>1634</locationX>
-        <locationY>1538</locationY>
+        <locationY>1646</locationY>
         <faultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>ErrorScreen</targetReference>
@@ -833,10 +859,102 @@
         <object>AssetDowntimePeriod</object>
     </recordUpdates>
     <screens>
+        <name>Add_Time</name>
+        <label>Add Time</label>
+        <locationX>50</locationX>
+        <locationY>998</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Fields_Assignments</targetReference>
+        </connector>
+        <fields>
+            <name>WorkStartTime</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Work Start Time : {!SA_Record.ActualStartTime}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Work_End_Time</name>
+            <dataType>DateTime</dataType>
+            <defaultValue>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </defaultValue>
+            <fieldText>Work End Time</fieldText>
+            <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <validationRule>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(247, 13, 13);&quot;&gt;Work End Date should be greater then Work Start Date&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <formulaExpression>{!Work_End_Time} &gt; {!SA_Record.ActualStartTime}</formulaExpression>
+            </validationRule>
+        </fields>
+        <fields>
+            <name>Travel_Time_Minutes</name>
+            <dataType>Number</dataType>
+            <defaultValue>
+                <elementReference>SA_Record.Travel_Time__c</elementReference>
+            </defaultValue>
+            <fieldText>Travel Time(Minutes)</fieldText>
+            <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <scale>0</scale>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Add_Time_1</name>
+        <label>Add Time</label>
+        <locationX>1634</locationX>
+        <locationY>998</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Get_UnitShutdownLog_Record_0</targetReference>
+        </connector>
+        <fields>
+            <name>WorkStime</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Work Start Time : {!SA_Record.ActualStartTime}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Copy_1_of_Work_End_Time</name>
+            <dataType>DateTime</dataType>
+            <defaultValue>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </defaultValue>
+            <fieldText>Work End Time</fieldText>
+            <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <validationRule>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(247, 13, 13); background-color: rgb(255, 255, 255);&quot;&gt;Work End Date should be greater then Work Start Date&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <formulaExpression>{!Copy_1_of_Work_End_Time} &gt; {!SA_Record.ActualStartTime}</formulaExpression>
+            </validationRule>
+        </fields>
+        <fields>
+            <name>Copy_1_of_Travel_Time_Minutes</name>
+            <dataType>Number</dataType>
+            <defaultValue>
+                <elementReference>SA_Record.Travel_Time__c</elementReference>
+            </defaultValue>
+            <fieldText>Travel Time(Minutes)</fieldText>
+            <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <scale>0</scale>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>ErrorScreen</name>
         <label>ErrorScreen</label>
         <locationX>314</locationX>
-        <locationY>1646</locationY>
+        <locationY>1754</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -931,7 +1049,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Fields_Assignments</targetReference>
+            <targetReference>Add_Time</targetReference>
         </connector>
         <fields>
             <name>Copy_1_of_AppointmentNumber</name>
@@ -979,7 +1097,7 @@
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <validationRule>
-                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(255, 13, 13); font-size: 12px; background-color: rgb(255, 255, 255);&quot;&gt;Projected Restart date should not be in past&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;.&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 12px; color: rgb(240, 10, 10);&quot;&gt;Projected Restart Date&lt;/span&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(240, 10, 10);&quot;&gt;/Time should not be null and should not be in the past.&lt;/span&gt;&lt;/p&gt;</errorMessage>
                 <formulaExpression>{!Projected_Restart_Date} &gt; NOW()</formulaExpression>
             </validationRule>
         </fields>
@@ -1003,7 +1121,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Get_UnitShutdownLog_Record_0</targetReference>
+            <targetReference>Add_Time_1</targetReference>
         </connector>
         <fields>
             <name>Copy_1_of_AppointmentNumber_0</name>
