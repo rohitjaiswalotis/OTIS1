@@ -10,7 +10,9 @@ Organization org = [ SELECT Id, IsSandbox FROM Organization LIMIT 1];
 
 Map<String, Object> propToValue = 
 	new Map<String, Object> {
-		'SF_SR_VAR_GLOBAL_IS_SANDBOX'			=>		org.IsSandbox
+		'SF_SR_VAR_GLOBAL_IS_SANDBOX'			=>		org.IsSandbox,
+		'SF_SR_VAR_GLOBAL_ADMIN_PROFILE_ID'		=>		[ SELECT Id FROM Profile WHERE Name = 'System Administrator' ]?.Id,
+		'SF_SR_VAR_GLOBAL_FS_SV_PROFILE_ID'		=>		[ SELECT Id FROM Profile WHERE Name = 'Field Service Supervisor' ]?.Id
 	}
 ;
 
