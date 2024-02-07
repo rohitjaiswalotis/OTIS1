@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FS_Description_to_limit_75</fullName>
+    <active>true</active>
+    <errorConditionFormula>LEN( Description ) &gt; 75</errorConditionFormula>
+    <errorMessage>Description should not exceed 75 characters.</errorMessage>
+</ValidationRule>

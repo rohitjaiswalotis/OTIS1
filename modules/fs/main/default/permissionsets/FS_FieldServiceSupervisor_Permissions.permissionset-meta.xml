@@ -3,4 +3,13 @@
     <description>FS Field Service Supervisor Permission Set</description>
     <hasActivationRequired>false</hasActivationRequired>
     <label>FS Field Service Supervisor Permissions</label>
+     <fieldPermissions>
+        <editable>false</editable>
+        <field>Asset.Shut_Down_Duration__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <tabSettings>
+        <tab>Daily_hurdle</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
 </PermissionSet>

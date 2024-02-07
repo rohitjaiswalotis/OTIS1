@@ -1,0 +1,57 @@
+{
+	
+	"allOrNone" : true,
+	
+	"objects": [
+		
+		{
+			"query": "SELECT Id, Name, maps__Date__c, maps__Value2__c, maps__Value3__c, maps__Value__c FROM maps__MapsSetting__c  WHERE Name = 'FolderPermissionsEnabled'",
+			"operation": "Upsert",
+			"externalId": "Name"
+		},
+		
+		{
+			"query": "SELECT Id, Name, maps__AllowExports__c, maps__AutoCheckOut__c, maps__ButtonSet__c, maps__CreateDataLayers__c, maps__DataRegion__c, maps__DefaultMapTile__c, maps__DefaultValues__c, maps__Description__c, maps__EditableTooltips__c, maps__EnableArcGIS__c, maps__EnablePolyline__c, maps__FolderAdmin__c, maps__HidePersonalFolder__c, maps__LiveMobileTracking__c, maps__MaxExportSize__c, maps__MaxQuerySizeExternal__c, maps__MaxQuerySize__c, maps__MobileQuerySize__c, maps__ObjectSearchLanguage__c, maps__Profile__c, maps__ProxyUser__c, maps__SelfHostedDataUser__c, maps__ShowUserFolders__c, maps__ShowWeather__c, maps__TerritoryLayerCreation__c, maps__User__c FROM maps__SettingsGroup__c WHERE Name = 'Folder Permission'",
+			"operation": "Upsert",
+			"externalId": "Name"
+		},
+		
+		{
+			"query": "SELECT Id, maps__SettingsGroup__c, maps__EntityId__c FROM maps__SettingsGroupAssignment__c WHERE maps__SettingsGroup__r.Name = 'Folder Permission'",
+			"operation": "Upsert",
+			"externalId": "maps__EntityId__c;maps__SettingsGroup__r.Name"
+		},
+		
+		{
+			"query": "SELECT Id, Name, maps__Order__c, maps__ParentFolder__c, maps__ProfileIds__c, maps__RoleId__c, maps__User__c FROM maps__Folder__c WHERE Name = 'Otis Layers'",
+			"operation": "Upsert",
+			"externalId": "Name"
+		},
+		
+		{
+			"query": "SELECT Id, Name, maps__AddressObject__c, maps__AutoAssignmentDirtyFlag__c, maps__BatchSize__c, maps__City__c, maps__CleanCity__c, maps__CleanCountry__c, maps__CleanCounty__c, maps__CleanDistrict__c, maps__CleanPostalCode__c, maps__CleanState__c, maps__CleanStreet__c, maps__Country__c, maps__Description__c, maps__DeviceId__c, maps__DeviceType__c, maps__DeviceVendor__c, maps__DisableGlobalSearch__c, maps__InActive__c, maps__LastUpdated__c, maps__Latitude__c, maps__Longitude__c, maps__MapIt_Proximity_Measurement_Unit__c, maps__MapIt_Proximity_On__c, maps__MapIt_Proximity_Radius__c, maps__MapIt_Show_Inside_Shape__c, maps__MapIt_Zoom_Control__c, maps__MapIt_Zoom_To_Fit__c, maps__Name__c, maps__PolylineVertices__c, maps__PolymorphicAddressObject__c, maps__PostalCode__c, maps__PriorityField__c, maps__PriorityType__c, maps__Processing__c, maps__Quality__c, maps__RecordTypeId__c, maps__RoutingEndTime__c, maps__RoutingHasAddress__c, maps__RoutingIsFlexible__c, maps__RoutingStartTime__c, maps__Settings__c, maps__Shape__c, maps__Similarity__c, maps__SkipFailedGeocodes__c, maps__State__c, maps__Street__c, maps__Tooltip10__c, maps__Tooltip11__c, maps__Tooltip12__c, maps__Tooltip13__c, maps__Tooltip14__c, maps__Tooltip15__c, maps__Tooltip1__c, maps__Tooltip2__c, maps__Tooltip3__c, maps__Tooltip4__c, maps__Tooltip5__c, maps__Tooltip6__c, maps__Tooltip7__c, maps__Tooltip8__c, maps__Tooltip9__c, maps__Type__c, maps__VerifiedLatitude__c, maps__VerifiedLongitude__c, maps__testLat__c FROM maps__BaseObject__c WHERE NAME IN ('ServiceAppointment', 'ServiceResource', 'Location')",
+			"operation": "Upsert",
+			"externalId": "Name"
+		},
+		
+		{
+			"query": "SELECT Id, Name, CreatedDate, maps__ActivityFilter__c, maps__AdvancedOptions__c, maps__BaseObject__c, maps__ColorAssignmentType__c, maps__ColorAssignment__c, maps__ColorsAssignedDynamically__c, maps__CustomQuery__c, maps__Description__c, maps__FilterLogic__c, maps__Folder__c, maps__IconColor__c, maps__MaxQuerySizeExternal__c, maps__MaxQuerySize__c, maps__Order__c, maps__OrgWide__c, maps__OwnerFilterId__c, maps__PicklistField__c, maps__ProximityOptions__c, maps__QueryKey__c, maps__Query__c, maps__RefreshInterval__c, maps__RoleId__c, maps__RowLimit__c, maps__RowOrderDirection__c, maps__RowOrder__c, maps__ShapeAssignment__c, maps__ShapeField__c, maps__Tooltip10__c, maps__Tooltip11__c, maps__Tooltip12__c, maps__Tooltip13__c, maps__Tooltip14__c, maps__Tooltip15__c, maps__Tooltip1__c, maps__Tooltip2__c, maps__Tooltip3__c, maps__Tooltip4__c, maps__Tooltip5__c, maps__Tooltip6__c, maps__Tooltip7__c, maps__Tooltip8__c, maps__Tooltip9__c, maps__QueryComponents__c, maps__RelatedListCount__c FROM maps__MarkerLayer__c WHERE maps__BaseObject__r.Name IN ('ServiceAppointment', 'ServiceResource', 'Location') AND maps__Folder__r.Name = 'Otis Layers'",
+			"operation": "Upsert",
+			"externalId": "Name;maps__BaseObject__r.Name;maps__Folder__r.Name"
+		},
+		
+		{
+			"query": "SELECT Id, Name, maps__MarkerLayer__c, maps__BaseObject__c, maps__CrossField__c, maps__CrossFilterLogic__c, maps__CrossObject__c, maps__Field__c, maps__GrandparentField__c, maps__Index__c, maps__MarkerLayerRelatedList__c, maps__Operator__c, maps__ParentField__c, maps__Parent__c, maps__Type__c, maps__Value2__c, maps__Value__c FROM  maps__MarkerLayerComponent__c WHERE maps__MarkerLayer__r.maps__BaseObject__r.Name IN ('ServiceAppointment', 'ServiceResource', 'Location') AND maps__MarkerLayer__r.maps__Folder__r.Name = 'Otis Layers'",
+			"operation": "Upsert",
+			"externalId": "maps__BaseObject__c;maps__MarkerLayer__r.Name;maps__Field__c;maps__Operator__c;maps__Value__c;maps__Type__c;maps__Value__c;maps__CrossObject__c"
+		},
+		
+		{
+			"query": "SELECT Id, Name, maps__SavedQuery__c, maps__Column1__c, maps__Column2__c, maps__Column3__c, maps__Column4__c, maps__Column5__c, maps__ListLabel__c, maps__NumToDisplay__c, maps__Order__c, maps__ReferenceField__c, maps__RelatedSort__c FROM maps__MarkerLayerRelatedList__c WHERE maps__SavedQuery__r.maps__BaseObject__r.Name IN ('ServiceAppointment', 'ServiceResource', 'Location') AND maps__SavedQuery__r.maps__Folder__r.Name = 'Otis Layers'",
+			"operation": "Upsert",
+			"externalId": "Name;maps__SavedQuery__r.Name"
+		}
+		
+	]
+	
+}
