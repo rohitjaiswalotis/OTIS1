@@ -1,9 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <assignments>
+        <name>Assignment_of_Date</name>
+        <label>Assignment of Date</label>
+        <locationX>50</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>ActualDateTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_SA_record</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assignment_of_Date_and_Travel_Time</name>
+        <label>Assignment of Date and Travel Time</label>
+        <locationX>314</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>ActualDateTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>TravelTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>CalculateTravelTime</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_SA_record</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>currentStatusSet</name>
         <label>currentStatus</label>
-        <locationX>176</locationX>
+        <locationX>314</locationX>
         <locationY>242</locationY>
         <assignmentItems>
             <assignToReference>status1</assignToReference>
@@ -48,8 +87,68 @@
             <stringValue>Onsite</stringValue>
         </value>
     </choices>
+    <decisions>
+        <name>Check_Status_Change</name>
+        <label>Check Status Change</label>
+        <locationX>314</locationX>
+        <locationY>458</locationY>
+        <defaultConnector>
+            <targetReference>Update_SA_record</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>if_Status_Changes_to_Enroute</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>enroute</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>SA_data.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Enroute</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assignment_of_Date</targetReference>
+            </connector>
+            <label>if Status Changes to Enroute</label>
+        </rules>
+        <rules>
+            <name>If_Status_changes_to_Onsite</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Onsite</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>SA_data.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Enroute</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assignment_of_Date_and_Travel_Time</targetReference>
+            </connector>
+            <label>If Status changes to Onsite</label>
+        </rules>
+    </decisions>
     <description>This flow will be  used instead of &quot;Update SA&quot; quick action.</description>
     <environments>Default</environments>
+    <formulas>
+        <name>CalculateTravelTime</name>
+        <dataType>Number</dataType>
+        <expression>(NOW() - {!SA_data.ActualStartTime} )*1440</expression>
+        <scale>0</scale>
+    </formulas>
     <interviewLabel>Update {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Update ETA</label>
     <processMetadataValues>
@@ -75,7 +174,7 @@
         <description>getting the SA records</description>
         <name>get_SA_record</name>
         <label>get SA record</label>
-        <locationX>176</locationX>
+        <locationX>314</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -95,12 +194,13 @@
         <queriedFields>Initial_ETA__c</queriedFields>
         <queriedFields>Status</queriedFields>
         <queriedFields>DueDate</queriedFields>
+        <queriedFields>ActualStartTime</queriedFields>
     </recordLookups>
     <recordUpdates>
         <name>Update_SA_record</name>
         <label>Update SA record</label>
-        <locationX>176</locationX>
-        <locationY>458</locationY>
+        <locationX>314</locationX>
+        <locationY>758</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -109,6 +209,12 @@
                 <elementReference>SA_data.Id</elementReference>
             </value>
         </filters>
+        <inputAssignments>
+            <field>ActualStartTime</field>
+            <value>
+                <elementReference>ActualDateTime</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>Initial_ETA__c</field>
             <value>
@@ -121,18 +227,24 @@
                 <elementReference>Status</elementReference>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <field>Travel_Time__c</field>
+            <value>
+                <elementReference>CalculateTravelTime</elementReference>
+            </value>
+        </inputAssignments>
         <object>ServiceAppointment</object>
     </recordUpdates>
     <screens>
         <name>Update_SA</name>
         <label>Update SA</label>
-        <locationX>176</locationX>
+        <locationX>314</locationX>
         <locationY>350</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Update_SA_record</targetReference>
+            <targetReference>Check_Status_Change</targetReference>
         </connector>
         <fields>
             <name>Initial_ETA</name>
@@ -167,13 +279,20 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>50</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>get_SA_record</targetReference>
         </connector>
     </start>
     <status>Active</status>
+    <variables>
+        <name>ActualDateTime</name>
+        <dataType>DateTime</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>Id</name>
         <dataType>String</dataType>
@@ -205,5 +324,13 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>TravelTime</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
     </variables>
 </Flow>
