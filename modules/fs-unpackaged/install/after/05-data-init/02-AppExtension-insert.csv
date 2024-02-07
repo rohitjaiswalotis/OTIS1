@@ -6,3 +6,12 @@
 "$SF_SR_VAR_MOBILE_SETTING_ID","Pin/Unpin SA","Flow","Change_Pinn_Service_Appointment","ServiceAppointment","Pin/Unpin Service Appointment","/flow/Change_Pinn_Service_Appointment"
 "$SF_SR_VAR_MOBILE_SETTING_ID","Declare Parts Missing","Flow","Declare_Parts_Missing_WO","WorkOrder","Declare Parts Missing","/flow/Declare_Parts_Missing_WO"
 "$SF_SR_VAR_MOBILE_SETTING_ID","FS_ChangeWOLIStatus","Flow","FS_ChangeWOLIStatus","WorkOrder","Complete Line Item Status","/flow/FS_ChangeWOLIStatus"
+"$SF_SR_VAR_MOBILE_SETTING_ID","Unit Restart Time Form","Flow","Unit_Restart_Reason_FSL_Mobile_Flow","AssetDowntimePeriod","Projected Restart Date",
+"$SF_SR_VAR_MOBILE_SETTING_ID","Update_GeoCode_Unit","Flow","FS_Update_Unit_Building_Location_FSL_Flow","Asset","Update GeoCode",
+"$SF_SR_VAR_MOBILE_SETTING_ID","Update Unit Status","Flow","FSL_Mobile_Unit_Shutdown","Asset","Update Unit Status",
+"$SF_SR_VAR_MOBILE_SETTING_ID","View Report","iOS","salesforce1://v1/sObject/$SF_SR_VAR_KPI_DASHBOARDS_MECHANICS_ID/view","ServiceAppointment","Open KPI Dashboards",
+"$SF_SR_VAR_MOBILE_SETTING_ID","Service Appointment Building Contact","Flow","Service_Appointment_Building_Contact","ServiceAppointment","Service Appointment Building Contact",
+"$SF_SR_VAR_MOBILE_SETTING_ID","Service_Report_Flow","Flow","Create_SR","ServiceAppointment","Create Service Report",
+"$SF_SR_VAR_MOBILE_SETTING_ID","Accept or Reject SA","Flow","SA_Accept_Reject_FSL_Flow","ServiceAppointment","Accept or Reject SA",
+"$SF_SR_VAR_MOBILE_SETTING_ID","Service Request WO Closeout","Flow","Closeout_SA","ServiceAppointment","Service Request WO Closeout",
+"$SF_SR_VAR_MOBILE_SETTING_ID","Update SA","Flow","Update_ETA","ServiceAppointment","Update SA",
