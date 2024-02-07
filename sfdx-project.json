@@ -24,7 +24,7 @@
         {
           "package": "OTIS Global CC Core",
           "versionNumber": "1.8.0.LATEST",
-          "branch": "dev-naa"
+          "branch": "dev"
         }
       ],
       "unpackagedMetadata": {
