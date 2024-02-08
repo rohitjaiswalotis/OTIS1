@@ -37,14 +37,14 @@
             </value>
         </filters>
         <filters>
-            <field>Work_Order__c</field>
+            <field>WorkOrder__c</field>
             <operator>IsNull</operator>
             <value>
                 <booleanValue>true</booleanValue>
             </value>
         </filters>
         <inputAssignments>
-            <field>Work_Order__c</field>
+            <field>WorkOrder__c</field>
             <value>
                 <elementReference>$Record.ParentRecordId</elementReference>
             </value>
