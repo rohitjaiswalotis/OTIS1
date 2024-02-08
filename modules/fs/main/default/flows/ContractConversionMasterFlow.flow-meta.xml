@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>59.0</apiVersion>
+    <decisions>
+        <name>effective_date</name>
+        <label>effective date</label>
+        <locationX>182</locationX>
+        <locationY>252</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>effective</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.FS_EffectiveDate__c</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Flow.CurrentDate</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Pricebook</targetReference>
+            </connector>
+            <label>Today</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
     <formulas>
         <name>CalculateEndDate</name>
@@ -36,8 +58,8 @@
     <recordCreates>
         <name>Create_Entitlement_Record</name>
         <label>Create Entitlement Record</label>
-        <locationX>176</locationX>
-        <locationY>576</locationY>
+        <locationX>50</locationX>
+        <locationY>684</locationY>
         <connector>
             <targetReference>LineConversion</targetReference>
         </connector>
@@ -89,8 +111,8 @@
     <recordCreates>
         <name>CreateServiceContract</name>
         <label>Create Service Contract</label>
-        <locationX>176</locationX>
-        <locationY>360</locationY>
+        <locationX>50</locationX>
+        <locationY>468</locationY>
         <assignRecordIdToReference>ServiceContractId</assignRecordIdToReference>
         <connector>
             <targetReference>Get_SLA_entitlement_ID</targetReference>
@@ -160,8 +182,8 @@
     <recordLookups>
         <name>Get_Pricebook</name>
         <label>Get Pricebook</label>
-        <locationX>176</locationX>
-        <locationY>252</locationY>
+        <locationX>50</locationX>
+        <locationY>360</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>CreateServiceContract</targetReference>
@@ -181,8 +203,8 @@
     <recordLookups>
         <name>Get_SLA_entitlement_ID</name>
         <label>Get SLA entitlement ID</label>
-        <locationX>176</locationX>
-        <locationY>468</locationY>
+        <locationX>50</locationX>
+        <locationY>576</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Create_Entitlement_Record</targetReference>
@@ -202,8 +224,8 @@
     <recordUpdates>
         <name>UpdateUnitSummary</name>
         <label>Update Unit Summary</label>
-        <locationX>176</locationX>
-        <locationY>792</locationY>
+        <locationX>50</locationX>
+        <locationY>900</locationY>
         <connector>
             <targetReference>Unit_Update</targetReference>
         </connector>
@@ -222,10 +244,10 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>50</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Pricebook</targetReference>
+            <targetReference>effective_date</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -247,8 +269,8 @@
     <subflows>
         <name>LineConversion</name>
         <label>LineConversion</label>
-        <locationX>176</locationX>
-        <locationY>684</locationY>
+        <locationX>50</locationX>
+        <locationY>792</locationY>
         <connector>
             <targetReference>UpdateUnitSummary</targetReference>
         </connector>
@@ -276,8 +298,8 @@
     <subflows>
         <name>Unit_Update</name>
         <label>Unit Update</label>
-        <locationX>176</locationX>
-        <locationY>900</locationY>
+        <locationX>50</locationX>
+        <locationY>1008</locationY>
         <flowName>FS_SubFlowUnitUpdateBasedOnSummary</flowName>
         <inputAssignments>
             <name>serviceContractIds</name>
