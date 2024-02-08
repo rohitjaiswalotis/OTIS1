@@ -34,6 +34,22 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Store_INT_2</name>
+        <label>Store INT 2</label>
+        <locationX>792</locationX>
+        <locationY>1247</locationY>
+        <assignmentItems>
+            <assignToReference>StoreINT2</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>For_NAme</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>For_NAme</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>store_TPA</name>
         <label>store TPA</label>
         <locationX>264</locationX>
@@ -156,10 +172,10 @@
     <decisions>
         <name>TPA_INT</name>
         <label>TPA/INT</label>
-        <locationX>396</locationX>
+        <locationX>660</locationX>
         <locationY>1139</locationY>
         <defaultConnector>
-            <targetReference>Store_INT</targetReference>
+            <targetReference>For_NAme</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -177,8 +193,44 @@
             </connector>
             <label>TPA</label>
         </rules>
+        <rules>
+            <name>INT1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>For_NAme</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>INT1</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Store_INT</targetReference>
+            </connector>
+            <label>INT1</label>
+        </rules>
+        <rules>
+            <name>INT2</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>For_NAme</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>INT2</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Store_INT_2</targetReference>
+            </connector>
+            <label>INT2</label>
+        </rules>
     </decisions>
     <environments>Default</environments>
+    <formulas>
+        <name>INT2divide</name>
+        <dataType>Number</dataType>
+        <expression>Value(Right({!StoreINT2},3))</expression>
+        <scale>0</scale>
+    </formulas>
     <formulas>
         <name>IntDivide</name>
         <dataType>Number</dataType>
@@ -406,6 +458,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>T2_mins__c</field>
+            <value>
+                <elementReference>INT2divide</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>TPR__c</field>
             <value>
                 <elementReference>TPRDivide</elementReference>
@@ -472,6 +530,13 @@
     </variables>
     <variables>
         <name>storeInt</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>StoreINT2</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
