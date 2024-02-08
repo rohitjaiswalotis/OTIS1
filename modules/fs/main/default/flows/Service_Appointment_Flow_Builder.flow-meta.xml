@@ -1923,7 +1923,7 @@
         <inputAssignments>
             <name>NotificationBody</name>
             <value>
-                <stringValue>is re-assigned to {!$Record.AssignedServiceResource__r.Name} for Work Order -  {!$Record.WorkOrder__r.WorkOrderNumber} with LTA-{!$Record.Latest_Time_of_Arrival__c}</stringValue>
+                <stringValue>is re-assigned to {!$Record.AssignedServiceResource__r.Name} for Work Order -  {!$Record.WorkOrder__r.WorkOrderNumber} with LTA-{!$Record.Latest_Time_of_Arrival2__c}</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -2023,7 +2023,7 @@
         <inputAssignments>
             <name>NotificationBody</name>
             <value>
-                <stringValue>is Assigned to {!$Record.AssignedServiceResource__r.Name} for Work Order -  {!$Record.WorkOrder__r.WorkOrderNumber} with LTA-{!$Record.Latest_Time_of_Arrival__c}</stringValue>
+                <stringValue>is Assigned to {!$Record.AssignedServiceResource__r.Name} for Work Order -  {!$Record.WorkOrder__r.WorkOrderNumber} with LTA-{!$Record.Latest_Time_of_Arrival2__c}</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
