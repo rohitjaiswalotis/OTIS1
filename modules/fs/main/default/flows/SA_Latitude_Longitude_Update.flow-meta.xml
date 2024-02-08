@@ -78,7 +78,7 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$Record.Work_Order__r.Id</elementReference>
+                <elementReference>$Record.WorkOrder__r.Id</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
