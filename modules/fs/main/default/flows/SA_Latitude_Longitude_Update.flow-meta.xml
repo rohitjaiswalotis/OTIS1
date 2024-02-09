@@ -21,8 +21,8 @@
             </value>
         </assignmentItems>
     </assignments>
-    <environments>Default</environments>
     <description>US#956325 SA GeoLocation from Building flow</description>
+    <environments>Default</environments>
     <interviewLabel>SA Latitude Longitude Update {!$Flow.CurrentDateTime}</interviewLabel>
     <label>SA Latitude Longitude Update</label>
     <processMetadataValues>
