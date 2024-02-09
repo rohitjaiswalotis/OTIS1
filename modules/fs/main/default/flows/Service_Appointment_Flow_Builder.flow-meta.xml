@@ -875,11 +875,6 @@
         <expression>{!$Record.SchedStartTime} +({!$Record.DurationInMinutes}/1440)</expression>
     </formulas>
     <formulas>
-        <name>PopulateGanttLabel</name>
-        <dataType>String</dataType>
-        <expression>{!$Record.Unit__r.Name}+&apos;-&apos;+{!$Record.WorkType.Name}  +&apos;-&apos;+Text({!$Record.WorkOrder__r.FS_WorkOderType__c}) +&apos;-&apos;+({!$Record.Priority__c})</expression>
-    </formulas>
-    <formulas>
         <name>UpdatedEndTime</name>
         <dataType>DateTime</dataType>
         <expression>{!$Record.DueDate}+{!SLATime}</expression>
