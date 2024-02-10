@@ -10,7 +10,7 @@
       "definitionFile": "config/core/shape.json",
       "dependencies": [
         {
-          "package": "FSL@246.0.84"
+          "package": "FSL@248.0.62"
         },
         {
           "package": "Salesforce Mobile Apps@1.20.0"
@@ -53,7 +53,7 @@
     }
   ],
   "packageAliases": {
-    "FSL@246.0.84": "04t3y000001SkcUAAS",
+    "FSL@248.0.62": "04t3y000001i8vTAAQ",
     "Salesforce Mobile Apps@1.20.0": "04t3A000001DdcGQAS",
     "Salesforce Maps@246.9": "04t4P000002fQreQAE",
     "Salesforce Field Service App@1.52": "04t1R0000016Ya8QAE",
@@ -62,12 +62,12 @@
   },
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "59.0",
+  "sourceApiVersion": "60.0",
   "customScope": {
     "name": "",
     "name_commented": "FS",
     "minApi" : "49.0",
-    "maxApi" : "59.0",
+    "maxApi" : "60.0",
     "exclusions": {
       "classes": [],
       "objects": [],
