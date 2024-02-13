@@ -216,6 +216,38 @@
             <label>If WorkOrder</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Check_Passenger_Released</name>
+        <label>Check Passenger Released</label>
+        <locationX>578</locationX>
+        <locationY>458</locationY>
+        <defaultConnector>
+            <targetReference>Get_Current_Unit_Record</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>If_Not_Released_and_S1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>WorkOrderRecord.ConfirmedPassengerRelease__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>WorkOrderRecord.Priority</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>S1 - Emergency</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Validation_Screen</targetReference>
+            </connector>
+            <label>If Not Released and S1</label>
+        </rules>
+    </decisions>
     <description>US # 936465 - This flow is using to Close the SA.</description>
     <dynamicChoiceSets>
         <name>CategoryPicklistCollection</name>
@@ -468,7 +500,7 @@
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Current_Unit_Record</targetReference>
+            <targetReference>Check_Passenger_Released</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -482,6 +514,8 @@
         <outputReference>WorkOrderRecord</outputReference>
         <queriedFields>Id</queriedFields>
         <queriedFields>AssetId</queriedFields>
+        <queriedFields>ConfirmedPassengerRelease__c</queriedFields>
+        <queriedFields>Priority</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>Get_WorkPerformedCode</name>
@@ -885,7 +919,7 @@
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <validationRule>
-                <errorMessage>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(247, 13, 13);&quot;&gt;Work End Time&lt;/span&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(240, 10, 10);&quot;&gt; should not be null and should not less then &lt;/span&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(247, 13, 13);&quot;&gt;Work Start Time.&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(247, 13, 13); background-color: rgb(255, 255, 255);&quot;&gt;Work End Time&lt;/span&gt;&lt;span style=&quot;color: rgb(240, 10, 10); background-color: rgb(255, 255, 255);&quot;&gt; should not be null and should not less then &lt;/span&gt;&lt;span style=&quot;color: rgb(247, 13, 13); background-color: rgb(255, 255, 255);&quot;&gt;Work Start Time&lt;/span&gt;&lt;/p&gt;</errorMessage>
                 <formulaExpression>{!Work_End_Time} &gt; {!SA_Record.ActualStartTime}</formulaExpression>
             </validationRule>
         </fields>
@@ -931,7 +965,7 @@
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <validationRule>
-                <errorMessage>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(247, 13, 13);&quot;&gt;Work End Time&lt;/span&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(240, 10, 10);&quot;&gt; should not be null and should not less then &lt;/span&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(247, 13, 13);&quot;&gt;Work Start Time&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(247, 13, 13); background-color: rgb(255, 255, 255);&quot;&gt;Work End Date should be greater then Work Start Date&lt;/span&gt;&lt;/p&gt;</errorMessage>
                 <formulaExpression>{!Copy_1_of_Work_End_Time} &gt; {!SA_Record.ActualStartTime}</formulaExpression>
             </validationRule>
         </fields>
@@ -1183,6 +1217,22 @@
         <fields>
             <name>CloseoutError</name>
             <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(76, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Unable to Complete the Service Appointment as status is other then &lt;/strong&gt;&lt;strong style=&quot;color: rgb(76, 68, 68);&quot;&gt;onsite OR Parent Record is other then WorkOrder. &lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Validation_Screen</name>
+        <label>Validation Screen</label>
+        <locationX>50</locationX>
+        <locationY>566</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>ValidationError</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); color: rgb(195, 15, 15);&quot;&gt;Please do Passenger Release before Closing WO since it is an Entrapment/Possible Entrapment&lt;/strong&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);&quot;&gt;.&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
