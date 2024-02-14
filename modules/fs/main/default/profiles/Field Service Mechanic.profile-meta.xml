@@ -9,4 +9,8 @@
         <useLightningRuntime>false</useLightningRuntime>
     </loginFlows>
     <userLicense>Salesforce</userLicense>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>FieldServiceAccess</name>
+    </userPermissions>
 </Profile>
