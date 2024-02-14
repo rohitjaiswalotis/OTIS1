@@ -919,7 +919,7 @@
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <validationRule>
-                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(247, 13, 13); background-color: rgb(255, 255, 255);&quot;&gt;Work End Time&lt;/span&gt;&lt;span style=&quot;color: rgb(240, 10, 10); background-color: rgb(255, 255, 255);&quot;&gt; should not be null and should not less then &lt;/span&gt;&lt;span style=&quot;color: rgb(247, 13, 13); background-color: rgb(255, 255, 255);&quot;&gt;Work Start Time&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(247, 13, 13); background-color: rgb(255, 255, 255);&quot;&gt;Work End Time&lt;/span&gt;&lt;span style=&quot;color: rgb(240, 10, 10); background-color: rgb(255, 255, 255);&quot;&gt; should not be null and should not be less than &lt;/span&gt;&lt;span style=&quot;color: rgb(247, 13, 13); background-color: rgb(255, 255, 255);&quot;&gt;Work Start Time.&lt;/span&gt;&lt;/p&gt;</errorMessage>
                 <formulaExpression>{!Work_End_Time} &gt; {!SA_Record.ActualStartTime}</formulaExpression>
             </validationRule>
         </fields>
@@ -965,7 +965,7 @@
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <validationRule>
-                <errorMessage>&lt;p&gt;&lt;span style=&quot;color: rgb(247, 13, 13); background-color: rgb(255, 255, 255);&quot;&gt;Work End Date should be greater then Work Start Date&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(247, 13, 13);&quot;&gt;Work End Time&lt;/span&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(240, 10, 10);&quot;&gt; should not be null and should not be less than &lt;/span&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(247, 13, 13);&quot;&gt;Work Start Time.&lt;/span&gt;&lt;/p&gt;</errorMessage>
                 <formulaExpression>{!Copy_1_of_Work_End_Time} &gt; {!SA_Record.ActualStartTime}</formulaExpression>
             </validationRule>
         </fields>
@@ -1216,7 +1216,7 @@
         <allowPause>true</allowPause>
         <fields>
             <name>CloseoutError</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(76, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Unable to Complete the Service Appointment as status is other then &lt;/strong&gt;&lt;strong style=&quot;color: rgb(76, 68, 68);&quot;&gt;onsite OR Parent Record is other then WorkOrder. &lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(76, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Unable to Complete the Service Appointment as status is other than O&lt;/strong&gt;&lt;strong style=&quot;color: rgb(76, 68, 68);&quot;&gt;nsite or Parent Record is other than Work Order. &lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
