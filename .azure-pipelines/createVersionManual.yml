@@ -88,7 +88,12 @@ stages:
             
             - template: templates/createVersion.yml
               parameters:
-                envProfile: ${{ parameters.envProfile }}
+                ${{ if and(eq(parameters.envProfile, 'default'), eq(variables['Build.SourceBranchName'], 'dev-stable')) }}:
+                  envProfile: 'stable'
+                ${{ elseif and(eq(parameters.envProfile, 'default'), eq(variables['Build.SourceBranchName'], 'master')) }}:
+                  envProfile: 'release'
+                ${{ else }}:
+                  envProfile: ${{ parameters.envProfile }}
                 skipValidation: ${{ parameters.skipValidation }}
                 versionName: ${{ parameters.versionName }}
                 versionNumber: ${{ parameters.versionNumber }}
