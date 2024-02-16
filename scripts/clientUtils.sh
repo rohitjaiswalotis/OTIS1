@@ -24,6 +24,11 @@ function installPackage {
 	
 	local localizationDomain="$(echo $options | jq -r '.localizationDomain // empty')";
 	
+	local installationMode="$(echo $options | jq -r '.installationMode // empty')";
+	local compileScope="$(echo $options | jq -r '.compileScope // empty')";
+	local upgradeType="$(echo $options | jq -r '.upgradeType // empty')";
+	local actionPhase="$(echo $options | jq -r '.actionPhase // empty')";
+	
 	local installKey="$(echo $options | jq -r '.installKey // empty')";
 	
 	local securityType="$(echo $options | jq -r '.securityType // "AdminsOnly"')";
@@ -296,6 +301,11 @@ function installPackageDependencies {
 	
 	local localizationDomain="$(echo $options | jq -r '.localizationDomain // empty')";
 	
+	local installationMode="$(echo $options | jq -r '.installationMode // empty')";
+	local compileScope="$(echo $options | jq -r '.compileScope // empty')";
+	local upgradeType="$(echo $options | jq -r '.upgradeType // empty')";
+	local actionPhase="$(echo $options | jq -r '.actionPhase // empty')";
+	
 	local securityType="$(echo $options | jq -r '.securityType // "AdminsOnly"')";
 	local waitPublish="$(echo $options | jq -r '.waitPublish // 1000')";
 	local waitInstall="$(echo $options | jq -r '.waitInstall // 1000')";
@@ -530,7 +540,7 @@ function installPackageDependencies {
 					fi
 					
 					# trigger package version install pipeline
-					AZ_INSTALL_PIPELINE_TRIGGER_RESPONSE=$(eval "az pipelines run --organization \"$organization\" --project \"$project\" $AZ_INSTALL_PIPELINE_CHECKOUT --name=\"$specialInstallPipelineName\" $AZ_INSTALL_PIPELINE_FOLDER_PATH --parameters \"versionId=$dependencyVersionId\" \"localizationDomain=$localizationDomain\" \"targetOrgUrl=${serverurl}\" \"targetOrgUsername=${username}\" \"targetOrgPassword=${password}\" \"targetOrgAuthFileName=${authFile}\" \"targetOrgToken=${token}\" \"autoInstallDependencies=true\""); AZ_INSTALL_PIPELINE_TRIGGER_CODE=$?;
+					AZ_INSTALL_PIPELINE_TRIGGER_RESPONSE=$(eval "az pipelines run --organization \"$organization\" --project \"$project\" $AZ_INSTALL_PIPELINE_CHECKOUT --name=\"$specialInstallPipelineName\" $AZ_INSTALL_PIPELINE_FOLDER_PATH --parameters \"versionId=$dependencyVersionId\" \"localizationDomain=$localizationDomain\" \"targetOrgUrl=${serverurl}\" \"targetOrgUsername=${username}\" \"targetOrgPassword=${password}\" \"targetOrgAuthFileName=${authFile}\" \"targetOrgToken=${token}\" \"autoInstallDependencies=true\" \"installationMode=$installationMode\" \"compileScope=$compileScope\" \"upgradeType=$upgradeType\" \"actionPhase=$actionPhase\""); AZ_INSTALL_PIPELINE_TRIGGER_CODE=$?;
 					echo $AZ_INSTALL_PIPELINE_TRIGGER_RESPONSE
 					
 					# grab pipeline run id from response
