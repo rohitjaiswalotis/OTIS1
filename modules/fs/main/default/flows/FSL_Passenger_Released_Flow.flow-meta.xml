@@ -274,7 +274,7 @@
         <allowPause>false</allowPause>
         <fields>
             <name>errorMessages</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(215, 13, 13);&quot;&gt;Passenger Released Time is already captured. &lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(215, 13, 13);&quot;&gt;Passenger Release Time is already captured.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
