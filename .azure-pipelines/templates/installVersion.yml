@@ -341,9 +341,16 @@ steps:
           chmod +x $(clientUtils)
           source $(clientUtils)
           
+          # evaluate script params (if any)
+          if [[ '${{parameters.scriptParams}}' =~ ^none$ ]] ; then
+            scriptParams="none";
+          else
+            scriptParams=$(escapeJson '${{parameters.scriptParams}}')
+          fi
+          
           echo "Installing dependencies for package $(fsPackageName) $FS_PACKAGE_VERSION_NUMBER ($FS_PACKAGE_VERSION_ID) into target org as '$TARGET_ORG_USERNAME' user..."
           CURRENT_DIR_CHECKPOINT="$(pwd)";
-          installPackageDependencies "$FS_PACKAGE_VERSION_ID" "{ \"devHubAlias\":\"devHub\", \"orgAlias\":\"targetOrg\", \"username\":\"${TARGET_ORG_USERNAME:-none}\", \"password\":\"${TARGET_ORG_PASSWORD:-none}\", \"url\":\"${TARGET_ORG_URL:-none}\", \"authFile\":\"${TARGET_ORG_AUTH_FILE_NAME:-none}\", \"token\":\"${TARGET_ORG_TOKEN:-none}\" }" "{ \"organization\":\"$(System.TeamFoundationCollectionUri)\", \"project\": \"$(System.TeamProject)\", \"projectId\": \"$(System.TeamProjectId)\", \"localizationDomain\":\"${{parameters.localizationDomain}}\", \"installationMode\":\"${{parameters.installationMode}}\", \"compileScope\":\"${{parameters.compileScope}}\", \"upgradeType\":\"${{parameters.upgradeType}}\", \"actionPhase\":\"${{parameters.actionPhase}}\", \"debugMode\":\"${OPTION_DEBUG_MODE:-false}\", \"betaDiff\":true, \"versionComparison\":$(enableVersionComparison) }" 2>&1; DX_STATUS_CODE=$?;
+          installPackageDependencies "$FS_PACKAGE_VERSION_ID" "{ \"devHubAlias\":\"devHub\", \"orgAlias\":\"targetOrg\", \"username\":\"${TARGET_ORG_USERNAME:-none}\", \"password\":\"${TARGET_ORG_PASSWORD:-none}\", \"url\":\"${TARGET_ORG_URL:-none}\", \"authFile\":\"${TARGET_ORG_AUTH_FILE_NAME:-none}\", \"token\":\"${TARGET_ORG_TOKEN:-none}\" }" "{ \"organization\":\"$(System.TeamFoundationCollectionUri)\", \"project\": \"$(System.TeamProject)\", \"projectId\": \"$(System.TeamProjectId)\", \"localizationDomain\":\"${{parameters.localizationDomain}}\", \"installationMode\":\"${{parameters.installationMode}}\", \"compileScope\":\"${{parameters.compileScope}}\", \"upgradeType\":\"${{parameters.upgradeType}}\", \"actionPhase\":\"${{parameters.actionPhase}}\", \"scriptParams\":\"${scriptParams:-none}\", \"debugMode\":\"${OPTION_DEBUG_MODE:-false}\", \"betaDiff\":true, \"versionComparison\":$(enableVersionComparison) }" 2>&1; DX_STATUS_CODE=$?;
           cd "$CURRENT_DIR_CHECKPOINT"
           
           # early exit - error when installing dependencies for package into target org

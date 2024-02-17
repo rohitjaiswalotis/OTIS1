@@ -28,6 +28,7 @@ function installPackage {
 	local compileScope="$(echo $options | jq -r '.compileScope // empty')";
 	local upgradeType="$(echo $options | jq -r '.upgradeType // empty')";
 	local actionPhase="$(echo $options | jq -r '.actionPhase // empty')";
+	local scriptParams="$(echo $options | jq -r '.scriptParams // "none"')";
 	
 	local installKey="$(echo $options | jq -r '.installKey // empty')";
 	
@@ -305,6 +306,7 @@ function installPackageDependencies {
 	local compileScope="$(echo $options | jq -r '.compileScope // empty')";
 	local upgradeType="$(echo $options | jq -r '.upgradeType // empty')";
 	local actionPhase="$(echo $options | jq -r '.actionPhase // empty')";
+	local scriptParams="$(echo $options | jq -r '.scriptParams // "none"')";
 	
 	local securityType="$(echo $options | jq -r '.securityType // "AdminsOnly"')";
 	local waitPublish="$(echo $options | jq -r '.waitPublish // 1000')";
@@ -539,8 +541,13 @@ function installPackageDependencies {
 						AZ_INSTALL_PIPELINE_FOLDER_PATH="--folder-path=\"$specialInstallPipelineFolder\""
 					fi
 					
+					# evaluate script params (if any)
+					if [[ ${scriptParams:+1} && ! "${scriptParams}" =~ ^none$ ]] ; then
+						scriptParams=$(escapeJson "${scriptParams}")
+					fi
+					
 					# trigger package version install pipeline
-					AZ_INSTALL_PIPELINE_TRIGGER_RESPONSE=$(eval "az pipelines run --organization \"$organization\" --project \"$project\" $AZ_INSTALL_PIPELINE_CHECKOUT --name=\"$specialInstallPipelineName\" $AZ_INSTALL_PIPELINE_FOLDER_PATH --parameters \"versionId=$dependencyVersionId\" \"localizationDomain=$localizationDomain\" \"targetOrgUrl=${serverurl}\" \"targetOrgUsername=${username}\" \"targetOrgPassword=${password}\" \"targetOrgAuthFileName=${authFile}\" \"targetOrgToken=${token}\" \"autoInstallDependencies=true\" \"installationMode=$installationMode\" \"compileScope=$compileScope\" \"upgradeType=$upgradeType\" \"actionPhase=$actionPhase\""); AZ_INSTALL_PIPELINE_TRIGGER_CODE=$?;
+					AZ_INSTALL_PIPELINE_TRIGGER_RESPONSE=$(eval "az pipelines run --organization \"$organization\" --project \"$project\" $AZ_INSTALL_PIPELINE_CHECKOUT --name=\"$specialInstallPipelineName\" $AZ_INSTALL_PIPELINE_FOLDER_PATH --parameters \"versionId=$dependencyVersionId\" \"localizationDomain=$localizationDomain\" \"targetOrgUrl=${serverurl}\" \"targetOrgUsername=${username}\" \"targetOrgPassword=${password}\" \"targetOrgAuthFileName=${authFile}\" \"targetOrgToken=${token}\" \"autoInstallDependencies=true\" \"installationMode=$installationMode\" \"compileScope=$compileScope\" \"upgradeType=$upgradeType\" \"actionPhase=$actionPhase\" \"scriptParams=$scriptParams\""); AZ_INSTALL_PIPELINE_TRIGGER_CODE=$?;
 					echo $AZ_INSTALL_PIPELINE_TRIGGER_RESPONSE
 					
 					# grab pipeline run id from response
@@ -647,4 +654,49 @@ function installPackageWithDependencies {
 	
 }
 
+
+
+# escape json
+function escapeJson {
+	
+	# parse params
+	if [ $# -ne 1 ]; then
+		
+		echo "Usage: $0 <textToEscape>";
+		
+		exit -1;
+		
+	fi
+	
+	
+	# use 'jq' approach
+	if [ -x "$(command -v jq)" ]; then
+		
+		echo "$1" | jq -R . | jq  --slurp .[] | sed -e 's/^"//' -e 's/"$//'
+		
+	
+	# use 'python' approach
+	elif [ -x "$(command -v python)" ]; then
+		
+		printf '%s' "$1" | python -c 'import json,sys; print(json.dumps(sys.stdin.read()))' | sed -e 's/^"//' -e 's/"$//'
+		
+	
+	# use manual approach
+	else
+		
+		JSON_TOPIC_RAW="$1"
+		JSON_TOPIC_RAW=${JSON_TOPIC_RAW//\\/\\\\} # \ 
+		JSON_TOPIC_RAW=${JSON_TOPIC_RAW//\//\\\/} # / 
+		JSON_TOPIC_RAW=${JSON_TOPIC_RAW//\"/\\\"} # " 
+		JSON_TOPIC_RAW=${JSON_TOPIC_RAW//\t/\\t} # \t (tab)
+		JSON_TOPIC_RAW=${JSON_TOPIC_RAW//\n/\\\n} # \n (newline)
+		JSON_TOPIC_RAW=${JSON_TOPIC_RAW//^M/\\\r} # \r (carriage return)
+		JSON_TOPIC_RAW=${JSON_TOPIC_RAW//^L/\\\f} # \f (form feed)
+		JSON_TOPIC_RAW=${JSON_TOPIC_RAW//^H/\\\b} # \b (backspace)
+		
+		echo "$JSON_TOPIC_RAW"
+		
+	fi
+	
+}
 
