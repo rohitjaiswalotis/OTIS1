@@ -158,7 +158,7 @@
                 <leftValueReference>LoopReleatedSA.Status</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <stringValue>En Route</stringValue>
+                    <stringValue>Enroute</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -547,7 +547,7 @@
                 <leftValueReference>Loop_SA.Status</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <stringValue>En Route</stringValue>
+                    <stringValue>Enroute</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -1475,7 +1475,7 @@
             <field>Status</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>En Route</stringValue>
+                <stringValue>Enroute</stringValue>
             </value>
         </filters>
         <filters>

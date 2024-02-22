@@ -4,7 +4,7 @@
     <decisions>
         <name>Check_For_If_the_SPV_approval_is_Checked</name>
         <label>Check For If the SPV approval is Checked</label>
-        <locationX>176</locationX>
+        <locationX>446</locationX>
         <locationY>350</locationY>
         <defaultConnector>
             <targetReference>Update_Record</targetReference>
@@ -28,7 +28,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Screen2</targetReference>
+                <targetReference>Copy_1_of_Update_Record</targetReference>
             </connector>
             <label>Checked</label>
         </rules>
@@ -51,7 +51,7 @@
     <decisions>
         <name>Is_Checked</name>
         <label>Is Checked</label>
-        <locationX>132</locationX>
+        <locationX>446</locationX>
         <locationY>566</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -108,7 +108,7 @@
     <recordLookups>
         <name>GetWoli</name>
         <label>Get Woli</label>
-        <locationX>176</locationX>
+        <locationX>446</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -127,9 +127,147 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
+        <name>Copy_1_of_Update_Record</name>
+        <label>Copy 1 of Update Record</label>
+        <locationX>50</locationX>
+        <locationY>458</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>ApprovalStatus__c</field>
+            <value>
+                <elementReference>GetWoli.ApprovalStatus__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Context__c</field>
+            <value>
+                <elementReference>GetWoli.Context__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Hours__c</field>
+            <value>
+                <elementReference>Hours</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Is_Task_Chargeable__c</field>
+            <value>
+                <elementReference>GetWoli.Is_Task_Chargeable__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Purchase_Cost__c</field>
+            <value>
+                <elementReference>Purchase_Cost</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Reason_to_Perform__c</field>
+            <value>
+                <elementReference>GetWoli.Reason_to_Perform__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RejectionComments__c</field>
+            <value>
+                <elementReference>GetWoli.RejectionComments__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SupervisorApproval__c</field>
+            <value>
+                <elementReference>GetWoli.SupervisorApproval__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Type_Of_Labor__c</field>
+            <value>
+                <elementReference>GetWoli.Type_Of_Labor__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>WorkOrderLineItem</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Copy_2_of_Update_Record</name>
+        <label>Copy 2 of Update Record</label>
+        <locationX>314</locationX>
+        <locationY>782</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>ApprovalStatus__c</field>
+            <value>
+                <elementReference>GetWoli.ApprovalStatus__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Context__c</field>
+            <value>
+                <elementReference>GetWoli.Context__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Hours__c</field>
+            <value>
+                <elementReference>Hours</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Is_Task_Chargeable__c</field>
+            <value>
+                <elementReference>GetWoli.Is_Task_Chargeable__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Purchase_Cost__c</field>
+            <value>
+                <elementReference>Purchase_Cost</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Reason_to_Perform__c</field>
+            <value>
+                <elementReference>GetWoli.Reason_to_Perform__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RejectionComments__c</field>
+            <value>
+                <elementReference>GetWoli.RejectionComments__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SupervisorApproval__c</field>
+            <value>
+                <elementReference>GetWoli.SupervisorApproval__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Type_Of_Labor__c</field>
+            <value>
+                <elementReference>GetWoli.Type_Of_Labor__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>WorkOrderLineItem</object>
+    </recordUpdates>
+    <recordUpdates>
         <name>Update_Record</name>
         <label>Update Record</label>
-        <locationX>484</locationX>
+        <locationX>842</locationX>
         <locationY>458</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -198,7 +336,7 @@
     <screens>
         <name>Screen1</name>
         <label>Screen1</label>
-        <locationX>176</locationX>
+        <locationX>446</locationX>
         <locationY>242</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -377,14 +515,13 @@
     <screens>
         <name>Screen2</name>
         <label>Screen2</label>
-        <locationX>176</locationX>
-        <locationY>908</locationY>
+        <locationX>314</locationX>
+        <locationY>674</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Update_Record</targetReference>
+            <targetReference>Copy_2_of_Update_Record</targetReference>
         </connector>
         <fields>
             <name>Text</name>
@@ -404,7 +541,7 @@
     <screens>
         <name>Screen_3</name>
         <label>Screen 3</label>
-        <locationX>132</locationX>
+        <locationX>446</locationX>
         <locationY>458</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -428,7 +565,7 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>50</locationX>
+        <locationX>320</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>GetWoli</targetReference>
