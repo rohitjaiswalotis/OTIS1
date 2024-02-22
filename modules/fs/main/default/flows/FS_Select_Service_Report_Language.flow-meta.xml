@@ -77,6 +77,7 @@
             <label>Desktop</label>
         </rules>
     </decisions>
+    <description>Select service report language in which you want the repost to get generated</description>
     <dynamicChoiceSets>
         <name>LanguageList</name>
         <dataType>Picklist</dataType>
@@ -114,7 +115,7 @@
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Select_Service_reportlanguage</targetReference>
+            <targetReference>Get_Current_User_language</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -130,13 +131,36 @@
         <queriedFields>ServiceReportLanguage</queriedFields>
     </recordLookups>
     <recordLookups>
+        <name>Get_Current_User_language</name>
+        <label>Get Current User language</label>
+        <locationX>314</locationX>
+        <locationY>434</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Select_Service_reportlanguage</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>UserId</elementReference>
+            </value>
+        </filters>
+        <object>User</object>
+        <outputAssignments>
+            <assignToReference>StoreDefaultLanguage</assignToReference>
+            <field>LanguageLocaleKey</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
         <name>Get_WO</name>
         <label>Get WO</label>
         <locationX>50</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Select_Service_reportlanguage</targetReference>
+            <targetReference>Get_Current_User_language</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -155,7 +179,7 @@
         <name>Update_WO_with_languages_selected</name>
         <label>Update WO with languages selected</label>
         <locationX>314</locationX>
-        <locationY>542</locationY>
+        <locationY>650</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -176,7 +200,7 @@
         <name>Select_Service_reportlanguage</name>
         <label>Select Service reportlanguage</label>
         <locationX>314</locationX>
-        <locationY>434</locationY>
+        <locationY>542</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -190,7 +214,9 @@
             <choiceReferences>German</choiceReferences>
             <choiceReferences>Italian</choiceReferences>
             <dataType>String</dataType>
-            <defaultSelectedChoiceReference>English</defaultSelectedChoiceReference>
+            <defaultValue>
+                <elementReference>StoreDefaultLanguage</elementReference>
+            </defaultValue>
             <fieldText>Select Service Report Language</fieldText>
             <fieldType>DropdownBox</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -216,6 +242,20 @@
     </variables>
     <variables>
         <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>StoreDefaultLanguage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>UserId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
