@@ -87,7 +87,7 @@
                 <leftValueReference>$Record.Status</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>En Route</stringValue>
+                    <stringValue>Enroute</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
