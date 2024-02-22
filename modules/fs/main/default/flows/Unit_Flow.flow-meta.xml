@@ -138,7 +138,7 @@
         <connector>
             <targetReference>Decision</targetReference>
         </connector>
-        <filterLogic>1 AND ( 2 OR 3)</filterLogic>
+        <filterLogic>1 AND ( 2 OR 3) AND 4</filterLogic>
         <filters>
             <field>CaseId</field>
             <operator>IsNull</operator>
@@ -158,6 +158,13 @@
             <operator>NotEqualTo</operator>
             <value>
                 <stringValue>Closed</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Setup.OTISCustomSettings__c.Work_Order_Maintenance_Record_Type__c</elementReference>
             </value>
         </filters>
         <inputAssignments>

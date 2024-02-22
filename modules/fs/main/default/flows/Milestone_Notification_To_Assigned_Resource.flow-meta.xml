@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>59.0</apiVersion>
+    <decisions>
+        <name>Check_Record_Type</name>
+        <label>Check Record Type</label>
+        <locationX>182</locationX>
+        <locationY>323</locationY>
+        <defaultConnectorLabel>Maintenance</defaultConnectorLabel>
+        <rules>
+            <name>Service_Request</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$Setup.OTISCustomSettings__c.Work_Order_Service_Request_Record_Type__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Open_SA</targetReference>
+            </connector>
+            <label>Service Request</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
     <interviewLabel>Milestone Notification To Assigned Resource {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Milestone Notification To Assigned Resource</label>
@@ -26,8 +48,8 @@
     <recordLookups>
         <name>Get_Open_SA</name>
         <label>Get Open SA</label>
-        <locationX>176</locationX>
-        <locationY>323</locationY>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>send_Milestone_Notification</targetReference>
@@ -59,10 +81,10 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>50</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Open_SA</targetReference>
+            <targetReference>Check_Record_Type</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -101,8 +123,8 @@
     <subflows>
         <name>send_Milestone_Notification</name>
         <label>send Milestone Notification</label>
-        <locationX>176</locationX>
-        <locationY>431</locationY>
+        <locationX>50</locationX>
+        <locationY>539</locationY>
         <flowName>SendCustomNotification</flowName>
         <inputAssignments>
             <name>CustomNotificationTypeName</name>

@@ -4,8 +4,8 @@
     <assignments>
         <name>Assign_the_CLI</name>
         <label>Assign the CLI</label>
-        <locationX>528</locationX>
-        <locationY>839</locationY>
+        <locationX>402</locationX>
+        <locationY>947</locationY>
         <assignmentItems>
             <assignToReference>storeCLIName</assignToReference>
             <operator>Add</operator>
@@ -20,8 +20,8 @@
     <assignments>
         <name>Store_INT</name>
         <label>Store INT</label>
-        <locationX>528</locationX>
-        <locationY>1247</locationY>
+        <locationX>402</locationX>
+        <locationY>1355</locationY>
         <assignmentItems>
             <assignToReference>storeInt</assignToReference>
             <operator>Assign</operator>
@@ -36,8 +36,8 @@
     <assignments>
         <name>Store_INT_2</name>
         <label>Store INT 2</label>
-        <locationX>792</locationX>
-        <locationY>1247</locationY>
+        <locationX>666</locationX>
+        <locationY>1355</locationY>
         <assignmentItems>
             <assignToReference>StoreINT2</assignToReference>
             <operator>Assign</operator>
@@ -52,8 +52,8 @@
     <assignments>
         <name>store_TPA</name>
         <label>store TPA</label>
-        <locationX>264</locationX>
-        <locationY>1247</locationY>
+        <locationX>138</locationX>
+        <locationY>1355</locationY>
         <assignmentItems>
             <assignToReference>storeTpa</assignToReference>
             <operator>Assign</operator>
@@ -66,10 +66,32 @@
         </connector>
     </assignments>
     <decisions>
+        <name>Check_Record_Types</name>
+        <label>Check Record Types</label>
+        <locationX>182</locationX>
+        <locationY>323</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Service_Request</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$Setup.OTISCustomSettings__c.Work_Order_Service_Request_Record_Type__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Service_Contract_ID</targetReference>
+            </connector>
+            <label>Service Request</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Decision_3</name>
         <label>Decision 3</label>
-        <locationX>528</locationX>
-        <locationY>647</locationY>
+        <locationX>402</locationX>
+        <locationY>755</locationY>
         <defaultConnector>
             <targetReference>Assign_the_CLI</targetReference>
         </defaultConnector>
@@ -172,8 +194,8 @@
     <decisions>
         <name>TPA_INT</name>
         <label>TPA/INT</label>
-        <locationX>660</locationX>
-        <locationY>1139</locationY>
+        <locationX>534</locationX>
+        <locationY>1247</locationY>
         <defaultConnector>
             <targetReference>For_NAme</targetReference>
         </defaultConnector>
@@ -259,8 +281,8 @@
     <loops>
         <name>For_Each_CLI</name>
         <label>For Each CLI</label>
-        <locationX>176</locationX>
-        <locationY>539</locationY>
+        <locationX>50</locationX>
+        <locationY>647</locationY>
         <collectionReference>Get_Contract_Line_Items</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -273,8 +295,8 @@
     <loops>
         <name>For_NAme</name>
         <label>For NAme</label>
-        <locationX>176</locationX>
-        <locationY>1031</locationY>
+        <locationX>50</locationX>
+        <locationY>1139</locationY>
         <collectionReference>storeCLIName</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -307,8 +329,8 @@
         <description>standard</description>
         <name>Get_Contract_Line_Items</name>
         <label>Get Contract Line Items</label>
-        <locationX>176</locationX>
-        <locationY>431</locationY>
+        <locationX>50</locationX>
+        <locationY>539</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>For_Each_CLI</targetReference>
@@ -342,8 +364,8 @@
     <recordLookups>
         <name>Get_Milestone</name>
         <label>Get Milestone</label>
-        <locationX>176</locationX>
-        <locationY>1847</locationY>
+        <locationX>50</locationX>
+        <locationY>1955</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Update_Milestone</targetReference>
@@ -377,8 +399,8 @@
     <recordLookups>
         <name>Get_Open_Entitlement</name>
         <label>Get Open Entitlement</label>
-        <locationX>176</locationX>
-        <locationY>1631</locationY>
+        <locationX>50</locationX>
+        <locationY>1739</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Update_WO_Entitlement</targetReference>
@@ -405,8 +427,8 @@
     <recordLookups>
         <name>Get_Service_Contract_ID</name>
         <label>Get Service Contract ID</label>
-        <locationX>176</locationX>
-        <locationY>323</locationY>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Contract_Line_Items</targetReference>
@@ -433,8 +455,8 @@
     <recordUpdates>
         <name>Update_Milestone</name>
         <label>Update Milestone</label>
-        <locationX>176</locationX>
-        <locationY>1955</locationY>
+        <locationX>50</locationX>
+        <locationY>2063</locationY>
         <inputAssignments>
             <field>CompletionDate</field>
             <value>
@@ -446,8 +468,8 @@
     <recordUpdates>
         <name>Update_TPR_Values</name>
         <label>Update TPR Values</label>
-        <locationX>176</locationX>
-        <locationY>1523</locationY>
+        <locationX>50</locationX>
+        <locationY>1631</locationY>
         <connector>
             <targetReference>Get_Open_Entitlement</targetReference>
         </connector>
@@ -474,8 +496,8 @@
     <recordUpdates>
         <name>Update_WO_Entitlement</name>
         <label>Update WO with Entitlement</label>
-        <locationX>176</locationX>
-        <locationY>1739</locationY>
+        <locationX>50</locationX>
+        <locationY>1847</locationY>
         <connector>
             <targetReference>Get_Milestone</targetReference>
         </connector>
@@ -488,10 +510,10 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>50</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Service_Contract_ID</targetReference>
+            <targetReference>Check_Record_Types</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
