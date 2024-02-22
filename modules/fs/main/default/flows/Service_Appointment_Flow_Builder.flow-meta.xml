@@ -1635,7 +1635,7 @@
         <inputAssignments>
             <field>Status</field>
             <value>
-                <stringValue>Onsite</stringValue>
+                <stringValue>Enroute</stringValue>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
