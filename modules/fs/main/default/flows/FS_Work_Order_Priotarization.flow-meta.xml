@@ -34,9 +34,9 @@
         </connector>
     </assignments>
     <collectionProcessors>
-        <name>ShortDescending</name>
+        <name>ShortAscending</name>
         <elementSubtype>SortCollectionProcessor</elementSubtype>
-        <label>ShortDescending</label>
+        <label>ShortAscending</label>
         <locationX>446</locationX>
         <locationY>1247</locationY>
         <collectionProcessorType>SortCollectionProcessor</collectionProcessorType>
@@ -52,13 +52,13 @@
     </collectionProcessors>
     <decisions>
         <name>Check_if_Case_is_associated</name>
-        <label>Check if Case is associated ?</label>
+        <label>Check if Case is associated ? and Record Type</label>
         <locationX>248</locationX>
         <locationY>323</locationY>
         <defaultConnector>
             <targetReference>Separate_values_with_Comma</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <defaultConnectorLabel>No/Maintenance</defaultConnectorLabel>
         <rules>
             <name>Service_Request</name>
             <conditionLogic>and</conditionLogic>
@@ -69,10 +69,17 @@
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$Setup.OTISCustomSettings__c.Work_Order_Service_Request_Record_Type__c</elementReference>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Update_WO</targetReference>
             </connector>
-            <label>Yes</label>
+            <label>Yes/ Service Request</label>
         </rules>
     </decisions>
     <decisions>
@@ -146,7 +153,7 @@ IF({!$Record.Asset.FS_LowUsage__c}=true,&quot;Low Usage&quot;, &quot;Regular Mai
             <targetReference>Assign_Values_to_a_Variable</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>ShortDescending</targetReference>
+            <targetReference>ShortAscending</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
