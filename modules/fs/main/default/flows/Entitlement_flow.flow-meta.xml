@@ -2,10 +2,58 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>59.0</apiVersion>
     <assignments>
-        <name>Assign_the_CLI</name>
-        <label>Assign the CLI</label>
+        <name>Assign_the_CLI_Dummmy</name>
+        <label>Assign the CLI_Dummy</label>
+        <locationX>930</locationX>
+        <locationY>863</locationY>
+        <assignmentItems>
+            <assignToReference>storeDummy</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>For_Each_CLI.Name__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>For_Each_CLI</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_the_CLI_MF</name>
+        <label>Assign the CLI MF</label>
+        <locationX>138</locationX>
+        <locationY>863</locationY>
+        <assignmentItems>
+            <assignToReference>storeCLIName</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>For_Each_CLI.Name__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>For_Each_CLI</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Copy_2_of_Assign_the_CLI_SAT</name>
+        <label>Assign the CLI_SAT</label>
         <locationX>402</locationX>
-        <locationY>947</locationY>
+        <locationY>863</locationY>
+        <assignmentItems>
+            <assignToReference>storeCLIName</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>For_Each_CLI.Name__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>For_Each_CLI</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Copy_3_of_Assign_the_CLI_Sun</name>
+        <label>Assign the CLI_Sun</label>
+        <locationX>666</locationX>
+        <locationY>863</locationY>
         <assignmentItems>
             <assignToReference>storeCLIName</assignToReference>
             <operator>Add</operator>
@@ -19,27 +67,11 @@
     </assignments>
     <assignments>
         <name>Store_INT</name>
-        <label>Store INT</label>
+        <label>Store INT1</label>
         <locationX>402</locationX>
         <locationY>1355</locationY>
         <assignmentItems>
             <assignToReference>storeInt</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>For_NAme</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>For_NAme</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Store_INT_2</name>
-        <label>Store INT 2</label>
-        <locationX>666</locationX>
-        <locationY>1355</locationY>
-        <assignmentItems>
-            <assignToReference>StoreINT2</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>For_NAme</elementReference>
@@ -56,6 +88,22 @@
         <locationY>1355</locationY>
         <assignmentItems>
             <assignToReference>storeTpa</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>For_NAme</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>For_NAme</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>StoreInt1</name>
+        <label>StoreInt1</label>
+        <locationX>666</locationX>
+        <locationY>1355</locationY>
+        <assignmentItems>
+            <assignToReference>StoreINT2</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>For_NAme</elementReference>
@@ -90,10 +138,10 @@
     <decisions>
         <name>Decision_3</name>
         <label>Decision 3</label>
-        <locationX>402</locationX>
+        <locationX>534</locationX>
         <locationY>755</locationY>
         <defaultConnector>
-            <targetReference>Assign_the_CLI</targetReference>
+            <targetReference>Assign_the_CLI_Dummmy</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -128,7 +176,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Assign_the_CLI</targetReference>
+                <targetReference>Assign_the_CLI_MF</targetReference>
             </connector>
             <label>MF</label>
         </rules>
@@ -157,7 +205,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Assign_the_CLI</targetReference>
+                <targetReference>Copy_2_of_Assign_the_CLI_SAT</targetReference>
             </connector>
             <label>SAT</label>
         </rules>
@@ -186,7 +234,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Assign_the_CLI</targetReference>
+                <targetReference>Copy_3_of_Assign_the_CLI_Sun</targetReference>
             </connector>
             <label>SUN</label>
         </rules>
@@ -194,12 +242,12 @@
     <decisions>
         <name>TPA_INT</name>
         <label>TPA/INT</label>
-        <locationX>534</locationX>
+        <locationX>402</locationX>
         <locationY>1247</locationY>
         <defaultConnector>
-            <targetReference>For_NAme</targetReference>
+            <targetReference>StoreInt1</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <defaultConnectorLabel>INT2</defaultConnectorLabel>
         <rules>
             <name>TPA</name>
             <conditionLogic>and</conditionLogic>
@@ -229,21 +277,6 @@
                 <targetReference>Store_INT</targetReference>
             </connector>
             <label>INT1</label>
-        </rules>
-        <rules>
-            <name>INT2</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>For_NAme</leftValueReference>
-                <operator>StartsWith</operator>
-                <rightValue>
-                    <stringValue>INT2</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Store_INT_2</targetReference>
-            </connector>
-            <label>INT2</label>
         </rules>
     </decisions>
     <environments>Default</environments>
@@ -335,7 +368,7 @@
         <connector>
             <targetReference>For_Each_CLI</targetReference>
         </connector>
-        <filterLogic>1 AND (2 OR 3)</filterLogic>
+        <filterLogic>1 AND (2 OR 3 OR 4)</filterLogic>
         <filters>
             <field>ServiceContractId</field>
             <operator>EqualTo</operator>
@@ -354,7 +387,14 @@
             <field>Name__c</field>
             <operator>StartsWith</operator>
             <value>
-                <stringValue>INT</stringValue>
+                <stringValue>INT1</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Name__c</field>
+            <operator>StartsWith</operator>
+            <value>
+                <stringValue>INT2</stringValue>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -532,6 +572,13 @@
         <name>storeCLIName</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>storeDummy</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
