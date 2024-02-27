@@ -19,7 +19,7 @@
           "package": "Salesforce Maps@246.9"
         },
         {
-          "package": "Salesforce Field Service App@1.52"
+          "package": "Salesforce Field Service App@1.55"
         },
         {
           "package": "OTIS Global CC Core",
@@ -57,7 +57,7 @@
     "FSL@248.0.63": "04t3y000001i8zgAAA",
     "Salesforce Mobile Apps@1.20.0": "04t3A000001DdcGQAS",
     "Salesforce Maps@246.9": "04t4P000002fQreQAE",
-    "Salesforce Field Service App@1.52": "04t1R0000016Ya8QAE",
+    "Salesforce Field Service App@1.55": "04tHq000000lsw7IAA",
     "OTIS Global CC Core": "0HoDn000000TNCsKAO",
     "OTIS Field Service": "0HoDn000000TNHeKAO"
   },
