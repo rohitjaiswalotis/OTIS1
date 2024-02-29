@@ -19,4 +19,32 @@
         </criteriaItems>
         <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
     </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Share_WorkType_To_FS_Supervisor</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Share WorkType To FS Supervisor</label>
+        <sharedTo>
+            <group>Supervisor</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>CreatedById</field>
+            <operation>notEqual</operation>
+            <value></value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+     <sharingCriteriaRules>
+        <fullName>Share_WType_To_FS_Admin_and_Supervisor</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Share WType To FS Admin and Supervisor</label>
+        <sharedTo>
+            <group>Field_Service_Admin_group</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>CreatedById</field>
+            <operation>notEqual</operation>
+            <value></value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
 </SharingRules>
