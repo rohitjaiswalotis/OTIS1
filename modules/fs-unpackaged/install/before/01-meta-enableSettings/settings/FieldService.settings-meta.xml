@@ -24,11 +24,11 @@
     <enableWorkStepManualStatusUpdate>false</enableWorkStepManualStatusUpdate>
 	-->
     <fieldServiceNotificationsOrgPref>true</fieldServiceNotificationsOrgPref>
+    <o2EngineEnabled>false</o2EngineEnabled>
 	<!--
     <fieldServiceOrgPref>true</fieldServiceOrgPref>
     <isGeoCodeSyncEnabled>false</isGeoCodeSyncEnabled>
     <isLocationHistoryEnabled>false</isLocationHistoryEnabled>
-    <o2EngineEnabled>false</o2EngineEnabled>
     <optimizationServiceAccess>false</optimizationServiceAccess>
     <serviceAppointmentsDueDateOffsetOrgValue>7</serviceAppointmentsDueDateOffsetOrgValue>
     <workOrderLineItemSearchFields>Subject</workOrderLineItemSearchFields>
