@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Parts_Delivered</fullName>
+    <columns>Name</columns>
+    <columns>UnitNumber__c</columns>
+    <columns>Status</columns>
+    <columns>PartsStatus__c</columns>
+    <columns>ForecastedPartsDelivery__c</columns>
+    <columns>ActualPartsDelivery__c</columns>
+    <columns>AdditionalSkills__c</columns>
+    <columns>Reason__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>PartsStatus__c</field>
+        <operation>equals</operation>
+        <value>Part Delivered</value>
+    </filters>
+    <filters>
+        <field>ForecastedPartsDelivery__c</field>
+        <operation>notEqual</operation>
+    </filters>
+    <filters>
+        <field>Reason__c</field>
+        <operation>equals</operation>
+        <value>Parts Needed</value>
+    </filters>
+    <filters>
+        <field>ActualPartsDelivery__c</field>
+        <operation>notEqual</operation>
+    </filters>
+    <label>Parts Delivered</label>
+</ListView>

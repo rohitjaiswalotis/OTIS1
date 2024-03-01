@@ -1,4 +1,11 @@
 "FieldServiceMobileSettingsId","AppExtensionName","Type","LaunchValue","ScopedToObjectTypes","AppExtensionLabel","InstallationUrl"
+"$SF_SR_VAR_MOBILE_SETTING_ID","Select Language","Flow","FS_Select_Service_Report_Language","WorkOrder","Select Language","/flow/FS_Select_Service_Report_Language"
+"$SF_SR_VAR_MOBILE_SETTING_ID","Change SA Status","Flow","FSL_MobileAPP_Change_SA_Status","ServiceAppointment","Change SA Status","/flow/FSL_MobileAPP_Change_SA_Status"
+"$SF_SR_VAR_MOBILE_SETTING_ID","Add Images","Flow","FSL_Add_Images_To_SA","ServiceAppointment","Add Images","/flow/FSL_Add_Images_To_SA"
+"$SF_SR_VAR_MOBILE_SETTING_ID","Unit Search Bar","Flow","FSL_MobileAPP_Unit_search_bar","ServiceAppointment","Unit search bar","/flow/FSL_MobileAPP_Unit_search_bar"
+"$SF_SR_VAR_MOBILE_SETTING_ID","Pin/Unpin SA","Flow","Change_Pinn_Service_Appointment","ServiceAppointment","Pin/Unpin Service Appointment","/flow/Change_Pinn_Service_Appointment"
+"$SF_SR_VAR_MOBILE_SETTING_ID","Declare Parts Missing","Flow","Declare_Parts_Missing_WO","WorkOrder","Declare Parts Missing","/flow/Declare_Parts_Missing_WO"
+"$SF_SR_VAR_MOBILE_SETTING_ID","FS_ChangeWOLIStatus","Flow","FS_ChangeWOLIStatus","WorkOrder","Complete Line Item Status","/flow/FS_ChangeWOLIStatus"
 "$SF_SR_VAR_MOBILE_SETTING_ID","Unit Restart Time Form","Flow","Unit_Restart_Reason_FSL_Mobile_Flow","AssetDowntimePeriod","Projected Restart Date",
 "$SF_SR_VAR_MOBILE_SETTING_ID","Update_GeoCode_Unit","Flow","FS_Update_Unit_Building_Location_FSL_Flow","Asset","Update GeoCode",
 "$SF_SR_VAR_MOBILE_SETTING_ID","Update Unit Status","Flow","FSL_Mobile_Unit_Shutdown","Asset","Update Unit Status",
@@ -8,3 +15,4 @@
 "$SF_SR_VAR_MOBILE_SETTING_ID","Accept or Reject SA","Flow","SA_Accept_Reject_FSL_Flow","ServiceAppointment","Accept or Reject SA",
 "$SF_SR_VAR_MOBILE_SETTING_ID","Service Request WO Closeout","Flow","Closeout_SA","ServiceAppointment","Service Request WO Closeout",
 "$SF_SR_VAR_MOBILE_SETTING_ID","Update SA","Flow","Update_ETA","ServiceAppointment","Update SA",
+"$SF_SR_VAR_MOBILE_SETTING_ID","Update Schedule Time","Flow","Updated_SA_Schedule_Time","ServiceAppointment","Update Schedule Time","/flow/Updated_SA_Schedule_Time"

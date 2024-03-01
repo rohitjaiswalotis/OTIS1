@@ -5,8 +5,6 @@ trigger:
   include:
     - dev
     - dev-jpn
-    - dev-naa
-    - dev-emea
     
 pr: none
 
@@ -104,14 +102,7 @@ stages:
                 - task: DownloadSEcureFile@1
                   name: authFile
                   inputs:
-                    ${{ if eq(variables['Build.SourceBranchName'], 'dev-jpn') }}:
-                      secureFile: authFile_devFSJpn
-                    ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-emea') }}:
-                      secureFile: authFile_devFSEMEA
-                    ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-naa') }}:
-                      secureFile: authFile_devFSNAA
-                    ${{ else }}:
-                      secureFile: authFile_devFS
+                    secureFile: authFile_devFS
                   displayName: 'Copy authorization file for devFS'
                   
                   
@@ -152,12 +143,8 @@ stages:
                         set -e
                         
                         # set localization domain (if provided) to be available inside steps runner
-                        if [[ "$(Build.SourceBranchName)" =~ ^dev-naa$ ]] ; then
-                          export SF_SR_VAR_GLOBAL_LOCALIZATION_DOMAIN="NAA";
-                        elif [[ "$(Build.SourceBranchName)" =~ ^dev-jpn$ ]] ; then
+                        if [[ "$(Build.SourceBranchName)" =~ ^dev-jpn$ ]] ; then
                           export SF_SR_VAR_GLOBAL_LOCALIZATION_DOMAIN="Japan";
-                        elif [[ "$(Build.SourceBranchName)" =~ ^dev-emea$ ]] ; then
-                          export SF_SR_VAR_GLOBAL_LOCALIZATION_DOMAIN="EMEA";
                         else
                           export SF_SR_VAR_GLOBAL_LOCALIZATION_DOMAIN="Global";
                         fi
@@ -274,12 +261,8 @@ stages:
                     parameters:
                       ${{ if eq(variables['Build.SourceBranchName'], 'dev-jpn') }}:
                         subscribers: $(subs_deployPR_FsJpn)
-                      ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-emea') }}:
-                        subscribers: $(subs_deployPR_FsEMEA)
-                      ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-naa') }}:
-                        subscribers: $(subs_deployPR_FsNAA)
                       ${{ elseif eq(variables['Build.SourceBranchName'], 'dev') }}:
-                        subscribers: $(subs_deployPR_FsStable)
+                        subscribers: $(subs_deployPR_FsDev)
                       ${{ elseif eq(variables['Build.SourceBranchName'], 'master') }}:
                         subscribers: $(subs_deployPR_FsRelease)
                       active: $(enableSubsDeployPR)

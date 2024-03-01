@@ -24,12 +24,12 @@ parameters:
 - name: versionBranch
   displayName: Branch for version to upgrade
   type: string
-  default: "none"   # e.g. 'dev-naa'
+  default: "none"   # e.g. 'dev'
 
 - name: versionWhereCondition
   displayName: Where Condition for version to upgrade
   type: string
-  default: "none"   # e.g. "Branch IN ('dev-naa')"
+  default: "none"   # e.g. "Branch IN ('dev')"
 
 - name: shouldInstallThirdParties
   displayName: Install Third Parties?

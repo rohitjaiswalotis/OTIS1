@@ -88,9 +88,7 @@ stages:
             
             - template: templates/createVersion.yml
               parameters:
-                ${{ if and(eq(parameters.envProfile, 'default'), eq(variables['Build.SourceBranchName'], 'dev-stable')) }}:
-                  envProfile: 'stable'
-                ${{ elseif and(eq(parameters.envProfile, 'default'), eq(variables['Build.SourceBranchName'], 'master')) }}:
+                ${{ if and(eq(parameters.envProfile, 'default'), eq(variables['Build.SourceBranchName'], 'master')) }}:
                   envProfile: 'release'
                 ${{ else }}:
                   envProfile: ${{ parameters.envProfile }}

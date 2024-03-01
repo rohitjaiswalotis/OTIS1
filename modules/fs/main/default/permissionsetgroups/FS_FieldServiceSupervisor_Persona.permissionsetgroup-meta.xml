@@ -3,4 +3,5 @@
     <description>FS Field Service Supervisor Permission Set Group</description>
     <label>FS Field Service Supervisor Persona</label>
     <permissionSets>FS_FieldServiceSupervisor_Permissions</permissionSets>
+    <permissionSets>FS_Gantt_Palette_ReadOnly</permissionSets>
 </PermissionSetGroup>
