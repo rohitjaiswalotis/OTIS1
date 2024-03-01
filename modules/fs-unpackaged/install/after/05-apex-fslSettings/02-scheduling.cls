@@ -36,6 +36,8 @@ FSL.SettingsAPI.setCustomSettings(
 		//'Use_Optimization_Queue__c' => false,
 		//'Request_Services_Page_Size__c' => 1000,
 		'SA_Priority_Field__c' => 'FS_SA_Priority__c',
+		'WO_Priority_Field__c' => '',
+		'WOLI_Priority_Field__c' => '',
 		//'Low_Or_High_Territory_Classification__c' => 'Highest',
 		'Use_Predictive__c' => false,
 		//'Enable_Travel_Mode_Feature__c' => false,

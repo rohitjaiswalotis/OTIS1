@@ -1,0 +1,20 @@
+$$FSL__Scheduling_Policy__r.Name$FSL__Service_Goal__r.Name,FSL__Scheduling_Policy__c,FSL__Scheduling_Policy__r.Name,FSL__Service_Goal__c,FSL__Service_Goal__r.Name,FSL__Weight__c,Id
+Customer First;Preferred Service Resource,a0aDO000000WB2EYAW,Customer First,a0cDO000000J4QCYA0,Preferred Service Resource,4,a0YDO000000HfDK2A0
+Focus on Service Request;Resource Priority,a0aDO000000WB2CYAW,Focus on Service Request,a0cDO000000J4QHYA0,Resource Priority,50,a0YDO000000HfE82AK
+Emergency;Same Site,a0aDO000000WB2AYAW,Emergency,a0cDO000000J4QJYA0,Same Site,15,a0YDO000000HfDt2AK
+Reduce Travel;Minimize Overtime,a0aDO000000WB2BYAW,Reduce Travel,a0cDO000000J4QFYA0,Minimize Overtime,6,a0YDO000000HfEJ2A0
+Customer First;Minimize Travel,a0aDO000000WB2EYAW,Customer First,a0cDO000000J4QEYA0,Minimize Travel,5,a0YDO000000HfDU2A0
+Reduce Travel;ASAP,a0aDO000000WB2BYAW,Reduce Travel,a0cDO000000J4QDYA0,ASAP,100,a0YDO000000HfEd2AK
+Customer First;Resource Priority,a0aDO000000WB2EYAW,Customer First,a0cDO000000J4QHYA0,Resource Priority,3,a0YDO000000HfDZ2A0
+Reduce Travel;Same Site,a0aDO000000WB2BYAW,Reduce Travel,a0cDO000000J4QJYA0,Same Site,30,a0YDO000000HfG92AK
+Reduce Travel;Minimize Travel,a0aDO000000WB2BYAW,Reduce Travel,a0cDO000000J4QEYA0,Minimize Travel,100,a0YDO000000HfFu2AK
+Emergency;Minimize Overtime,a0aDO000000WB2AYAW,Emergency,a0cDO000000J4QFYA0,Minimize Overtime,5,a0YDO000000HfDo2AK
+Focus on Service Request;ASAP,a0aDO000000WB2CYAW,Focus on Service Request,a0cDO000000J4QDYA0,ASAP,40,a0YDO000000HfE32AK
+Customer First;ASAP,a0aDO000000WB2EYAW,Customer First,a0cDO000000J4QDYA0,ASAP,4,a0YDO000000HfDP2A0
+Limited Resource;Minimize Travel,a0aDO000000WB2DYAW,Limited Resource,a0cDO000000J4QEYA0,Minimize Travel,20,a0YDO000000HfEw2AK
+Limited Resource;Minimize Overtime,a0aDO000000WB2DYAW,Limited Resource,a0cDO000000J4QFYA0,Minimize Overtime,15,a0YDO000000HfFG2A0
+Focus on Service Request;Preferred Service Resource,a0aDO000000WB2CYAW,Focus on Service Request,a0cDO000000J4QCYA0,Preferred Service Resource,15,a0YDO000000HfDy2AK
+Limited Resource;Same Site,a0aDO000000WB2DYAW,Limited Resource,a0cDO000000J4QJYA0,Same Site,8,a0YDO000000HfFQ2A0
+Emergency;ASAP,a0aDO000000WB2AYAW,Emergency,a0cDO000000J4QDYA0,ASAP,70,a0YDO000000HfDe2AK
+Limited Resource;Preferred Service Resource,a0aDO000000WB2DYAW,Limited Resource,a0cDO000000J4QCYA0,Preferred Service Resource,7,a0YDO000000HfEh2AK
+Emergency;Minimize Travel,a0aDO000000WB2AYAW,Emergency,a0cDO000000J4QEYA0,Minimize Travel,10,a0YDO000000HfDj2AK

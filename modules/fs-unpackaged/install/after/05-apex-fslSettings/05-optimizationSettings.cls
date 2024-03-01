@@ -4,7 +4,7 @@ FSL.SettingsAPI.setCustomSettings(
     'RDO Settings',
     new Map<String, Object> {
 		'Max_Runtime_Single_Service__c' =>  1.0,
-		'Pinned_Statuses__c' => 'En Route,Onsite,Canceled,Cannot Complete,Completed'
+		'Pinned_Statuses__c' => 'Enroute,Onsite,Canceled,Cannot Complete,Completed'
     }
 );
 
@@ -13,7 +13,7 @@ FSL.SettingsAPI.setCustomSettings(
     'BGO Settings',
     new Map<String, Object> {
 		'Max_Runtime_Single_Service__c' =>  3.0,
-		'Pinned_Statuses__c' =>  'En Route,Onsite,Canceled,Cannot Complete,Completed'
+		'Pinned_Statuses__c' =>  'Enroute,Onsite,Canceled,Cannot Complete,Completed'
     }
 );
 
@@ -31,7 +31,7 @@ FSL.SettingsAPI.setCustomSettings(
     'In Day Settings',
     new Map<String, Object> {
 		'Max_Runtime_Single_Service__c' =>  0.1,
-		'Pinned_Statuses__c' =>  'En Route,Onsite,Canceled,Cannot Complete,Completed'
+		'Pinned_Statuses__c' =>  'Enroute,Onsite,Canceled,Cannot Complete,Completed'
     }
 );
 
