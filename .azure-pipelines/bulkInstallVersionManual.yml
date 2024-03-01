@@ -18,7 +18,7 @@ parameters:
   default: none
 
 - name: localizationDomain
-  displayName: Localization Domain (e.g. NAA, Japan, EMEA)
+  displayName: Localization Domain (e.g. NAA, EMEA, Japan)
   type: string
   default: Global
 

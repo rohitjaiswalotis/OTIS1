@@ -115,9 +115,7 @@ stages:
             
             - template: templates/createVersion.yml
               parameters:
-                ${{ if and(eq(parameters.envProfile, 'default'), eq(variables['Build.SourceBranchName'], 'dev-stable')) }}:
-                  envProfile: 'stable'
-                ${{ elseif and(eq(parameters.envProfile, 'default'), eq(variables['Build.SourceBranchName'], 'master')) }}:
+                ${{ if and(eq(parameters.envProfile, 'default'), eq(variables['Build.SourceBranchName'], 'master')) }}:
                   envProfile: 'release'
                 ${{ else }}:
                   envProfile: ${{ parameters.envProfile }}
@@ -148,12 +146,8 @@ stages:
                 parameters:
                   ${{ if eq(variables['Build.SourceBranchName'], 'dev-jpn') }}:
                     subscribers: $(subs_pkgVersion_FsJpn)
-                  ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-emea') }}:
-                    subscribers: $(subs_pkgVersion_FsEMEA)
-                  ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-naa') }}:
-                    subscribers: $(subs_pkgVersion_FsNAA)
                   ${{ elseif eq(variables['Build.SourceBranchName'], 'dev') }}:
-                    subscribers: $(subs_pkgVersion_FsStable)
+                    subscribers: $(subs_pkgVersion_FsDev)
                   ${{ elseif eq(variables['Build.SourceBranchName'], 'master') }}:
                     subscribers: $(subs_pkgVersion_FsRelease)
                   active: $(enableSubsPkgVersion)
