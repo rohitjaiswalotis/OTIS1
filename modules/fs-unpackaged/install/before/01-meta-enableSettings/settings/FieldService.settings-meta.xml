@@ -9,12 +9,12 @@
     <canPopulateGoogleAddress>true</canPopulateGoogleAddress>
     <canSendAppCenterCrashReports>true</canSendAppCenterCrashReports>
     <canStoreMobileAnalytics>true</canStoreMobileAnalytics>
-    <doesAllowEditSaForCrew>false</doesAllowEditSaForCrew>
     <doesAvlCalcInclOvertime>false</doesAvlCalcInclOvertime>
     <doesAvlCalcInclPrimOnly>false</doesAvlCalcInclPrimOnly>
 	-->
     <doesShareSaParentWoWithAr>true</doesShareSaParentWoWithAr>
     <doesShareSaWithAr>true</doesShareSaWithAr>
+    <doesAllowEditSaForCrew>true</doesAllowEditSaForCrew>
 	<!--
     <enableBatchWindow>false</enableBatchWindow>
     <enableFloatingWorkOrder>false</enableFloatingWorkOrder>
