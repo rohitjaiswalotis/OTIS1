@@ -3,8 +3,8 @@
     <decisions>
         <name>Checking_WO_Priority</name>
         <label>Checking WO Priority</label>
-        <locationX>446</locationX>
-        <locationY>350</locationY>
+        <locationX>710</locationX>
+        <locationY>566</locationY>
         <defaultConnector>
             <targetReference>Error_for_Not_S1</targetReference>
         </defaultConnector>
@@ -90,6 +90,31 @@
             <label>SA Status</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Record_Type_Check</name>
+        <label>Record Type Check</label>
+        <locationX>380</locationX>
+        <locationY>458</locationY>
+        <defaultConnector>
+            <targetReference>Checking_WO_Priority</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>is_Not_SR</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>RecTypeName</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Service_Request</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>msg_show</targetReference>
+            </connector>
+            <label>is Not SR</label>
+        </rules>
+    </decisions>
     <description>US #913818 - #913817 - FSL Passenger Released Flow</description>
     <environments>Default</environments>
     <interviewLabel>FSL Passenger Released Flow {!$Flow.CurrentDateTime}</interviewLabel>
@@ -114,9 +139,32 @@
     </processMetadataValues>
     <processType>FieldServiceMobile</processType>
     <recordLookups>
+        <name>get_Record_type</name>
+        <label>get Record type</label>
+        <locationX>380</locationX>
+        <locationY>350</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Record_Type_Check</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>WORecord.RecordTypeId</elementReference>
+            </value>
+        </filters>
+        <object>RecordType</object>
+        <outputAssignments>
+            <assignToReference>RecTypeName</assignToReference>
+            <field>DeveloperName</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
         <name>Get_SA_Record</name>
         <label>Get SA Record</label>
-        <locationX>446</locationX>
+        <locationX>380</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -146,11 +194,11 @@
     <recordLookups>
         <name>Get_WO_Record</name>
         <label>Get WO Record</label>
-        <locationX>446</locationX>
+        <locationX>380</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Checking_WO_Priority</targetReference>
+            <targetReference>get_Record_type</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -167,12 +215,13 @@
         <queriedFields>CaseId</queriedFields>
         <queriedFields>ConfirmedPassengerRelease__c</queriedFields>
         <queriedFields>SvcReqRescueDateTime__c</queriedFields>
+        <queriedFields>RecordTypeId</queriedFields>
     </recordLookups>
     <recordUpdates>
         <name>Update_the_WO_Fields</name>
         <label>Update the WO Fields</label>
-        <locationX>50</locationX>
-        <locationY>566</locationY>
+        <locationX>314</locationX>
+        <locationY>782</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -210,8 +259,8 @@
     <screens>
         <name>Error_for_Not_S1</name>
         <label>Error for Not S1</label>
-        <locationX>842</locationX>
-        <locationY>458</locationY>
+        <locationX>1106</locationX>
+        <locationY>674</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -224,10 +273,26 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
+        <name>msg_show</name>
+        <label>msg show</label>
+        <locationX>50</locationX>
+        <locationY>566</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>test</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;This Action only works for Service Request WO-SA.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>Passenger_Release</name>
         <label>Passenger Release</label>
-        <locationX>578</locationX>
-        <locationY>458</locationY>
+        <locationX>842</locationX>
+        <locationY>674</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -242,8 +307,8 @@
     <screens>
         <name>Passenger_Release_Data</name>
         <label>Passenger Release Data</label>
-        <locationX>50</locationX>
-        <locationY>458</locationY>
+        <locationX>314</locationX>
+        <locationY>674</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -267,8 +332,8 @@
     <screens>
         <name>Passenger_Released</name>
         <label>Passenger Released</label>
-        <locationX>314</locationX>
-        <locationY>458</locationY>
+        <locationX>578</locationX>
+        <locationY>674</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -281,7 +346,7 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>320</locationX>
+        <locationX>254</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_SA_Record</targetReference>
@@ -301,6 +366,13 @@
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>RecTypeName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>

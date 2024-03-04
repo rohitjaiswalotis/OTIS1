@@ -3,8 +3,8 @@
     <assignments>
         <name>Fields_Assignments</name>
         <label>Fields Assignments</label>
-        <locationX>50</locationX>
-        <locationY>1106</locationY>
+        <locationX>578</locationX>
+        <locationY>1538</locationY>
         <assignmentItems>
             <assignToReference>WorkOrderStatus</assignToReference>
             <operator>Assign</operator>
@@ -162,8 +162,8 @@
     <decisions>
         <name>Check_Operation_Status_Reason_Value</name>
         <label>Check Operation Status Reason Value</label>
-        <locationX>842</locationX>
-        <locationY>782</locationY>
+        <locationX>1370</locationX>
+        <locationY>1214</locationY>
         <defaultConnector>
             <targetReference>SA_Closeout2_0</targetReference>
         </defaultConnector>
@@ -187,8 +187,8 @@
     <decisions>
         <name>Check_ParentRecordType</name>
         <label>Check ParentRecordType</label>
-        <locationX>2162</locationX>
-        <locationY>242</locationY>
+        <locationX>2426</locationX>
+        <locationY>566</locationY>
         <defaultConnector>
             <targetReference>SA_Error_Closeout_Message</targetReference>
         </defaultConnector>
@@ -219,8 +219,8 @@
     <decisions>
         <name>Check_Passenger_Released</name>
         <label>Check Passenger Released</label>
-        <locationX>578</locationX>
-        <locationY>458</locationY>
+        <locationX>842</locationX>
+        <locationY>782</locationY>
         <defaultConnector>
             <targetReference>Get_Current_Unit_Record</targetReference>
         </defaultConnector>
@@ -246,6 +246,31 @@
                 <targetReference>Validation_Screen</targetReference>
             </connector>
             <label>If Not Released and S1</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Record_Type_Check</name>
+        <label>Record Type Check</label>
+        <locationX>1238</locationX>
+        <locationY>458</locationY>
+        <defaultConnector>
+            <targetReference>Check_ParentRecordType</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>is_not_SR</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>RecTypeName</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Service_Request</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>test</targetReference>
+            </connector>
+            <label>is not SR</label>
         </rules>
     </decisions>
     <description>US # 936465 - This flow is using to Close the SA.</description>
@@ -348,8 +373,8 @@
     <recordCreates>
         <name>Create_UnitShutDown_Log</name>
         <label>Create UnitShutDown Log</label>
-        <locationX>50</locationX>
-        <locationY>1646</locationY>
+        <locationX>578</locationX>
+        <locationY>2078</locationY>
         <faultConnector>
             <targetReference>ErrorScreen</targetReference>
         </faultConnector>
@@ -394,8 +419,8 @@
     <recordLookups>
         <name>Get_Current_Unit_Record</name>
         <label>Get Current Unit Record</label>
-        <locationX>842</locationX>
-        <locationY>458</locationY>
+        <locationX>1370</locationX>
+        <locationY>890</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Service_Resource</targetReference>
@@ -416,11 +441,11 @@
     <recordLookups>
         <name>Get_SA_Record</name>
         <label>Get SA Record</label>
-        <locationX>2162</locationX>
+        <locationX>1238</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Check_ParentRecordType</targetReference>
+            <targetReference>Get_WO</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -444,8 +469,8 @@
     <recordLookups>
         <name>Get_Service_Resource</name>
         <label>Get Service Resource</label>
-        <locationX>842</locationX>
-        <locationY>566</locationY>
+        <locationX>1370</locationX>
+        <locationY>998</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>SA_Closeout1</targetReference>
@@ -467,8 +492,8 @@
     <recordLookups>
         <name>Get_UnitShutdownLog_Record_0</name>
         <label>Get UnitShutdownLog Record</label>
-        <locationX>1634</locationX>
-        <locationY>1106</locationY>
+        <locationX>2162</locationX>
+        <locationY>1538</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_WorkPerformedCode_0</targetReference>
@@ -494,10 +519,56 @@
         <sortOrder>Desc</sortOrder>
     </recordLookups>
     <recordLookups>
+        <name>Get_WO</name>
+        <label>Get WO</label>
+        <locationX>1238</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_WO_Recordtype</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>SA_Record.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrder</object>
+        <outputAssignments>
+            <assignToReference>WORecTYPE</assignToReference>
+            <field>RecordTypeId</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_WO_Recordtype</name>
+        <label>Get WO Recordtype</label>
+        <locationX>1238</locationX>
+        <locationY>350</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Record_Type_Check</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>WORecTYPE</elementReference>
+            </value>
+        </filters>
+        <object>RecordType</object>
+        <outputAssignments>
+            <assignToReference>RecTypeName</assignToReference>
+            <field>DeveloperName</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
         <name>Get_WorkOrder</name>
         <label>Get WorkOrder</label>
         <locationX>842</locationX>
-        <locationY>350</locationY>
+        <locationY>674</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_Passenger_Released</targetReference>
@@ -520,8 +591,8 @@
     <recordLookups>
         <name>Get_WorkPerformedCode</name>
         <label>Get WorkPerformedCode</label>
-        <locationX>50</locationX>
-        <locationY>1214</locationY>
+        <locationX>578</locationX>
+        <locationY>1646</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Update_SA</targetReference>
@@ -545,8 +616,8 @@
     <recordLookups>
         <name>Get_WorkPerformedCode_0</name>
         <label>Get WorkPerformedCode</label>
-        <locationX>1634</locationX>
-        <locationY>1214</locationY>
+        <locationX>2162</locationX>
+        <locationY>1646</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Update_SA_0</targetReference>
@@ -570,8 +641,8 @@
     <recordUpdates>
         <name>Update_Related_Work_Order</name>
         <label>Update Related Work Order</label>
-        <locationX>50</locationX>
-        <locationY>1430</locationY>
+        <locationX>578</locationX>
+        <locationY>1862</locationY>
         <connector>
             <targetReference>Update_Unit</targetReference>
         </connector>
@@ -634,8 +705,8 @@
     <recordUpdates>
         <name>Update_Related_Work_Order_0</name>
         <label>Update Related Work Order</label>
-        <locationX>1634</locationX>
-        <locationY>1430</locationY>
+        <locationX>2162</locationX>
+        <locationY>1862</locationY>
         <connector>
             <targetReference>Update_Unit_0</targetReference>
         </connector>
@@ -698,8 +769,8 @@
     <recordUpdates>
         <name>Update_SA</name>
         <label>Update SA</label>
-        <locationX>50</locationX>
-        <locationY>1322</locationY>
+        <locationX>578</locationX>
+        <locationY>1754</locationY>
         <connector>
             <targetReference>Update_Related_Work_Order</targetReference>
         </connector>
@@ -744,8 +815,8 @@
     <recordUpdates>
         <name>Update_SA_0</name>
         <label>Update SA</label>
-        <locationX>1634</locationX>
-        <locationY>1322</locationY>
+        <locationX>2162</locationX>
+        <locationY>1754</locationY>
         <connector>
             <targetReference>Update_Related_Work_Order_0</targetReference>
         </connector>
@@ -790,8 +861,8 @@
     <recordUpdates>
         <name>Update_Unit</name>
         <label>Update Unit</label>
-        <locationX>50</locationX>
-        <locationY>1538</locationY>
+        <locationX>578</locationX>
+        <locationY>1970</locationY>
         <connector>
             <targetReference>Create_UnitShutDown_Log</targetReference>
         </connector>
@@ -824,8 +895,8 @@
     <recordUpdates>
         <name>Update_Unit_0</name>
         <label>Update Unit</label>
-        <locationX>1634</locationX>
-        <locationY>1538</locationY>
+        <locationX>2162</locationX>
+        <locationY>1970</locationY>
         <connector>
             <targetReference>Update_UnitShutdownLog</targetReference>
         </connector>
@@ -858,8 +929,8 @@
     <recordUpdates>
         <name>Update_UnitShutdownLog</name>
         <label>Update UnitShutdownLog</label>
-        <locationX>1634</locationX>
-        <locationY>1646</locationY>
+        <locationX>2162</locationX>
+        <locationY>2078</locationY>
         <faultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>ErrorScreen</targetReference>
@@ -895,8 +966,8 @@
     <screens>
         <name>Add_Time</name>
         <label>Add Time</label>
-        <locationX>50</locationX>
-        <locationY>998</locationY>
+        <locationX>578</locationX>
+        <locationY>1430</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -941,8 +1012,8 @@
     <screens>
         <name>Add_Time_1</name>
         <label>Add Time</label>
-        <locationX>1634</locationX>
-        <locationY>998</locationY>
+        <locationX>2162</locationX>
+        <locationY>1430</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -987,8 +1058,8 @@
     <screens>
         <name>ErrorScreen</name>
         <label>ErrorScreen</label>
-        <locationX>314</locationX>
-        <locationY>1754</locationY>
+        <locationX>842</locationX>
+        <locationY>2186</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1003,8 +1074,8 @@
     <screens>
         <name>SA_Closeout1</name>
         <label>Service Request WO Closeout</label>
-        <locationX>842</locationX>
-        <locationY>674</locationY>
+        <locationX>1370</locationX>
+        <locationY>1106</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1077,8 +1148,8 @@
     <screens>
         <name>SA_Closeout2</name>
         <label>Service Request WO Closeout</label>
-        <locationX>50</locationX>
-        <locationY>890</locationY>
+        <locationX>578</locationX>
+        <locationY>1322</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1149,8 +1220,8 @@
     <screens>
         <name>SA_Closeout2_0</name>
         <label>Service Request WO Closeout</label>
-        <locationX>1634</locationX>
-        <locationY>890</locationY>
+        <locationX>2162</locationX>
+        <locationY>1322</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1209,8 +1280,8 @@
     <screens>
         <name>SA_Error_Closeout_Message</name>
         <label>SA Error Closeout Message</label>
-        <locationX>3482</locationX>
-        <locationY>350</locationY>
+        <locationX>4010</locationX>
+        <locationY>674</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1223,10 +1294,26 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
-        <name>Validation_Screen</name>
-        <label>Validation Screen</label>
+        <name>test</name>
+        <label>test</label>
         <locationX>50</locationX>
         <locationY>566</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>SR_check</name>
+            <fieldText>&lt;p&gt;This Action only works for Service Request WO-SA&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Validation_Screen</name>
+        <label>Validation Screen</label>
+        <locationX>314</locationX>
+        <locationY>890</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1239,7 +1326,7 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>2036</locationX>
+        <locationX>1112</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_SA_Record</targetReference>
@@ -1270,6 +1357,13 @@
         <value>
             <stringValue>In Service</stringValue>
         </value>
+    </variables>
+    <variables>
+        <name>RecTypeName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>SA_Record</name>
@@ -1306,6 +1400,13 @@
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>WORecTYPE</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Building_Contact_Label</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Building Contact Label</shortDescription>
+        <value>You can&apos;t save this record because a duplicate record already exists. To save, use different information.</value>
+    </labels>
+    <labels>
+        <fullName>Unit_Back_in_service_Error</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Unit Back in service Error</shortDescription>
+        <value>Back In Service date/time should not be in future.</value>
+    </labels>
+</CustomLabels>

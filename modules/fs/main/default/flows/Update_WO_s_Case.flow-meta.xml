@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>60.0</apiVersion>
+    <decisions>
+        <name>Record_Type_Check</name>
+        <label>Record Type Check</label>
+        <locationX>182</locationX>
+        <locationY>323</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>is_SR</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordType.Id</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$Setup.OTISCustomSettings__c.Work_Order_Service_Request_Record_Type__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Related_Case_Records</targetReference>
+            </connector>
+            <label>is SR</label>
+        </rules>
+    </decisions>
     <description>Update Related Case of Work Order - US913821</description>
     <environments>Default</environments>
     <interviewLabel>Update WO Case {!$Flow.CurrentDateTime}</interviewLabel>
@@ -27,8 +49,8 @@
     <recordUpdates>
         <name>Update_Related_Case_Records</name>
         <label>Update Related Case Records</label>
-        <locationX>176</locationX>
-        <locationY>323</locationY>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
         <inputAssignments>
             <field>PassengersSafelyExited__c</field>
             <value>
@@ -38,10 +60,10 @@
         <inputReference>$Record.Case</inputReference>
     </recordUpdates>
     <start>
-        <locationX>50</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Update_Related_Case_Records</targetReference>
+            <targetReference>Record_Type_Check</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>

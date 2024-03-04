@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <assignments>
+        <name>Assign_the_Latitude_and_Longitude_Value</name>
+        <label>Assign the Latitude and Longitude Value</label>
+        <locationX>50</locationX>
+        <locationY>1043</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Latitude</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Building.Latitude</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.Longitude</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Building.Longitude</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Assign_WorkOrder</name>
+        <label>Assign WorkOrder</label>
+        <locationX>182</locationX>
+        <locationY>719</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.WorkOrder__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.ParentRecordId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Building</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Created_Updated</name>
+        <label>Created/Updated ?</label>
+        <locationX>380</locationX>
+        <locationY>611</locationY>
+        <defaultConnector>
+            <targetReference>Update_Accepted_and_ETA_Time_difference</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Updated</defaultConnectorLabel>
+        <rules>
+            <name>Created</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>isCreated</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_WorkOrder</targetReference>
+            </connector>
+            <label>Created</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Building_Present</name>
+        <label>Is Building Present ?</label>
+        <locationX>182</locationX>
+        <locationY>935</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Present_Building</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Building</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_the_Latitude_and_Longitude_Value</targetReference>
+            </connector>
+            <label>Present | Building</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_ParentRecord_WorkOrder1</name>
+        <label>Is ParentRecord WorkOrder ?</label>
+        <locationX>858</locationX>
+        <locationY>287</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>YES_WorkOrder1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ParentRecordId</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>0WO</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_WorkOrder</targetReference>
+            </connector>
+            <label>YES | WorkOrder</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>WorkOrder_RecordType_Service_Request</name>
+        <label>WorkOrder RecordType | Service Request ?</label>
+        <locationX>611</locationX>
+        <locationY>503</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>YES_Service_Request</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_WorkOrder</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_WorkOrder.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Service_Request</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Created_Updated</targetReference>
+            </connector>
+            <label>YES | Service Request</label>
+        </rules>
+    </decisions>
+    <description>#US951644: To update the SA&apos;s new Work Order Lookup field
+#US949941:This is invoked when mechanic accepts the appointment. On acceptance, mechanic enters the ETA and this flow is respponsible to calculate the difference between appointment acceptance &amp; ETA date/time in mins. Which is later being used in KPI dashboard to find out accpointments where difference is greater than 3 hours.
+#US951618: When SA is created its Geo Location will be copied from Related building.</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>Accepted_ETA_Difference_in_Mins</name>
+        <dataType>Number</dataType>
+        <expression>(UNIXTIMESTAMP({!$Record.Initial_ETA__c}) - UNIXTIMESTAMP(NOW()))/60</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>isCreated</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNEW()</expression>
+    </formulas>
+    <interviewLabel>Service Appointment Service Request Before Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Service Appointment Service Request Before Flow</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_Building</name>
+        <label>Get | Building</label>
+        <locationX>182</locationX>
+        <locationY>827</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_Building_Present</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_WorkOrder.LocationId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Location</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_WorkOrder</name>
+        <label>Get | WorkOrder</label>
+        <locationX>611</locationX>
+        <locationY>395</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>WorkOrder_RecordType_Service_Request</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>WorkOrder</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_Accepted_and_ETA_Time_difference</name>
+        <label>Update Accepted and ETA Time difference</label>
+        <locationX>578</locationX>
+        <locationY>719</locationY>
+        <inputAssignments>
+            <field>Appointment_Accepted_Date_Time__c</field>
+            <value>
+                <elementReference>Accepted_ETA_Difference_in_Mins</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>732</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Is_ParentRecord_WorkOrder1</targetReference>
+        </connector>
+        <object>ServiceAppointment</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
