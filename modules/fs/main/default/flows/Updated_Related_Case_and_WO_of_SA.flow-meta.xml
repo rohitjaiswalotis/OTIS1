@@ -17,12 +17,20 @@
                     <stringValue>0WO</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.RecordType.Id</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$Setup.OTISCustomSettings__c.Work_Order_Service_Request_Record_Type__c</elementReference>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Update_Work_Order</targetReference>
             </connector>
             <label>If WorkOrder</label>
         </rules>
     </decisions>
+    <description>Update related Case</description>
     <environments>Default</environments>
     <interviewLabel>Updated Related Case and WO of SA {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Updated Related Case and WO of SA</label>
@@ -108,5 +116,5 @@
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
 </Flow>

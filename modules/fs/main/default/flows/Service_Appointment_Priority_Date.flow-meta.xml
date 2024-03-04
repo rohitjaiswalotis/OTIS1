@@ -133,7 +133,7 @@
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
     <variables>
         <name>ServiceAppoinmentCreatedDate</name>
         <dataType>DateTime</dataType>

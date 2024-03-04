@@ -3,8 +3,8 @@
     <assignments>
         <name>assignBuildingContact</name>
         <label>assignBuildingContact</label>
-        <locationX>358</locationX>
-        <locationY>1082</locationY>
+        <locationX>622</locationX>
+        <locationY>1406</locationY>
         <assignmentItems>
             <assignToReference>contactId</assignToReference>
             <operator>Add</operator>
@@ -19,8 +19,8 @@
     <assignments>
         <name>contactAssign</name>
         <label>contactAssign</label>
-        <locationX>358</locationX>
-        <locationY>1490</locationY>
+        <locationX>622</locationX>
+        <locationY>1814</locationY>
         <assignmentItems>
             <assignToReference>BuildingcontactName</assignToReference>
             <operator>Add</operator>
@@ -33,10 +33,35 @@
         </connector>
     </assignments>
     <decisions>
+        <name>Reco</name>
+        <label>Recordtype check</label>
+        <locationX>292</locationX>
+        <locationY>458</locationY>
+        <defaultConnector>
+            <targetReference>unitdetails</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>is_not_SR</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>RecTypeName</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Service_Request</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Display_if_not_SR</targetReference>
+            </connector>
+            <label>is not SR</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Unit_Not_found</name>
         <label>Unit Not found</label>
-        <locationX>270</locationX>
-        <locationY>350</locationY>
+        <locationX>534</locationX>
+        <locationY>674</locationY>
         <defaultConnector>
             <targetReference>Building</targetReference>
         </defaultConnector>
@@ -79,8 +104,8 @@
     <loops>
         <name>BuildingLoop</name>
         <label>BuildingLoop</label>
-        <locationX>270</locationX>
-        <locationY>974</locationY>
+        <locationX>534</locationX>
+        <locationY>1298</locationY>
         <assignNextValueToReference>contactrecord</assignNextValueToReference>
         <collectionReference>buildingContactRecord</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -94,8 +119,8 @@
     <loops>
         <name>contactLoop</name>
         <label>contactLoop</label>
-        <locationX>270</locationX>
-        <locationY>1382</locationY>
+        <locationX>534</locationX>
+        <locationY>1706</locationY>
         <assignNextValueToReference>contactvar</assignNextValueToReference>
         <collectionReference>contactCollection</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -128,8 +153,8 @@
     <recordLookups>
         <name>Building</name>
         <label>Building</label>
-        <locationX>270</locationX>
-        <locationY>758</locationY>
+        <locationX>534</locationX>
+        <locationY>1082</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>buildingContact</targetReference>
@@ -149,8 +174,8 @@
     <recordLookups>
         <name>buildingContact</name>
         <label>buildingContact</label>
-        <locationX>270</locationX>
-        <locationY>866</locationY>
+        <locationX>534</locationX>
+        <locationY>1190</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>BuildingLoop</targetReference>
@@ -170,13 +195,36 @@
         <queriedFields>Contact__c</queriedFields>
     </recordLookups>
     <recordLookups>
+        <name>get_RecordType</name>
+        <label>get RecordType</label>
+        <locationX>292</locationX>
+        <locationY>350</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Reco</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>WOdata.RecordTypeId</elementReference>
+            </value>
+        </filters>
+        <object>RecordType</object>
+        <outputAssignments>
+            <assignToReference>RecTypeName</assignToReference>
+            <field>DeveloperName</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
         <name>get_Service_Appoinment</name>
         <label>get Service Appoinment</label>
-        <locationX>270</locationX>
+        <locationX>292</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>unitdetails</targetReference>
+            <targetReference>get_WO</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -191,12 +239,35 @@
         <queriedFields>Id</queriedFields>
         <queriedFields>ParentRecordId</queriedFields>
         <queriedFields>Unit__c</queriedFields>
+        <queriedFields>WorkOrder__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>get_WO</name>
+        <label>get WO</label>
+        <locationX>292</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>get_RecordType</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ServiceAppoinmentRecord.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrder</object>
+        <outputReference>WOdata</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>RecordTypeId</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>getContact</name>
         <label>getContact</label>
-        <locationX>270</locationX>
-        <locationY>1274</locationY>
+        <locationX>534</locationX>
+        <locationY>1598</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>contactLoop</targetReference>
@@ -217,8 +288,8 @@
     <recordLookups>
         <name>unitdetails</name>
         <label>unitdetails</label>
-        <locationX>270</locationX>
-        <locationY>242</locationY>
+        <locationX>534</locationX>
+        <locationY>566</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Unit_Not_found</targetReference>
@@ -249,8 +320,8 @@
     <screens>
         <name>Contact_Info</name>
         <label>Building Contact Information</label>
-        <locationX>270</locationX>
-        <locationY>1682</locationY>
+        <locationX>534</locationX>
+        <locationY>2006</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -263,10 +334,26 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
+        <name>Display_if_not_SR</name>
+        <label>Display if not SR</label>
+        <locationX>50</locationX>
+        <locationY>566</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>test</name>
+            <fieldText>&lt;p&gt;This action is for Service Request Work Orders only.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>error_Flow</name>
         <label>No Data</label>
-        <locationX>50</locationX>
-        <locationY>458</locationY>
+        <locationX>314</locationX>
+        <locationY>782</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -279,7 +366,7 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>144</locationX>
+        <locationX>166</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>get_Service_Appoinment</targetReference>
@@ -356,6 +443,13 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>RecTypeName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>ServiceAppoinmentRecord</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
@@ -370,6 +464,14 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Asset</objectType>
+    </variables>
+    <variables>
+        <name>WOdata</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrder</objectType>
     </variables>
     <variables>
         <name>workOrderDetails</name>

@@ -32,7 +32,7 @@
         <locationX>50</locationX>
         <locationY>647</locationY>
         <customErrorMessages>
-            <errorMessage>Back In Service date/time should not be in future.</errorMessage>
+            <errorMessage>{!$Label.Unit_Back_in_service_Error}</errorMessage>
             <isFieldError>false</isFieldError>
         </customErrorMessages>
     </customErrors>

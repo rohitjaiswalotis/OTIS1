@@ -4,8 +4,8 @@
     <assignments>
         <name>Assign_the_Latitude_and_Longitude_Value</name>
         <label>Assign the Latitude and Longitude Value</label>
-        <locationX>176</locationX>
-        <locationY>503</locationY>
+        <locationX>50</locationX>
+        <locationY>611</locationY>
         <assignmentItems>
             <assignToReference>$Record.Latitude</assignToReference>
             <operator>Assign</operator>
@@ -21,6 +21,28 @@
             </value>
         </assignmentItems>
     </assignments>
+    <decisions>
+        <name>Check_Record_type</name>
+        <label>Check Record type</label>
+        <locationX>182</locationX>
+        <locationY>287</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>is_SR</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Service_Request</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Work_Order_Records</targetReference>
+            </connector>
+            <label>is SR</label>
+        </rules>
+    </decisions>
     <description>US#956325 SA GeoLocation from Building flow</description>
     <environments>Default</environments>
     <interviewLabel>SA Latitude Longitude Update {!$Flow.CurrentDateTime}</interviewLabel>
@@ -47,8 +69,8 @@
     <recordLookups>
         <name>Get_Building_Data</name>
         <label>Get Building Data</label>
-        <locationX>176</locationX>
-        <locationY>395</locationY>
+        <locationX>50</locationX>
+        <locationY>503</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Assign_the_Latitude_and_Longitude_Value</targetReference>
@@ -68,8 +90,8 @@
     <recordLookups>
         <name>Get_Work_Order_Records</name>
         <label>Get Work Order Records</label>
-        <locationX>176</locationX>
-        <locationY>287</locationY>
+        <locationX>50</locationX>
+        <locationY>395</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Building_Data</targetReference>
@@ -87,16 +109,16 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>50</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Work_Order_Records</targetReference>
+            <targetReference>Check_Record_type</targetReference>
         </connector>
         <object>ServiceAppointment</object>
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
     <triggerOrder>1800</triggerOrder>
     <variables>
         <name>recordId</name>

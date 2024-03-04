@@ -44,8 +44,8 @@
     <decisions>
         <name>BannerShowNew</name>
         <label>BannerShowNew</label>
-        <locationX>314</locationX>
-        <locationY>458</locationY>
+        <locationX>710</locationX>
+        <locationY>674</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_Signature_Required</targetReference>
         </defaultConnector>
@@ -69,8 +69,8 @@
     <decisions>
         <name>Capture_Signature</name>
         <label>Capture Signature 1</label>
-        <locationX>50</locationX>
-        <locationY>674</locationY>
+        <locationX>446</locationX>
+        <locationY>890</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_No_Signature_Reason</targetReference>
         </defaultConnector>
@@ -91,8 +91,8 @@
     <decisions>
         <name>Copy_1_of_Capture_Signature</name>
         <label>Capture Signature 2</label>
-        <locationX>578</locationX>
-        <locationY>674</locationY>
+        <locationX>974</locationX>
+        <locationY>890</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_check_Fields</targetReference>
         </defaultConnector>
@@ -110,6 +110,32 @@
             <label>Copy 1 of SignatureAvailable</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Decision_4</name>
+        <label>Record Type check</label>
+        <locationX>380</locationX>
+        <locationY>458</locationY>
+        <defaultConnector>
+            <targetReference>getUnit</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_1_of_Decision_4</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>RTNAme</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Service_Request</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>test</targetReference>
+            </connector>
+            <label>Is not SR</label>
+        </rules>
+    </decisions>
+    <description>This flow generates service resource</description>
     <dynamicChoiceSets>
         <name>SignatureReasons</name>
         <dataType>Picklist</dataType>
@@ -141,9 +167,32 @@
     </processMetadataValues>
     <processType>FieldServiceMobile</processType>
     <recordLookups>
+        <name>Get_RecordType</name>
+        <label>Get RecordType</label>
+        <locationX>380</locationX>
+        <locationY>350</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_4</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>getWO.RecordTypeId</elementReference>
+            </value>
+        </filters>
+        <object>RecordType</object>
+        <outputAssignments>
+            <assignToReference>RTNAme</assignToReference>
+            <field>DeveloperName</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
         <name>get_SA_records</name>
         <label>get SA records</label>
-        <locationX>314</locationX>
+        <locationX>380</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -165,8 +214,8 @@
     <recordLookups>
         <name>getUnit</name>
         <label>getUnit</label>
-        <locationX>314</locationX>
-        <locationY>350</locationY>
+        <locationX>710</locationX>
+        <locationY>566</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>BannerShowNew</targetReference>
@@ -188,11 +237,11 @@
     <recordLookups>
         <name>Work_Order</name>
         <label>Work Order</label>
-        <locationX>314</locationX>
+        <locationX>380</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>getUnit</targetReference>
+            <targetReference>Get_RecordType</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -207,12 +256,13 @@
         <queriedFields>Id</queriedFields>
         <queriedFields>ServiceReportTemplateId</queriedFields>
         <queriedFields>AssetId</queriedFields>
+        <queriedFields>RecordTypeId</queriedFields>
     </recordLookups>
     <recordUpdates>
         <name>Copy_1_of_Update_SA_3</name>
         <label>Update SA 1</label>
-        <locationX>182</locationX>
-        <locationY>890</locationY>
+        <locationX>578</locationX>
+        <locationY>1106</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -232,8 +282,8 @@
     <recordUpdates>
         <name>Update_SA_3</name>
         <label>Update SA 2</label>
-        <locationX>710</locationX>
-        <locationY>890</locationY>
+        <locationX>1106</locationX>
+        <locationY>1106</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -253,8 +303,8 @@
     <screens>
         <name>check_Fields</name>
         <label>Generate SR</label>
-        <locationX>50</locationX>
-        <locationY>566</locationY>
+        <locationX>446</locationX>
+        <locationY>782</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -283,8 +333,8 @@
     <screens>
         <name>Copy_1_of_check_Fields</name>
         <label>Generate SR</label>
-        <locationX>710</locationX>
-        <locationY>782</locationY>
+        <locationX>1106</locationX>
+        <locationY>998</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -306,8 +356,8 @@
     <screens>
         <name>Copy_1_of_No_Signature_Reason</name>
         <label>Generate SR</label>
-        <locationX>182</locationX>
-        <locationY>782</locationY>
+        <locationX>578</locationX>
+        <locationY>998</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -329,8 +379,8 @@
     <screens>
         <name>Copy_1_of_Signature_Required</name>
         <label>Generate SR</label>
-        <locationX>578</locationX>
-        <locationY>566</locationY>
+        <locationX>974</locationX>
+        <locationY>782</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -351,8 +401,24 @@
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
+    <screens>
+        <name>test</name>
+        <label>test</label>
+        <locationX>50</locationX>
+        <locationY>566</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>RT</name>
+            <fieldText>&lt;p&gt;This Action only works for Service Request WO-SA.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
     <start>
-        <locationX>188</locationX>
+        <locationX>254</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>get_SA_records</targetReference>
@@ -381,6 +447,13 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>RTNAme</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>signatureValue</name>
