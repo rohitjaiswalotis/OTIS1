@@ -6,7 +6,7 @@
       "package": "OTIS Field Service",
       "versionName": "QA ($CONF_PROP_GIT_BRANCH) $CONF_PROP_UTC_DATETIME",
       "versionDescription": "OTIS Field Service",
-      "versionNumber": "1.0.0.NEXT",
+      "versionNumber": "1.1.0.NEXT",
       "definitionFile": "config/core/shape.json",
       "dependencies": [
         {
@@ -23,7 +23,7 @@
         },
         {
           "package": "OTIS Global CC Core",
-          "versionNumber": "1.8.0.LATEST",
+          "versionNumber": "1.9.0.LATEST",
           "branch": "dev"
         }
       ],
