@@ -85,6 +85,12 @@ stages:
                     secureFile: fsPool
                   displayName: 'Copy fsPool secure file'
                   
+                - task: DownloadSEcureFile@1
+                  name: fsMasterPoolAuthFile
+                  inputs:
+                    secureFile: fsMasterPool
+                  displayName: 'Copy fsMasterPool secure file'
+                  
                 - script: |
                       
                       echo "Number of pipelines execution for $(Build.Reason): $(counter)"
@@ -93,6 +99,15 @@ stages:
                       # select pool based on target branch (in case of PR), otherwise go with reasonable default
                       
                       fsPoolFilePath="$(fsPoolAuthFile.secureFilePath)";
+                      
+                      if [[ "$(Build.Reason)" =~ ^PullRequest$ ]]; then
+                        
+                        if [[ "$(System.PullRequest.TargetBranchName)" =~ ^master$ ]]; then
+                          fsPoolFilePath="$(fsMasterPoolAuthFile.secureFilePath)";
+                          
+                        fi
+                        
+                      fi
                       
                       fsPool=$(cat "$fsPoolFilePath");
                       poolLength=$(echo $fsPool | jq 'length');

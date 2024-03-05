@@ -5,6 +5,7 @@ trigger:
   include:
     - dev
     - dev-jpn
+    - master
     
 pr: none
 
@@ -102,7 +103,10 @@ stages:
                 - task: DownloadSEcureFile@1
                   name: authFile
                   inputs:
-                    secureFile: authFile_devFS
+                    ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
+                      secureFile: authFile_masterFS
+                    ${{ else }}:
+                      secureFile: authFile_devFS
                   displayName: 'Copy authorization file for devFS'
                   
                   
