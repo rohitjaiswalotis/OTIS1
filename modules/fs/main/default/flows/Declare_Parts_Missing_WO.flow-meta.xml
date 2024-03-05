@@ -191,7 +191,7 @@
         </fields>
         <fields>
             <name>CommentsWO</name>
-            <fieldText>Comments</fieldText>
+            <fieldText>Field Service Notes</fieldText>
             <fieldType>LargeTextArea</fieldType>
             <isRequired>false</isRequired>
         </fields>
