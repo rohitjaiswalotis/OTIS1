@@ -4,5 +4,5 @@
     <active>true</active>
     <errorConditionFormula>AND( $UserRole.Name =&quot;Route Supervisor&quot;, ISNEW() ,
      ISPICKVAL(Type__c, &quot;Permanent&quot;))</errorConditionFormula>
-    <errorMessage>You Can not create the Route Coverage when Type is Permanent.</errorMessage>
+    <errorMessage>You cannot create the Route Coverage when Type is Permanent</errorMessage>
 </ValidationRule>
