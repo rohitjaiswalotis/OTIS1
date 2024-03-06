@@ -30,21 +30,13 @@ if (workTypeId == null) {
 	
 	OTISCustomSettings__c otisSettings = OTISCustomSettings__c.getOrgDefaults();
 	
-	otisSettings.DefaultWorkTypeId__c = (
-		otisSettings.DefaultWorkTypeId__c == null 
-		? 
-			workTypeId 
-			: 
-			otisSettings.DefaultWorkTypeId__c
-	);
+	otisSettings.DefaultWorkTypeId__c = 
+		otisSettings.DefaultWorkTypeId__c ?? workTypeId
+	;
 	
-	otisSettings.ImageUploadLimitInSA__c = (
-		otisSettings.ImageUploadLimitInSA__c == null 
-		? 
-			3 
-			: 
-			otisSettings.ImageUploadLimitInSA__c
-	);
+	otisSettings.ImageUploadLimitInSA__c = 
+		otisSettings.ImageUploadLimitInSA__c ?? 3
+	;
 	
 	upsert otisSettings;
 	
