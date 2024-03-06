@@ -1747,34 +1747,10 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
-        <name>UpdatingSAStatus</name>
-        <label>Updating SA Status</label>
-        <locationX>5990</locationX>
-        <locationY>863</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>NewlyCreatedSA</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Status</field>
-            <value>
-                <stringValue>Scheduled</stringValue>
-            </value>
-        </inputAssignments>
-        <object>ServiceAppointment</object>
-    </recordUpdates>
-    <recordUpdates>
         <name>UpdatingWoFields</name>
         <label>Updating Wo Fields</label>
         <locationX>5990</locationX>
         <locationY>755</locationY>
-        <connector>
-            <targetReference>UpdatingSAStatus</targetReference>
-        </connector>
         <inputAssignments>
             <field>Status</field>
             <value>
