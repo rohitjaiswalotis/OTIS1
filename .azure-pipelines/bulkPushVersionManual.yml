@@ -46,6 +46,43 @@ parameters:
   type: boolean
   default: false
 
+- name: installationMode
+  displayName: Installation Mode
+  type: string
+  default: auto
+  values:
+  - auto
+  - install
+  - upgrade
+  - upgrade-meta
+
+- name: compileScope
+  displayName: Package Apex Compilation Scope
+  type: string
+  default: all
+  values:
+  - all
+  - package
+
+- name: upgradeType
+  displayName: Package Upgrade Type
+  type: string
+  default: Mixed
+  values:
+  - Mixed
+  - DeprecateOnly
+  - Delete
+
+- name: actionPhase
+  displayName: Action Phase
+  type: string
+  default: both
+  values:
+  - both
+  - before
+  - after
+  - none
+
 - name: shouldRunAqaTests
   displayName: Run AQA Tests?
   type: boolean
@@ -108,6 +145,11 @@ stages:
       autoInstallDependencies: ${{ parameters.autoInstallDependencies }}
       installOnlyDependencies: ${{ parameters.installOnlyDependencies }}
       shouldInstallThirdParties: ${{ parameters.shouldInstallThirdParties }}
+      
+      installationMode: ${{ parameters.installationMode }}
+      compileScope: ${{ parameters.compileScope }}
+      upgradeType: ${{ parameters.upgradeType }}
+      actionPhase: ${{ parameters.actionPhase }}
       
       shouldRunTestsBefore: ${{ parameters.shouldRunTestsBefore }}
       runTestsBeforeAsConcurrent: ${{ parameters.runTestsBeforeAsConcurrent }}
