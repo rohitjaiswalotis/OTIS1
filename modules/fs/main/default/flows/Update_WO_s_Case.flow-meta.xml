@@ -67,7 +67,7 @@
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>TrappedPassengerReleasedByOTIS__c</field>
+            <field>PassengerOutreachNoLongerRequired__c</field>
             <operator>IsChanged</operator>
             <value>
                 <booleanValue>true</booleanValue>
