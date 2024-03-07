@@ -4,7 +4,7 @@
     <assignments>
         <name>Assign_SA_Completed_to_a_Variable</name>
         <label>Assign SA Completed to a Variable</label>
-        <locationX>2976</locationX>
+        <locationX>3240</locationX>
         <locationY>4080</locationY>
         <assignmentItems>
             <assignToReference>StorteCompletedSaWOIDs</assignToReference>
@@ -41,7 +41,7 @@
     <assignments>
         <name>Copy_1_of_Assign_SA_to_a_Variable</name>
         <label>Copy 1 of Assign SA to a Variable</label>
-        <locationX>3020</locationX>
+        <locationX>3284</locationX>
         <locationY>3348</locationY>
         <assignmentItems>
             <assignToReference>storeSAids</assignToReference>
@@ -57,7 +57,7 @@
     <assignments>
         <name>Count_of_Pending_SA</name>
         <label>Count of Pending SA</label>
-        <locationX>2558</locationX>
+        <locationX>3086</locationX>
         <locationY>1140</locationY>
         <assignmentItems>
             <assignToReference>CountPendingSA</assignToReference>
@@ -73,7 +73,7 @@
     <assignments>
         <name>Update_Counter</name>
         <label>Update Counter</label>
-        <locationX>1590</locationX>
+        <locationX>2118</locationX>
         <locationY>1248</locationY>
         <assignmentItems>
             <assignToReference>AssignedServiceResourceCounter</assignToReference>
@@ -118,7 +118,7 @@
     <decisions>
         <name>Check_Count</name>
         <label>Check Count</label>
-        <locationX>2558</locationX>
+        <locationX>3086</locationX>
         <locationY>1248</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -140,7 +140,7 @@
     <decisions>
         <name>Check_Fixed_Issue</name>
         <label>Check Fixed Issue</label>
-        <locationX>2558</locationX>
+        <locationX>3086</locationX>
         <locationY>924</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -206,7 +206,7 @@
         <description>This decision will check whether  the related work Oder&apos;s record type is maintenance or not</description>
         <name>Check_For_Maintenance</name>
         <label>Check For Maintenance</label>
-        <locationX>6804</locationX>
+        <locationX>7332</locationX>
         <locationY>276</locationY>
         <defaultConnectorLabel>Not maintenance</defaultConnectorLabel>
         <rules>
@@ -229,7 +229,7 @@
         <description>This decision will check whether  the related work Oder&apos;s record type is maintenance or not</description>
         <name>Check_For_Maintenancee</name>
         <label>Check For Maintenance</label>
-        <locationX>4571</locationX>
+        <locationX>4967</locationX>
         <locationY>384</locationY>
         <defaultConnectorLabel>Not maintenance</defaultConnectorLabel>
         <rules>
@@ -281,7 +281,7 @@
     <decisions>
         <name>Check_If_Resource_Present</name>
         <label>Check If Resource Present</label>
-        <locationX>4494</locationX>
+        <locationX>5022</locationX>
         <locationY>1572</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -303,7 +303,7 @@
     <decisions>
         <name>Check_If_Resource_Present2</name>
         <label>Check If Resource Present</label>
-        <locationX>4582</locationX>
+        <locationX>5110</locationX>
         <locationY>2472</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -325,7 +325,7 @@
     <decisions>
         <name>Check_With_Due_Date</name>
         <label>Check With Due Date</label>
-        <locationX>4582</locationX>
+        <locationX>5110</locationX>
         <locationY>816</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -390,7 +390,7 @@
     <decisions>
         <name>Condition_Check</name>
         <label>Condition Check</label>
-        <locationX>6606</locationX>
+        <locationX>7134</locationX>
         <locationY>384</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -447,7 +447,7 @@
     <decisions>
         <name>Copy_1_of_Check_if_WO_is_Missed_Visit</name>
         <label>Copy 1 of Check if WO is Missed Visit</label>
-        <locationX>2932</locationX>
+        <locationX>3196</locationX>
         <locationY>3648</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -469,7 +469,7 @@
     <decisions>
         <name>Copy_1_of_IF_WO_with_missed_Visit_is_there_in_pending_state</name>
         <label>Copy 1 of IF WO with missed Visit is there in pending state</label>
-        <locationX>2712</locationX>
+        <locationX>2976</locationX>
         <locationY>3756</locationY>
         <defaultConnector>
             <targetReference>Get_SA_Completedassociated_with_Unit</targetReference>
@@ -489,9 +489,31 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Copy_1_of_Is_WO_Maintenance_type</name>
+        <label>Copy 1 of Is WO Maintenance type</label>
+        <locationX>1502</locationX>
+        <locationY>1356</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Copy_2_of_Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Maintanance</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Send_Notification_when_resouces_is_assigned</targetReference>
+            </connector>
+            <label>Copy 2 of Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Current_Time_less_Than_DueDate</name>
         <label>Current Time less Than DueDate</label>
-        <locationX>4582</locationX>
+        <locationX>5110</locationX>
         <locationY>2148</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -553,7 +575,7 @@
     <decisions>
         <name>If_Get_records_returns_Blank_Collection</name>
         <label>If Get records returns Blank Collection</label>
-        <locationX>1502</locationX>
+        <locationX>2030</locationX>
         <locationY>1440</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -573,9 +595,31 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Is_WO_Maintenance_type</name>
+        <label>Is WO Maintenance type</label>
+        <locationX>974</locationX>
+        <locationY>1248</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>YesMaintenance</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Maintanance</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Notification_when_resouces_is_assigned</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Jeopardy_Check</name>
         <label>Jeopardy Check</label>
-        <locationX>4582</locationX>
+        <locationX>5110</locationX>
         <locationY>924</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -612,7 +656,7 @@
     <decisions>
         <name>operations_on_assigned_resource</name>
         <label>operations on assigned resource</label>
-        <locationX>1370</locationX>
+        <locationX>1700</locationX>
         <locationY>924</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -692,7 +736,7 @@
     <decisions>
         <name>SA_Decision</name>
         <label>SA Decision</label>
-        <locationX>2932</locationX>
+        <locationX>3196</locationX>
         <locationY>708</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -897,7 +941,7 @@
     <decisions>
         <name>TimeFrame_Extended_in_WO</name>
         <label>TimeFrame Extended in WO</label>
-        <locationX>4538</locationX>
+        <locationX>5066</locationX>
         <locationY>1140</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -968,7 +1012,7 @@
     <loops>
         <name>Copy_1_of_For_Each_SA</name>
         <label>Copy 1 of For Each SA</label>
-        <locationX>2932</locationX>
+        <locationX>3196</locationX>
         <locationY>3240</locationY>
         <collectionReference>Copy_1_of_Get_SA_associated_with_Unit</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -982,7 +1026,7 @@
     <loops>
         <name>For_Each_Completed_SA</name>
         <label>For Each Completed SA</label>
-        <locationX>2888</locationX>
+        <locationX>3152</locationX>
         <locationY>3972</locationY>
         <collectionReference>Get_SA_Completedassociated_with_Unit</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -996,7 +1040,7 @@
     <loops>
         <name>Loop_Through_Record_Collection</name>
         <label>Loop Through Record Collection</label>
-        <locationX>1502</locationX>
+        <locationX>2030</locationX>
         <locationY>1140</locationY>
         <collectionReference>AssignedResourceRecordCollection</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -1029,7 +1073,7 @@
     <recordCreates>
         <name>Create_Related_Assigned_Resource_record_to_SA</name>
         <label>Create Related Assigned Resource record to SA</label>
-        <locationX>842</locationX>
+        <locationX>974</locationX>
         <locationY>1032</locationY>
         <connector>
             <targetReference>Update_Mechanic_Name</targetReference>
@@ -1072,7 +1116,7 @@
     <recordDeletes>
         <name>DeleteRelatedAssignedResourceRecord</name>
         <label>Delete Related Assigned Resource Record</label>
-        <locationX>1370</locationX>
+        <locationX>1898</locationX>
         <locationY>1548</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1087,7 +1131,7 @@
     <recordLookups>
         <name>Copy_1_of_Get_Related_WO</name>
         <label>Copy 1 of Get Related WO</label>
-        <locationX>2932</locationX>
+        <locationX>3196</locationX>
         <locationY>3540</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1115,7 +1159,7 @@
     <recordLookups>
         <name>Copy_1_of_Get_SA_associated_with_Unit</name>
         <label>Copy 1 of Get SA associated with Unit</label>
-        <locationX>2932</locationX>
+        <locationX>3196</locationX>
         <locationY>3132</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1157,7 +1201,7 @@
     <recordLookups>
         <name>Get_Assigned_Resource_Record</name>
         <label>Get Assigned Resource Record</label>
-        <locationX>1370</locationX>
+        <locationX>1700</locationX>
         <locationY>816</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1178,7 +1222,7 @@
     <recordLookups>
         <name>Get_Days_with_SLA</name>
         <label>Get Days with  SLA</label>
-        <locationX>4494</locationX>
+        <locationX>5022</locationX>
         <locationY>1248</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1201,7 +1245,7 @@
     <recordLookups>
         <name>Get_Pending_SA</name>
         <label>Get Pending SA</label>
-        <locationX>2558</locationX>
+        <locationX>3086</locationX>
         <locationY>1032</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1243,7 +1287,7 @@
     <recordLookups>
         <name>Get_Related_Assigned_Resource_Record</name>
         <label>Get Related Assigned Resource Record</label>
-        <locationX>1502</locationX>
+        <locationX>2030</locationX>
         <locationY>1032</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1272,7 +1316,7 @@
     <recordLookups>
         <name>Get_SA_Completedassociated_with_Unit</name>
         <label>Get SA Completed associated with Unit</label>
-        <locationX>2888</locationX>
+        <locationX>3152</locationX>
         <locationY>3864</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1300,7 +1344,7 @@
     <recordLookups>
         <name>Get_WO_Fixed_Issue</name>
         <label>Get WO Fixed Issue</label>
-        <locationX>2558</locationX>
+        <locationX>3086</locationX>
         <locationY>816</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1323,7 +1367,7 @@
     <recordLookups>
         <name>GetRelatedAssignedResourceRecords</name>
         <label>Get Related Assigned Resource Records</label>
-        <locationX>1106</locationX>
+        <locationX>1502</locationX>
         <locationY>1032</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1360,7 +1404,7 @@
     <recordUpdates>
         <name>Clear_GanttIcon_on_Completion</name>
         <label>Clear GanttIcon on Completion</label>
-        <locationX>2426</locationX>
+        <locationX>2954</locationX>
         <locationY>1572</locationY>
         <connector>
             <targetReference>Copy_1_of_Get_SA_associated_with_Unit</targetReference>
@@ -1373,7 +1417,7 @@
     <recordUpdates>
         <name>ClearGanttIconOnCompletion</name>
         <label>Clear GanttIcon On Completion</label>
-        <locationX>3218</locationX>
+        <locationX>3746</locationX>
         <locationY>924</locationY>
         <connector>
             <targetReference>Copy_1_of_Get_SA_associated_with_Unit</targetReference>
@@ -1386,10 +1430,10 @@
     <recordUpdates>
         <name>Copy_1_of_Update_Mechanic_Name</name>
         <label>Copy 1 of Update Mechanic Name</label>
-        <locationX>1106</locationX>
+        <locationX>1502</locationX>
         <locationY>1248</locationY>
         <connector>
-            <targetReference>Copy_1_of_Send_Notification_when_resouces_is_assigned</targetReference>
+            <targetReference>Copy_1_of_Is_WO_Maintenance_type</targetReference>
         </connector>
         <inputAssignments>
             <field>Assigned_Mechanic_Name__c</field>
@@ -1402,7 +1446,7 @@
     <recordUpdates>
         <name>Copy_1_of_Update_Unit_Missed_Visit_false</name>
         <label>Copy 1 of Update Unit Missed Visit false</label>
-        <locationX>2888</locationX>
+        <locationX>3152</locationX>
         <locationY>4488</locationY>
         <inputAssignments>
             <field>FS_MissedVisit__c</field>
@@ -1468,7 +1512,7 @@
     <recordUpdates>
         <name>Udate_WO_Safety_Check</name>
         <label>Udate WO Safety Check</label>
-        <locationX>6474</locationX>
+        <locationX>7002</locationX>
         <locationY>492</locationY>
         <connector>
             <targetReference>Update_Gantt_Icon_on_SA</targetReference>
@@ -1506,7 +1550,7 @@
     <recordUpdates>
         <name>Update_Gantt_Icon_on_SA</name>
         <label>Update Gantt Icon on SA</label>
-        <locationX>6474</locationX>
+        <locationX>7002</locationX>
         <locationY>600</locationY>
         <connector>
             <targetReference>SendCustomNotificationToMaintenanceSupervisor</targetReference>
@@ -1522,7 +1566,7 @@
     <recordUpdates>
         <name>Update_Initial_Time_of_SA</name>
         <label>Update Initial Time of SA</label>
-        <locationX>2932</locationX>
+        <locationX>3196</locationX>
         <locationY>492</locationY>
         <connector>
             <targetReference>Update_SA_Priority_For_Gantt_Palette</targetReference>
@@ -1579,7 +1623,7 @@
     <recordUpdates>
         <name>Update_Jeopardy1</name>
         <label>Update Jeopardy</label>
-        <locationX>3746</locationX>
+        <locationX>4274</locationX>
         <locationY>924</locationY>
         <filterLogic>or</filterLogic>
         <filters>
@@ -1607,7 +1651,7 @@
     <recordUpdates>
         <name>Update_Jeopardy_True</name>
         <label>Update Jeopardy True</label>
-        <locationX>4538</locationX>
+        <locationX>5066</locationX>
         <locationY>1032</locationY>
         <connector>
             <targetReference>TimeFrame_Extended_in_WO</targetReference>
@@ -1623,10 +1667,10 @@
     <recordUpdates>
         <name>Update_Mechanic_Name</name>
         <label>Update Mechanic Name</label>
-        <locationX>842</locationX>
+        <locationX>974</locationX>
         <locationY>1140</locationY>
         <connector>
-            <targetReference>Send_Notification_when_resouces_is_assigned</targetReference>
+            <targetReference>Is_WO_Maintenance_type</targetReference>
         </connector>
         <inputAssignments>
             <field>Assigned_Mechanic_Name__c</field>
@@ -1639,7 +1683,7 @@
     <recordUpdates>
         <name>Update_Missed_Visit_in_Unit</name>
         <label>Update Missed Visit in Unit</label>
-        <locationX>4582</locationX>
+        <locationX>5110</locationX>
         <locationY>2364</locationY>
         <connector>
             <targetReference>Check_If_Resource_Present2</targetReference>
@@ -1663,7 +1707,7 @@
     <recordUpdates>
         <name>Update_Missed_Visit_in_WO</name>
         <label>Update Missed Visit in WO</label>
-        <locationX>4582</locationX>
+        <locationX>5110</locationX>
         <locationY>2256</locationY>
         <connector>
             <targetReference>Update_Missed_Visit_in_Unit</targetReference>
@@ -1687,7 +1731,7 @@
     <recordUpdates>
         <name>Update_New_Scheduled_Time</name>
         <label>Update New Scheduled Time</label>
-        <locationX>3482</locationX>
+        <locationX>4010</locationX>
         <locationY>816</locationY>
         <inputAssignments>
             <field>SchedEndTime</field>
@@ -1706,7 +1750,7 @@
     <recordUpdates>
         <name>Update_Records_25</name>
         <label>Update Records 25</label>
-        <locationX>2888</locationX>
+        <locationX>3152</locationX>
         <locationY>4380</locationY>
         <connector>
             <targetReference>Copy_1_of_Update_Unit_Missed_Visit_false</targetReference>
@@ -1737,7 +1781,7 @@
     <recordUpdates>
         <name>Update_RecordsWO</name>
         <label>Update Records WO</label>
-        <locationX>2888</locationX>
+        <locationX>3152</locationX>
         <locationY>4272</locationY>
         <connector>
             <targetReference>Update_Records_25</targetReference>
@@ -1747,7 +1791,7 @@
     <recordUpdates>
         <name>Update_SA_DueDate</name>
         <label>Update SA DueDate</label>
-        <locationX>4494</locationX>
+        <locationX>5022</locationX>
         <locationY>1356</locationY>
         <connector>
             <targetReference>Update_WO_With_TimeFrame_Extended</targetReference>
@@ -1763,7 +1807,7 @@
     <recordUpdates>
         <name>Update_SA_Priority_For_Gantt_Palette</name>
         <label>Update SA Priority For Gantt Palette</label>
-        <locationX>2932</locationX>
+        <locationX>3196</locationX>
         <locationY>600</locationY>
         <connector>
             <targetReference>SA_Decision</targetReference>
@@ -1779,7 +1823,7 @@
     <recordUpdates>
         <name>Update_Wo</name>
         <label>Update Wo</label>
-        <locationX>2162</locationX>
+        <locationX>2690</locationX>
         <locationY>1032</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -1798,7 +1842,7 @@
     <recordUpdates>
         <name>Update_WO_With_TimeFrame_Extended</name>
         <label>Update WO With TimeFrame Extended</label>
-        <locationX>4494</locationX>
+        <locationX>5022</locationX>
         <locationY>1464</locationY>
         <connector>
             <targetReference>Check_If_Resource_Present</targetReference>
@@ -1814,7 +1858,7 @@
     <recordUpdates>
         <name>UpdateAssignedResourceRecords</name>
         <label>Update Assigned Resource Records</label>
-        <locationX>1106</locationX>
+        <locationX>1502</locationX>
         <locationY>1140</locationY>
         <connector>
             <targetReference>Copy_1_of_Update_Mechanic_Name</targetReference>
@@ -1838,7 +1882,7 @@
     <recordUpdates>
         <name>updating_reason_on_WO</name>
         <label>Updating Reason On WO</label>
-        <locationX>3218</locationX>
+        <locationX>3746</locationX>
         <locationY>816</locationY>
         <connector>
             <targetReference>ClearGanttIconOnCompletion</targetReference>
@@ -1866,7 +1910,7 @@
     <recordUpdates>
         <name>Updating_Wo</name>
         <label>Updating Wo</label>
-        <locationX>2426</locationX>
+        <locationX>2954</locationX>
         <locationY>1464</locationY>
         <connector>
             <targetReference>Clear_GanttIcon_on_Completion</targetReference>
@@ -1894,7 +1938,7 @@
     <recordUpdates>
         <name>Work_Order_Field_Update</name>
         <label>Work Order Field Update</label>
-        <locationX>4571</locationX>
+        <locationX>4967</locationX>
         <locationY>276</locationY>
         <connector>
             <targetReference>Check_For_Maintenancee</targetReference>
@@ -1908,7 +1952,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>5561</locationX>
+        <locationX>6023</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Work_Order_Field_Update</targetReference>
@@ -1932,7 +1976,7 @@
     <subflows>
         <name>Copy_1_of_Notification_for_timeframe_Extented</name>
         <label>Copy 1 of Notification for timeframe Extented</label>
-        <locationX>4362</locationX>
+        <locationX>4890</locationX>
         <locationY>1680</locationY>
         <flowName>SendCustomNotification</flowName>
         <inputAssignments>
@@ -1969,8 +2013,8 @@
     <subflows>
         <name>Copy_1_of_Send_Notification_when_resouces_is_assigned</name>
         <label>Send Notification when Assigned resource is updated</label>
-        <locationX>1106</locationX>
-        <locationY>1356</locationY>
+        <locationX>1370</locationX>
+        <locationY>1464</locationY>
         <flowName>SendCustomNotification</flowName>
         <inputAssignments>
             <name>CustomNotificationTypeName</name>
@@ -2006,7 +2050,7 @@
     <subflows>
         <name>Get_New_System_reason</name>
         <label>Get New System reason</label>
-        <locationX>2426</locationX>
+        <locationX>2954</locationX>
         <locationY>1356</locationY>
         <connector>
             <targetReference>Updating_Wo</targetReference>
@@ -2032,7 +2076,7 @@
     <subflows>
         <name>Notification_for_timeframe_Extented</name>
         <label>Notification for Missed Visit</label>
-        <locationX>4450</locationX>
+        <locationX>4978</locationX>
         <locationY>2580</locationY>
         <flowName>SendCustomNotification</flowName>
         <inputAssignments>
@@ -2070,7 +2114,7 @@
         <name>Send_Notification_when_resouces_is_assigned</name>
         <label>Send Notification when resouces is assigned</label>
         <locationX>842</locationX>
-        <locationY>1248</locationY>
+        <locationY>1356</locationY>
         <flowName>SendCustomNotification</flowName>
         <inputAssignments>
             <name>CustomNotificationTypeName</name>
@@ -2106,7 +2150,7 @@
     <subflows>
         <name>SendCustomNotificationToMaintenanceSupervisor</name>
         <label>SendCustomNotificationToMaintenanceSupervisor</label>
-        <locationX>6474</locationX>
+        <locationX>7002</locationX>
         <locationY>708</locationY>
         <flowName>SendCustomNotification</flowName>
         <inputAssignments>
