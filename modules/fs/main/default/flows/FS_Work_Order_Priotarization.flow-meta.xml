@@ -298,7 +298,7 @@ IF({!$Record.Asset.FS_LowUsage__c}=true,&quot;Low Usage&quot;, &quot;Regular Mai
         <connector>
             <targetReference>Check_if_Case_is_associated</targetReference>
         </connector>
-        <filterLogic>(1 OR 2) AND 3</filterLogic>
+        <filterLogic>(1 AND 2) AND 3</filterLogic>
         <filters>
             <field>Status</field>
             <operator>NotEqualTo</operator>
