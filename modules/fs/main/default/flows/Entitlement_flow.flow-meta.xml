@@ -512,13 +512,6 @@
                 <booleanValue>false</booleanValue>
             </value>
         </filters>
-        <filters>
-            <field>FS_WORecordType__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Service_Request</stringValue>
-            </value>
-        </filters>
         <object>WorkOrder</object>
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
