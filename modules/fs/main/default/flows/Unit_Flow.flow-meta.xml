@@ -138,7 +138,7 @@
         <connector>
             <targetReference>Decision</targetReference>
         </connector>
-        <filterLogic>1 AND ( 2 OR 3) AND 4</filterLogic>
+        <filterLogic>1 AND ( 2 AND 3) AND 4</filterLogic>
         <filters>
             <field>CaseId</field>
             <operator>IsNull</operator>
