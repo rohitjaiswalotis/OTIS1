@@ -105,7 +105,7 @@ test('Configure Service Appointment statuses', async ({ basePage, baseUrl }) => 
 	await frame.locator('.saving-banner.settings-saved').locator('visible=true').waitFor();
 	
 });
-*/
+
 
 
 test('Configure Global Actions -> Appointment Booking', async ({ basePage, baseUrl }) => {
@@ -139,6 +139,45 @@ test('Configure Global Actions -> Appointment Booking', async ({ basePage, baseU
 	await frame.locator('boolean-setting').filter({ hasText: "Disable service territory picker in appointment booking" }).getByRole('checkbox').uncheck({ force: true });
 	await frame.locator('boolean-setting').filter({ hasText: "Pin three highest graded time slots to the top" }).getByRole('checkbox').uncheck({ force: true });
 	await frame.locator('boolean-setting').filter({ hasText: "Open extended view by default" }).getByRole('checkbox').check({ force: true });
+	
+	
+	// click Save button
+	await frame.locator('.save-button').locator('visible=true').click();
+	
+	// wait for success banner to appear
+	await frame.locator('.saving-banner.settings-saved').locator('visible=true').waitFor();
+	
+});
+*/
+
+
+
+test('Configure Global Actions -> Emergency Wizard', async ({ basePage, baseUrl }) => {
+	
+	await basePage.goto(baseUrl + FIELD_SERVICE_SETTINGS_URL);
+	
+	// switch to frame
+	const frame = basePage.frameLocator('iframe[tabindex="0"]');
+	
+	// open 'Global Actions' item from config menu
+	await frame.getByText("Global Actions").locator('visible=true').click();
+	
+	// switch to 'EMERGENCY WIZARD' tab
+	await frame.getByText("EMERGENCY WIZARD").locator('visible=true').click();
+	
+	// TODO - which policy should be selected here, currently it is just empty
+	//await frame.getByLabel("Emergency scheduling policy").locator('visible=true').selectOption({ label: 'Customer First' });
+	
+	await frame.getByLabel("Last known location validity").locator('visible=true').fill('20');
+	await frame.getByLabel("Ideal availability grade").locator('visible=true').fill('30');
+	await frame.getByLabel("Good availability grade").locator('visible=true').fill('60');
+	await frame.getByLabel("Emergency search timeframe").locator('visible=true').fill('360');
+	
+	await frame.locator('boolean-setting').filter({ hasText: "Allow Chatter post" }).getByRole('checkbox').check({ force: true });
+	
+	await frame.getByLabel("Emergency Chatter Post Destination").locator('visible=true').selectOption({ label: 'Parent Record Feed' });
+	
+	await frame.locator('boolean-setting').filter({ hasText: "Pin After Dispatch" }).getByRole('checkbox').uncheck({ force: true });
 	
 	
 	// click Save button
