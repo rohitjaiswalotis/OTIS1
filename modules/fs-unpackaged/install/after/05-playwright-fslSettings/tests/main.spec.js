@@ -17,19 +17,16 @@ const SERVICE_APPOINTMENT_STATUSES = [
 
 
 
-/*
 test('Generate FSL Permission Sets', async ({ basePage, baseUrl }) => {
 	
-	await basePage.goto(baseUrl + FIELD_SERVICE_SETTINGS_URL);
+	await openSettings(basePage, baseUrl);
 	
-	// switch to frame
-	const frame = basePage.frameLocator('iframe[tabindex="0"]');
+	const frame = getMainFrame(basePage);
 	
-	// open 'Getting Started' item from config menu
-	await frame.getByRole("heading", { name: "Getting Started" }).click();
+	await switchToSettingsMenu(frame, "Getting Started");
 	
-	// switch to 'PERMISSION SETS' tab
-	await frame.getByText("PERMISSION SETS").locator('visible=true').click();
+	await switchToSettingsTab(frame, "PERMISSION SETS");
+	
 	
 	// wait for permission sets pannel to appear
 	{
@@ -78,31 +75,50 @@ test('Generate FSL Permission Sets', async ({ basePage, baseUrl }) => {
 
 
 
-test('Configure Service Appointment statuses', async ({ basePage, baseUrl }) => {
+test('Service Appointment Life Cycle -> Creation', async ({ basePage, baseUrl }) => {
 	
-	await basePage.goto(baseUrl + FIELD_SERVICE_SETTINGS_URL);
+	await openSettings(basePage, baseUrl);
 	
-	// switch to frame
-	const frame = basePage.frameLocator('iframe[tabindex="0"]');
+	const frame = getMainFrame(basePage);
 	
-	// open 'Service Appointment Life Cycle' item from config menu
-	await frame.getByText("Service Appointment Life Cycle").locator('visible=true').click();
+	await switchToSettingsMenu(frame, "Service Appointment Life Cycle");
 	
-	// switch to 'SA STATUS' tab
-	await frame.getByText("SA STATUS").locator('visible=true').click();
+	await switchToSettingsTab(frame, "CREATION");
+	
+	await checkBooleanSetting(frame, "Derive the Service Appointment due date from its Work Type");
+	await checkBooleanSetting(frame, "Prevent update of pinned, or unmovable, Service Appointments");
+	await checkBooleanSetting(frame, "Set your default Service Appointment duration to one hour");
+	await checkBooleanSetting(frame, "Use polygons to assign service territories");
+	
+	await clickSaveSettingButton(frame);
+	
+	// NOTE: "Territory assignment policy" picklist appears only after setting "Use polygons to assign service territories" checkbox and saving settings
+	await selectPicklistSettingByLabel(frame, "Territory assignment policy", "Highest Level");
+	
+	await clickSaveSettingButton(frame);
+	
+});
+
+
+
+test('Service Appointment Life Cycle -> SA Status', async ({ basePage, baseUrl }) => {
+	
+	await openSettings(basePage, baseUrl);
+	
+	const frame = getMainFrame(basePage);
+	
+	await switchToSettingsMenu(frame, "Service Appointment Life Cycle");
+	
+	await switchToSettingsTab(frame, "SA STATUS");
 	
 	
 	// iterate over statuses and populate values
 	for (let status of SERVICE_APPOINTMENT_STATUSES) {
-		await frame.getByLabel(status.label).selectOption(status.value);
+		await selectPicklistSettingByValue(frame, status.label, status.value);
 	}
 	
 	
-	// click Save button
-	await frame.locator('.save-button').locator('visible=true').click();
-	
-	// wait for success banner to appear
-	await frame.locator('.saving-banner.settings-saved').locator('visible=true').waitFor();
+	await clickSaveSettingButton(frame);
 	
 });
 
@@ -110,75 +126,135 @@ test('Configure Service Appointment statuses', async ({ basePage, baseUrl }) => 
 
 test('Configure Global Actions -> Appointment Booking', async ({ basePage, baseUrl }) => {
 	
-	await basePage.goto(baseUrl + FIELD_SERVICE_SETTINGS_URL);
+	await openSettings(basePage, baseUrl);
 	
-	// switch to frame
-	const frame = basePage.frameLocator('iframe[tabindex="0"]');
+	const frame = getMainFrame(basePage);
 	
-	// open 'Global Actions' item from config menu
-	await frame.getByText("Global Actions").locator('visible=true').click();
+	await switchToSettingsMenu(frame, "Global Actions");
 	
-	// switch to 'APPOINTMENT BOOKING' tab
-	await frame.getByText("APPOINTMENT BOOKING").locator('visible=true').click();
+	await switchToSettingsTab(frame, "APPOINTMENT BOOKING");
 	
-	await frame.getByLabel("Default scheduling policy").locator('visible=true').selectOption({ label: 'Customer First' });
+	await selectPicklistSettingByLabel(frame, "Default scheduling policy", "Customer First");
 	
 	// TODO - set operating hours based on localization domain: NAA vs EMEA
-	//await frame.getByLabel("Default operating hours").selectOption({ label: 'America/New York' });
-	//await frame.getByLabel("Default operating hours").selectOption({ label: 'Central European Standard Time' });
+	//await selectPicklistSettingByLabel(frame, "Default operating hours", "America/New York");
+	//await selectPicklistSettingByLabel(frame, "Default operating hours", "Central European Standard Time");
 	
-	await frame.getByLabel("Ideal grading threshold").locator('visible=true').fill('90');
-	await frame.getByLabel("Recommended grading threshold ").locator('visible=true').fill('70');
-	await frame.getByLabel("Minimum Grade").locator('visible=true').fill('0');
-	await frame.getByLabel("Number of hours for initial appointment search").locator('visible=true').fill('72');
+	await fillSetting(frame, "Ideal grading threshold", 90);
+	await fillSetting(frame, "Recommended grading threshold", 70);
+	await fillSetting(frame, "Minimum Grade", 0);
+	await fillSetting(frame, "Number of hours for initial appointment search", 72);
 	
-	await frame.locator('boolean-setting').filter({ hasText: "Show grades explanation" }).getByRole('checkbox').check({ force: true });
+	await checkBooleanSetting(frame, "Show grades explanation");
 	
-	await frame.getByLabel("Custom CSS (cascading style sheet)").locator('visible=true').fill('');
+	await fillSetting(frame, "Custom CSS (cascading style sheet)", '');
 	
-	await frame.locator('boolean-setting').filter({ hasText: "Disable service territory picker in appointment booking" }).getByRole('checkbox').uncheck({ force: true });
-	await frame.locator('boolean-setting').filter({ hasText: "Pin three highest graded time slots to the top" }).getByRole('checkbox').uncheck({ force: true });
-	await frame.locator('boolean-setting').filter({ hasText: "Open extended view by default" }).getByRole('checkbox').check({ force: true });
+	await uncheckBooleanSetting(frame, "Disable service territory picker in appointment booking");
+	await uncheckBooleanSetting(frame, "Pin three highest graded time slots to the top");
+	await checkBooleanSetting(frame, "Open extended view by default");
 	
 	
-	// click Save button
-	await frame.locator('.save-button').locator('visible=true').click();
-	
-	// wait for success banner to appear
-	await frame.locator('.saving-banner.settings-saved').locator('visible=true').waitFor();
+	await clickSaveSettingButton(frame);
 	
 });
-*/
 
 
 
 test('Configure Global Actions -> Emergency Wizard', async ({ basePage, baseUrl }) => {
 	
-	await basePage.goto(baseUrl + FIELD_SERVICE_SETTINGS_URL);
+	await openSettings(basePage, baseUrl);
 	
-	// switch to frame
-	const frame = basePage.frameLocator('iframe[tabindex="0"]');
+	const frame = getMainFrame(basePage);
 	
-	// open 'Global Actions' item from config menu
-	await frame.getByText("Global Actions").locator('visible=true').click();
+	await switchToSettingsMenu(frame, "Global Actions");
 	
-	// switch to 'EMERGENCY WIZARD' tab
-	await frame.getByText("EMERGENCY WIZARD").locator('visible=true').click();
+	await switchToSettingsTab(frame, "EMERGENCY WIZARD");
 	
 	// TODO - which policy should be selected here, currently it is just empty
-	//await frame.getByLabel("Emergency scheduling policy").locator('visible=true').selectOption({ label: 'Customer First' });
+	//await selectPicklistSettingByLabel(frame, "Emergency scheduling policy", "Customer First");
 	
-	await frame.getByLabel("Last known location validity").locator('visible=true').fill('20');
-	await frame.getByLabel("Ideal availability grade").locator('visible=true').fill('30');
-	await frame.getByLabel("Good availability grade").locator('visible=true').fill('60');
-	await frame.getByLabel("Emergency search timeframe").locator('visible=true').fill('360');
+	await fillSetting(frame, "Last known location validity", 20);
+	await fillSetting(frame, "Ideal availability grade", 30);
+	await fillSetting(frame, "Good availability grade", 60);
+	await fillSetting(frame, "Emergency search timeframe", 360);
 	
-	await frame.locator('boolean-setting').filter({ hasText: "Allow Chatter post" }).getByRole('checkbox').check({ force: true });
+	await checkBooleanSetting(frame, "Allow Chatter post");
 	
-	await frame.getByLabel("Emergency Chatter Post Destination").locator('visible=true').selectOption({ label: 'Parent Record Feed' });
+	await selectPicklistSettingByLabel(frame, "Emergency Chatter Post Destination", "Parent Record Feed");
 	
-	await frame.locator('boolean-setting').filter({ hasText: "Pin After Dispatch" }).getByRole('checkbox').uncheck({ force: true });
+	await uncheckBooleanSetting(frame, "Pin After Dispatch");
 	
+	
+	await clickSaveSettingButton(frame);
+	
+});
+
+
+
+const openSettings = async (basePage, baseUrl) => {
+	
+	await basePage.goto(baseUrl + FIELD_SERVICE_SETTINGS_URL);
+	
+}
+
+
+const getMainFrame = (basePage) => {
+	
+	return basePage.frameLocator('iframe[tabindex="0"]');
+	
+}
+
+
+const switchToSettingsMenu = async (frame, menuLabel) => {
+	
+	await frame.locator('#SettingsMenu').getByText(menuLabel).locator('visible=true').click();
+	
+}
+
+
+const switchToSettingsTab = async (frame, tabLabel) => {
+	
+	await frame.getByText(tabLabel).locator('visible=true').click();
+	
+}
+
+
+const checkBooleanSetting = async (frame, label) => {
+	
+	await frame.locator('boolean-setting').filter({ hasText: label }).getByRole('checkbox').check({ force: true });
+	
+}
+
+
+const uncheckBooleanSetting = async (frame, label) => {
+	
+	await frame.locator('boolean-setting').filter({ hasText: label }).getByRole('checkbox').uncheck({ force: true });
+	
+}
+
+
+const selectPicklistSettingByLabel = async (frame, label, optionLabel) => {
+	
+	await frame.getByLabel(label).locator('visible=true').selectOption({ label: optionLabel });
+	
+}
+
+
+const selectPicklistSettingByValue = async (frame, label, optionValue) => {
+	
+	await frame.getByLabel(label).locator('visible=true').selectOption(optionValue);
+	
+}
+
+
+const fillSetting = async (frame, label, value) => {
+	
+	await frame.getByLabel(label).locator('visible=true').fill(value ? String(value) : '');
+	
+}
+
+
+const clickSaveSettingButton = async (frame) => {
 	
 	// click Save button
 	await frame.locator('.save-button').locator('visible=true').click();
@@ -186,6 +262,6 @@ test('Configure Global Actions -> Emergency Wizard', async ({ basePage, baseUrl 
 	// wait for success banner to appear
 	await frame.locator('.saving-banner.settings-saved').locator('visible=true').waitFor();
 	
-});
+}
 
 
