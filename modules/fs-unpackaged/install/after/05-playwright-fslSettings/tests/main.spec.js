@@ -124,7 +124,7 @@ test('Service Appointment Life Cycle -> SA Status', async ({ basePage, baseUrl }
 
 
 
-test('Configure Global Actions -> Appointment Booking', async ({ basePage, baseUrl }) => {
+test('Global Actions -> Appointment Booking', async ({ basePage, baseUrl }) => {
 	
 	await openSettings(basePage, baseUrl);
 	
@@ -160,7 +160,7 @@ test('Configure Global Actions -> Appointment Booking', async ({ basePage, baseU
 
 
 
-test('Configure Global Actions -> Emergency Wizard', async ({ basePage, baseUrl }) => {
+test('Global Actions -> Emergency Wizard', async ({ basePage, baseUrl }) => {
 	
 	await openSettings(basePage, baseUrl);
 	
@@ -191,6 +191,174 @@ test('Configure Global Actions -> Emergency Wizard', async ({ basePage, baseUrl 
 
 
 
+test('Scheduling -> General Logic', async ({ basePage, baseUrl }) => {
+	
+	const SERVICE_APPOINTMENT_PINNED_STATUSES = new CaseInsensitiveSet(
+		[ 
+			"Cannot Complete", 
+			"Completed"
+		]
+	);
+	
+	
+	await openSettings(basePage, baseUrl);
+	
+	const frame = getMainFrame(basePage);
+	
+	await switchToSettingsMenu(frame, "Scheduling");
+	
+	await switchToSettingsTab(frame, "General Logic");
+	
+	await selectPicklistSettingByLabel(frame, "Multiday service appointment field", "Is MultiDay");
+	await checkBooleanSetting(frame, "Set the hour that starts a new day based on the Availability rule(s)");
+	await fillSetting(frame, "Maximum days to get candidates or to book an appointment", 10);
+	
+	await checkBooleanSetting(frame, "Delay auto-scheduling until appointments are geocoded");
+	await checkBooleanSetting(frame, "Activate Approval confirmation on resource absences");
+	await uncheckBooleanSetting(frame, "Enable resource crew skill grouping");
+	await checkBooleanSetting(frame, "Avoid aerial calculation upon callout DML exception");
+	await uncheckBooleanSetting(frame, "Respect secondary STM operating hours");
+	
+	
+	// select pinned statuses
+	{
+		
+		let pinnedStatusesLocator = frame.locator('#pinned-status-container label');
+		await pinnedStatusesLocator.first().waitFor();
+		
+		pinnedStatusesLocator = await pinnedStatusesLocator.filter({ has: frame.getByRole('checkbox').locator('visible=true') });
+		console.log(`Found ${await pinnedStatusesLocator.count()} statuses`);
+		
+		for (const pinnedStatusLocator of await pinnedStatusesLocator.all()) {
+			
+			const pinnedStatusName = (await pinnedStatusLocator.textContent()).trim();
+			console.log(`Checking status ${pinnedStatusName}`);
+			
+			await pinnedStatusLocator.getByRole('checkbox').setChecked(
+				SERVICE_APPOINTMENT_PINNED_STATUSES.has(
+					pinnedStatusName
+				)
+			);
+			
+		}
+		
+	}
+	
+	
+	await selectPicklistSettingByLabel(frame, "Work Order Priority Field", "None");
+	await selectPicklistSettingByLabel(frame, "Work Order Line Item Priority Field", "None");
+	await selectPicklistSettingByLabel(frame, "Service Appointment Priority Field", "Priority");
+	
+	await checkBooleanSetting(frame, "Use 1-100 priority scale");
+	
+	await checkBooleanSetting(frame, "Enable complex work");
+	await uncheckBooleanSetting(frame, "Use all-or-none scheduling for related appointments");
+	
+	await uncheckBooleanSetting(frame, "Set Apex operation timeout limits");
+	
+	await fillSetting(frame, "Timeout Limit for Get Candidates (Percent) ", 95);
+	await fillSetting(frame, "Timeout Limit for Appointment Booking (Percent)", 95);
+	await fillSetting(frame, "Timeout Limit for Scheduling (Percent)", 90);
+	
+	
+	await clickSaveSettingButton(frame);
+	
+});
+
+
+
+test('Scheduling -> Dynamic Gantt', async ({ basePage, baseUrl }) => {
+	
+	await openSettings(basePage, baseUrl);
+	
+	const frame = getMainFrame(basePage);
+	
+	await switchToSettingsMenu(frame, "Scheduling");
+	
+	await switchToSettingsTab(frame, "Dynamic Gantt");
+	
+	
+	await selectPicklistSettingByLabel(frame, "When attempting to fix overlaps", "Schedule to original resource only");
+	await selectPicklistSettingByLabel(frame, "After unscheduling services reschedule them by", "Chronological Order");
+	await selectPicklistSettingByLabel(frame, "When unable to find a valid schedule for an appointment", "Leave on Gantt and set In-jeopardy");
+	
+	
+	// 'Fill-in Schedule' section
+	{
+		
+		const fillInScheduleSectionLocator = frame.locator(":below(:text('Fill-in Schedule'))").and(frame.locator(":above(:text('Group Nearby Appointments'))"));
+		
+		await selectPicklistSettingByLabel(fillInScheduleSectionLocator, "Service Appointment candidate Boolean field", "Is Fill In Candidate");
+		await selectPicklistSettingByLabel(fillInScheduleSectionLocator, "Work Order candidate Boolean field", "Is Fill In Candidate");
+		await selectPicklistSettingByLabel(fillInScheduleSectionLocator, "Work Order Line Item candidate Boolean field", "Is Fill In Candidate");
+		await selectPicklistSettingByLabel(fillInScheduleSectionLocator, "Order candidate appointments by", "Priority");
+		
+		await fillSetting(fillInScheduleSectionLocator, "Max appointments to schedule", 50);
+		await fillSetting(fillInScheduleSectionLocator, "Max runtime (seconds)", 20);
+		
+	}
+	
+	
+	// 'Group Nearby Appointments' section
+	{
+		
+		const groupNearbyAppointmentsSectionLocator = frame.locator(":below(:text('Group Nearby Appointments'))");
+		
+		await selectPicklistSettingByLabel(groupNearbyAppointmentsSectionLocator, "Service Appointment candidate Boolean field", "Is Fill In Candidate");
+		await selectPicklistSettingByLabel(groupNearbyAppointmentsSectionLocator, "Work Order candidate Boolean field", "Is Fill In Candidate");
+		await selectPicklistSettingByLabel(groupNearbyAppointmentsSectionLocator, "Work Order Line Item candidate Boolean field", "Is Fill In Candidate");
+		
+		await fillSetting(groupNearbyAppointmentsSectionLocator, "Max appointments to schedule", 50);
+		await fillSetting(groupNearbyAppointmentsSectionLocator, "Max runtime (seconds)", 20);
+		
+		await selectPicklistSettingByLabel(groupNearbyAppointmentsSectionLocator, "When attempting to schedule the unscheduled service after the nearby services", "Schedule to original resource only");
+		await selectPicklistSettingByLabel(groupNearbyAppointmentsSectionLocator, "When unable to arrange schedule", "Leave on Gantt and set In-jeopardy");
+		
+		await fillSetting(groupNearbyAppointmentsSectionLocator, "Radius for nearby appointments", 1);
+		
+	}
+	
+	
+	await fillSetting(frame, "Max time horizon (days) in which the appointment can be scheduled", 7);
+	
+	
+	await clickSaveSettingButton(frame);
+	
+});
+
+
+
+test('Scheduling -> Routing', async ({ basePage, baseUrl }) => {
+	
+	await openSettings(basePage, baseUrl);
+	
+	const frame = getMainFrame(basePage);
+	
+	await switchToSettingsMenu(frame, "Scheduling");
+	
+	await switchToSettingsTab(frame, "Routing");
+	
+	// checkboxes should be set in this precised order due - they are dependendant
+	await uncheckBooleanSetting(frame, "Enable Point-to-Point Predictive Routing");
+	await checkBooleanSetting(frame, "Enable Street Level Routing");
+	await uncheckOptinalBooleanSetting(frame, "Enable Predictive Travel for optimization services");
+	
+	await checkBooleanSetting(frame, "Calculate travel and breaks");
+	
+	await selectPicklistSettingByLabel(frame, "Travel speed unit", "KM/h");
+	
+	await fillSetting(frame, "Default travel speed", 35);
+	
+	await checkBooleanSetting(frame, "Show map");
+	await checkBooleanSetting(frame, "Show street level routing in the Service Resource map tab");
+	
+	
+	await clickSaveSettingButton(frame);
+	
+});
+
+
+
 const openSettings = async (basePage, baseUrl) => {
 	
 	await basePage.goto(baseUrl + FIELD_SERVICE_SETTINGS_URL);
@@ -205,63 +373,127 @@ const getMainFrame = (basePage) => {
 }
 
 
-const switchToSettingsMenu = async (frame, menuLabel) => {
+const switchToSettingsMenu = async (root, menuLabel) => {
 	
-	await frame.locator('#SettingsMenu').getByText(menuLabel).locator('visible=true').click();
-	
-}
-
-
-const switchToSettingsTab = async (frame, tabLabel) => {
-	
-	await frame.getByText(tabLabel).locator('visible=true').click();
+	await root.locator('#SettingsMenu').getByText(menuLabel, { exact: true }).locator('visible=true').click();
 	
 }
 
 
-const checkBooleanSetting = async (frame, label) => {
+const switchToSettingsTab = async (root, tabLabel) => {
 	
-	await frame.locator('boolean-setting').filter({ hasText: label }).getByRole('checkbox').check({ force: true });
-	
-}
-
-
-const uncheckBooleanSetting = async (frame, label) => {
-	
-	await frame.locator('boolean-setting').filter({ hasText: label }).getByRole('checkbox').uncheck({ force: true });
+	await root.getByText(tabLabel).locator('visible=true').click();
 	
 }
 
 
-const selectPicklistSettingByLabel = async (frame, label, optionLabel) => {
+const getBooleanSettingLocator = (root, label) => {
 	
-	await frame.getByLabel(label).locator('visible=true').selectOption({ label: optionLabel });
+	const booleanSettingLocator = root.locator('boolean-setting');
+	const booleanTextSettingLocator = root.locator('boolean-text-setting');
 	
-}
-
-
-const selectPicklistSettingByValue = async (frame, label, optionValue) => {
-	
-	await frame.getByLabel(label).locator('visible=true').selectOption(optionValue);
+	return booleanSettingLocator.or(booleanTextSettingLocator).filter({ hasText: label });
 	
 }
 
 
-const fillSetting = async (frame, label, value) => {
+const checkBooleanSetting = async (root, label) => {
 	
-	await frame.getByLabel(label).locator('visible=true').fill(value ? String(value) : '');
+	await getBooleanSettingLocator(root, label).getByRole('checkbox').check({ force: true });
 	
 }
 
 
-const clickSaveSettingButton = async (frame) => {
+const checkOptinalBooleanSetting = async (root, label) => {
+	
+	if (await getBooleanSettingLocator(root, label).isVisible()) {
+		
+		await checkBooleanSetting(root, label);
+		
+	} else {
+		
+		console.log(`WARNING: Optional boolean settings '${label}' not available!`);
+		
+	}
+	
+}
+
+
+const uncheckBooleanSetting = async (root, label) => {
+	
+	await getBooleanSettingLocator(root, label).getByRole('checkbox').uncheck({ force: true });
+	
+}
+
+
+const uncheckOptinalBooleanSetting = async (root, label) => {
+	
+	if (await getBooleanSettingLocator(root, label).isVisible()) {
+		
+		await uncheckBooleanSetting(root, label);
+		
+	} else {
+		
+		console.log(`WARNING: Optional boolean settings '${label}' not available!`);
+		
+	}
+	
+}
+
+
+const selectPicklistSettingByLabel = async (root, label, optionLabel) => {
+	
+	await root.getByLabel(label).locator('visible=true').selectOption({ label: optionLabel });
+	
+}
+
+
+const selectPicklistSettingByValue = async (root, label, optionValue) => {
+	
+	await root.getByLabel(label).locator('visible=true').selectOption(optionValue);
+	
+}
+
+
+const fillSetting = async (root, label, value) => {
+	
+	await root.getByLabel(label).locator('visible=true').fill(value ? String(value) : '');
+	
+}
+
+
+const clickSaveSettingButton = async (root) => {
 	
 	// click Save button
-	await frame.locator('.save-button').locator('visible=true').click();
+	await root.locator('.save-button').locator('visible=true').click();
 	
 	// wait for success banner to appear
-	await frame.locator('.saving-banner.settings-saved').locator('visible=true').waitFor();
+	await root.locator('.saving-banner.settings-saved').locator('visible=true').waitFor();
 	
 }
 
+
+class CaseInsensitiveSet extends Set {
+	
+	constructor(values) {
+		super(
+			Array.from(
+				values, it => String(it).trim().toLowerCase()
+			)
+		);
+	}
+	
+	add(value) {
+		return super.add(String(value).trim().toLowerCase());
+	}
+	
+	has(value) {
+		return super.has(String(value).trim().toLowerCase());
+	}
+	
+	delete(value) {
+		return super.delete(String(value).trim().toLowerCase());
+	}
+	
+}
 
