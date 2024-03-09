@@ -31,3 +31,5 @@ FSL.SettingsAPI.setCustomSettings(
     'AppointmentBookingSettings__c', 
     appointmentBookingSettings
 );
+
+
