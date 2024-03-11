@@ -430,6 +430,27 @@ test('Optimization -> Logic', async ({ basePage, baseUrl }) => {
 
 
 
+test('Dispatch -> Drip Feed', async ({ basePage, baseUrl }) => {
+	
+	await openSettings(basePage, baseUrl);
+	
+	const frame = getMainFrame(basePage);
+	
+	await switchToSettingsMenu(frame, "Dispatch");
+	
+	await switchToSettingsTab(frame, "Drip Feed");
+	
+	await uncheckBooleanSetting(frame, "Enable drip feed dispatching");
+	
+	await fillSetting(frame, "Service Appointments to Dispatch", 2);
+	
+	
+	await clickSaveSettingButton(frame);
+	
+});
+
+
+
 const openSettings = async (basePage, baseUrl) => {
 	
 	await basePage.goto(baseUrl + FIELD_SERVICE_SETTINGS_URL);
