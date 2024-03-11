@@ -165,4 +165,19 @@
         </timeTriggers>
         <useCriteriaStartTime>false</useCriteriaStartTime>
     </milestones>
+    <milestones>
+        <milestoneCriteriaFilterItems>
+            <field>WorkOrder.Status</field>
+            <operation>notEqual</operation>
+            <value>Closed</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneCriteriaFilterItems>
+            <field>WorkOrder.T2_mins__c</field>
+            <operation>equals</operation>
+            <value>150.0</value>
+        </milestoneCriteriaFilterItems>
+        <milestoneName>EMEA T2</milestoneName>
+        <minutesToComplete>150</minutesToComplete>
+        <useCriteriaStartTime>false</useCriteriaStartTime>
+    </milestones>
 </EntitlementProcess>
