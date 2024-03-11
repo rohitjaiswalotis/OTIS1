@@ -869,14 +869,14 @@
             <name>Mechanic_ETA_Updated</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.FS_Initial_ETA__c</leftValueReference>
+                <leftValueReference>$Record.Initial_ETA__c</leftValueReference>
                 <operator>IsChanged</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.FS_Initial_ETA__c</leftValueReference>
+                <leftValueReference>$Record.Initial_ETA__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -975,7 +975,8 @@
             <label>No</label>
         </rules>
     </decisions>
-    <description>This version of the flow will filter Related Work orders record type ( with Custom Settings)</description>
+    <description>This version of the flow will filter Related Work orders record type ( with Custom Settings)
+WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <environments>Default</environments>
     <formulas>
         <name>CurrentTime</name>
