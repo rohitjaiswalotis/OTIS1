@@ -193,7 +193,7 @@ test('Global Actions -> Emergency Wizard', async ({ basePage, baseUrl }) => {
 
 test('Scheduling -> General Logic', async ({ basePage, baseUrl }) => {
 	
-	const SERVICE_APPOINTMENT_PINNED_STATUSES = new CaseInsensitiveSet(
+	const GENERAL_LOGIC_PINNED_STATUSES = new CaseInsensitiveSet(
 		[ 
 			"Cannot Complete", 
 			"Completed"
@@ -220,29 +220,15 @@ test('Scheduling -> General Logic', async ({ basePage, baseUrl }) => {
 	await uncheckBooleanSetting(frame, "Respect secondary STM operating hours");
 	
 	
-	// select pinned statuses
-	{
-		
-		let pinnedStatusesLocator = frame.locator('#pinned-status-container label');
-		await pinnedStatusesLocator.first().waitFor();
-		
-		pinnedStatusesLocator = await pinnedStatusesLocator.filter({ has: frame.getByRole('checkbox').locator('visible=true') });
-		console.log(`Found ${await pinnedStatusesLocator.count()} statuses`);
-		
-		for (const pinnedStatusLocator of await pinnedStatusesLocator.all()) {
-			
-			const pinnedStatusName = (await pinnedStatusLocator.textContent()).trim();
-			console.log(`Checking status ${pinnedStatusName}`);
-			
-			await pinnedStatusLocator.getByRole('checkbox').setChecked(
-				SERVICE_APPOINTMENT_PINNED_STATUSES.has(
-					pinnedStatusName
-				)
-			);
-			
+	await setCheckboxesInGroup(
+		frame,
+		frame.locator("scheduling-logic")
+			.locator("#pinned-status-container")
+		,
+		{
+			labelsToCheck: GENERAL_LOGIC_PINNED_STATUSES 
 		}
-		
-	}
+	);
 	
 	
 	await selectPicklistSettingByLabel(frame, "Work Order Priority Field", "None");
@@ -359,6 +345,91 @@ test('Scheduling -> Routing', async ({ basePage, baseUrl }) => {
 
 
 
+test('Optimization -> Logic', async ({ basePage, baseUrl }) => {
+	
+	const GLOBAL_OPTIMIZATION_PINNED_STATUSES = new CaseInsensitiveSet(
+		[ 
+			"Enroute", 
+			"Onsite",
+			"Canceled",
+			"Cannot Complete",
+			"Completed"
+		]
+	);
+	
+	const RESOURCE_OPTIMIZATION_PINNED_STATUSES = new CaseInsensitiveSet(
+		[ 
+			"Enroute", 
+			"Onsite",
+			"Canceled",
+			"Cannot Complete",
+			"Completed"
+		]
+	);
+	
+	
+	await openSettings(basePage, baseUrl);
+	
+	const frame = getMainFrame(basePage);
+	
+	await switchToSettingsMenu(frame, "Optimization");
+	
+	await switchToSettingsTab(frame, "Logic");
+	
+	await checkBooleanSetting(frame, "Enable optimization overlaps prevention");
+	await checkBooleanSetting(frame, "Mark optimization requests failed when failing due to org customizations");
+	await uncheckBooleanSetting(frame, "Enable sharing for Optimization request");
+	
+	await selectPicklistSettingByLabel(frame, "Optimization run time per service appointment", "High");
+	
+	
+	// 'Global Optimization' section
+	{
+		
+		await setCheckboxesInGroup(
+			frame,
+			frame.locator("optimization-logic")
+				.locator("#pinned-status-container")
+				.and(
+					frame.locator(":below(:text('Global Optimization'))")
+				)
+				.and(
+					frame.locator(":above(:text('In-Day and Resource Schedule Optimization'))")
+				)
+			,
+			{
+				labelsToCheck: GLOBAL_OPTIMIZATION_PINNED_STATUSES 
+			}
+		);
+		
+	}
+	
+	
+	// 'In-Day and Resource Schedule Optimization' section
+	{
+		
+		await setCheckboxesInGroup(
+			frame,
+			frame.locator("optimization-logic")
+				.locator("#pinned-status-container")
+				.and(
+					frame.locator(":below(:text('In-Day and Resource Schedule Optimization'))")
+				)
+			,
+			{
+				labelsToCheck: RESOURCE_OPTIMIZATION_PINNED_STATUSES 
+			}
+		);
+		
+	}
+	
+	
+	await clickSaveSettingButton(frame);
+	
+});
+
+
+
 const openSettings = async (basePage, baseUrl) => {
 	
 	await basePage.goto(baseUrl + FIELD_SERVICE_SETTINGS_URL);
@@ -458,6 +529,37 @@ const selectPicklistSettingByValue = async (root, label, optionValue) => {
 const fillSetting = async (root, label, value) => {
 	
 	await root.getByLabel(label).locator('visible=true').fill(value ? String(value) : '');
+	
+}
+
+
+const setCheckboxesInGroup = async (root, container, { resetAll = true, labelsToCheck = new Set(), labelsToUncheck = new Set() } = { resetAll: true }) => {
+	
+	let checkboxesLocator = container.locator('label');
+	await checkboxesLocator.first().waitFor();
+	
+	checkboxesLocator = await checkboxesLocator.filter({ has: root.getByRole('checkbox').locator('visible=true') });
+	console.log(`Found ${await checkboxesLocator.count()} checkboxes in group`);
+	
+	for (const checkboxLocator of await checkboxesLocator.all()) {
+		
+		const checkboxLabel = (await checkboxLocator.textContent()).trim();
+		console.log(`Checking checkbox ${checkboxLabel}`);
+		
+		if (labelsToCheck.has(checkboxLabel)) {
+			
+			await checkboxLocator.getByRole('checkbox').check({ force: true });
+			
+		} else if (labelsToUncheck.has(checkboxLabel)) {
+			
+			await checkboxLocator.getByRole('checkbox').uncheck({ force: true });
+			
+		} else if (resetAll === true) {
+			
+			await checkboxLocator.getByRole('checkbox').uncheck({ force: true });
+		}
+		
+	}
 	
 }
 
