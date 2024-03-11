@@ -30,6 +30,7 @@
             <targetReference>Update_Service_appointment</targetReference>
         </connector>
     </assignments>
+    <description>FS_Initial_ETA got Replaced with NAA&apos;s Initial_ETA__c</description>
     <environments>Default</environments>
     <formulas>
         <name>For_ScheduledEndTime</name>
@@ -85,7 +86,7 @@
         <queriedFields>SchedEndTime</queriedFields>
         <queriedFields>SchedStartTime</queriedFields>
         <queriedFields>DurationInMinutes</queriedFields>
-        <queriedFields>FS_Initial_ETA__c</queriedFields>
+        <queriedFields>Initial_ETA__c</queriedFields>
     </recordLookups>
     <recordUpdates>
         <name>Update_Mechanic_ETA</name>
@@ -101,7 +102,7 @@
             </value>
         </filters>
         <inputAssignments>
-            <field>FS_Initial_ETA__c</field>
+            <field>Initial_ETA__c</field>
             <value>
                 <elementReference>Initial_ETA</elementReference>
             </value>
@@ -133,7 +134,7 @@
             <name>Initial_ETA</name>
             <dataType>DateTime</dataType>
             <defaultValue>
-                <elementReference>ServiceAppointmentRecord.FS_Initial_ETA__c</elementReference>
+                <elementReference>ServiceAppointmentRecord.Initial_ETA__c</elementReference>
             </defaultValue>
             <fieldText>Initial ETA</fieldText>
             <fieldType>InputField</fieldType>
