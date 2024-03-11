@@ -37,6 +37,20 @@ parameters:
   type: string
   default: none
 
+- name: testLevel
+  displayName: Test Level
+  type: string
+  default: RunLocalTests
+  values:
+  - RunLocalTests
+  - RunAllTestsInOrg
+  - RunSpecifiedTests
+
+- name: testClasses
+  displayName: Comma-separated list of Test Classes (only for RunSpecifiedTests)
+  type: string
+  default: none
+
 - name: concurrentExecution
   displayName: Parallel Tests Mode?
   type: boolean
@@ -96,6 +110,8 @@ stages:
                   targetOrgToken: ${{ parameters.targetOrgToken }}
                 ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
                   targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
+                testLevel: ${{ parameters.testLevel }}
+                testClasses: ${{ parameters.testClasses }}
                 concurrentExecution: ${{ parameters.concurrentExecution }}
                 enableDebugMode: ${{ parameters.enableDebugMode }}
                 
