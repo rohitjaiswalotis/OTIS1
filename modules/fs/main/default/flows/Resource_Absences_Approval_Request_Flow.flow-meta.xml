@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Submit_for_Approval_to_Manager_Supervisor</name>
+        <label>Submit for Approval to Manager (Supervisor)</label>
+        <locationX>314</locationX>
+        <locationY>755</locationY>
+        <actionName>submit</actionName>
+        <actionType>submit</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>objectId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>submitterId</name>
+            <value>
+                <elementReference>$Record.CreatedById</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>nextApproverIds</name>
+            <value>
+                <elementReference>ApproverId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>processDefinitionNameOrId</name>
+            <value>
+                <stringValue>Resource_Absences_Approval_by_Supervisor</stringValue>
+            </value>
+        </inputParameters>
+        <nameSegment>submit</nameSegment>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>60.0</apiVersion>
+    <assignments>
+        <name>assign_value</name>
+        <label>assign value</label>
+        <locationX>314</locationX>
+        <locationY>647</locationY>
+        <assignmentItems>
+            <assignToReference>ApproverId</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>$Record.CreatedBy.ManagerId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Submit_for_Approval_to_Manager_Supervisor</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Is_Manager_Present</name>
+        <label>Is Manager Present ?</label>
+        <locationX>446</locationX>
+        <locationY>539</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Present_Manager</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CreatedBy.ManagerId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>assign_value</targetReference>
+            </connector>
+            <label>Present | Manager</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Mechanic_or_Not</name>
+        <label>Is Mechanic or Not ?</label>
+        <locationX>776</locationX>
+        <locationY>323</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>YES_Mechanic</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CreatedBy.Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Field Service Mechanic</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Whether_to_Submit_for_Approval_or_Not</targetReference>
+            </connector>
+            <label>YES | Mechanic</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Whether_to_Submit_for_Approval_or_Not</name>
+        <label>Whether to Submit for Approval or Not ?</label>
+        <locationX>446</locationX>
+        <locationY>431</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>YES_Submit</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>isApprovalNeeded</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Updated_Approved_Field</targetReference>
+            </connector>
+            <label>YES | Submit</label>
+        </rules>
+        <rules>
+            <name>Submit_for_Approval</name>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>isApprovalNeeded</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Un-planned Leave</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Planned Leave</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Is_Manager_Present</targetReference>
+            </connector>
+            <label>Submit for Approval</label>
+        </rules>
+    </decisions>
+    <description>#923912  To check condition for absences approval and submit for approval</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>DifferenceInHours</name>
+        <dataType>String</dataType>
+        <expression>IF( FLOOR( ({!$Record.Start} -{!$Record.CreatedDate})*24)&gt;9, TEXT(FLOOR(({!$Record.Start} -{!$Record.CreatedDate})*24)),
+&quot;0&quot; &amp; TEXT( FLOOR( ({!$Record.Start} -{!$Record.CreatedDate})*24 ) ) )</expression>
+    </formulas>
+    <formulas>
+        <name>isApprovalNeeded</name>
+        <dataType>Boolean</dataType>
+        <expression>AND( NOT( ISPICKVAL({!$Record.Type}, &quot;Un-planned Leave&quot;) ) , NOT( ISPICKVAL({!$Record.Type}, &quot;Planned Leave&quot;) ),
+VALUE({!DifferenceInHours})  &lt; 12 )</expression>
+    </formulas>
+    <interviewLabel>Resource Absences Approval Request Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Resource Absences Approval Request Flow</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Updated_Approved_Field</name>
+        <label>Updated Approved Field</label>
+        <locationX>50</locationX>
+        <locationY>539</locationY>
+        <inputAssignments>
+            <field>FSL__Approved__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>650</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Is_Mechanic_or_Not</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>FSL__Approved__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <object>ResourceAbsence</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>ApproverId</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>check</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>
