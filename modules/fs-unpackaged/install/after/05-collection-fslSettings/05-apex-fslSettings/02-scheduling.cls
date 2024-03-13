@@ -62,7 +62,7 @@ FSL.SettingsAPI.setCustomSettings(
 		'Flow_overlap_detection__c' => false,
 		'Pinned_Statuses_SF__c' => 'Cannot Complete,Completed',
 		//'Default_First_Day_Of_Working_Week__c' => 'Monday',
-		'Travel_Speed__c' => 35,
+		'Travel_Speed__c' => 50,
 		'Approved_Absences__c' => true//,
 		//'SLR_Use_Local_Cache__c' => true,
 		//'SLR_AWS_Timout__c' => 8
