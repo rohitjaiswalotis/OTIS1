@@ -189,6 +189,12 @@ VALUE({!DifferenceInHours})  &lt; 12 )</expression>
         <locationX>50</locationX>
         <locationY>539</locationY>
         <inputAssignments>
+            <field>Approval_Status__c</field>
+            <value>
+                <stringValue>Approved</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>FSL__Approved__c</field>
             <value>
                 <booleanValue>true</booleanValue>
