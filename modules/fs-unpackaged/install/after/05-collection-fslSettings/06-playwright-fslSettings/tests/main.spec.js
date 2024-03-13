@@ -443,3 +443,65 @@ for (
 }
 
 
+
+test(`Contract Line Item -> Edit Multi-Line Layout`, async ({ basePage, baseUrl }) => {
+	
+	const FIELDS_LABELS_TO_SELECT = [ 
+		"Sales Contract Line Item",
+		"Type"
+	];
+	
+	
+	await basePage.goto(baseUrl + '/lightning/setup/ObjectManager/ContractLineItem/PageLayouts/view');
+	
+	await basePage
+		.locator("table")
+		.filter({ has: basePage.getByText("Page Layout Name") })
+		.getByText("Contract Line Item Layout")
+		.click();
+	
+	let frame = utils.getMainFrameWithTitlePrefix(basePage, "Edit Page Layout");
+	
+	await utils.clickLink(frame, "Edit Multi-Line Layout");
+	
+	frame = utils.getMainFrameWithTitleContains(basePage, "Contract Line Item Multi-Line Layout");
+	
+	
+	let availableOptions = await utils.getPicklistOptions(frame, 'Available Fields');
+	console.log(`Available Fields: ${availableOptions}`);
+	
+	let selectedOptions = await utils.getPicklistOptions(frame, 'Selected Fields');
+	console.log(`Selected Fields: ${selectedOptions}`);
+	
+	
+	for (const fieldLabelToSelect of FIELDS_LABELS_TO_SELECT) {
+		
+		if (availableOptions.includes(fieldLabelToSelect)) {
+			
+			console.log(`Field '${fieldLabelToSelect}' is available to select.`);
+			
+			await utils.selectPicklistSettingByLabel(frame, "Available Fields", fieldLabelToSelect);
+			await utils.clickLink(frame, "Add");
+			
+			console.log(`Selected successfully field '${fieldLabelToSelect}'!`);
+			
+		} else if (selectedOptions.includes(fieldLabelToSelect)) {
+			
+			console.log(`Field '${fieldLabelToSelect}' is already selected!`);
+			
+		} else {
+			
+			console.log(`WARNING: No field '${fieldLabelToSelect}' available to select!`);
+			
+		}
+		
+	}
+	
+	await utils.clickButton(frame, "Save");
+	
+	frame = utils.getMainFrameWithTitlePrefix(basePage, "Edit Page Layout");
+	await utils.waitForLink(frame, "Edit Multi-Line Layout");
+	
+});
+
+

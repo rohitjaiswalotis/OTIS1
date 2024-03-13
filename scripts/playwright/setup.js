@@ -33,9 +33,8 @@ exports.test = base.extend({
 		await expect(page.locator("div.appLauncher")).toBeVisible();
 		await expect(page.locator("div.setupGear")).toBeVisible();
 		
-		
 		await use(page);
-	
+		
 	},
 	
 	
