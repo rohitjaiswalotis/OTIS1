@@ -9,7 +9,7 @@ FSL.SettingsAPI.setCustomSettings(
         'FSL Overlap Detection Batch Size' => 10,
         'Bundle Client Debug' => false,
         'Disable Contractor Trigger Calculation' => false,
-        'Use Sliding With Dynamic Skills' => false,
+        //'Use Sliding With Dynamic Skills' => false,
         'Max Number Of Skills With Sliding' => false,
         'Max Number Of Extended With Sliding' => false,
         'Capacity Limit Allow Relaxation List' => 'No relaxation'

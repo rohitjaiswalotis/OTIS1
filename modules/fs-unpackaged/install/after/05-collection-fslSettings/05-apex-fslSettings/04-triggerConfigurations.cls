@@ -22,7 +22,7 @@ FSL.SettingsAPI.setCustomSettings(
 		//'Enable Service Auto Classification' => true,
 		//'Enable Territory Name Duplicates' => false,
 		'Allow follow' => false,
-		'Work Capacity Triggers' => false,
+		//'Work Capacity Triggers' => false,
 		//'Edit Sharing For Crew Members' => false,
 		//'Update AR when service is reassigned' => true,
 		//'Update AR when service is dispatched' => true,

@@ -1,0 +1,31 @@
+$$FSL__Scheduling_Policy__r.Name$FSL__Work_Rule__r.Name,FSL__Scheduling_Policy__c,FSL__Scheduling_Policy__r.Name,FSL__Work_Rule__c,FSL__Work_Rule__r.Name,Id
+Limited Resource;Field Employee Availability,a0aDG000005OS8eYAG,Limited Resource,a0nDG000004E6yEYAS,Field Employee Availability,a0ZDG000005weLI2AY
+Emergency;Resource Availability,a0aDG000005OS8bYAG,Emergency,a0nDG000004E6yQYAS,Resource Availability,a0ZDG000005weLT2AY
+Customer First;Active Resources,a0aDG000005OS8fYAG,Customer First,a0nDG000004E6yGYAS,Active Resources,a0ZDG000005weLU2AY
+Limited Resource;Active Resources,a0aDG000005OS8eYAG,Limited Resource,a0nDG000004E6yGYAS,Active Resources,a0ZDG000005weLV2AY
+Reduce Travel;Match Territory,a0aDG000005OS8cYAG,Reduce Travel,a0nDG000004E6yIYAS,Match Territory,a0ZDG000005weLW2AY
+Customer First;Required Service Resource,a0aDG000005OS8fYAG,Customer First,a0nDG000004E6yLYAS,Required Service Resource,a0ZDG000005weLX2AY
+Focus on Service Request;Active Resources,a0aDG000005OS8dYAG,Focus on Service Request,a0nDG000004E6yGYAS,Active Resources,a0ZDG000005weLY2AY
+Customer First;Service Appointment Visiting Hours,a0aDG000005OS8fYAG,Customer First,a0nDG000004E6yMYAS,Service Appointment Visiting Hours,a0ZDG000005weLZ2AY
+Customer First;Scheduled End,a0aDG000005OS8fYAG,Customer First,a0nDG000004E6yPYAS,Scheduled End,a0ZDG000005weLa2AI
+Focus on Service Request;Field Employee Availability,a0aDG000005OS8dYAG,Focus on Service Request,a0nDG000004E6yEYAS,Field Employee Availability,a0ZDG000005weLb2AI
+Customer First;Match Territory,a0aDG000005OS8fYAG,Customer First,a0nDG000004E6yIYAS,Match Territory,a0ZDG000005weLc2AI
+Limited Resource;Match Territory,a0aDG000005OS8eYAG,Limited Resource,a0nDG000004E6yIYAS,Match Territory,a0ZDG000005weLd2AI
+Emergency;Match Territory,a0aDG000005OS8bYAG,Emergency,a0nDG000004E6yIYAS,Match Territory,a0ZDG000005weLe2AI
+Customer First;Service Crew Resources Availability,a0aDG000005OS8fYAG,Customer First,a0nDG000004E6yHYAS,Service Crew Resources Availability,a0ZDG000005weLf2AI
+Reduce Travel;Active Resources,a0aDG000005OS8cYAG,Reduce Travel,a0nDG000004E6yGYAS,Active Resources,a0ZDG000005weLg2AI
+Customer First;Field Employee Availability,a0aDG000005OS8fYAG,Customer First,a0nDG000004E6yEYAS,Field Employee Availability,a0ZDG000005weLh2AI
+Emergency;Active Resources,a0aDG000005OS8bYAG,Emergency,a0nDG000004E6yGYAS,Active Resources,a0ZDG000005weLi2AI
+Reduce Travel;Resource Availability,a0aDG000005OS8cYAG,Reduce Travel,a0nDG000004E6yQYAS,Resource Availability,a0ZDG000005weLj2AI
+Customer First;Match Skills,a0aDG000005OS8fYAG,Customer First,a0nDG000004E6yJYAS,Match Skills,a0ZDG000005weLk2AI
+Focus on Service Request;Match Territory,a0aDG000005OS8dYAG,Focus on Service Request,a0nDG000004E6yIYAS,Match Territory,a0ZDG000005weLl2AI
+Emergency;Earliest Start Permitted,a0aDG000005OS8bYAG,Emergency,a0nDG000004E6y7YAC,Earliest Start Permitted,a0ZDG000005weL82AI
+Emergency;Due Date,a0aDG000005OS8bYAG,Emergency,a0nDG000004E6y6YAC,Due Date,a0ZDG000005weL92AI
+Reduce Travel;Earliest Start Permitted,a0aDG000005OS8cYAG,Reduce Travel,a0nDG000004E6y7YAC,Earliest Start Permitted,a0ZDG000005weLA2AY
+Reduce Travel;Due Date,a0aDG000005OS8cYAG,Reduce Travel,a0nDG000004E6y6YAC,Due Date,a0ZDG000005weLB2AY
+Focus on Service Request;Earliest Start Permitted,a0aDG000005OS8dYAG,Focus on Service Request,a0nDG000004E6y7YAC,Earliest Start Permitted,a0ZDG000005weLC2AY
+Focus on Service Request;Due Date,a0aDG000005OS8dYAG,Focus on Service Request,a0nDG000004E6y6YAC,Due Date,a0ZDG000005weLD2AY
+Limited Resource;Earliest Start Permitted,a0aDG000005OS8eYAG,Limited Resource,a0nDG000004E6y7YAC,Earliest Start Permitted,a0ZDG000005weLE2AY
+Limited Resource;Due Date,a0aDG000005OS8eYAG,Limited Resource,a0nDG000004E6y6YAC,Due Date,a0ZDG000005weLF2AY
+Customer First;Earliest Start Permitted,a0aDG000005OS8fYAG,Customer First,a0nDG000004E6y7YAC,Earliest Start Permitted,a0ZDG000005weLG2AY
+Customer First;Due Date,a0aDG000005OS8fYAG,Customer First,a0nDG000004E6y6YAC,Due Date,a0ZDG000005weLH2AY
