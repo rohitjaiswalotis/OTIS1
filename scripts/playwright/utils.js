@@ -3,7 +3,18 @@
 export const FIELD_SERVICE_SETTINGS_URL = `/lightning/n/FSL__Field_Service_Settings`;
 
 
+
+export const acceptDialog = (basePage) => {
+	
+	basePage.on('dialog', dialog => dialog.accept());
+	
+}
+
+
+
 export const openSettings = async (basePage, baseUrl) => {
+	
+	acceptDialog(basePage);
 	
 	await basePage.goto(baseUrl + FIELD_SERVICE_SETTINGS_URL);
 	
@@ -13,6 +24,20 @@ export const openSettings = async (basePage, baseUrl) => {
 export const getMainFrame = (basePage) => {
 	
 	return basePage.frameLocator('iframe[tabindex="0"]');
+	
+}
+
+
+export const getMainFrameWithTitlePrefix = (basePage, titlePrefix) => {
+	
+	return basePage.frameLocator(`iframe[tabindex='0'][title^='${titlePrefix}']`);
+	
+}
+
+
+export const getMainFrameWithTitleContains = (basePage, titleMarker) => {
+	
+	return basePage.frameLocator(`iframe[tabindex='0'][title*='${titleMarker}']`);
 	
 }
 
@@ -130,9 +155,29 @@ export const setCheckboxesInGroup = async (root, container, { resetAll = true, l
 		} else if (resetAll === true) {
 			
 			await checkboxLocator.getByRole('checkbox').uncheck({ force: true });
+			
 		}
 		
 	}
+	
+}
+
+
+export const getPicklistOptions = async (root, label) => {
+	
+	await waitForLabel(root, label);
+	
+	let selectedOptions = [];
+	
+	for (const selectedOptionLocator of await root.getByLabel(label).locator('option').all()) {
+		
+		selectedOptions.push(
+			await selectedOptionLocator.textContent()
+		);
+		
+	}
+	
+	return selectedOptions;
 	
 }
 
@@ -169,9 +214,30 @@ export const clickMenuItem = async (root, label) => {
 }
 
 
+export const clickLink = async (root, label) => {
+	
+	await root.getByRole("link", { name: label }).click();
+	
+}
+
+
+export const waitForLink = async (root, label) => {
+	
+	await root.getByRole("link", { name: label }).waitFor();
+	
+}
+
+
+export const waitForLabel = async (root, label) => {
+	
+	await root.getByLabel(label).waitFor();
+	
+}
+
+
 export class CaseInsensitiveSet extends Set {
 	
-	constructor(values) {
+	constructor(values = []) {
 		super(
 			Array.from(
 				values, it => String(it).trim().toLowerCase()
