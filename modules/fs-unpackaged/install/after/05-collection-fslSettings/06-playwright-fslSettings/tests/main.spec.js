@@ -373,6 +373,151 @@ test('Optimization -> Logic', async ({ basePage, baseUrl }) => {
 
 
 
+test('Optimization -> Scheduled Jobs', async ({ basePage, baseUrl }) => {
+	
+	const TARGET_JOB_NAME = "Optimization";
+	const TARGET_AUTOMATOR_TYPE = "Optimization";
+	
+	await utils.openSettings(basePage, baseUrl);
+	
+	const frame = utils.getMainFrame(basePage);
+	
+	await utils.switchToSettingsMenu(frame, "Optimization");
+	
+	await utils.switchToSettingsTab(frame, "Scheduled Jobs");
+	
+	
+	// define locators
+	
+	const jobsSectionLocator = frame.locator('optimization-jobs-enhancements');
+	const jobsSectionButtonsLocator = jobsSectionLocator.locator('.automatorButton.settingsButton');
+	const jobsSectionNewButtonLocator = jobsSectionButtonsLocator.filter({ hasText: "New Job" });
+	const jobsSectionEditButtonLocator = jobsSectionButtonsLocator.filter({ hasText: "Edit" });
+	
+	const jobTimeControl = jobsSectionLocator.locator(".automatorTimeSpan");
+	const jobTimeHourControl = jobTimeControl.filter({ hasText: "Hour" }).locator(".timeSpanInput input");
+	const jobTimeMinuteControl = jobTimeControl.filter({ hasText: "Minute" }).locator(".timeSpanInput input");
+	
+	const targetJobTextLocator = frame.getByText(TARGET_JOB_NAME, { exact: true });
+	const jobNameCellLocator = frame.locator(".automatorEnhancementsName");
+	const targetJobNameCellLocator = jobNameCellLocator.filter({ has: targetJobTextLocator });
+	const targetJobRowLocator = frame.locator(".automatorRowEnhancements").filter({ has: targetJobNameCellLocator });
+	const targetJobActionsLocator = targetJobRowLocator.locator(".automatorEnhancementsAction");
+	const targetJobStatusToggleLocator = targetJobActionsLocator.locator("checkbox");
+	const targetJobStatusLocator = targetJobActionsLocator.locator(".automatorEnhancementsActive");
+	
+	const newJobPopupLocator = frame.locator('.settingsPopup');
+	
+	
+	await jobsSectionNewButtonLocator.waitFor();
+	
+	let doesScheduledJobExist = false;
+	
+	// detect by name if target scheduled job exists
+	if (await jobsSectionEditButtonLocator.isVisible()) {
+		
+		console.log("Some scheduled jobs are present already.");
+		
+		if (await targetJobNameCellLocator.isVisible()) {
+			
+			console.log(`Scheduled job with name '${TARGET_JOB_NAME}' already exists.`);
+			
+			doesScheduledJobExist = true;
+			
+		} else {
+			
+			console.log(`Scheduled job with name '${TARGET_JOB_NAME}' does NOT exist.`);
+			
+		}
+		
+	} else {
+		
+		console.log("No Scheduled jobs available at all.");
+		
+	}
+	
+	
+	// create target scheduled job with predefined name (if not exist)
+	if (doesScheduledJobExist === false) {
+		
+		console.log(`Creating scheduled job with name '${TARGET_JOB_NAME}'...`);
+		
+		await jobsSectionNewButtonLocator.click();
+		
+		await utils.fillSetting(newJobPopupLocator, 'Name', TARGET_JOB_NAME);
+		await utils.selectPicklistSettingByLabel(newJobPopupLocator, 'Automator type', TARGET_AUTOMATOR_TYPE);
+		
+		await utils.clickByText(newJobPopupLocator, 'Save');
+		
+		await utils.clickSaveSettingButton(frame);
+		
+		console.log(`Scheduled job with name '${TARGET_JOB_NAME}' has been created.`);
+		
+	}
+	
+	
+	// updating parameters of target scheduled job
+	{
+		
+		console.log("Tweaking further scheduled job parameters...");
+		
+		//await utils.clickByTitle(targetJobNameCellLocator, "Expand job");
+		await utils.clickByText(targetJobNameCellLocator, "+");
+		
+		await utils.setRadio(frame, "Recurring");
+		
+		await utils.setCheckboxes(frame, [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]);
+		
+		await utils.setRadio(frame, "Day of week");
+		
+		await utils.setCheckboxes(frame, [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ]);
+		
+		await utils.setRadio(frame, "Specific Hour");
+		
+		await jobTimeHourControl.fill(String(21));
+		await jobTimeMinuteControl.fill(String(0));
+		
+		await utils.clickByText(frame, "All");
+		
+		await utils.fillSetting(frame, "Time Horizon in days", 30);
+		
+		await utils.selectPicklistSettingByLabel(frame, "Filter by criteria", "None");
+		await utils.selectPicklistSettingByLabel(frame, "Scheduling Policy", "Customer First");
+		
+		await utils.fillSetting(frame, "Email recipient user name", '');
+		
+		await utils.clickSaveSettingButton(frame);
+		
+		let jobCurrentStatus = await targetJobStatusLocator.textContent();
+		console.log(`Current status of '${TARGET_JOB_NAME}' job: ${jobCurrentStatus}`);
+		
+		if (utils.isEquivalent(jobCurrentStatus, 'Inactive')) {
+			await targetJobStatusToggleLocator.click({ force: true });
+		}
+		
+		await utils.clickSaveSettingButton(frame);
+		
+		await utils.clickByText(targetJobActionsLocator, "Run Now");
+		
+		// try to run job suppressing failure if any (just logging error)
+		try {
+			
+			await targetJobActionsLocator.locator(".automatorRunNowDone").waitFor();
+			console.log(`Scheduled job '${TARGET_JOB_NAME}' execution has succeeded.`);
+			
+		} catch (exp) {
+			
+			console.log(`WARNING: Scheduled job '${TARGET_JOB_NAME}' execution has failed`);
+			console.log(exp);
+			
+		}
+		
+	}
+	
+});
+
+
+
 test('Dispatch -> Drip Feed', async ({ basePage, baseUrl }) => {
 	
 	await utils.openSettings(basePage, baseUrl);
@@ -389,6 +534,161 @@ test('Dispatch -> Drip Feed', async ({ basePage, baseUrl }) => {
 	
 	
 	await utils.clickSaveSettingButton(frame);
+	
+});
+
+
+
+test('Dispatch -> Scheduled Jobs', async ({ basePage, baseUrl }) => {
+	
+	const TARGET_JOB_NAME = "Auto Dispatch";
+	const TARGET_AUTOMATOR_TYPE = "Auto Dispatch";
+	
+	await utils.openSettings(basePage, baseUrl);
+	
+	const frame = utils.getMainFrame(basePage);
+	
+	await utils.switchToSettingsMenu(frame, "Dispatch");
+	
+	await utils.switchToSettingsTab(frame, "Scheduled Jobs");
+	
+	await utils.checkBooleanSetting(frame, "Mention assigned user when the Service Appointment is dispatched");
+	await utils.selectPicklistSettingByLabel(frame, "Dispatch Chatter Post Destination", "Service Appointment Feed");
+	
+	
+	// define locators
+	
+	const jobsSectionLocator = frame.locator('dispatch-automation');
+	const jobsSectionButtonsLocator = jobsSectionLocator.locator('.automatorButton.settingsButton');
+	const jobsSectionNewButtonLocator = jobsSectionButtonsLocator.filter({ hasText: "New Job" });
+	const jobsSectionEditButtonLocator = jobsSectionButtonsLocator.filter({ hasText: "Edit" });
+	
+	const jobTimeControl = jobsSectionLocator.locator(".automatorTimeSpan");
+	const jobTimeHourControl = jobTimeControl.filter({ hasText: "Hour" }).locator(".timeSpanInput input");
+	const jobTimeMinuteControl = jobTimeControl.filter({ hasText: "Minute" }).locator(".timeSpanInput input");
+	
+	const targetJobTextLocator = frame.getByText(TARGET_JOB_NAME, { exact: true });
+	const jobNameCellLocator = frame.locator(".automatorTextAndCollapse");
+	const targetJobNameCellLocator = jobNameCellLocator.filter({ has: targetJobTextLocator });
+	const targetJobRowLocator = frame.locator(".automatorRowContainer").filter({ has: targetJobNameCellLocator });
+	const targetJobActionsLocator = targetJobRowLocator.locator(".runNowContainer");
+	
+	const targetJobStatusToggleLocator = frame.locator(".automatorRowAndContent").filter({ has: targetJobRowLocator }).locator(".automatorLeftContent").locator("checkbox").filter({ hasText: "Active" });
+	const targetJobStatusActiveLocator = targetJobStatusToggleLocator.locator(".checked").first();
+	const targetJobStatusInactiveLocator = targetJobStatusToggleLocator.locator(".unchecked").first();
+	
+	const newJobPopupLocator = frame.locator('.settingsPopup');
+	
+	
+	await jobsSectionNewButtonLocator.waitFor();
+	
+	let doesScheduledJobExist = false;
+	
+	
+	// detect by name if target scheduled job exists
+	if (await jobsSectionEditButtonLocator.isVisible()) {
+		
+		console.log("Some scheduled jobs are present already.");
+		
+		if (await targetJobNameCellLocator.isVisible()) {
+			
+			console.log(`Scheduled job with name '${TARGET_JOB_NAME}' already exists.`);
+			
+			doesScheduledJobExist = true;
+			
+		} else {
+			
+			console.log(`Scheduled job with name '${TARGET_JOB_NAME}' does NOT exist.`);
+			
+		}
+		
+	} else {
+		
+		console.log("No Scheduled jobs available at all.");
+		
+	}
+	
+	
+	// create target scheduled job with predefined name (if not exist)
+	if (doesScheduledJobExist === false) {
+		
+		console.log(`Creating scheduled job with name '${TARGET_JOB_NAME}'...`);
+		
+		await jobsSectionNewButtonLocator.click();
+		
+		await utils.fillSetting(newJobPopupLocator, 'Name', TARGET_JOB_NAME);
+		await utils.selectPicklistSettingByLabel(newJobPopupLocator, 'Automator type', TARGET_AUTOMATOR_TYPE);
+		
+		await utils.clickByText(newJobPopupLocator, 'Save');
+		
+		await utils.clickSaveSettingButton(frame);
+		
+		console.log(`Scheduled job with name '${TARGET_JOB_NAME}' has been created.`);
+		
+	}
+	
+	
+	// updating parameters of target scheduled job
+	{
+		
+		console.log("Tweaking further scheduled job parameters...");
+		
+		await utils.clickByText(targetJobNameCellLocator, "+");
+		
+		await utils.setRadio(frame, "Recurring");
+		
+		await utils.setCheckboxes(frame, [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec' ]);
+		
+		await utils.setRadio(frame, "Day of week");
+		
+		await utils.setCheckboxes(frame, [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ]);
+		
+		await utils.setRadio(frame, "Specific Hour");
+		
+		await jobTimeHourControl.fill(String(23));
+		await jobTimeMinuteControl.fill(String(0));
+		
+		await utils.clickByText(frame, "All");
+		
+		await utils.fillSetting(frame, "Time Horizon in days", 30);
+		
+		await utils.selectPicklistSettingByLabel(frame, "Filter by criteria", "None");
+		
+		await utils.fillSetting(frame, "Email recipient user name", '');
+		
+		await utils.clickSaveSettingButton(frame);
+		
+		
+		// activate job if not already
+		if (await targetJobStatusInactiveLocator.isVisible()) {
+			
+			await targetJobStatusInactiveLocator.click({ force: true });
+			console.log(`Activated '${TARGET_JOB_NAME}' job`); 
+			
+		} else if (await targetJobStatusActiveLocator.isVisible()) {
+			
+			console.log(`Job '${TARGET_JOB_NAME}' is already active.`);
+			
+		}
+		
+		await utils.clickSaveSettingButton(frame);
+		
+		await utils.clickByText(targetJobActionsLocator, "Run now");
+		
+		// try to run job suppressing failure if any (just logging error)
+		try {
+			
+			await targetJobActionsLocator.locator(".automatorRunNowDone").waitFor();
+			console.log(`Scheduled job '${TARGET_JOB_NAME}' execution has succeeded.`);
+			
+		} catch (exp) {
+			
+			console.log(`WARNING: Scheduled job '${TARGET_JOB_NAME}' execution has failed`);
+			console.log(exp);
+			
+		}
+		
+	}
 	
 });
 
