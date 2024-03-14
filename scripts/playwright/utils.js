@@ -131,6 +131,27 @@ export const fillSetting = async (root, label, value) => {
 }
 
 
+export const setCheckboxes = async (root, labels) => {
+	
+	for (const label of labels) {
+		
+		await root.getByRole(
+			"checkbox", 
+			{ 
+				name: label, 
+				exact: true 
+			}
+		).check(
+			{
+				force: true 
+			}
+		);
+		
+	}
+	
+}
+
+
 export const setCheckboxesInGroup = async (root, container, { resetAll = true, labelsToCheck = new Set(), labelsToUncheck = new Set() } = { resetAll: true }) => {
 	
 	let checkboxesLocator = container.locator('label');
@@ -159,6 +180,13 @@ export const setCheckboxesInGroup = async (root, container, { resetAll = true, l
 		}
 		
 	}
+	
+}
+
+
+export const setRadio = async (root, label) => {
+	
+	await root.getByRole("radio", { name: label, exact: true }).check({ force: true });
 	
 }
 
@@ -231,6 +259,39 @@ export const waitForLink = async (root, label) => {
 export const waitForLabel = async (root, label) => {
 	
 	await root.getByLabel(label).waitFor();
+	
+}
+
+
+export const clickByText = async (root, text) => {
+	
+	await root.getByText(text, { exact: true }).click({ force: true });
+	
+}
+
+
+export const clickByTitle = async (root, text) => {
+	
+	await root.getByTitle(text, { exact: true }).click({ force: true });
+	
+}
+
+
+export const isEquivalent = (source, target) => {
+	
+	return (
+		(
+			source === null
+			&&
+			target === null
+		)
+		||
+		(
+			String(source).trim().toLowerCase()
+			===
+			String(target).trim().toLowerCase()
+		)
+	);
 	
 }
 
