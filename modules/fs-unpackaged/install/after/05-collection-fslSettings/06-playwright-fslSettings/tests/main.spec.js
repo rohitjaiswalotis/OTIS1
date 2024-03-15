@@ -805,3 +805,313 @@ test(`Contract Line Item -> Edit Multi-Line Layout`, async ({ basePage, baseUrl 
 });
 
 
+
+test('Setup -> Field Service Mobile App Builder -> Create/Edit and Publish', async ({ basePage, baseUrl }) => {
+	
+	// const
+	
+	const APP_BUILDER_HOME_URL = "/lightning/setup/FieldServiceAppBuilder/home";
+	const TARGET_CONFIG_NAME = "Otis Field Service Mobile";
+	const TARGET_APP_PROFILE = "Field Service Mechanic";
+	
+	
+	// functions
+	
+	const selectPageType = async (root, name) => {
+		
+		await root.getByLabel("Page Type", { exact: true }).dispatchEvent("click");
+		await utils.clickByText(root.getByRole("listbox"), name);
+		
+	}
+	
+	const selectObjects = async (root, name) => {
+		
+		await utils.clickCombobox(root, "Objects");
+		await utils.clickByText(root.getByRole("listbox"), name);
+		
+	}
+	
+	const selectFilters = async (root, name) => {
+		
+		await utils.clickCombobox(root, "Filters");
+		await utils.clickByText(root.getByRole("listbox"), name);
+		
+	}
+	
+	const selectFieldServicePage = async (root, name) => {
+		
+		await root.getByLabel("Field Service Page", { exact: true }).dispatchEvent("click");
+		await utils.clickByText(root.getByRole("listbox"), name);
+		
+	}
+	
+	const selectIcon = async (root, name) => {
+		
+		const fieldLocator = root.locator('mobilebuilder-tab-form mobilebuilder-tab-fields-common');
+		const iconPickerModalLocator = root.locator('mobilebuilder-icon-picker-modal');
+		
+		// remove current/default icon
+		await fieldLocator
+			.locator('.iconSection')
+			.locator('.slds-pill__remove')
+			.click();
+		
+		await utils.clickButton(fieldLocator, "Select Icon...");
+		
+		await iconPickerModalLocator.getByText(name, { exact: true }).click();
+		await iconPickerModalLocator.getByRole("button", { name: "Select", exact: true }).click();
+		
+	}
+	
+	const backToTabs = async (root) => {
+		
+		await root.locator(".back_button").click();
+		
+	}
+	
+	
+	// locators
+	
+	const appsConfigsTableLocator = basePage.locator("table").filter({ has: basePage.getByText("App Name") });
+	const targetAppConfigRowLocator = appsConfigsTableLocator.locator("tr").filter({ has: basePage.getByText(TARGET_CONFIG_NAME, { exact: true }) });
+	
+	const targetProfileText = basePage.getByText(TARGET_APP_PROFILE, { exact: true });
+	const targetAppConfigWithProfileRowLocator = targetAppConfigRowLocator.filter({ has: targetProfileText });
+	
+	const navigationTabsList = basePage.locator("mobilebuilder-tabs-list");
+	const navigationTabCloseIconLocator = navigationTabsList.locator(".tabs .close_icon").first();
+	
+	const addNavigationTabButtonLocator = navigationTabsList.getByText("Add Tab");
+	
+	const publishOptionalPromptModalLocator = basePage.locator("mobilebuilder-save-prompt-modal");
+	const publishOptionalPromptCancelButtonLocator = publishOptionalPromptModalLocator.getByRole("button", { name: "Cancel", exact: true });
+	
+	const profileAssignmentModalLocator = basePage.locator("mobilebuilder-app-profile-assignment");
+	const profileAssignmentNextButtonLocator = profileAssignmentModalLocator.getByRole("button", { name: "Next", exact: true });
+	const profileAssignmentOverrideButtonLocator = profileAssignmentModalLocator.getByRole("button", { name: "Override & Publish", exact: true });
+	const profileAssignmentPublishButtonLocator = profileAssignmentModalLocator.getByRole("button", { name: "Publish", exact: true });
+	const profileAssignmentSearchControlLocator = profileAssignmentModalLocator.getByPlaceholder("Search profiles...", { exact: true });
+	
+	const profileAssignmentTargetProfilesLocator = profileAssignmentModalLocator.locator("tr").filter({ has: targetProfileText }).getByRole("checkbox");
+	
+	const builderToolbarLocator = basePage.locator("mobilebuilder-toolbar");
+	const builderToolbarPublishButtonLocator = builderToolbarLocator.getByRole("button", { name: "Publish", exact: true });
+	const builderToolbarSaveButtonLocator = builderToolbarLocator.getByRole("button", { name: "Save", exact: true });
+	const builderToolbarSaveInProgressIndicatorLocator = builderToolbarLocator.getByText("Saving", { exact: true });
+	
+	const backToConfigsLinkLocator = await basePage.locator("mobilebuilder-header").locator(".test-back-url");
+	
+	
+	await basePage.goto(baseUrl + APP_BUILDER_HOME_URL);
+	await utils.waitForButton(basePage, "New Configuration");
+	
+	
+	// figure out wether target config exist
+	let doesConfigExist = false; {
+		
+		if (await basePage.getByText("You don't have any configurations").isVisible()) {
+			
+			console.log(`No apps configs are available at all.`);
+			
+		} else {
+			
+			console.log(`Some apps configs are available.`);
+			
+			doesConfigExist = await targetAppConfigRowLocator.isVisible();
+			
+			if (doesConfigExist === true) {
+				
+				console.log(`App config with name '${TARGET_CONFIG_NAME}' already exists.`);
+				
+			} else {
+				
+				console.log(`App config with name '${TARGET_CONFIG_NAME}' does NOT exist.`);
+				
+			}
+			
+		}
+		
+	}
+	
+	
+	// create target app config with predefined name (if not exist)
+	if (doesConfigExist === false) {
+		
+		console.log(`Creating app conifg with name '${TARGET_CONFIG_NAME}'...`);
+		
+		await utils.clickButton(basePage, "New Configuration");
+		
+		await basePage.getByPlaceholder("Add an app name...").fill("Otis Field Service Mobile");
+		await basePage.getByPlaceholder("Add an API name...").fill("Otis_Field_Service_Mobile");
+		
+		await utils.clickButton(basePage, "Save");
+		
+		await utils.waitForButton(basePage, "Publish");
+		await utils.waitForButton(basePage, "Add Tab");
+		
+	} else {
+		
+		await targetAppConfigRowLocator.getByRole('button').click({ force: true });
+		
+		await utils.clickMenuItem(basePage, "Edit App Configuration");
+		
+		await utils.waitForButton(basePage, "Publish");
+		await utils.waitForButton(basePage, "Add Tab");
+		
+	}
+	
+	
+	// removing all current tabs - but the last tab cannot be removed, so will remove it after creating first new one
+	while (true) {
+		
+		if (await navigationTabCloseIconLocator.isVisible()) {
+			
+			await navigationTabCloseIconLocator.click();
+			
+		} else {
+			
+			break;
+			
+		}
+		
+	}
+	
+	
+	// Home tab
+	{
+		
+		await addNavigationTabButtonLocator.click();
+		
+		await selectPageType(basePage, "List View");
+		await selectObjects(basePage, "Unit");
+		await selectFilters(basePage, "Shutdown Units - FSL");
+		
+		await utils.fillSetting(basePage, "Tab Label", "Home");
+		
+		await selectIcon(basePage, "home");
+		
+		await backToTabs(basePage);
+		
+	}
+	
+	
+	// remove last existent tab menu from previous initial cleanup step
+	if (await navigationTabCloseIconLocator.isVisible()) {
+		await navigationTabCloseIconLocator.click();
+	}
+	
+	
+	// Schedule tab
+	{
+		
+		await addNavigationTabButtonLocator.click();
+		
+		await selectPageType(basePage, "Salesforce Field Service");
+		await selectFieldServicePage(basePage, "Schedule");
+		
+		await utils.fillSetting(basePage, "Tab Label", "Schedule");
+		
+		await selectIcon(basePage, "event");
+		
+		await backToTabs(basePage);
+		
+	}
+	
+	
+	// Notifications tab
+	{
+		
+		await addNavigationTabButtonLocator.click();
+		
+		await selectPageType(basePage, "Salesforce Field Service");
+		await selectFieldServicePage(basePage, "Notifications");
+		
+		await utils.fillSetting(basePage, "Tab Label", "Notifications");
+		
+		await selectIcon(basePage, "notification");
+		
+		await backToTabs(basePage);
+		
+	}
+	
+	
+	// Closed WO tab
+	{
+		
+		await addNavigationTabButtonLocator.click();
+		
+		await selectPageType(basePage, "List View");
+		await selectObjects(basePage, "Work Order");
+		await selectFilters(basePage, "Closed WO In Last 72 hours");
+		
+		await utils.fillSetting(basePage, "Tab Label", "Closed WO");
+		
+		await selectIcon(basePage, "work_order_type");
+		
+		await backToTabs(basePage);
+		
+	}
+	
+	
+	await builderToolbarSaveButtonLocator.click();
+	await utils.waitToDisappear(builderToolbarSaveInProgressIndicatorLocator);
+	
+	// handling extra dialog suggesting to publish - just cancel it
+	if (publishOptionalPromptModalLocator.isVisible()) {
+		await publishOptionalPromptCancelButtonLocator.first().click();
+	}
+	
+	
+	// publishing with profiles assignment
+	{
+		
+		await builderToolbarPublishButtonLocator.click();
+		
+		await profileAssignmentSearchControlLocator.fill(TARGET_APP_PROFILE);
+		
+		for (const targetProfileLocator of await profileAssignmentTargetProfilesLocator.all()) {
+			await targetProfileLocator.check({ force: true });
+		}
+		
+		// if extra Next button is enabled (to confirm override of profies assignment) go through 2-step process: Next, then Override & Publish
+		if (
+			await profileAssignmentNextButtonLocator.isVisible()
+			&&
+			await profileAssignmentNextButtonLocator.isDisabled() === false
+		) {
+			
+			await profileAssignmentNextButtonLocator.click();
+			
+			await profileAssignmentOverrideButtonLocator.click();
+			
+		// no overrides - just hit Publish
+		} else {
+			
+			await profileAssignmentPublishButtonLocator.click();
+			
+		}
+		
+		await utils.waitToDisappear(profileAssignmentModalLocator);
+		
+	}
+		
+		
+	// get back to mobile app builder page and check if profile has been assigned
+	{
+		
+		await backToConfigsLinkLocator.click();
+		
+		await utils.waitForButton(basePage, "New Configuration");
+		
+		let isTargetProfileAssigned = await targetAppConfigWithProfileRowLocator.isVisible();
+		
+		if (isTargetProfileAssigned === true) {
+			console.log(`Target profile '${TARGET_APP_PROFILE}' is assigned.`);
+		} else {
+			console.log(`WARNING: No target profile '${TARGET_APP_PROFILE}' assigned!`);
+		}
+		
+	}
+	
+});
+

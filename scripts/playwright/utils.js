@@ -249,6 +249,13 @@ export const clickLink = async (root, label) => {
 }
 
 
+export const clickCombobox = async (root, label) => {
+	
+	await root.getByRole("combobox", { name: label, exact: true }).click({ force: true });
+	
+}
+
+
 export const waitForLink = async (root, label) => {
 	
 	await root.getByRole("link", { name: label }).waitFor();
@@ -273,6 +280,13 @@ export const clickByText = async (root, text) => {
 export const clickByTitle = async (root, text) => {
 	
 	await root.getByTitle(text, { exact: true }).click({ force: true });
+	
+}
+
+
+export const waitToDisappear = async (root) => {
+	
+	await root.waitFor({ "state" : "hidden" });
 	
 }
 
