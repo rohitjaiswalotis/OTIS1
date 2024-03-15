@@ -488,12 +488,37 @@ test('Optimization -> Scheduled Jobs', async ({ basePage, baseUrl }) => {
 		
 		await utils.clickSaveSettingButton(frame);
 		
-		let jobCurrentStatus = await targetJobStatusLocator.textContent();
-		console.log(`Current status of '${TARGET_JOB_NAME}' job: ${jobCurrentStatus}`);
-		
-		if (utils.isEquivalent(jobCurrentStatus, 'Inactive')) {
-			await targetJobStatusToggleLocator.click({ force: true });
+		// activate job if not already
+		{
+			
+			let jobCurrentStatus = await targetJobStatusLocator.textContent();
+			console.log(`Current status of '${TARGET_JOB_NAME}' job: ${jobCurrentStatus}`);
+			
+			if (utils.isEquivalent(jobCurrentStatus, 'Inactive')) {
+				await targetJobStatusToggleLocator.click({ force: true });
+			}
+			
+			await utils.clickSaveSettingButton(frame);
+			
 		}
+		
+	}
+	
+	
+	// re-entering settings page and Scheduled Jobs tab to select All territories again and save (due to some issue or weird behaviour)
+	{
+		
+		await utils.openSettings(basePage, baseUrl);
+		
+		await utils.switchToSettingsMenu(frame, "Optimization");
+		
+		await utils.switchToSettingsTab(frame, "Scheduled Jobs");
+		
+		console.log("Tweaking further scheduled job parameters...");
+		
+		await utils.clickByText(targetJobNameCellLocator, "+");
+		
+		await utils.clickByText(frame, "All");
 		
 		await utils.clickSaveSettingButton(frame);
 		
@@ -670,6 +695,26 @@ test('Dispatch -> Scheduled Jobs', async ({ basePage, baseUrl }) => {
 			console.log(`Job '${TARGET_JOB_NAME}' is already active.`);
 			
 		}
+		
+		await utils.clickSaveSettingButton(frame);
+		
+	}
+	
+	
+	// re-entering settings page and Scheduled Jobs tab to select All territories again and save (due to some issue or weird behaviour)
+	{
+		
+		await utils.openSettings(basePage, baseUrl);
+		
+		await utils.switchToSettingsMenu(frame, "Dispatch");
+		
+		await utils.switchToSettingsTab(frame, "Scheduled Jobs");
+		
+		console.log("Tweaking further scheduled job parameters...");
+		
+		await utils.clickByText(targetJobNameCellLocator, "+");
+		
+		await utils.clickByText(frame, "All");
 		
 		await utils.clickSaveSettingButton(frame);
 		
@@ -1114,4 +1159,5 @@ test('Setup -> Field Service Mobile App Builder -> Create/Edit and Publish', asy
 	}
 	
 });
+
 
