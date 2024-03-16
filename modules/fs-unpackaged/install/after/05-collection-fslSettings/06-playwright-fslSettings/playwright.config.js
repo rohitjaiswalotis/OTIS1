@@ -17,7 +17,7 @@ module.exports = defineConfig({
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 0 : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -72,16 +72,16 @@ module.exports = defineConfig({
   ],
   
   // General timeout per test
-  timeout: 600000,
+  timeout: 60000,
 
   // For browser actions
   use: {
-    actionTimeout: 200000,
+    actionTimeout: 20000,
   },
 
   // For expect calls
   expect: {
-    timeout: 100000,   // <---------
+    timeout: 10000,   // <---------
   },
 
   /* Run your local dev server before starting the tests */

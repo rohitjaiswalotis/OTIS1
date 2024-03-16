@@ -17,7 +17,7 @@ const SERVICE_APPOINTMENT_STATUSES = [
 ];
 
 
-
+/*
 test('Service Appointment Life Cycle -> Creation', async ({ basePage, baseUrl }) => {
 	
 	await utils.openSettings(basePage, baseUrl);
@@ -1160,4 +1160,114 @@ test('Setup -> Field Service Mobile App Builder -> Create/Edit and Publish', asy
 	
 });
 
+*/
 
+
+/*
+test(`FSL Optmization User -> Activate Optimization Service`, async ({ basePage, baseUrl }) => {
+	
+	await basePage.goto(baseUrl + '/lightning/setup/Profiles/home');
+	
+	let frame = utils.getMainFrameWithTitlePrefix(basePage, "User Profiles");
+	
+	await frame.getByRole("link", { name: "FSL Optimization", exact: true }).click()
+	
+	frame = utils.getMainFrameWithTitlePrefix(basePage, "Profile");
+	await frame.getByTitle("View Users", { exact: true }).and(frame.getByRole("button", { name: "users" })).first().click();
+	//await frame.getByRole("button", "View Users", { exact: true }).click();
+	
+	frame = utils.getMainFrameWithTitlePrefix(basePage, "FSL Optimization");
+	await frame.getByRole("link", { name: /^fsl.00D/i }).click();
+	
+	frame = utils.getMainFrameWithTitlePrefix(basePage, "User");
+	
+	await frame.getByTitle("Reset Password").first().waitFor();
+	
+	if (await frame.getByTitle("Login").and(frame.getByRole("button")).first().isVisible() === false) {
+		console.log(`WARNING: Cannot log in as FSL Optimization user - check if enabled in Setup -> Login Access Policies`);
+		return;
+	}
+	
+	await frame.getByTitle("Login").and(frame.getByRole("button")).first().click();
+	
+	await basePage.waitForLoadState('networkidle');
+	await basePage.waitForLoadState('domcontentloaded');
+	await basePage.waitForLoadState('networkidle');
+	
+	await utils.openSettings(basePage, baseUrl);
+	
+	frame = utils.getMainFrame(basePage);
+	
+	await frame.getByText("Standard Optimization", { exact: true }).waitFor();
+	
+	if (await frame.getByText("The optimization service is active", { exact: true}).isVisible()) {
+		console.log("Optimization service is already active.");
+		return;
+	}
+	
+	if (await frame.getByText("Activate Optimization", { exact: true })) {
+		console.log("Activating optimization service...");
+		await frame.getByText("Activate Optimization", { exact: true }).click();
+	}
+	
+	await utils.clickSaveSettingButton(frame);
+	
+	
+	// Optimization -> Activation
+	//Activate Optimization
+	//Save
+	
+	
+	await basePage.pause();
+	
+});
+*/
+
+
+
+const APPS_TO_RELAX_IP = [ 
+	"Salesforce Field Service for Android"
+];
+
+for (
+	const appToRelaxIp 
+	of 
+	APPS_TO_RELAX_IP
+) {
+	
+	test(`Setup -> App Manager ->  -> IP Relaxation for ${appToRelaxIp} apps`, async ({ basePage, baseUrl }) => {
+		
+		await basePage.goto(baseUrl + '/lightning/setup/NavigationMenus/home');
+		
+		const appsTable = basePage
+			.locator("table")
+			.filter({ has: basePage.getByText("Developer Name") });
+			
+		const appsTableSecondRow = appsTable.locator('tr').nth(2);
+		
+		await appsTableSecondRow.hover();
+		
+		await basePage.mouse.wheel(0, +20);
+		
+		await appsTable
+			.getByRole("row")
+			//.filter({ hasText: appToRelaxIp })
+			.getByRole('button')
+			.click({ force: true });
+		
+		await utils.clickMenuItem(basePage, "Manage");
+		
+		const frame = basePage.frameLocator("iframe[tabindex='0'][title^='Connected App']");
+		
+		await utils.clickButton(frame, "Edit Policies");
+		console.log("Opened Edit Policies");
+		
+		await utils.selectPicklistSettingByLabel(frame, "IP Relaxation", "Relax IP restrictions");
+		
+		await utils.clickButton(frame, "Save");
+		
+		await utils.waitForButton(frame, "Edit Policies");
+		
+	});
+	
+}
