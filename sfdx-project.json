@@ -16,15 +16,15 @@
           "package": "Salesforce Mobile Apps@1.20.0"
         },
         {
+          "package": "OTIS Global CC Core",
+          "versionNumber": "1.9.0.LATEST",
+          "branch": "dev"
+        },
+        {
           "package": "Salesforce Maps@246.9"
         },
         {
           "package": "Salesforce Field Service App@1.55"
-        },
-        {
-          "package": "OTIS Global CC Core",
-          "versionNumber": "1.9.0.LATEST",
-          "branch": "dev"
         }
       ],
       "unpackagedMetadata": {
