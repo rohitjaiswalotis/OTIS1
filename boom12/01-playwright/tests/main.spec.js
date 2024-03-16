@@ -30,6 +30,9 @@ for (
 		
 		await basePage.mouse.wheel(0, +40);
 		
+		let count = await appsTable.getByRole("row").locator("tr").count();
+		console.log(`AAAAAAAAAAAAAAAAAAAAAA = ${count}`);
+		
 		await appsTable
 			.getByRole("row")
 			.locator("tr").filter({ has: basePage.getByText(appToRelaxIp) })
