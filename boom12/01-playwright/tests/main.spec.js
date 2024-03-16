@@ -34,9 +34,9 @@ for (
 		console.log(`AAAAAAAAAAAAAAAAAAAAAA = ${count}`);
 		
 		await appsTable
-			.getByRole("row")
+			//.getByRole("row")
 			.locator("tr").filter({ has: basePage.getByText(appToRelaxIp) })
-			//.filter({ hasText: appToRelaxIp })
+			.filter({ hasText: appToRelaxIp })
 			.getByRole('button')
 			.click({ force: true });
 		
