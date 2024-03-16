@@ -10,6 +10,11 @@ const APPS_TO_RELAX_IP = [
 	"Salesforce Field Service for Android"
 ];
 
+const APPS_TO_RELAX_IP = [ 
+	"Salesforce Field Service for Android"
+];
+
+
 for (
 	const appToRelaxIp 
 	of 
@@ -32,6 +37,7 @@ for (
 		
 		await appsTable
 			.getByRole("row")
+			.locator("tr").filter({ has: basePage.getByText(appToRelaxIp) })
 			//.filter({ hasText: appToRelaxIp })
 			.getByRole('button')
 			.click({ force: true });
