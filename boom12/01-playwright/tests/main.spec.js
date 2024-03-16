@@ -33,12 +33,16 @@ for (
 		let count = await appsTable.locator("tr").count();
 		console.log(`AAAAAAAAAAAAAAAAAAAAAA = ${count}`);
 		
+		let count = await appsTable.locator("tr").isHidden().count();
+		console.log(`BBBBBBBBBBBBBBBBBBBBBB = ${count}`);
+		
 		await appsTable
 			//.getByRole("row")
 			.locator("tr").filter({ has: basePage.getByText(appToRelaxIp) })
 			.filter({ hasText: appToRelaxIp })
 			.getByRole('button')
-			.click({ force: true });
+			.dispatchEvent('click');
+			//.click({ force: true });
 		
 		await utils.clickMenuItem(basePage, "Manage");
 		
