@@ -5,11 +5,6 @@ const basePath = (process.env.PLAYWRIGHT_WORKING_DIR || process.env.BUILD_SOURCE
 const { test, expect } = require(basePath + "/scripts/playwright/setup");
 const utils = require(basePath + "/scripts/playwright/utils");
 
-
-const APPS_TO_RELAX_IP = [ 
-	"Salesforce Field Service for Android"
-];
-
 const APPS_TO_RELAX_IP = [ 
 	"Salesforce Field Service for Android"
 ];
