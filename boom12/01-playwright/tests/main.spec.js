@@ -28,7 +28,7 @@ for (
 		
 		await appsTableSecondRow.hover();
 		
-		await basePage.mouse.wheel(0, +20);
+		await basePage.mouse.wheel(0, +40);
 		
 		await appsTable
 			.getByRole("row")
