@@ -7,8 +7,7 @@ const utils = require(basePath + "/scripts/playwright/utils");
 
 
 const APPS_TO_RELAX_IP = [ 
-	"Salesforce Field Service for Android", 
-	"Salesforce Field Service for iOS" 
+	"Salesforce Field Service for Android"
 ];
 
 for (
@@ -33,7 +32,7 @@ for (
 		
 		await appsTable
 			.getByRole("row")
-			.filter({ hasText: appToRelaxIp })
+			//.filter({ hasText: appToRelaxIp })
 			.getByRole('button')
 			.click({ force: true });
 		
