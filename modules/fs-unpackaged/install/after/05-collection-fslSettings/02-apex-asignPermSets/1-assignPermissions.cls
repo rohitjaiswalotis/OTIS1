@@ -1,7 +1,7 @@
 
 Set<String> PERMISSION_SETS_TO_ASSIGN = 
 	new Set<String> {
-		'FieldServiceMobileStandardPermSet',
+		'force.FieldServiceMobileStandardPermSet',
 		'FSL_Dispatcher_License',
 		'FSL_Agent_Permissions',
 		'FSL_Agent_License',
@@ -20,28 +20,50 @@ List<User> users =
 ;
 
 
-// grab permission sets
-List<PermissionSet> permissionSets = [
-	SELECT
-		Id,
-		Label,
-		Name,
-		NamespacePrefix
-	FROM
-		PermissionSet
-	WHERE
-		Name IN :PERMISSION_SETS_TO_ASSIGN
-		AND
-		NamespacePrefix = ''
-];
+// build permission sets registry
+Map<String, PermissionSet> fullNameToPermissionSet = new Map<String, PermissionSet>(); {
+	
+	List<PermissionSet> permissionSets = [
+		SELECT
+			Id,
+			Label,
+			Name,
+			NamespacePrefix
+		FROM
+			PermissionSet
+	];
+	
+	
+	for (PermissionSet ps : permissionSets) {
+		
+		fullNameToPermissionSet.put(
+			normalize(
+				String.isBlank(ps.NamespacePrefix) 
+				? 
+					ps.Name
+					: 
+					ps.NamespacePrefix + '.' + ps.Name
+			),
+			ps
+		);
+		
+	}
+	
+}
 
 
 List<PermissionSetAssignment> psa = new List<PermissionSetAssignment>();
 
 // collect assignments
-for (User usr : users) {
+for (String psFullName : PERMISSION_SETS_TO_ASSIGN) {
 	
-	for (PermissionSet ps : permissionSets) {
+	PermissionSet ps = fullNameToPermissionSet.get(normalize(psFullName));
+	
+	if (ps == null) {
+		continue;
+	}
+	
+	for (User usr : users) {
 		
 		psa.add(
 			new PermissionSetAssignment(
@@ -62,4 +84,13 @@ if (psa.isEmpty()) {
 // actually create permission set assignments
 Database.insert(psa, false);
 
+
+
+public static String normalize(Object source) {
+	
+	return
+		(source ?? '').toString().trim().toLowerCase()
+	;
+	
+}
 
