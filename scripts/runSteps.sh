@@ -1298,6 +1298,14 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 			
 		done
 		
+		
+		# print result records
+		#if [[ -d "target" && $DEBUG_MODE -ge 1 ]]; then
+		if [[ -d "target" ]]; then
+			find ./target -type f -name "*.csv" | xargs tail -n +1
+		fi
+		
+		
 		# restore 'exit on error' flag state
 		eval "$dataStep_backup_errexit"
 		

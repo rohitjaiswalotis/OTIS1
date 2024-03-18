@@ -1,6 +1,8 @@
 {
 	
-	"allOrNone" : true,
+	"allOrNone": false,
+	
+	"createTargetCSVFiles": true,
 	
 	"objects": [
 		
