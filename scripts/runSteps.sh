@@ -1258,7 +1258,7 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 		
 		while true; do 	
 			
-			sf sfdmu:run --sourceusername="csvfile" --targetusername="$sfTargetOrgAlias" --apiversion="$SF_API_VERSION" --createTargetCSVFiles=true --verbose; dataStepResultCode=$?;
+			sf sfdmu:run --sourceusername="csvfile" --targetusername="$sfTargetOrgAlias" --apiversion="$SF_API_VERSION" --verbose; dataStepResultCode=$?;
 			
 			# success
 			if [[ $dataStepResultCode -eq 0 ]]; then
