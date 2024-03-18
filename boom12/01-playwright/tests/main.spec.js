@@ -33,9 +33,6 @@ for (
 		let count = await appsTable.locator("tr").count();
 		console.log(`AAAAAAAAAAAAAAAAAAAAAA = ${count}`);
 		
-		let count2 = await appsTable.locator("tr").isHidden().count();
-		console.log(`BBBBBBBBBBBBBBBBBBBBBB = ${count2}`);
-		
 		await appsTable
 			//.getByRole("row")
 			.locator("tr").filter({ has: basePage.getByText(appToRelaxIp) })
