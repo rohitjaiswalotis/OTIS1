@@ -3,18 +3,18 @@
     <actionCalls>
         <name>Notification_to_Supervisor</name>
         <label>Notification to Supervisor</label>
-        <locationX>138</locationX>
-        <locationY>3935</locationY>
+        <locationX>50</locationX>
+        <locationY>4103</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <connector>
-            <targetReference>Loop_Service_Resources</targetReference>
+            <targetReference>Update_Related_Case_and_WO_After_Update</targetReference>
         </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>customNotifTypeId</name>
             <value>
-                <elementReference>Get_Records_3.Id</elementReference>
+                <elementReference>Get_Custom_Notification_Type.Id</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -93,7 +93,7 @@
         <name>Assign_SupervisorId</name>
         <label>Assign SupervisorId</label>
         <locationX>138</locationX>
-        <locationY>3719</locationY>
+        <locationY>3827</locationY>
         <assignmentItems>
             <assignToReference>SupervisorId</assignToReference>
             <operator>Add</operator>
@@ -102,7 +102,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Get_Records_3</targetReference>
+            <targetReference>Loop_Service_Resources</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -180,7 +180,7 @@
         <name>Check_Resource_Type</name>
         <label>Check Resource Type</label>
         <locationX>270</locationX>
-        <locationY>3611</locationY>
+        <locationY>3719</locationY>
         <defaultConnector>
             <targetReference>Loop_Service_Resources</targetReference>
         </defaultConnector>
@@ -549,14 +549,14 @@
         <name>Loop_Service_Resources</name>
         <label>Loop Service Resources</label>
         <locationX>50</locationX>
-        <locationY>3503</locationY>
+        <locationY>3611</locationY>
         <collectionReference>Get_Service_Resources</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
             <targetReference>Check_Resource_Type</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>Update_Related_Case_and_WO_After_Update</targetReference>
+            <targetReference>Notification_to_Supervisor</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -625,13 +625,13 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>Get_Records_3</name>
-        <label>Get Records 3</label>
-        <locationX>138</locationX>
-        <locationY>3827</locationY>
+        <name>Get_Custom_Notification_Type</name>
+        <label>Get Custom Notification Type</label>
+        <locationX>50</locationX>
+        <locationY>3503</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Notification_to_Supervisor</targetReference>
+            <targetReference>Loop_Service_Resources</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -673,7 +673,7 @@
         <locationY>3395</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Loop_Service_Resources</targetReference>
+            <targetReference>Get_Custom_Notification_Type</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
