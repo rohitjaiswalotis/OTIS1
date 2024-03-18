@@ -113,13 +113,12 @@ test('Global Actions -> Emergency Wizard', async ({ basePage, baseUrl }) => {
 	
 	await utils.switchToSettingsTab(frame, "EMERGENCY WIZARD");
 	
-	// TODO - which policy should be selected here, currently it is just empty
-	//await utils.selectPicklistSettingByLabel(frame, "Emergency scheduling policy", "Customer First");
+	await utils.selectPicklistSettingByLabel(frame, "Emergency scheduling policy", "Emergency");
 	
 	await utils.fillSetting(frame, "Last known location validity", 20);
 	await utils.fillSetting(frame, "Ideal availability grade", 30);
 	await utils.fillSetting(frame, "Good availability grade", 60);
-	await utils.fillSetting(frame, "Emergency search timeframe", 360);
+	await utils.fillSetting(frame, "Emergency search timeframe", 120);
 	
 	await utils.checkBooleanSetting(frame, "Allow Chatter post");
 	
