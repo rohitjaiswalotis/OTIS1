@@ -1,0 +1,78 @@
+
+parameters:
+
+- name: pathToScan
+  displayName: Directory with flows to scan
+  type: string
+  default: none
+
+- name: pathToConfig
+  displayName: Path to configuration file
+  type: string
+  default: none
+
+- name: failureThreshold
+  displayName: Thresold failure level (error, warning, note, never)
+  type: string
+  default: never
+
+- name: reportFileName
+  displayName: Report File Name
+  type: string
+  default: FlowScanResults_$(Build.BuildId).txt
+
+- name: continueOnError
+  displayName: Continue on Error?
+  type: boolean
+  default: false
+
+- name: enableDebugMode
+  displayName: Debug Mode?
+  type: boolean
+  default: false
+
+
+steps:
+
+- bash: |
+        
+        # disable exit on error
+        set +e
+        
+        # enable "debug" mode
+        if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
+          set -x
+          export LOG_LEVEL=debug
+        else
+          export LOG_LEVEL=info
+        fi
+        
+        
+        # install plugin
+        (sf plugins | grep -i "lightning-flow-scanner") || (echo "y" | sf plugins install lightning-flow-scanner@$(flowScannerVersion))
+        
+        
+        # evaluate config option
+        if [[ "${{ parameters.pathToConfig }}" =~ ^none$ ]] ; then
+          CONFIG_OPTION=""
+        else
+          CONFIG_OPTION="--config=${{parameters.pathToConfig}}"
+        fi
+        
+        
+        # actually scan flows and grab results into file
+        sf flow scan --directory="${{parameters.pathToScan}}" $CONFIG_OPTION --failon="${{parameters.failureThreshold}}" --loglevel="$LOG_LEVEL" > ${{ parameters.reportFileName }}; SCAN_RESULT_STATUS_CODE=$?;
+        
+        exit $SCAN_RESULT_STATUS_CODE
+        
+  displayName: 'Scan Flows'
+  continueOnError: ${{ parameters.continueOnError }}
+  timeoutInMinutes: 30
+
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(System.DefaultWorkingDirectory)/${{ parameters.reportFileName }}'
+    artifact: '${{ parameters.reportFileName }}'
+    publishLocation: 'pipeline'
+  displayName: 'Publish Flow Scanner Report as artifact'
