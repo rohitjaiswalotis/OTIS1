@@ -757,11 +757,10 @@ for (
 			.locator("table")
 			.filter({ has: basePage.getByText("Developer Name") });
 			
-		const appsTableSecondRow = appsTable.locator('tr').nth(2);
-		
-		await appsTableSecondRow.hover();
-		
-		await basePage.mouse.wheel(0, +20);
+		await appsTable
+			.getByRole("row")
+			.last()
+			.click({ force: true });
 		
 		await appsTable
 			.getByRole("row")
