@@ -34,38 +34,19 @@ stages:
               fetchDepth: 0
               persistCredentials: true
               
-            - script: |
-                  wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F$(pmdVersion)/pmd-bin-$(pmdVersion).zip
-                  unzip pmd-bin-$(pmdVersion).zip -d pmd && cd pmd && cp -a pmd-bin-$(pmdVersion)/* . && rm -rf pmd-bin-$(pmdVersion)/
-              displayName: 'PMD Downloading'
+            - template: templates/scanPMD.yml
+              parameters:
+                pathToScan: $(packageBaseDir)
               
-            - task: Ant@1
-              inputs:
-                buildFile: 'pmd/build.xml'
-                options: 
-                targets: 'init pmd pmd-html-artifact pmd-html-publish'
-                publishJUnitResults: false
-                testResultsFiles: 'pmd/junit.xml'
-                javaHomeOption: 'JDKVersion'
-              displayName: 'PMD Analysis'
-              
-            - task: PublishPipelineArtifact@1
-              inputs:
-                targetPath: '$(System.DefaultWorkingDirectory)/pmd/pmd-report-artifact-$(Build.BuildId).html'
-                artifact: 'pmd-report'
-                publishLocation: 'pipeline'
-              displayName: 'Publish HTML report to artifacts'
-              
-            - task: publishhtmlreport@1
-              inputs:
-                htmlType: 'genericHTML'
-                htmlPath: '$(System.DefaultWorkingDirectory)/pmd/pmd-report-publish-$(Build.BuildId).html'
-              displayName: 'Publish HTML report to pipeline'
-
+      
     - stage: Testing
+      
       displayName: 'Unit testing'
+      
       lockBehavior: runLatest
+      
       jobs:
+          
           - job : UnitTests
             
             displayName: 'Unit testing'     
@@ -173,6 +154,21 @@ stages:
                       echo "List of already installed packages in $validationOrgAlias org: "
                       sf package installed list --target-org="$validationOrgAlias"
                       
+                      # set variable to pass username to next steps
+                      echo "##vso[task.setvariable variable=TARGET_ORG_USERNAME]$TARGET_ORG_USERNAME"
+                      
+                  displayName: 'Authenticate to Validation Org'
+                  
+                  
+                - template: templates/scanFlows.yml
+                  parameters:
+                    pathToScan: $(packageBaseDir)
+                    continueOnError: true
+                    
+                  
+                - script: |
+                      
+                      validationOrgAlias=$(validationOrgAlias)
                       
                       set -e
                       
