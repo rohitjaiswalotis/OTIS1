@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Submit_for_Approval_to_Manager_Supervisor</name>
+        <label>Submit for Approval to Manager (Supervisor)</label>
+        <locationX>314</locationX>
+        <locationY>1187</locationY>
+        <actionName>submit</actionName>
+        <actionType>submit</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>objectId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>submitterId</name>
+            <value>
+                <elementReference>$Record.CreatedById</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>nextApproverIds</name>
+            <value>
+                <elementReference>ApproverId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>processDefinitionNameOrId</name>
+            <value>
+                <stringValue>Resource_Absences_Approval_by_Supervisor</stringValue>
+            </value>
+        </inputParameters>
+        <nameSegment>submit</nameSegment>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>60.0</apiVersion>
+    <assignments>
+        <name>assign_value</name>
+        <label>assign value</label>
+        <locationX>314</locationX>
+        <locationY>1079</locationY>
+        <assignmentItems>
+            <assignToReference>ApproverId</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>$Record.Manager__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Submit_for_Approval_to_Manager_Supervisor</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Created_Updated</name>
+        <label>Created/Updated ?</label>
+        <locationX>1045</locationX>
+        <locationY>431</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Created</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ISNEW</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Is_Supervisor_Present_in_SR</targetReference>
+            </connector>
+            <label>Created</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Manager_Present</name>
+        <label>Is Manager Present ?</label>
+        <locationX>446</locationX>
+        <locationY>971</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Present_Manager</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Manager__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>assign_value</targetReference>
+            </connector>
+            <label>Present | Manager</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Supervisor_or_Not</name>
+        <label>Is Supervisor or Not ?</label>
+        <locationX>547</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>Created_Updated</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>YES_Supervisor</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CreatedBy.Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Field Service Supervisor</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Updated_Approved_Field</targetReference>
+            </connector>
+            <label>YES | Supervisor</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Supervisor_Present_in_SR</name>
+        <label>Is Supervisor Present in SR</label>
+        <locationX>809</locationX>
+        <locationY>539</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>YES_Present</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Resource.WDSupervisorName__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GET_User</targetReference>
+            </connector>
+            <label>YES | Present</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_User_Present</name>
+        <label>Is User Present ?</label>
+        <locationX>600</locationX>
+        <locationY>755</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>YES_User_Present</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GET_User</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Manager_Field</targetReference>
+            </connector>
+            <label>YES | User Present</label>
+        </rules>
+    </decisions>
+    <description>#923912  To check condition for absences approval and submit for approval</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>DifferenceInHours</name>
+        <dataType>String</dataType>
+        <expression>IF( FLOOR( ({!$Record.Start} -{!$Record.CreatedDate})*24)&gt;9, TEXT(FLOOR(({!$Record.Start} -{!$Record.CreatedDate})*24)),
+&quot;0&quot; &amp; TEXT( FLOOR( ({!$Record.Start} -{!$Record.CreatedDate})*24 ) ) )</expression>
+    </formulas>
+    <formulas>
+        <name>isApprovalNeeded</name>
+        <dataType>Boolean</dataType>
+        <expression>AND( NOT( ISPICKVAL({!$Record.Type}, &quot;Un-planned Leave&quot;) ) , NOT( ISPICKVAL({!$Record.Type}, &quot;Planned Leave&quot;) ),
+VALUE({!DifferenceInHours})  &lt; 12 )</expression>
+    </formulas>
+    <formulas>
+        <name>ISNEW</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNEW()</expression>
+    </formulas>
+    <interviewLabel>Resource Absences Approval Request Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Resource Absences Approval Request Flow</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>GET_User</name>
+        <label>GET | User</label>
+        <locationX>600</locationX>
+        <locationY>647</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Is_User_Present</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Resource.WDSupervisorName__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_Manager_Field</name>
+        <label>Update Manager Field</label>
+        <locationX>446</locationX>
+        <locationY>863</locationY>
+        <connector>
+            <targetReference>Is_Manager_Present</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Manager__c</field>
+            <value>
+                <elementReference>GET_User.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Updated_Approved_Field</name>
+        <label>Updated Approved Field</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <inputAssignments>
+            <field>ApprovalStatus__c</field>
+            <value>
+                <stringValue>Approved</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>FSL__Approved__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>421</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Is_Supervisor_or_Not</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>FSL__Approved__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Type</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>On Leave</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>ApprovalStatus__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Pending</stringValue>
+            </value>
+        </filters>
+        <object>ResourceAbsence</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>ApproverId</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>check</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

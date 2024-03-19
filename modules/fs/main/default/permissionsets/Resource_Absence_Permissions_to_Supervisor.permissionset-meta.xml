@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>#923912 Ability to take into account absences in the scheduling, Sharing visibility of  FSL_Approved__c field from Resource Absence to Supervisors</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ResourceAbsence.ApprovalStatus__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ResourceAbsence.FSL__Approved__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>ResourceAbsence.Manager__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Resource Absence Permissions to Supervisor</label>
+</PermissionSet>
