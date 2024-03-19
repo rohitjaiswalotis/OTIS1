@@ -1,6 +1,6 @@
 // @ts-check
 
-const basePath = (process.env.PLAYWRIGHT_WORKING_DIR || process.env.BUILD_SOURCESDIRECTORY || "../../../../../../..");
+const basePath = (process.env.PLAYWRIGHT_WORKING_DIR || process.env.BUILD_SOURCESDIRECTORY || "../../..");
 
 const { test, expect } = require(basePath + "/scripts/playwright/setup");
 const utils = require(basePath + "/scripts/playwright/utils");
@@ -1223,7 +1223,7 @@ test(`FSL Optmization User -> Activate Optimization Service`, async ({ basePage,
 
 
 const APPS_TO_RELAX_IP = [ 
-	//"Salesforce Field Service for Android", 
+	"Salesforce Field Service for Android", 
 	"Salesforce Field Service for iOS" 
 ];
 
@@ -1241,11 +1241,26 @@ for (
 			.locator("table")
 			.filter({ has: basePage.getByText("Developer Name") });
 			
-		const appsTableSecondRow = appsTable.locator('tr').nth(2);
+		//const appsTableSecondRow = appsTable.locator('tr').nth(2);
 		
-		await appsTableSecondRow.hover();
+		//await appsTableSecondRow.hover();
 		
-		await basePage.mouse.wheel(0, +20);
+		//await basePage.mouse.wheel(0, +20);
+		
+		//let cnt = await appsTable.getByRole("row").count();
+		//console.log("AAAAAAAAAAAAAAAAAAA = " + cnt);
+		
+		await appsTable.getByRole("row").last().click({ force: true });
+		
+		//await utils.clickByText(appsTable, 'App Name');
+		//await basePage.keyboard.press('End');
+		//await basePage.keyboard.press('ArrowDown');
+		
+		//let nextRow = await appsTable.getByRole("row").nth(20);
+		//await nextRow.scrollIntoViewIfNeeded();
+		//console.log("GOT NEXT ROW");
+		//let cnt2 = await appsTable.getByRole("row").count();
+		//console.log("AAAAAAAAAAAAAAAAAAA2 = " + cnt);
 		
 		await appsTable
 			.getByRole("row")
