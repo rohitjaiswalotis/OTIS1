@@ -3,7 +3,7 @@
     <description>#923912 Ability to take into account absences in the scheduling, Sharing visibility of  FSL_Approved__c field from Resource Absence to Supervisors</description>
     <fieldPermissions>
         <editable>true</editable>
-        <field>ResourceAbsence.ApprovalStatus__c</field>
+        <field>ResourceAbsence.FS_ApprovalStatus__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -13,7 +13,7 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>ResourceAbsence.Manager__c</field>
+        <field>ResourceAbsence.FS_Manager__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
