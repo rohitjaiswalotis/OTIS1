@@ -1,10 +1,11 @@
 // @ts-check
 
+const path = require("path");
+
 const basePath = (process.env.PLAYWRIGHT_WORKING_DIR || process.env.BUILD_SOURCESDIRECTORY || "../../../../../../..");
 
 const { test, expect } = require(basePath + "/scripts/playwright/setup");
 const utils = require(basePath + "/scripts/playwright/utils");
-
 
 const SERVICE_APPOINTMENT_STATUSES = [
 	{	label: "New Service Appointment",						value: "string:None"			},
@@ -17,7 +18,7 @@ const SERVICE_APPOINTMENT_STATUSES = [
 ];
 
 
-
+/*
 test('Service Appointment Life Cycle -> Creation', async ({ basePage, baseUrl }) => {
 	
 	await utils.openSettings(basePage, baseUrl);
@@ -1157,5 +1158,230 @@ test('Setup -> Field Service Mobile App Builder -> Create/Edit and Publish', asy
 	}
 	
 });
+*/
+
+
+
+test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ basePage, baseUrl }) => {
+	
+	// const
+	
+	const SERVICE_REPORT_TEMPLATES_URL = "/lightning/setup/ServiceReportEditor/home";
+	const TARGET_TEMPLATE_NAME = "Summary Report";
+	const TARGET_CHILD_LAYOUT_NAME = "Service Appointment for Work Order";
+	
+	
+	await basePage.goto(baseUrl + SERVICE_REPORT_TEMPLATES_URL);
+	
+	let frame = utils.getMainFrameWithTitlePrefix(basePage, "Service Report Templates");
+	
+	let newTemplateButton = frame.getByTitle("New Service Report Templates").and(basePage.getByRole("button"));
+	await newTemplateButton.waitFor();
+	
+	let templatesTable = await frame
+		.locator("table")
+		.filter({ has: frame.getByText("Created By") });
+	
+	await templatesTable.waitFor();
+	
+	
+	let summaryReportRow = await templatesTable
+		.getByRole("row")
+		.filter({ has: frame.getByText(TARGET_TEMPLATE_NAME, { exact: true }) });
+	
+	
+	let doesSummaryReportExist = await summaryReportRow.isVisible();
+	
+	if (doesSummaryReportExist === true) {
+		
+		console.log(`Target template '${TARGET_TEMPLATE_NAME}' already exists.`);
+		
+		await utils.clickLink(summaryReportRow, "Edit");
+		
+		// TODO - consider go right to activation, i.e. jump over editing, if summary report already exist (in order not to override current changes)
+		
+	} else {
+		
+		console.log(`Target template '${TARGET_TEMPLATE_NAME}' does NOT exist - creating a new one...`);
+		
+		await newTemplateButton.click();
+		
+		frame = utils.getMainFrameWithTitlePrefix(basePage, "Create New Service Report Template");
+		
+		await utils.selectPicklistSettingByLabel(frame, "Existing Template", "Standard Template");
+		await utils.fillSetting(frame, "Template Name", TARGET_TEMPLATE_NAME);
+		
+		await utils.clickButton(frame, "Save");
+		
+	}
+	
+	frame = utils.getMainFrame(basePage);
+	
+	await frame.locator(".childLayoutPicklist select").selectOption({ label: TARGET_CHILD_LAYOUT_NAME });
+	
+	/////////////// TRYING TO EDIT SUMMARY REPORT
+	await utils.fillSetting(frame, "Quick Find", "image");
+	
+	//await frame.getByText("Service Appointment Sample", { exact: true }).waitFor();
+	let qteHeader = frame.locator(".QTEHeader").filter({has: frame.locator(".section-header").filter({has: frame.getByText("Service Report", { exact: true }) }) });
+	console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
+	
+	await qteHeader.locator(".section-body table tr").first().locator('td').first().waitFor();
+	//await qteHeader.locator("#ext-gen384").waitFor();
+	
+	console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+	
+	//await basePage.pause();
+	
+	let dragTargetLocator = qteHeader.locator(".section-body table tr").first().locator('td').first();
+	
+	if (dragTargetLocator.filter(has: frame.locator('img')).isVisible() === true) {
+		console.log("Presumably OTIS Logo is already there.");
+		// TODO: it can be graggable icon, probably try differentiate by description (populate description on upload and check whether it is matching to alt text)
+	}
+	
+	/*
+	await frame.locator(".draggables").getByText("Text/Image Field", { exact: true })
+		.dragTo(
+			//frame.locator("#ext-gen384"), { force: true }
+			qteHeader.locator(".section-body table tr").first().locator('td').first(), { force: true }
+		);
+	*/
+	
+	// this dragging works
+	await frame.locator(".draggables").getByText("Text/Image Field", { exact: true }).hover();
+	await basePage.mouse.down();
+	await dragTargetLocator.hover();
+	//await frame.locator(".draggables").getByText("Text/Image Field", { exact: true }).hover();
+	await dragTargetLocator.hover();
+	await basePage.mouse.up();
+	
+	let richTextEditorFrame = utils.getMainFrameWithTitlePrefix(frame, "Rich Text Editor");
+	
+	//await frame.getByRole("toolbar").waitFor();
+	//await frame.locator(".propsWindow").waitFor();
+	//await frame.locator(".propsWindow").getByRole("toolbar").waitFor();
+	//await frame.locator(".propsWindow").getByRole("toolbar").getByRole("button").waitFor();
+	await frame.locator(".propsWindow").getByRole("toolbar").getByRole("button").filter({ hasText: "Image" }).click();
+	
+	//await basePage.pause();
+	console.log("GGGGGGGGGGGGGGGGGGGGGGGG: " + path.join(__dirname, 'OTIS_logo.jpg'));
+	
+	await frame.getByLabel("Select Image").setInputFiles(path.join(__dirname, "OTIS_logo.jpg"));
+	
+	await frame.getByTitle("Insert Image").and(frame.getByRole("button")).click();
+	await frame.getByTitle("Insert Image").waitFor({ "state" : "hidden" });
+	
+	//await frame.getByRole("button", { name: "OK", exact: true }).click({ force: true });
+	await frame.getByRole("button", { name: "OK", exact: true }).dispatchEvent("click");
+	
+	await frame.getByRole("button", { name: "OK", exact: true }).waitFor({ "state" : "hidden" });
+	
+	/*
+	const fileChooserPromise = basePage.waitForEvent('filechooser');
+	//await basePage.getByText('Upload file').click();
+	await frame.getByLabel("Select Image").click();
+	const fileChooser = await fileChooserPromise;
+	await fileChooser.setFiles(path.join(__dirname, 'main.spec.js'));
+	
+	page.set_input_files('input[type="file"]', 'FULL_PATH_TO_FILE_HERE');
+	*/
+	
+	//await frame.getByLabel("Select Image").click();
+	//await frame.getByRole("link", { name: "Image" }).click();
+	
+	
+	//await frame.locator('#item-to-be-dragged').dragTo(page.locator('#item-to-drop-at'));
+	
+	//await basePage.pause();
+	///////////////
+	
+	await frame.getByRole("button", { name: "Save", exact: true }).click();
+	
+	await newTemplateButton.waitFor();
+	
+	
+	let activateSummaryReportLink = summaryReportRow.getByRole("link", { name: "Activate", exact: true });
+	let deactivateSummaryReportLink = summaryReportRow.getByRole("link", { name: "Deactivate", exact: true });
+	
+	
+	if (await activateSummaryReportLink.isVisible()) {
+		
+		console.log(`Target template '${TARGET_TEMPLATE_NAME}' is NOT active - activating...`);
+		
+		await activateSummaryReportLink.click();
+		
+		await deactivateSummaryReportLink.waitFor();
+		
+		console.log(`Target template '${TARGET_TEMPLATE_NAME}' has been activated successfully.`);
+		
+	} else {
+		
+		console.log(`Target template '${TARGET_TEMPLATE_NAME}' is already active.`);
+		
+	}
+	
+});
+
+
+/*
+test(`FSL Optmization User -> Activate Optimization Service`, async ({ basePage, baseUrl }) => {
+	
+	await basePage.goto(baseUrl + '/lightning/setup/Profiles/home');
+	
+	let frame = utils.getMainFrameWithTitlePrefix(basePage, "User Profiles");
+	
+	await frame.getByRole("link", { name: "FSL Optimization", exact: true }).click()
+	
+	frame = utils.getMainFrameWithTitlePrefix(basePage, "Profile");
+	await frame.getByTitle("View Users", { exact: true }).and(frame.getByRole("button", { name: "users" })).first().click();
+	//await frame.getByRole("button", "View Users", { exact: true }).click();
+	
+	frame = utils.getMainFrameWithTitlePrefix(basePage, "FSL Optimization");
+	await frame.getByRole("link", { name: /^fsl.00D/i }).click();
+	
+	frame = utils.getMainFrameWithTitlePrefix(basePage, "User");
+	
+	await frame.getByTitle("Reset Password").first().waitFor();
+	
+	if (await frame.getByTitle("Login").and(frame.getByRole("button")).first().isVisible() === false) {
+		console.log(`WARNING: Cannot log in as FSL Optimization user - check if enabled in Setup -> Login Access Policies`);
+		return;
+	}
+	
+	await frame.getByTitle("Login").and(frame.getByRole("button")).first().click();
+	
+	await basePage.waitForLoadState('networkidle');
+	await basePage.waitForLoadState('domcontentloaded');
+	await basePage.waitForLoadState('networkidle');
+	
+	await utils.openSettings(basePage, baseUrl);
+	
+	frame = utils.getMainFrame(basePage);
+	
+	await frame.getByText("Standard Optimization", { exact: true }).waitFor();
+	
+	if (await frame.getByText("The optimization service is active", { exact: true}).isVisible()) {
+		console.log("Optimization service is already active.");
+		return;
+	}
+	
+	if (await frame.getByText("Activate Optimization", { exact: true })) {
+		console.log("Activating optimization service...");
+		await frame.getByText("Activate Optimization", { exact: true }).click();
+	}
+	
+	await utils.clickSaveSettingButton(frame);
+	
+	
+	// Optimization -> Activation
+	//Activate Optimization
+	//Save
+	
+	
+	await basePage.pause();
+	
+});
+*/
 
 
