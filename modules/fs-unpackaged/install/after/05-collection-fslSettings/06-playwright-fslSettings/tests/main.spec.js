@@ -1224,77 +1224,73 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 	
 	//await frame.getByText("Service Appointment Sample", { exact: true }).waitFor();
 	let qteHeader = frame.locator(".QTEHeader").filter({has: frame.locator(".section-header").filter({has: frame.getByText("Service Report", { exact: true }) }) });
-	console.log("yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
 	
 	await qteHeader.locator(".section-body table tr").first().locator('td').first().waitFor();
-	//await qteHeader.locator("#ext-gen384").waitFor();
-	
-	console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 	
 	//await basePage.pause();
 	
 	let dragTargetLocator = qteHeader.locator(".section-body table tr").first().locator('td').first();
 	
-	if (dragTargetLocator.filter(has: frame.locator('img')).isVisible() === true) {
-		console.log("Presumably OTIS Logo is already there.");
+	if (await dragTargetLocator.filter({ has: frame.locator('img') }).isVisible() === true) {
+		
+		console.log("Seems like OTIS Logo is already there.");
 		// TODO: it can be graggable icon, probably try differentiate by description (populate description on upload and check whether it is matching to alt text)
+		
+	} else {
+		
+		console.log("No OTIS Logo available yet - trying to insert one...");
+		
+		/*
+		await frame.locator(".draggables").getByText("Text/Image Field", { exact: true })
+			.dragTo(
+				//frame.locator("#ext-gen384"), { force: true }
+				qteHeader.locator(".section-body table tr").first().locator('td').first(), { force: true }
+			);
+		*/
+		
+		// this dragging works
+		await frame.locator(".draggables").getByText("Text/Image Field", { exact: true }).hover();
+		await basePage.mouse.down();
+		await dragTargetLocator.hover();
+		//await frame.locator(".draggables").getByText("Text/Image Field", { exact: true }).hover();
+		await dragTargetLocator.hover();
+		await basePage.mouse.up();
+		
+		let richTextEditorFrame = utils.getMainFrameWithTitlePrefix(frame, "Rich Text Editor");
+		
+		await frame.locator(".propsWindow").getByRole("toolbar").getByRole("button").filter({ hasText: "Image" }).click();
+		
+		await frame.getByLabel("Select Image").setInputFiles(path.join(__dirname, "OTIS_logo.jpg"));
+		//await utils.fillSetting(frame, "Description", "OTIS Logo");
+		//await frame.getByLabel("Description").waitFor();
+		//await frame.getByLabel("Description").fill("OTIS Logo", { force: true });
+		
+		await frame.getByTitle("Insert Image").and(frame.getByRole("button")).click();
+		await frame.getByTitle("Insert Image").waitFor({ "state" : "hidden" });
+		
+		await frame.getByRole("button", { name: "OK", exact: true }).dispatchEvent("click");
+		await frame.getByRole("button", { name: "OK", exact: true }).waitFor({ "state" : "hidden" });
+		
+		/*
+		const fileChooserPromise = basePage.waitForEvent('filechooser');
+		//await basePage.getByText('Upload file').click();
+		await frame.getByLabel("Select Image").click();
+		const fileChooser = await fileChooserPromise;
+		await fileChooser.setFiles(path.join(__dirname, 'main.spec.js'));
+		
+		page.set_input_files('input[type="file"]', 'FULL_PATH_TO_FILE_HERE');
+		*/
+		
+		//await frame.getByLabel("Select Image").click();
+		//await frame.getByRole("link", { name: "Image" }).click();
+		
+		
+		//await frame.locator('#item-to-be-dragged').dragTo(page.locator('#item-to-drop-at'));
+		
+		//await basePage.pause();
+		///////////////
+		
 	}
-	
-	/*
-	await frame.locator(".draggables").getByText("Text/Image Field", { exact: true })
-		.dragTo(
-			//frame.locator("#ext-gen384"), { force: true }
-			qteHeader.locator(".section-body table tr").first().locator('td').first(), { force: true }
-		);
-	*/
-	
-	// this dragging works
-	await frame.locator(".draggables").getByText("Text/Image Field", { exact: true }).hover();
-	await basePage.mouse.down();
-	await dragTargetLocator.hover();
-	//await frame.locator(".draggables").getByText("Text/Image Field", { exact: true }).hover();
-	await dragTargetLocator.hover();
-	await basePage.mouse.up();
-	
-	let richTextEditorFrame = utils.getMainFrameWithTitlePrefix(frame, "Rich Text Editor");
-	
-	//await frame.getByRole("toolbar").waitFor();
-	//await frame.locator(".propsWindow").waitFor();
-	//await frame.locator(".propsWindow").getByRole("toolbar").waitFor();
-	//await frame.locator(".propsWindow").getByRole("toolbar").getByRole("button").waitFor();
-	await frame.locator(".propsWindow").getByRole("toolbar").getByRole("button").filter({ hasText: "Image" }).click();
-	
-	//await basePage.pause();
-	console.log("GGGGGGGGGGGGGGGGGGGGGGGG: " + path.join(__dirname, 'OTIS_logo.jpg'));
-	
-	await frame.getByLabel("Select Image").setInputFiles(path.join(__dirname, "OTIS_logo.jpg"));
-	
-	await frame.getByTitle("Insert Image").and(frame.getByRole("button")).click();
-	await frame.getByTitle("Insert Image").waitFor({ "state" : "hidden" });
-	
-	//await frame.getByRole("button", { name: "OK", exact: true }).click({ force: true });
-	await frame.getByRole("button", { name: "OK", exact: true }).dispatchEvent("click");
-	
-	await frame.getByRole("button", { name: "OK", exact: true }).waitFor({ "state" : "hidden" });
-	
-	/*
-	const fileChooserPromise = basePage.waitForEvent('filechooser');
-	//await basePage.getByText('Upload file').click();
-	await frame.getByLabel("Select Image").click();
-	const fileChooser = await fileChooserPromise;
-	await fileChooser.setFiles(path.join(__dirname, 'main.spec.js'));
-	
-	page.set_input_files('input[type="file"]', 'FULL_PATH_TO_FILE_HERE');
-	*/
-	
-	//await frame.getByLabel("Select Image").click();
-	//await frame.getByRole("link", { name: "Image" }).click();
-	
-	
-	//await frame.locator('#item-to-be-dragged').dragTo(page.locator('#item-to-drop-at'));
-	
-	//await basePage.pause();
-	///////////////
 	
 	await frame.getByRole("button", { name: "Save", exact: true }).click();
 	
