@@ -16,3 +16,4 @@
 "$SF_SR_VAR_MOBILE_SETTING_ID","Update SA","Flow","Update_ETA","ServiceAppointment","Update SA",
 "$SF_SR_VAR_MOBILE_SETTING_ID","Update Schedule Time","Flow","Updated_SA_Schedule_Time","ServiceAppointment","Update Schedule Time","/flow/Updated_SA_Schedule_Time"
 "$SF_SR_VAR_MOBILE_SETTING_ID","Passenger Release","Flow","FSL_Passenger_Released_Flow","ServiceAppointment","Passenger Release",
+"$SF_SR_VAR_MOBILE_SETTING_ID","Add New Building Contact","Flow","New_Building_Contact_Information","Location","Add New Building Contact",
