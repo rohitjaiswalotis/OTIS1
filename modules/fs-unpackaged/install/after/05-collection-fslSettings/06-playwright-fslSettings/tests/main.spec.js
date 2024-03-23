@@ -1556,10 +1556,25 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 		await customerSignatureSectionHeaderLocator.locator(".x-tool-gear").click();
 		
 		await frame.locator(".x-form-arrow-trigger").click();
-		await frame.getByText("Customer", { exact: true }).click();
+		await frame.getByText("Customer", { exact: true }).and(frame.locator(".x-combo-list-item")).click();
 		
 		// TODO - select right fields and order them appropriately
 		
+		const availableFieldsSection = frame.locator("fieldset").filter({ has: frame.locator("legend").filter({ has: frame.getByText("Available Fields", { exact: true }) }) });
+		const availableFieldsList = availableFieldsSection.locator(".x-list-body");
+		
+		let availableOptions = [];
+		
+		for (const availableOptionLocator of await availableFieldsList.locator('dl dt em').all()) {
+			availableOptions.push(
+				await availableOptionLocator.textContent()
+			);
+		}
+		
+		console.log('aaaaaaaaaaaaaaaaaaaaaa = ' + availableOptions);
+		
+		
+		//xxx
 		await frame.getByRole("button", { name: "OK", exact: true }).dispatchEvent("click");
 		await frame.getByRole("button", { name: "OK", exact: true }).waitFor({ "state" : "hidden" });
 		
