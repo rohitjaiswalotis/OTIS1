@@ -233,14 +233,13 @@ stages:
                   continueOnError: true
                   
                 - task: UseDotNet@2
-                  displayName: 'Code Coverage Report'
+                  displayName: 'Use .NET Core sdk 7.0.x'
                   inputs:
                     packageType: 'sdk'
-                    version: '3.1.x'
+                    version: 7.0.x
                     
-                - task: PublishCodeCoverageResults@1
+                - task: PublishCodeCoverageResults@2
                   inputs:
-                    codeCoverageTool: 'Cobertura'
                     summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage/cobertura.xml'
                   displayName: 'Publish Coverage Results'
                   continueOnError: true
