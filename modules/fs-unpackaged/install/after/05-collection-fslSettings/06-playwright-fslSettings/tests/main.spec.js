@@ -812,30 +812,46 @@ test(`Contract Line Item -> Edit Multi-Line Layout`, async ({ basePage, baseUrl 
 	
 	
 	let availableOptions = await utils.getPicklistOptions(frame, 'Available Fields');
-	console.log(`Available Fields: ${availableOptions}`);
+	console.log(`Contract Line Item Available Fields: ${availableOptions}`);
 	
 	let selectedOptions = await utils.getPicklistOptions(frame, 'Selected Fields');
-	console.log(`Selected Fields: ${selectedOptions}`);
+	console.log(`Contract Line Item Selected Fields: ${selectedOptions}`);
 	
 	
+	// unselect extra options (commented for now, so just new options would be appended to existent setup)
+	// for (const selectedOption of selectedOptions) {
+		
+		// if (FIELDS_LABELS_TO_SELECT.includes(selectedOption)) {
+			// continue;
+		// }
+		
+		// await utils.selectPicklistSettingByLabel(frame, "Selected Fields", selectedOption);
+		// await utils.clickLink(frame, "Remove");
+		
+		// console.log(`Unselected successfully Contract Line Item Field '${selectedOption}'!`);
+		
+	// }
+	
+	
+	// select all needed options
 	for (const fieldLabelToSelect of FIELDS_LABELS_TO_SELECT) {
 		
 		if (availableOptions.includes(fieldLabelToSelect)) {
 			
-			console.log(`Field '${fieldLabelToSelect}' is available to select.`);
+			console.log(`Contract Line Item Field '${fieldLabelToSelect}' is available to select.`);
 			
 			await utils.selectPicklistSettingByLabel(frame, "Available Fields", fieldLabelToSelect);
 			await utils.clickLink(frame, "Add");
 			
-			console.log(`Selected successfully field '${fieldLabelToSelect}'!`);
+			console.log(`Selected successfully Contract Line Item Field '${fieldLabelToSelect}'!`);
 			
 		} else if (selectedOptions.includes(fieldLabelToSelect)) {
 			
-			console.log(`Field '${fieldLabelToSelect}' is already selected!`);
+			console.log(`Contract Line Item Field '${fieldLabelToSelect}' is already selected!`);
 			
 		} else {
 			
-			console.log(`WARNING: No field '${fieldLabelToSelect}' available to select!`);
+			console.log(`WARNING: No Contract Line Item Field '${fieldLabelToSelect}' available to select!`);
 			
 		}
 		
@@ -1255,7 +1271,7 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 	
 	await frame.locator(".childLayoutPicklist select").selectOption({ label: TARGET_CHILD_LAYOUT_NAME });
 	
-	
+	/* UNCOMMENT WHEN DONE
 	// remove extra sections
 	{
 		
@@ -1542,18 +1558,24 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 		}
 		
 	}
+	*/
 	
 	
 	// configuring Customer Signature section
 	{
 		
+		const FIELDS_LABELS_TO_SELECT = [ 
+			"Signature",
+			"Signed By",
+			"Type",
+			"Date"
+		];
+		
 		let customerSignatureSectionLocator = frame.locator(".canvasBodyPanel").locator(".section").filter({ has: frame.locator(".section-header").getByText("Customer Signature", { exact: true }) });
 		let customerSignatureSectionHeaderLocator = customerSignatureSectionLocator.locator(".section-header");
 		
-		await basePage.pause();
-		
 		await customerSignatureSectionHeaderLocator.hover();
-		await customerSignatureSectionHeaderLocator.locator(".x-tool-gear").click();
+		await customerSignatureSectionHeaderLocator.locator(".x-tool-gear").click({ force: true });
 		
 		await frame.locator(".x-form-arrow-trigger").click();
 		await frame.getByText("Customer", { exact: true }).and(frame.locator(".x-combo-list-item")).click();
@@ -1562,16 +1584,83 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 		
 		const availableFieldsSection = frame.locator("fieldset").filter({ has: frame.locator("legend").filter({ has: frame.getByText("Available Fields", { exact: true }) }) });
 		const availableFieldsList = availableFieldsSection.locator(".x-list-body");
+		const availableFieldListItems = availableFieldsList.locator("dl");
 		
 		let availableOptions = [];
 		
-		for (const availableOptionLocator of await availableFieldsList.locator('dl dt em').all()) {
+		//for (const availableOptionLocator of await availableFieldsList.locator('dl dt em').all()) {
+		for (const availableOptionLocator of await availableFieldsList.locator('dl').all()) {
 			availableOptions.push(
 				await availableOptionLocator.textContent()
 			);
 		}
 		
-		console.log('aaaaaaaaaaaaaaaaaaaaaa = ' + availableOptions);
+		console.log(`Customer Signature Available Fields: ${availableOptions}`);
+		
+		
+		const selectedFieldsSection = frame.locator("fieldset").filter({ has: frame.locator("legend").filter({ has: frame.getByText("Selected Fields", { exact: true }) }) });
+		const selectedFieldsList = selectedFieldsSection.locator(".x-list-body");
+		const selectedFieldListItems = selectedFieldsList.locator("dl");
+		
+		let selectedOptions = [];
+		
+		//for (const availableOptionLocator of await availableFieldsList.locator('dl dt em').all()) {
+		for (const selectedOptionLocator of await selectedFieldListItems.all()) {
+			selectedOptions.push(
+				await selectedOptionLocator.textContent()
+			);
+		}
+		
+		console.log(`Customer Signature Selected Fields: ${selectedOptions}`);
+		
+		
+		const addOptionButtonLocator = frame.locator("img:below(:text('Add'))").and(frame.locator("[id*='iconRight']"))
+		const removeOptionButtonLocator = frame.locator("img:above(:text('Remove'))").and(frame.locator("[id*='iconLeft']"));
+		const upOptionButtonLocator = frame.locator("img:below(:text('Up'))").and(frame.locator("[id*='iconUp']"))
+		const downOptionButtonLocator = frame.locator("img:above(:text('Down'))").and(frame.locator("[id*='iconDown']"));
+		
+		
+		// unselect all extra options first
+		for (const selectedOption of selectedOptions) {
+			
+			if (FIELDS_LABELS_TO_SELECT.includes(selectedOption)) {
+				continue;
+			}
+			
+			await utils.clickByText(selectedFieldListItems, selectedOption);
+			await removeOptionButtonLocator.click();
+			
+			console.log(`Unselected successfully Customer Signature Field '${selectedOption}'!`);
+			
+		}
+		
+		
+		// select all needed options
+		for (const fieldLabelToSelect of FIELDS_LABELS_TO_SELECT) {
+			
+			if (availableOptions.includes(fieldLabelToSelect)) {
+				
+				console.log(`Customer Signature Field '${fieldLabelToSelect}' is available to select.`);
+				
+				await utils.clickByText(availableFieldListItems, fieldLabelToSelect);
+				await addOptionButtonLocator.click();
+				
+				console.log(`Selected successfully Customer Signature Field '${fieldLabelToSelect}'!`);
+				
+			} else if (selectedOptions.includes(fieldLabelToSelect)) {
+				
+				console.log(`Customer Signature Field '${fieldLabelToSelect}' is already selected!`);
+				
+			} else {
+				
+				console.log(`WARNING: No Customer Signature Field '${fieldLabelToSelect}' available to select!`);
+				
+			}
+			
+		}
+		
+		
+		await basePage.pause();
 		
 		
 		//xxx
