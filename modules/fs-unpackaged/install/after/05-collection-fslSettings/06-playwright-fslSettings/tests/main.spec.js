@@ -1660,10 +1660,44 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 		}
 		
 		
-		await basePage.pause();
+		// get latest selected options
+		selectedOptions = [];
+		for (const selectedOptionLocator of await selectedFieldListItems.all()) {
+			selectedOptions.push(
+				(await selectedOptionLocator.textContent())?.trim()
+			);
+		}
 		
 		
-		//xxx
+		// ordering current options appropriately
+		for (let [targetIndex, targetOption] of FIELDS_LABELS_TO_SELECT.entries()) {
+			
+			const sourceIndex = selectedOptions.indexOf(targetOption);
+			
+			
+			if (sourceIndex === -1) {
+				console.log(`WARNING: Customer Signature Field '${targetOption}' is still not selected for some reason!`);
+				continue;
+			}
+			
+			if (sourceIndex === targetIndex) {
+				continue;
+			}
+			
+			const numberOfSwaps = sourceIndex - targetIndex;
+			
+			for (let i = 0; i < Math.abs(numberOfSwaps); i++) {
+				await utils.clickByText(selectedFieldListItems, targetOption);
+				await (numberOfSwaps > 0 ? upOptionButtonLocator : downOptionButtonLocator).click();
+			}
+			
+			selectedOptions[sourceIndex] = selectedOptions[targetIndex];
+			selectedOptions[targetIndex] = FIELDS_LABELS_TO_SELECT[targetIndex];
+			
+		}
+		
+		//await basePage.pause();
+		
 		await frame.getByRole("button", { name: "OK", exact: true }).dispatchEvent("click");
 		await frame.getByRole("button", { name: "OK", exact: true }).waitFor({ "state" : "hidden" });
 		
