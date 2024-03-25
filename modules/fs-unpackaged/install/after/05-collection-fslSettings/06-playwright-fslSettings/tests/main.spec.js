@@ -1271,7 +1271,7 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 	
 	await frame.locator(".childLayoutPicklist select").selectOption({ label: TARGET_CHILD_LAYOUT_NAME });
 	
-	/* UNCOMMENT WHEN DONE
+	
 	// remove extra sections
 	{
 		
@@ -1558,7 +1558,6 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 		}
 		
 	}
-	*/
 	
 	
 	// configuring Customer Signature section
