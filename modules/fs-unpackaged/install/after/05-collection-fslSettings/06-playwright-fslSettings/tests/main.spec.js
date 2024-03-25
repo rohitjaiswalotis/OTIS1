@@ -1580,18 +1580,15 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 		await frame.locator(".x-form-arrow-trigger").click();
 		await frame.getByText("Customer", { exact: true }).and(frame.locator(".x-combo-list-item")).click();
 		
-		// TODO - select right fields and order them appropriately
-		
 		const availableFieldsSection = frame.locator("fieldset").filter({ has: frame.locator("legend").filter({ has: frame.getByText("Available Fields", { exact: true }) }) });
 		const availableFieldsList = availableFieldsSection.locator(".x-list-body");
 		const availableFieldListItems = availableFieldsList.locator("dl");
 		
 		let availableOptions = [];
 		
-		//for (const availableOptionLocator of await availableFieldsList.locator('dl dt em').all()) {
 		for (const availableOptionLocator of await availableFieldsList.locator('dl').all()) {
 			availableOptions.push(
-				await availableOptionLocator.textContent()
+				(await availableOptionLocator.textContent())?.trim()
 			);
 		}
 		
@@ -1607,7 +1604,7 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 		//for (const availableOptionLocator of await availableFieldsList.locator('dl dt em').all()) {
 		for (const selectedOptionLocator of await selectedFieldListItems.all()) {
 			selectedOptions.push(
-				await selectedOptionLocator.textContent()
+				(await selectedOptionLocator.textContent())?.trim()
 			);
 		}
 		
