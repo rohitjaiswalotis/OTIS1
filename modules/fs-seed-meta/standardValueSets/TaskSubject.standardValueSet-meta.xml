@@ -21,4 +21,9 @@
         <default>false</default>
         <label>Other</label>
     </standardValue>
+    <standardValue>
+        <fullName>Mechanic Identified Repair Onsite</fullName>
+        <default>false</default>
+        <label>Mechanic Identified Repair Onsite</label>
+    </standardValue>
 </StandardValueSet>
