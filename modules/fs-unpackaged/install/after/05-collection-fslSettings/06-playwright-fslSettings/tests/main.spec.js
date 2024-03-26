@@ -1197,16 +1197,20 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 	);
 	*/
 	
+	/*
 	const MANDATORY_SECTIONS_HEADERS = [ 
 		"Service Report", 
 		"Appointment Information",
 		"Work Details",
 		"Customer Signature"
 	];
+	*/
 	
+	/*
 	const SPECIAL_SECTIONS_HEADERS = [ 
 		"Customer Signature"
 	];
+	*/
 	
 	
 	// functions
@@ -1214,10 +1218,12 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 	const dragAndDrop = async (page, sourceLocator, targetLocator) => {
 		
 		// this dragging works
-		await sourceLocator.hover();
+		//await sourceLocator.waitFor();
+		//await sourceLocator.hover({ force: true, position: { x: 5, y: 5 } });
+		await sourceLocator.hover({ force: true });
 		await page.mouse.down();
-		await targetLocator.hover();
-		await targetLocator.hover();
+		await targetLocator.hover({ force: true, position: { x: 5, y: 5 } });
+		await targetLocator.hover({ force: true, position: { x: 5, y: 5 } });
 		await page.mouse.up();
 		
 	}
@@ -1272,6 +1278,33 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 	await frame.locator(".childLayoutPicklist select").selectOption({ label: TARGET_CHILD_LAYOUT_NAME });
 	
 	
+	const FAKE_DUMMY_SECTION_NAME = "Dummy Section " + new Date().getTime() + "_" + Math.floor(Math.random()*100);
+	
+	// create Fake Dummy section
+	{
+		
+		await frame.getByLabel("Quick Find").locator('visible=true').fill('');
+		await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("Section");
+		
+		let dragSourceLocator = frame.locator(".draggables").getByText("Section", { exact: true });
+		
+		let dragTargetLocator = frame.locator(".canvasBodyPanel").locator(".bPageBlock").filter({ has: frame.locator(".pbHeader .pbTitle").filter({ has: frame.getByText("Body", { exact: true }) }) }).locator(".pbBody").locator(".section .section-body").locator('visible=true').first();//.locator(":above(.section)").first();
+		await dragTargetLocator.waitFor();
+		
+		await dragAndDrop(basePage, dragSourceLocator, dragTargetLocator);
+		
+		await frame.getByLabel("Title", { exact: true }).locator('visible=true').fill(FAKE_DUMMY_SECTION_NAME);
+		
+		await frame.getByLabel("2-Column", { exact: true }).locator('visible=true').click(); // vs 1-Column
+		
+		await frame.locator("input[id*='left']").and(frame.locator("input[id*='align']")).locator('visible=true').click(); // vs right
+		
+		await frame.getByRole("button", { name: "OK", exact: true }).dispatchEvent("click");
+		await frame.getByRole("button", { name: "OK", exact: true }).waitFor({ "state" : "hidden" });
+		
+	}
+	
+	
 	// remove extra sections
 	{
 		
@@ -1281,6 +1314,18 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 		
 		for (const sectionHeaderLocator of await frame.locator(".canvasBodyPanel").locator(".section .section-header").all()) {
 			
+			// skip fake dummy section
+			if (
+				FAKE_DUMMY_SECTION_NAME 
+				=== 
+				(
+					await sectionHeaderLocator.locator(".section-header-text").textContent()
+				)
+			) {
+				continue;
+			}
+			
+			/*
 			if (
 				MANDATORY_SECTIONS_HEADERS.includes(
 					await sectionHeaderLocator.locator(".section-header-text").textContent()
@@ -1288,6 +1333,7 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 			) {
 				continue;
 			}
+			*/
 			
 			locatorsForSectionsToRemove.push(sectionHeaderLocator);
 			
@@ -1303,6 +1349,10 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 	}
 	
 	
+	await frame.locator(".canvasBodyPanel").locator(".section .section-header").first().waitFor();
+	
+	
+	/*
 	// remove all fields from all mandatory sections
 	for (const mandatorySectionHeader of MANDATORY_SECTIONS_HEADERS) {
 		
@@ -1336,45 +1386,127 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 		}
 		
 	}
+	*/
 	
 	
-	await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("Image");
-	
-	let serviceReportSectionLocator = frame.locator(".canvasBodyPanel").locator(".section").filter({ has: frame.locator(".section-header").getByText("Service Report", { exact: true }) }).locator(".section-body");
-	await serviceReportSectionLocator.locator("table tr").first().locator('td').first().waitFor();
-	
-	//let qteHeader = frame.locator(".QTEHeader").filter({has: frame.locator(".section-header").filter({has: frame.getByText("Service Report", { exact: true }) }) });
-	//await qteHeader.locator(".section-body table tr").first().locator('td').first().waitFor();
-	
-	let dragTargetLocator = serviceReportSectionLocator.locator("table tr").first().locator('td').first();
-	
-	if (await dragTargetLocator.filter({ has: frame.locator('img') }).isVisible() === true) {
+	// create Customer Signature section
+	{
 		
-		console.log("Seems like OTIS Logo is already there.");
-		// TODO: it can be graggable icon, probably try differentiate by description (populate description on upload and check whether it is matching to alt text)
 		
-	} else {
+		await frame.getByLabel("Quick Find").locator('visible=true').fill('');
+		await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("Signature");
 		
-		console.log("No OTIS Logo available yet - trying to insert one...");
+		let dragSourceLocator = frame.locator(".draggables").getByText("Signature", { exact: true });
 		
-		// this dragging works
-		let dragSourceLocator = frame.locator(".draggables").getByText("Text/Image Field", { exact: true });
+		let dragTargetLocator = frame.locator(".canvasBodyPanel").locator(".bPageBlock").filter({ has: frame.locator(".pbHeader .pbTitle").filter({ has: frame.getByText("Body", { exact: true }) }) }).locator(".pbBody").locator(".section .section-body").locator('visible=true').first();//.locator(":above(.section)").locator('visible=true').first();
+		await dragTargetLocator.waitFor();
+		
 		await dragAndDrop(basePage, dragSourceLocator, dragTargetLocator);
 		
-		let richTextEditorFrame = utils.getMainFrameWithTitlePrefix(frame, "Rich Text Editor");
 		
-		await frame.locator(".propsWindow").getByRole("toolbar").getByRole("button").filter({ hasText: "Image" }).click();
+		await frame.getByLabel("Title", { exact: true }).locator('visible=true').fill("Customer Signature");
+		//await frame.getByRole("textbox", { name: "Title" }).fill("Customer Signature");
 		
-		await frame.getByLabel("Select Image").setInputFiles(path.join(__dirname, "OTIS_logo.jpg"));
-		//await utils.fillSetting(frame, "Description", "OTIS Logo");
-		//await frame.getByLabel("Description").waitFor();
-		//await frame.getByLabel("Description").fill("OTIS Logo", { force: true });
-		
-		await frame.getByTitle("Insert Image").and(frame.getByRole("button")).click();
-		await frame.getByTitle("Insert Image").waitFor({ "state" : "hidden" });
+		await frame.locator("input[id*='left']").and(frame.locator("input[id*='align']")).locator('visible=true').click(); // vs right
 		
 		await frame.getByRole("button", { name: "OK", exact: true }).dispatchEvent("click");
 		await frame.getByRole("button", { name: "OK", exact: true }).waitFor({ "state" : "hidden" });
+		
+	}
+	
+	
+	//await basePage.pause();
+	
+	
+	// create Work Details section
+	{
+		
+		await frame.getByLabel("Quick Find").locator('visible=true').fill('');
+		await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("Section");
+		
+		let dragSourceLocator = frame.locator(".draggables").getByText("Section", { exact: true });
+		
+		let dragTargetLocator = frame.locator(".canvasBodyPanel").locator(".bPageBlock").filter({ has: frame.locator(".pbHeader .pbTitle").filter({ has: frame.getByText("Body", { exact: true }) }) }).locator(".pbBody").locator(".section .section-body").locator('visible=true').first();//.locator(":above(.section)").locator('visible=true').first();
+		await dragTargetLocator.waitFor();
+		
+		await dragAndDrop(basePage, dragSourceLocator, dragTargetLocator);
+		
+		await frame.getByLabel("Title", { exact: true }).locator('visible=true').fill("Work Details");
+		
+		await frame.getByLabel("2-Column", { exact: true }).locator('visible=true').click(); // vs 1-Column
+		
+		await frame.locator("input[id*='left']").and(frame.locator("input[id*='align']")).locator('visible=true').click(); // vs right
+		
+		await frame.getByRole("button", { name: "OK", exact: true }).dispatchEvent("click");
+		await frame.getByRole("button", { name: "OK", exact: true }).waitFor({ "state" : "hidden" });
+		
+	}
+	
+	
+	// create Appointment Information section
+	{
+		
+		await frame.getByLabel("Quick Find").locator('visible=true').fill('');
+		await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("Section");
+		
+		let dragSourceLocator = frame.locator(".draggables").getByText("Section", { exact: true });
+		
+		let dragTargetLocator = frame.locator(".canvasBodyPanel").locator(".bPageBlock").filter({ has: frame.locator(".pbHeader .pbTitle").filter({ has: frame.getByText("Body", { exact: true }) }) }).locator(".pbBody").locator(".section .section-body").locator('visible=true').first();//.locator(":above(.section)").locator('visible=true').first();
+		await dragTargetLocator.waitFor();
+		
+		await dragAndDrop(basePage, dragSourceLocator, dragTargetLocator);
+		
+		await frame.getByLabel("Title", { exact: true }).locator('visible=true').fill("Appointment Information");
+		
+		await frame.getByLabel("2-Column", { exact: true }).locator('visible=true').click(); // vs 1-Column
+		
+		await frame.locator("input[id*='left']").and(frame.locator("input[id*='align']")).locator('visible=true').click(); // vs right
+		
+		await frame.getByRole("button", { name: "OK", exact: true }).dispatchEvent("click");
+		await frame.getByRole("button", { name: "OK", exact: true }).waitFor({ "state" : "hidden" });
+		
+	}
+	
+	
+	// drag Logo into Service Report section
+	{
+		
+		await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("Image");
+		
+		let serviceReportSectionLocator = frame.locator(".canvasBodyPanel").locator(".section").filter({ has: frame.locator(".section-header").getByText("Service Report", { exact: true }) }).locator(".section-body");
+		await serviceReportSectionLocator.locator("table tr").first().locator('td').first().waitFor();
+		
+		let dragTargetLocator = serviceReportSectionLocator.locator("table tr").first().locator('td').first();
+		
+		if (await dragTargetLocator.filter({ has: frame.locator('img') }).isVisible() === true) {
+			
+			console.log("Seems like OTIS Logo is already there.");
+			// TODO: it can be graggable icon, probably try differentiate by description (populate description on upload and check whether it is matching to alt text)
+			
+		} else {
+			
+			console.log("No OTIS Logo available yet - trying to insert one...");
+			
+			// this dragging works
+			let dragSourceLocator = frame.locator(".draggables").getByText("Text/Image Field", { exact: true });
+			await dragAndDrop(basePage, dragSourceLocator, dragTargetLocator);
+			
+			let richTextEditorFrame = utils.getMainFrameWithTitlePrefix(frame, "Rich Text Editor");
+			
+			await frame.locator(".propsWindow").getByRole("toolbar").getByRole("button").filter({ hasText: "Image" }).click();
+			
+			await frame.getByLabel("Select Image").setInputFiles(path.join(__dirname, "OTIS_logo.jpg"));
+			//await utils.fillSetting(frame, "Description", "OTIS Logo");
+			//await frame.getByLabel("Description").waitFor();
+			//await frame.getByLabel("Description").fill("OTIS Logo", { force: true });
+			
+			await frame.getByTitle("Insert Image").and(frame.getByRole("button")).click();
+			await frame.getByTitle("Insert Image").waitFor({ "state" : "hidden" });
+			
+			await frame.getByRole("button", { name: "OK", exact: true }).dispatchEvent("click");
+			await frame.getByRole("button", { name: "OK", exact: true }).waitFor({ "state" : "hidden" });
+			
+		}
 		
 	}
 	
@@ -1386,11 +1518,25 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 		await appointmentInformaionSectionLocator.locator("table tr").first().locator('td').first().waitFor();
 		
 		
+		// "Address" field (first column)
+		{
+			
+			await frame.getByText("Service Appointment", { exact: true}).and(frame.locator(".selectorItem")).click();
+			await frame.getByLabel("Quick Find").locator('visible=true').fill('');
+			await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("Address");
+			await basePage.screenshot({ path: 'boom3.png' });
+			
+			let dragSourceLocator = await frame.locator(".draggables .item:not(.used)").getByText("Address".substring(0, 10)).locator('visible=true').first();
+			let dragTargetLocator = appointmentInformaionSectionLocator.locator("table tr").first().locator('td').first();
+			await dragAndDrop(basePage, dragSourceLocator, dragTargetLocator);
+			
+		}
+		
 		// "Unit" field (first column)
 		{
 			
 			await frame.getByText("Service Appointment", { exact: true}).and(frame.locator(".selectorItem")).click();
-			//await utils.fillSetting(frame, "Quick Find", "Unit");
+			await frame.getByLabel("Quick Find").locator('visible=true').fill('');
 			await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("Unit");
 			
 			let dragSourceLocator = await frame.locator(".draggables .item:not(.used)").getByText("Unit".substring(0, 10)).first();
@@ -1399,41 +1545,28 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 			
 		}
 		
-		// "Address" field (first column)
-		{
-			
-			await frame.getByText("Service Appointment", { exact: true}).and(frame.locator(".selectorItem")).click();
-			//await utils.fillSetting(frame, "Quick Find", "Address");
-			await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("Address");
-			
-			let dragSourceLocator = await frame.locator(".draggables .item:not(.used)").getByText("Address".substring(0, 10)).first();
-			let dragTargetLocator = appointmentInformaionSectionLocator.locator("table tr").first().locator('td').first();
-			await dragAndDrop(basePage, dragSourceLocator, dragTargetLocator);
-			
-		}
-		
-		
-		// "Description" field (second column)
-		{
-			
-			await frame.getByText("Service Appointment", { exact: true}).and(frame.locator(".selectorItem")).click();
-			//await utils.fillSetting(frame, "Quick Find", "Description");
-			await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("Description");
-			
-			let dragSourceLocator = await frame.locator(".draggables .item:not(.used)").getByText("Description".substring(0, 10)).first();
-			let dragTargetLocator = appointmentInformaionSectionLocator.locator("table tr").first().locator('td').nth(1);
-			await dragAndDrop(basePage, dragSourceLocator, dragTargetLocator);
-			
-		}
 		
 		// "No Signature Reason" field (second column)
 		{
 			
 			await frame.getByText("Service Appointment", { exact: true}).and(frame.locator(".selectorItem")).click();
-			//await utils.fillSetting(frame, "Quick Find", "No Signature Reason");
+			await frame.getByLabel("Quick Find").locator('visible=true').fill('');
 			await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("No Signature Reason");
 			
 			let dragSourceLocator = await frame.locator(".draggables .item:not(.used)").getByText("No Signature Reason".substring(0, 10)).first();
+			let dragTargetLocator = appointmentInformaionSectionLocator.locator("table tr").first().locator('td').nth(1);
+			await dragAndDrop(basePage, dragSourceLocator, dragTargetLocator);
+			
+		}
+		
+		// "Description" field (second column)
+		{
+			
+			await frame.getByText("Service Appointment", { exact: true}).and(frame.locator(".selectorItem")).click();
+			await frame.getByLabel("Quick Find").locator('visible=true').fill('');
+			await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("Description");
+			
+			let dragSourceLocator = await frame.locator(".draggables .item:not(.used)").getByText("Description".substring(0, 10)).first();
 			let dragTargetLocator = appointmentInformaionSectionLocator.locator("table tr").first().locator('td').nth(1);
 			await dragAndDrop(basePage, dragSourceLocator, dragTargetLocator);
 			
@@ -1448,22 +1581,11 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 		let appointmentInformaionSectionLocator = frame.locator(".canvasBodyPanel").locator(".section").filter({ has: frame.locator(".section-header").getByText("Work Details", { exact: true }) }).locator(".section-body");
 		await appointmentInformaionSectionLocator.locator("table tr").first().locator('td').first().waitFor();
 		
-		// "Description" field (first column)
-		{
-			
-			await frame.getByText("Work Order", { exact: true}).and(frame.locator(".selectorItem")).click();
-			await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("Description");
-			
-			let dragSourceLocator = await frame.locator(".draggables .item:not(.used)").getByText("Description".substring(0, 10)).first();
-			let dragTargetLocator = appointmentInformaionSectionLocator.locator("table tr").first().locator('td').first();
-			await dragAndDrop(basePage, dragSourceLocator, dragTargetLocator);
-			
-		}
-		
 		// "Unit Misused ?" field (first column)
 		{
 			
 			await frame.getByText("Work Order", { exact: true}).and(frame.locator(".selectorItem")).click();
+			await frame.getByLabel("Quick Find").locator('visible=true').fill('');
 			await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("Unit Misused ?");
 			
 			let dragSourceLocator = await frame.locator(".draggables .item:not(.used)").getByText("Unit Misused ?".substring(0, 10)).first();
@@ -1476,6 +1598,7 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 		{
 			
 			await frame.getByText("Work Order", { exact: true}).and(frame.locator(".selectorItem")).click();
+			await frame.getByLabel("Quick Find").locator('visible=true').fill('');
 			await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("Service Request Closeout Notes");
 			
 			let dragSourceLocator = await frame.locator(".draggables .item:not(.used)").getByText("Service Request Closeout Notes".substring(0, 10)).first();
@@ -1488,6 +1611,7 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 		{
 			
 			await frame.getByText("Work Order", { exact: true}).and(frame.locator(".selectorItem")).click();
+			await frame.getByLabel("Quick Find").locator('visible=true').fill('');
 			await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("SM Component Code");
 			
 			let dragSourceLocator = await frame.locator(".draggables .item:not(.used)").getByText("SM Component Code".substring(0, 10)).first();
@@ -1500,6 +1624,7 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 		{
 			
 			await frame.getByText("Work Order", { exact: true}).and(frame.locator(".selectorItem")).click();
+			await frame.getByLabel("Quick Find").locator('visible=true').fill('');
 			await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("Service Request Paged On");
 			
 			let dragSourceLocator = await frame.locator(".draggables .item:not(.used)").getByText("Service Request Paged On".substring(0, 10)).first();
@@ -1508,23 +1633,25 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 			
 		}
 		
-		
-		// "Building Number" field (second column)
+		// "Description" field (first column)
 		{
 			
 			await frame.getByText("Work Order", { exact: true}).and(frame.locator(".selectorItem")).click();
-			await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("Building Number");
+			await frame.getByLabel("Quick Find").locator('visible=true').fill('');
+			await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("Description");
 			
-			let dragSourceLocator = await frame.locator(".draggables .item:not(.used)").getByText("Building Number".substring(0, 10)).first();
-			let dragTargetLocator = appointmentInformaionSectionLocator.locator("table tr").first().locator('td').nth(1);
+			let dragSourceLocator = await frame.locator(".draggables .item:not(.used)").getByText("Description".substring(0, 10)).first();
+			let dragTargetLocator = appointmentInformaionSectionLocator.locator("table tr").first().locator('td').first();
 			await dragAndDrop(basePage, dragSourceLocator, dragTargetLocator);
 			
 		}
+		
 		
 		// "Unit Occupied ?" field (second column)
 		{
 			
 			await frame.getByText("Work Order", { exact: true}).and(frame.locator(".selectorItem")).click();
+			await frame.getByLabel("Quick Find").locator('visible=true').fill('');
 			await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("Unit Occupied ?");
 			
 			let dragSourceLocator = await frame.locator(".draggables .item:not(.used)").getByText("Unit Occupied ?".substring(0, 10)).first();
@@ -1537,6 +1664,7 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 		{
 			
 			await frame.getByText("Work Order", { exact: true}).and(frame.locator(".selectorItem")).click();
+			await frame.getByLabel("Quick Find").locator('visible=true').fill('');
 			await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("SM Work Performed Code");
 			
 			let dragSourceLocator = await frame.locator(".draggables .item:not(.used)").getByText("SM Work Performed Code".substring(0, 10)).first();
@@ -1549,9 +1677,23 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 		{
 			
 			await frame.getByText("Work Order", { exact: true}).and(frame.locator(".selectorItem")).click();
+			await frame.getByLabel("Quick Find").locator('visible=true').fill('');
 			await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("Service Request Actual Ended On");
 			
 			let dragSourceLocator = await frame.locator(".draggables .item:not(.used)").getByText("Service Request Actual Ended On".substring(0, 10)).first();
+			let dragTargetLocator = appointmentInformaionSectionLocator.locator("table tr").first().locator('td').nth(1);
+			await dragAndDrop(basePage, dragSourceLocator, dragTargetLocator);
+			
+		}
+		
+		// "Building Number" field (second column)
+		{
+			
+			await frame.getByText("Work Order", { exact: true}).and(frame.locator(".selectorItem")).click();
+			await frame.getByLabel("Quick Find").locator('visible=true').fill('');
+			await frame.getByLabel("Quick Find").locator('visible=true').pressSequentially("Building Number");
+			
+			let dragSourceLocator = await frame.locator(".draggables .item:not(.used)").getByText("Building Number".substring(0, 10)).first();
 			let dragTargetLocator = appointmentInformaionSectionLocator.locator("table tr").first().locator('td').nth(1);
 			await dragAndDrop(basePage, dragSourceLocator, dragTargetLocator);
 			
@@ -1698,7 +1840,19 @@ test('Setup -> Service Report Templates -> Create/Edit and Activate', async ({ b
 		await frame.getByRole("button", { name: "OK", exact: true }).waitFor({ "state" : "hidden" });
 		
 	}
+	
+	
+	// remove Fake Dummy section
+	{
 		
+		let fakeDummySectionLocator = frame.locator(".canvasBodyPanel").locator(".section").filter({ has: frame.locator(".section-header").getByText(FAKE_DUMMY_SECTION_NAME, { exact: true }) });
+		let fakeDummySectionHeaderLocator = fakeDummySectionLocator.locator(".section-header");
+		
+		await fakeDummySectionHeaderLocator.first().waitFor();
+		
+		await fakeDummySectionHeaderLocator.locator(".x-tool-remove").dispatchEvent("click");
+		
+	}
 	
 	
 	await frame.getByRole("button", { name: "Save", exact: true }).click();
