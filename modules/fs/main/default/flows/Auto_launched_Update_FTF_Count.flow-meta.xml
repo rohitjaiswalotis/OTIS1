@@ -2,10 +2,10 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>60.0</apiVersion>
     <assignments>
-        <name>add_FTF_count</name>
-        <label>add FTF count</label>
-        <locationX>264</locationX>
-        <locationY>1898</locationY>
+        <name>Add_FTF_Total_Assigned_Count</name>
+        <label>Add FTF &amp; Total Assigned Count</label>
+        <locationX>528</locationX>
+        <locationY>1682</locationY>
         <assignmentItems>
             <assignToReference>TotalCompletedAppointment</assignToReference>
             <operator>Add</operator>
@@ -13,24 +13,22 @@
                 <numberValue>1.0</numberValue>
             </value>
         </assignmentItems>
-        <connector>
-            <targetReference>store_assigned_appointment_count</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>appointment_count</name>
-        <label>appointment count</label>
-        <locationX>396</locationX>
-        <locationY>1682</locationY>
         <assignmentItems>
-            <assignToReference>checkFTFcount</assignToReference>
-            <operator>AssignCount</operator>
+            <assignToReference>totalassignedAppointment</assignToReference>
+            <operator>Add</operator>
             <value>
-                <elementReference>appointmentCountCheck</elementReference>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>UnitIdsForFTFCount</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>SA_s_Record_Loop.Unit__c</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>check_FTF</targetReference>
+            <targetReference>SA_s_Record_Loop</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -50,45 +48,6 @@
         </connector>
     </assignments>
     <assignments>
-        <name>Clean_the_data</name>
-        <label>Clean the data</label>
-        <locationX>396</locationX>
-        <locationY>2198</locationY>
-        <assignmentItems>
-            <assignToReference>checkFTFcount</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <numberValue>0.0</numberValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>appointmentCountCheck</assignToReference>
-            <operator>RemoveAll</operator>
-            <value>
-                <elementReference>appointmentCountCheck</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>get_FTF_count</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>store_assigned_appointment_count</name>
-        <label>store assigned appointment count</label>
-        <locationX>396</locationX>
-        <locationY>2090</locationY>
-        <assignmentItems>
-            <assignToReference>totalassignedAppointment</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <numberValue>1.0</numberValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Clean_the_data</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>store_Unit_Ids</name>
         <label>store Unit Ids</label>
         <locationX>440</locationX>
@@ -104,31 +63,22 @@
             <targetReference>get_appointment_ids</targetReference>
         </connector>
     </assignments>
-    <decisions>
-        <name>check_FTF</name>
-        <label>check FTF</label>
-        <locationX>396</locationX>
-        <locationY>1790</locationY>
-        <defaultConnector>
-            <targetReference>store_assigned_appointment_count</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>count_is_1</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>checkFTFcount</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <numberValue>1.0</numberValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>add_FTF_count</targetReference>
-            </connector>
-            <label>count = 1</label>
-        </rules>
-    </decisions>
+    <assignments>
+        <name>Substract_FTF_Count</name>
+        <label>Substract FTF Count</label>
+        <locationX>264</locationX>
+        <locationY>1682</locationY>
+        <assignmentItems>
+            <assignToReference>TotalCompletedAppointment</assignToReference>
+            <operator>Subtract</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>SA_s_Record_Loop</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>check_if_unit_already_exist</name>
         <label>check if unit already exist</label>
@@ -152,6 +102,31 @@
                 <targetReference>get_appointment_ids</targetReference>
             </connector>
             <label>YES</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_UnitId_Contains_in_UnitIdsFTFCount</name>
+        <label>Check UnitId Contains in UnitIdsFTFCount</label>
+        <locationX>396</locationX>
+        <locationY>1574</locationY>
+        <defaultConnector>
+            <targetReference>Add_FTF_Total_Assigned_Count</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>count_is_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>UnitIdsForFTFCount</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <elementReference>SA_s_Record_Loop.Unit__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Substract_FTF_Count</targetReference>
+            </connector>
+            <label>if Contains</label>
         </rules>
     </decisions>
     <description>#US920644 Updating FTF count for each mechanic on service resource .used to calculate FTF of last 7 days on Service resource level</description>
@@ -194,18 +169,18 @@
             <targetReference>check_if_unit_already_exist</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>get_all_Unit_records_associated_to_assigned_resource</targetReference>
+            <targetReference>Get_Unit_s_SA_Record</targetReference>
         </noMoreValuesConnector>
     </loops>
     <loops>
-        <name>get_FTF_count</name>
-        <label>get FTF count</label>
+        <name>SA_s_Record_Loop</name>
+        <label>SA&apos;s Record Loop</label>
         <locationX>176</locationX>
         <locationY>1466</locationY>
-        <collectionReference>get_all_Unit_records_associated_to_assigned_resource</collectionReference>
+        <collectionReference>Get_Unit_s_SA_Record</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>get_appointment_counts</targetReference>
+            <targetReference>Check_UnitId_Contains_in_UnitIdsFTFCount</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>update_service_resource</targetReference>
@@ -288,55 +263,6 @@
         <queriedFields>ServiceAppointmentId</queriedFields>
     </recordLookups>
     <recordLookups>
-        <name>get_all_Unit_records_associated_to_assigned_resource</name>
-        <label>get all Unit records associated to assigned resource</label>
-        <locationX>176</locationX>
-        <locationY>1358</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>get_FTF_count</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>In</operator>
-            <value>
-                <elementReference>allUnitIds</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>Asset</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>get_appointment_counts</name>
-        <label>get appointment counts</label>
-        <locationX>396</locationX>
-        <locationY>1574</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>appointment_count</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Unit__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>get_FTF_count.Id</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>CreatedDate</field>
-            <operator>GreaterThanOrEqualTo</operator>
-            <value>
-                <elementReference>last7days</elementReference>
-            </value>
-        </filters>
-        <object>ServiceAppointment</object>
-        <outputReference>appointmentCountCheck</outputReference>
-        <queriedFields>Id</queriedFields>
-    </recordLookups>
-    <recordLookups>
         <name>get_assigned_resource</name>
         <label>get assigned resource</label>
         <locationX>176</locationX>
@@ -380,11 +306,39 @@
         <object>ServiceResource</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <name>Get_Unit_s_SA_Record</name>
+        <label>Get Unit&apos;s SA Record</label>
+        <locationX>176</locationX>
+        <locationY>1358</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>SA_s_Record_Loop</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Unit__c</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>allUnitIds</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>CreatedDate</field>
+            <operator>GreaterThanOrEqualTo</operator>
+            <value>
+                <elementReference>last7days</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ServiceAppointment</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordUpdates>
         <name>update_service_resource</name>
         <label>update service resource</label>
         <locationX>176</locationX>
-        <locationY>2390</locationY>
+        <locationY>1958</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -423,60 +377,12 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>AppointmentCount</name>
-        <dataType>SObject</dataType>
-        <isCollection>true</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <objectType>ServiceAppointment</objectType>
-    </variables>
-    <variables>
-        <name>appointmentCountCheck</name>
-        <dataType>SObject</dataType>
-        <isCollection>true</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <objectType>ServiceAppointment</objectType>
-    </variables>
-    <variables>
-        <name>appointmentCountfromWO</name>
-        <dataType>SObject</dataType>
-        <isCollection>true</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <objectType>ServiceAppointment</objectType>
-    </variables>
-    <variables>
         <name>AppointmentId</name>
         <dataType>SObject</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>AssignedResource</objectType>
-    </variables>
-    <variables>
-        <name>checkFTFcount</name>
-        <dataType>Number</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <scale>0</scale>
-    </variables>
-    <variables>
-        <name>countWo</name>
-        <dataType>Number</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <scale>0</scale>
-    </variables>
-    <variables>
-        <name>FTF</name>
-        <dataType>Number</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <scale>2</scale>
     </variables>
     <variables>
         <name>id</name>
@@ -529,6 +435,13 @@
     </variables>
     <variables>
         <name>unitIds</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>UnitIdsForFTFCount</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
