@@ -1,11 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>59.0</apiVersion>
+    <assignments>
+        <name>Assignment_3</name>
+        <label>Assignment 3</label>
+        <locationX>490</locationX>
+        <locationY>1271</locationY>
+        <assignmentItems>
+            <assignToReference>Loop3.NextSuggestedMaintenanceDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop3.StartDate</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop3</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>MP_Id_storage</name>
+        <label>MP Id storage</label>
+        <locationX>138</locationX>
+        <locationY>647</locationY>
+        <assignmentItems>
+            <assignToReference>MPIds</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>LoopOver_MA_of_Unit.MaintenancePlanId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>LoopOver_MA_of_Unit</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>MPIdStore</name>
+        <label>MPIdStore</label>
+        <locationX>490</locationX>
+        <locationY>647</locationY>
+        <assignmentItems>
+            <assignToReference>MPIds</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>LoopOverMA.MaintenancePlan.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>LoopOverMA</targetReference>
+        </connector>
+    </assignments>
+    <collectionProcessors>
+        <name>Collection_Filter_1</name>
+        <elementSubtype>FilterCollectionProcessor</elementSubtype>
+        <label>Collection Filter 1</label>
+        <locationX>402</locationX>
+        <locationY>1055</locationY>
+        <assignNextValueToReference>currentItem_Collection_Filter_1</assignNextValueToReference>
+        <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
+        <collectionReference>Get_Maintenance_Plan</collectionReference>
+        <conditionLogic>and</conditionLogic>
+        <conditions>
+            <leftValueReference>currentItem_Collection_Filter_1.EndDate</leftValueReference>
+            <operator>GreaterThan</operator>
+            <rightValue>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </rightValue>
+        </conditions>
+        <conditions>
+            <leftValueReference>currentItem_Collection_Filter_1.StartDate</leftValueReference>
+            <operator>GreaterThanOrEqualTo</operator>
+            <rightValue>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </rightValue>
+        </conditions>
+        <connector>
+            <targetReference>Loop3</targetReference>
+        </connector>
+    </collectionProcessors>
     <decisions>
         <name>Check_if_Changes_Done_in_Checkboxes</name>
         <label>Check if Changes Done in Checkboxes</label>
-        <locationX>182</locationX>
-        <locationY>323</locationY>
+        <locationX>358</locationX>
+        <locationY>1655</locationY>
         <defaultConnector>
             <targetReference>Decision</targetReference>
         </defaultConnector>
@@ -71,8 +147,8 @@
     <decisions>
         <name>Decision</name>
         <label>Decision</label>
-        <locationX>182</locationX>
-        <locationY>623</locationY>
+        <locationX>358</locationX>
+        <locationY>1955</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Address_Check</name>
@@ -90,14 +166,134 @@
             <label>Address Check</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>IsChangedNewEqippment</name>
+        <label>IsChangedNewEqippment</label>
+        <locationX>358</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>NewEquipment</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IsNeww</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_Field_Status__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_Field_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>New Equipment</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Maintenance_Asset</targetReference>
+            </connector>
+            <label>NewEquipment</label>
+        </rules>
+        <rules>
+            <name>NewEquipment_Not_changed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IsNeww</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_Field_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>New Equipment</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.FS_Field_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>New Equipment</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Maintenance_Asset_Of_Unit</targetReference>
+            </connector>
+            <label>NewEquipment Not changed</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
     <formulas>
         <name>AddressAssignment</name>
         <dataType>String</dataType>
         <expression>IF( ISCHANGED({!$Record.Country}), {!$Record.Street} &amp; &quot;, &quot; &amp;{!$Record.City} &amp; &quot;, &quot; &amp;{!$Record.State} &amp; &quot;, &quot;&amp;{!$Record.PostalCode} &amp; &quot;, &quot;  &amp;{!$Record.Country},&apos;&apos; )</expression>
     </formulas>
+    <formulas>
+        <name>IsNeww</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNEW()</expression>
+    </formulas>
+    <formulas>
+        <name>NextDayCaluclation</name>
+        <dataType>Date</dataType>
+        <expression>{!$Flow.CurrentDate}+1</expression>
+    </formulas>
     <interviewLabel>Unit Flow {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Unit Flow</label>
+    <loops>
+        <name>Loop3</name>
+        <label>Loop3</label>
+        <locationX>402</locationX>
+        <locationY>1163</locationY>
+        <collectionReference>Collection_Filter_1</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Assignment_3</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Update_Records_6</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>LoopOver_MA_of_Unit</name>
+        <label>LoopOver MA of Unit</label>
+        <locationX>50</locationX>
+        <locationY>539</locationY>
+        <collectionReference>Get_Maintenance_Asset</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>MP_Id_storage</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Updating_MP</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>LoopOverMA</name>
+        <label>LoopOverMA</label>
+        <locationX>402</locationX>
+        <locationY>539</locationY>
+        <collectionReference>Get_Maintenance_Asset_Of_Unit</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>MPIdStore</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>StartDateLessthanCurrentDate</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -117,11 +313,112 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_Maintenance_Asset</name>
+        <label>Get Maintenance Asset</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>LoopOver_MA_of_Unit</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AssetId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>MaintenanceAsset</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Maintenance_Asset_Of_Unit</name>
+        <label>Get Maintenance Asset Of Unit</label>
+        <locationX>402</locationX>
+        <locationY>431</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>LoopOverMA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AssetId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>MaintenanceAsset</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Maintenance_Plan</name>
+        <label>Get Maintenance Plan</label>
+        <locationX>402</locationX>
+        <locationY>947</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Collection_Filter_1</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>MPIds</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>MaintenancePlan</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>StartDateLessthanCurrentDate</name>
+        <label>StartDateLessthanCurrentDate</label>
+        <locationX>402</locationX>
+        <locationY>839</locationY>
+        <connector>
+            <targetReference>Get_Maintenance_Plan</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>MPIds</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>EndDate</field>
+            <operator>GreaterThan</operator>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>StartDate</field>
+            <operator>LessThan</operator>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>NextSuggestedMaintenanceDate</field>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </inputAssignments>
+        <object>MaintenancePlan</object>
+    </recordUpdates>
     <recordUpdates>
         <name>Update</name>
         <label>Update</label>
-        <locationX>50</locationX>
-        <locationY>731</locationY>
+        <locationX>226</locationX>
+        <locationY>2063</locationY>
         <inputAssignments>
             <field>Address_Text__c</field>
             <value>
@@ -131,14 +428,24 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
+        <name>Update_Records_6</name>
+        <label>Update Records 6</label>
+        <locationX>402</locationX>
+        <locationY>1463</locationY>
+        <connector>
+            <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
+        </connector>
+        <inputReference>Collection_Filter_1</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>Update_WO</name>
         <label>Update WO</label>
-        <locationX>50</locationX>
-        <locationY>431</locationY>
+        <locationX>226</locationX>
+        <locationY>1763</locationY>
         <connector>
             <targetReference>Decision</targetReference>
         </connector>
-        <filterLogic>1 AND ( 2 AND 3) AND 4</filterLogic>
+        <filterLogic>1 AND ( 2 OR 3) AND 4</filterLogic>
         <filters>
             <field>CaseId</field>
             <operator>IsNull</operator>
@@ -172,15 +479,83 @@
         </inputAssignments>
         <inputReference>$Record.WorkOrders</inputReference>
     </recordUpdates>
-    <start>
-        <locationX>56</locationX>
-        <locationY>0</locationY>
+    <recordUpdates>
+        <name>Updating_MP</name>
+        <label>Updating MP</label>
+        <locationX>50</locationX>
+        <locationY>839</locationY>
         <connector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>MPIds</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>EndDate</field>
+            <operator>GreaterThan</operator>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>NextSuggestedMaintenanceDate</field>
+            <value>
+                <elementReference>NextDayCaluclation</elementReference>
+            </value>
+        </inputAssignments>
+        <object>MaintenancePlan</object>
+    </recordUpdates>
+    <start>
+        <locationX>232</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>IsChangedNewEqippment</targetReference>
         </connector>
         <object>Asset</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>currentItem_Collection_Filter_1</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>MaintenancePlan</objectType>
+    </variables>
+    <variables>
+        <name>mP</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>MPIDDs</name>
+        <dataType>Number</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+    </variables>
+    <variables>
+        <name>MPIds</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>StartDateStore</name>
+        <dataType>Date</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
 </Flow>
