@@ -4,7 +4,7 @@
         <name>Assign_Back_In_service</name>
         <label>Assign Back In service</label>
         <locationX>50</locationX>
-        <locationY>890</locationY>
+        <locationY>998</locationY>
         <assignmentItems>
             <assignToReference>storeShutdownLogRecords.BackInServiceDateTime__c</assignToReference>
             <operator>Assign</operator>
@@ -34,7 +34,7 @@
         <name>Assign_Unit_Status</name>
         <label>Assign Unit Status</label>
         <locationX>50</locationX>
-        <locationY>674</locationY>
+        <locationY>782</locationY>
         <assignmentItems>
             <assignToReference>storeAssetRecord.OperationalStatus__c</assignToReference>
             <operator>Assign</operator>
@@ -74,12 +74,52 @@
             <targetReference>Update_Unit_Recrod</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <description>This assignment action sets the unit to &quot;Shutdown&quot; state</description>
+        <name>Set_Unit_to_Shutdown</name>
+        <label>Set Unit to Shutdown</label>
+        <locationX>842</locationX>
+        <locationY>998</locationY>
+        <assignmentItems>
+            <assignToReference>storeAssetRecord.OperationalStatus__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Shutdown</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>storeAssetRecord.OperationalStatusReason__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Operational_Status_Reason</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Unit</targetReference>
+        </connector>
+    </assignments>
     <choices>
         <name>AwaitingCustomerProposalSignature</name>
         <choiceText>Awaiting Customer Proposal Signature</choiceText>
         <dataType>String</dataType>
         <value>
             <stringValue>Awaiting Customer Proposal Signature</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>currentResource</name>
+        <choiceText>{!currentServiceResource.Name}</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <elementReference>currentServiceResource.Id</elementReference>
+        </value>
+    </choices>
+    <choices>
+        <name>InService</name>
+        <choiceText>In Service</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>In Service</stringValue>
         </value>
     </choices>
     <choices>
@@ -104,6 +144,14 @@
         <dataType>String</dataType>
         <value>
             <stringValue>Shutdown due to Safety Judgement</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ShutdownduetovandalismMisused</name>
+        <choiceText>Shutdown due to vandalism / Misused</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Shutdown due to vandalism / Misused</stringValue>
         </value>
     </choices>
     <choices>
@@ -139,6 +187,22 @@
         </value>
     </choices>
     <choices>
+        <name>Shutdownformaintenanceactivities</name>
+        <choiceText>Shutdown for maintenance activities</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Shutdown for maintenance activities</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>ShutdownforModernizationBEX</name>
+        <choiceText>Shutdown for Modernization / BEX</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Shutdown for Modernization / BEX</stringValue>
+        </value>
+    </choices>
+    <choices>
         <name>ShutdownforParts</name>
         <choiceText>Shutdown for Parts</choiceText>
         <dataType>String</dataType>
@@ -154,14 +218,44 @@
             <stringValue>Shutdown for Repair</stringValue>
         </value>
     </choices>
+    <choices>
+        <name>Shutdownfortechnicalissuetroubleshootinginprogress</name>
+        <choiceText>Shutdown for technical issue – troubleshooting in progress</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Shutdown for technical issue – troubleshooting in progress</stringValue>
+        </value>
+    </choices>
+    <decisions>
+        <name>Checking_Operational_StatusResason_is_Inservice_or_Not</name>
+        <label>Checking Operational StatusResason is Inservice or Not</label>
+        <locationX>1238</locationX>
+        <locationY>782</locationY>
+        <defaultConnector>
+            <targetReference>Error_Message</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>NotInservices</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Operational_Status_Reason</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>InService</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Unit_Shutdown_Log</targetReference>
+            </connector>
+            <label>Not Inservices</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>Unit_Status_Check</name>
         <label>Unit Status Check</label>
-        <locationX>446</locationX>
-        <locationY>458</locationY>
-        <defaultConnector>
-            <targetReference>Shutdown_Unit</targetReference>
-        </defaultConnector>
+        <locationX>974</locationX>
+        <locationY>566</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Unit_Shutdown</name>
@@ -177,6 +271,21 @@
                 <targetReference>Back_In_Service</targetReference>
             </connector>
             <label>Unit Shutdown</label>
+        </rules>
+        <rules>
+            <name>Unit_In_Service</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>storeAssetRecord.OperationalStatus__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>In Service</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>FSL_Mobile_Unit_Status_Update_Flow</targetReference>
+            </connector>
+            <label>Unit In Service</label>
         </rules>
     </decisions>
     <description>US#958348,#956342: Updated this flow and remove on screen Back in service Validation.</description>
@@ -226,10 +335,83 @@
         </value>
     </processMetadataValues>
     <processType>FieldServiceMobile</processType>
+    <recordCreates>
+        <name>Create_Unit_Shutdown_Log</name>
+        <label>Create Unit Shutdown Log</label>
+        <locationX>842</locationX>
+        <locationY>890</locationY>
+        <assignRecordIdToReference>ShutDownId</assignRecordIdToReference>
+        <connector>
+            <targetReference>Set_Unit_to_Shutdown</targetReference>
+        </connector>
+        <faultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>ErrorsMsg</targetReference>
+        </faultConnector>
+        <inputAssignments>
+            <field>AssetId</field>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>EndTime</field>
+            <value>
+                <elementReference>Projected_Restart_Date</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Projected_Restart_Reason__c</field>
+            <value>
+                <elementReference>Projected_Restart_Reason</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ShutdownReportedBy__c</field>
+            <value>
+                <elementReference>Shutdown_Reported_By</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>StartTime</field>
+            <value>
+                <elementReference>Shutdown_Date_Time</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UnitShutdownReason__c</field>
+            <value>
+                <elementReference>Operational_Status_Reason</elementReference>
+            </value>
+        </inputAssignments>
+        <object>AssetDowntimePeriod</object>
+    </recordCreates>
+    <recordLookups>
+        <name>Get_Current_Resource</name>
+        <label>Get Current Resource</label>
+        <locationX>974</locationX>
+        <locationY>458</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Unit_Status_Check</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>RelatedRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>UserId</elementReference>
+            </value>
+        </filters>
+        <object>ServiceResource</object>
+        <outputReference>currentServiceResource</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+    </recordLookups>
     <recordLookups>
         <name>Get_Related_WO</name>
         <label>Get Related WO</label>
-        <locationX>446</locationX>
+        <locationX>974</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -259,7 +441,7 @@
     <recordLookups>
         <name>Get_Unit_Records</name>
         <label>Get Unit Records</label>
-        <locationX>446</locationX>
+        <locationX>974</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -281,11 +463,11 @@
     <recordLookups>
         <name>Get_Unit_Shutdown_Log_Rec</name>
         <label>Get Unit Shutdown Log Rec</label>
-        <locationX>446</locationX>
+        <locationX>974</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Unit_Status_Check</targetReference>
+            <targetReference>Get_Current_Resource</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -308,17 +490,27 @@
         <name>Update_shutdown_log</name>
         <label>Update shutdown log</label>
         <locationX>50</locationX>
-        <locationY>998</locationY>
+        <locationY>1106</locationY>
         <faultConnector>
             <targetReference>ErrorScreen</targetReference>
         </faultConnector>
         <inputReference>storeShutdownLogRecords</inputReference>
     </recordUpdates>
     <recordUpdates>
+        <name>Update_Unit</name>
+        <label>Update Unit</label>
+        <locationX>842</locationX>
+        <locationY>1106</locationY>
+        <faultConnector>
+            <targetReference>ErrorsMsg</targetReference>
+        </faultConnector>
+        <inputReference>storeAssetRecord</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>Update_Unit_Recrod</name>
         <label>Update Unit Recrod</label>
         <locationX>50</locationX>
-        <locationY>782</locationY>
+        <locationY>890</locationY>
         <connector>
             <targetReference>Assign_Back_In_service</targetReference>
         </connector>
@@ -332,7 +524,7 @@
         <name>Back_In_Service</name>
         <label>Back In Service</label>
         <locationX>50</locationX>
-        <locationY>566</locationY>
+        <locationY>674</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -364,10 +556,26 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>Error_Message</name>
+        <label>Error Message</label>
+        <locationX>1634</locationX>
+        <locationY>890</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>errorOp</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(163, 19, 19); font-family: &amp;quot;Segoe UI VSS (Regular)&amp;quot;, &amp;quot;Segoe UI&amp;quot;, -apple-system, BlinkMacSystemFont, Roboto, &amp;quot;Helvetica Neue&amp;quot;, Helvetica, Ubuntu, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;, &amp;quot;Segoe UI Symbol&amp;quot;; font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;Operational Status Reason&amp;nbsp;cannot be null or &apos;In-service&apos; if Operational status is &apos;Shutdown&apos;&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>ErrorScreen</name>
         <label>ErrorScreen</label>
         <locationX>314</locationX>
-        <locationY>1106</locationY>
+        <locationY>1214</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -380,30 +588,107 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
-        <name>Shutdown_Unit</name>
-        <label>Shutdown Unit</label>
-        <locationX>842</locationX>
-        <locationY>566</locationY>
-        <allowBack>false</allowBack>
+        <name>ErrorsMsg</name>
+        <label>ErrorMsg</label>
+        <locationX>1106</locationX>
+        <locationY>1214</locationY>
+        <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>false</allowPause>
+        <allowPause>true</allowPause>
         <fields>
-            <name>Shutdown_Message</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; font-family: &amp;quot;Segoe UI VSS (Regular)&amp;quot;, &amp;quot;Segoe UI&amp;quot;, -apple-system, BlinkMacSystemFont, Roboto, &amp;quot;Helvetica Neue&amp;quot;, Helvetica, Ubuntu, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;, &amp;quot;Segoe UI Symbol&amp;quot;; color: rgb(0, 0, 0);&quot;&gt;You cannot shutdown a unit directly from Unit record page. Please proceed for Service request Closeout from Work order to shutdown a Unit.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <name>ErrorMsg</name>
+            <fieldText>&lt;p&gt;{!$Flow.FaultMessage}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
-        <nextOrFinishButtonLabel>Ok</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>FSL_Mobile_Unit_Status_Update_Flow</name>
+        <label>Shutdown</label>
+        <locationX>1238</locationX>
+        <locationY>674</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Checking_Operational_StatusResason_is_Inservice_or_Not</targetReference>
+        </connector>
+        <fields>
+            <name>Operational_Status_Reason</name>
+            <choiceReferences>ShutdownforRepair</choiceReferences>
+            <choiceReferences>ShutdownforParts</choiceReferences>
+            <choiceReferences>ShutdownforInvestigation</choiceReferences>
+            <choiceReferences>ShutdownduetoSafetyJudgement</choiceReferences>
+            <choiceReferences>ShutdownforGovernmentInspection</choiceReferences>
+            <choiceReferences>ShutdownforDisasterEarthquake</choiceReferences>
+            <choiceReferences>ShutdownforDisasterOther</choiceReferences>
+            <choiceReferences>ShutdownduetoCustomerRequest</choiceReferences>
+            <choiceReferences>ShutdownduetoOtherReason</choiceReferences>
+            <choiceReferences>InService</choiceReferences>
+            <choiceReferences>AwaitingCustomerProposalSignature</choiceReferences>
+            <choiceReferences>Shutdownformaintenanceactivities</choiceReferences>
+            <choiceReferences>ShutdownduetovandalismMisused</choiceReferences>
+            <choiceReferences>Shutdownfortechnicalissuetroubleshootinginprogress</choiceReferences>
+            <choiceReferences>ShutdownforModernizationBEX</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Operational Status Reason</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Shutdown_Reported_By</name>
+            <choiceReferences>UserChoiceRecSet</choiceReferences>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>currentResource</elementReference>
+            </defaultValue>
+            <fieldText>Shutdown Reported By</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Shutdown_Date_Time</name>
+            <dataType>DateTime</dataType>
+            <defaultValue>
+                <elementReference>CurrentDateTime</elementReference>
+            </defaultValue>
+            <fieldText>Shutdown Date/Time</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Projected_Restart_Date</name>
+            <dataType>DateTime</dataType>
+            <fieldText>Projected Restart Date</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Projected_Restart_Reason</name>
+            <fieldText>Projected Restart Reason</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>320</locationX>
+        <locationX>848</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_Unit_Records</targetReference>
         </connector>
     </start>
     <status>Active</status>
+    <variables>
+        <name>currentServiceResource</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceResource</objectType>
+    </variables>
     <variables>
         <name>DummyPath</name>
         <dataType>String</dataType>
@@ -433,6 +718,13 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>ShutDownId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>storeAssetRecord</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
@@ -453,6 +745,13 @@
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>UserId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
