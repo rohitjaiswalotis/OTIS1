@@ -98,7 +98,7 @@
         <description>This Decision Will Check For Whether the Work Order is of Type Maintenance or Not .</description>
         <name>Check_For_Maintenance</name>
         <label>Check For Maintenance</label>
-        <locationX>5264</locationX>
+        <locationX>5462</locationX>
         <locationY>539</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -670,7 +670,7 @@
     <decisions>
         <name>Update_Work_Order_decision</name>
         <label>Update Work Order decision</label>
-        <locationX>3482</locationX>
+        <locationX>3614</locationX>
         <locationY>647</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -968,6 +968,42 @@
             </connector>
             <label>WO cannot complete and Parts Delivered</label>
         </rules>
+        <rules>
+            <name>Mark_WO_as_Closed_post_SPV_Review</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IsUpdated</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_Work_Order_Type__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Open Order</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_related_completed_SA_records</targetReference>
+            </connector>
+            <label>Mark WO as Closed post SPV Review</label>
+        </rules>
     </decisions>
     <description>WO Flow with Record Type Filter ( With Custom Settings )</description>
     <environments>Default</environments>
@@ -991,6 +1027,11 @@
         <name>EarlystartTimeFormula</name>
         <dataType>DateTime</dataType>
         <expression>DATETIMEVALUE({!$Record.Next_Visit_Date__c} -(60/1440))</expression>
+    </formulas>
+    <formulas>
+        <name>IsUpdated</name>
+        <dataType>Boolean</dataType>
+        <expression>!ISNEW()</expression>
     </formulas>
     <formulas>
         <name>SubjectSA</name>
@@ -1434,6 +1475,36 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>Get_related_completed_SA_records</name>
+        <label>Get related completed SA records</label>
+        <locationX>6782</locationX>
+        <locationY>755</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Closing_Triggering_WO_upon_Review</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ParentRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ServiceAppointment</object>
+        <sortField>LastModifiedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_SA</name>
         <label>Get SA</label>
         <locationX>6386</locationX>
@@ -1492,7 +1563,7 @@
     <recordUpdates>
         <name>Case_related_WO</name>
         <label>Case related WO</label>
-        <locationX>5264</locationX>
+        <locationX>5462</locationX>
         <locationY>323</locationY>
         <connector>
             <targetReference>Update_Record_Type_Maintenance</targetReference>
@@ -1549,6 +1620,28 @@
             </value>
         </inputAssignments>
         <object>ServiceAppointment</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Closing_Triggering_WO_upon_Review</name>
+        <label>Closing Triggering WO upon Review</label>
+        <locationX>6782</locationX>
+        <locationY>863</locationY>
+        <inputAssignments>
+            <field>FS_System_Reason__c</field>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Closed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SvcReqAssignedMechanic__c</field>
+            <value>
+                <elementReference>Get_related_completed_SA_records.AssignedServiceResource__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
         <name>Set_WO_status_to_OnHold_and_PartsStatus_to_WaitingForParts</name>
@@ -1688,7 +1781,7 @@
     <recordUpdates>
         <name>Update_Record_Type_Maintenance</name>
         <label>Update Record Type Maintenance</label>
-        <locationX>5264</locationX>
+        <locationX>5462</locationX>
         <locationY>431</locationY>
         <connector>
             <targetReference>Check_For_Maintenance</targetReference>
@@ -1800,7 +1893,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>5138</locationX>
+        <locationX>5336</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Case_related_WO</targetReference>
