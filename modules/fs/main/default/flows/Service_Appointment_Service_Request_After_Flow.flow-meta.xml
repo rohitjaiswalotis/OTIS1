@@ -841,7 +841,7 @@
     <textTemplates>
         <name>SupervisorNotificationTemplate</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>{!$Record.AppointmentNumber} has been accepted by Mechanic {!Loop_Service_Resources.Name} with ETA {!$Record.Initial_ETA__c} against LTA {!$Record.Latest_Time_of_Arrival__c} .</text>
+        <text>{!$Record.AppointmentNumber} has been accepted by Mechanic {!$Record.AssignedServiceResource__r.Name} with ETA {!$Record.Initial_ETA__c} against LTA {!$Record.Latest_Time_of_Arrival__c} .</text>
     </textTemplates>
     <variables>
         <name>AssignedSR</name>
