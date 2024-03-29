@@ -201,7 +201,7 @@
                 <leftValueReference>For_Each_CLI.Name__c</leftValueReference>
                 <operator>Contains</operator>
                 <rightValue>
-                    <stringValue>SUN</stringValue>
+                    <stringValue>SAT</stringValue>
                 </rightValue>
             </conditions>
             <connector>
