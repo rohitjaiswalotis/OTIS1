@@ -34,6 +34,7 @@
             <label>Appointments</label>
         </rules>
     </decisions>
+    <description>Indicates the type of Work Order - Open Order or Repairs - for the time being. Additional values can be added late</description>
     <environments>Default</environments>
     <interviewLabel>GetService {!$Flow.CurrentDateTime}</interviewLabel>
     <label>DisplayErrorMessage</label>
