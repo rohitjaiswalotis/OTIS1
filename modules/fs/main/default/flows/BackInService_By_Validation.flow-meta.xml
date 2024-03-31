@@ -39,7 +39,7 @@
     <decisions>
         <name>BackInServiceTimeChange</name>
         <label>BackInServiceTimeChange</label>
-        <locationX>380</locationX>
+        <locationX>512</locationX>
         <locationY>323</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -71,6 +71,28 @@
             </connector>
             <label>Back in</label>
         </rules>
+        <rules>
+            <name>When_checkbox_is_selected_and_route_is_not_null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.OTIS_Installation_Unit__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.RouteName__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_unit_field_status_and_reason</targetReference>
+            </connector>
+            <label>When checkbox is selected and route is not null</label>
+        </rules>
     </decisions>
     <decisions>
         <name>BackinServiceTimeCheck_Flow</name>
@@ -94,7 +116,8 @@
             <label>is past</label>
         </rules>
     </decisions>
-    <description>US958348: Back in service date time validation with respect to unit time</description>
+    <description>US958348: Back in service date time validation with respect to unit time and 
+US 935186: Unit field status &quot;OTIS Installation Unit&quot;, Status Reason field : &quot;OTIS Installation Unit Period started&quot;</description>
     <environments>Default</environments>
     <formulas>
         <name>ShiftCoverageClassMethodDataFormat</name>
@@ -127,8 +150,27 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Update_unit_field_status_and_reason</name>
+        <label>Update unit field status and reason</label>
+        <locationX>578</locationX>
+        <locationY>431</locationY>
+        <inputAssignments>
+            <field>FS_Field_Status__c</field>
+            <value>
+                <stringValue>OTIS Installation Unit</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>StatusReason</field>
+            <value>
+                <stringValue>OTIS Installation Unit Period started</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
     <start>
-        <locationX>254</locationX>
+        <locationX>386</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>BackInServiceTimeChange</targetReference>
