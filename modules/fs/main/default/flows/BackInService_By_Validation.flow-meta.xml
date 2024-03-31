@@ -155,6 +155,14 @@ US 935186: Unit field status &quot;OTIS Installation Unit&quot;, Status Reason f
         <label>Update unit field status and reason</label>
         <locationX>578</locationX>
         <locationY>431</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>FS_Field_Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>New Equipment</stringValue>
+            </value>
+        </filters>
         <inputAssignments>
             <field>FS_Field_Status__c</field>
             <value>
