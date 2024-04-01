@@ -2,24 +2,24 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>59.0</apiVersion>
     <assignments>
-        <name>Assignment_3</name>
-        <label>Assignment 3</label>
-        <locationX>490</locationX>
-        <locationY>1271</locationY>
+        <name>MP_Id_storage</name>
+        <label>MP Id storage</label>
+        <locationX>138</locationX>
+        <locationY>647</locationY>
         <assignmentItems>
-            <assignToReference>Loop3.NextSuggestedMaintenanceDate</assignToReference>
-            <operator>Assign</operator>
+            <assignToReference>MPIds</assignToReference>
+            <operator>Add</operator>
             <value>
-                <elementReference>Loop3.StartDate</elementReference>
+                <elementReference>LoopOver_MA_of_Unit.MaintenancePlanId</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Loop3</targetReference>
+            <targetReference>LoopOver_MA_of_Unit</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>Assignment_4</name>
-        <label>Assignment 4</label>
+        <name>MP_value_Assignment</name>
+        <label>MP value Assignment</label>
         <locationX>138</locationX>
         <locationY>1055</locationY>
         <assignmentItems>
@@ -55,19 +55,19 @@
         </connector>
     </assignments>
     <assignments>
-        <name>MP_Id_storage</name>
-        <label>MP Id storage</label>
-        <locationX>138</locationX>
-        <locationY>647</locationY>
+        <name>MP_Value_Assignments</name>
+        <label>MP Value Assignments</label>
+        <locationX>490</locationX>
+        <locationY>1271</locationY>
         <assignmentItems>
-            <assignToReference>MPIds</assignToReference>
-            <operator>Add</operator>
+            <assignToReference>Loop_Over_MPs.NextSuggestedMaintenanceDate</assignToReference>
+            <operator>Assign</operator>
             <value>
-                <elementReference>LoopOver_MA_of_Unit.MaintenancePlanId</elementReference>
+                <elementReference>Loop_Over_MPs.StartDate</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>LoopOver_MA_of_Unit</targetReference>
+            <targetReference>Loop_Over_MPs</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -87,9 +87,9 @@
         </connector>
     </assignments>
     <collectionProcessors>
-        <name>Collection_Filter_1</name>
+        <name>Collection_Filter_Over_MP</name>
         <elementSubtype>FilterCollectionProcessor</elementSubtype>
-        <label>Collection Filter 1</label>
+        <label>Collection Filter Over MP</label>
         <locationX>402</locationX>
         <locationY>1055</locationY>
         <assignNextValueToReference>currentItem_Collection_Filter_1</assignNextValueToReference>
@@ -104,7 +104,7 @@
             </rightValue>
         </conditions>
         <connector>
-            <targetReference>Loop3</targetReference>
+            <targetReference>Loop_Over_MPs</targetReference>
         </connector>
     </collectionProcessors>
     <decisions>
@@ -283,20 +283,6 @@
     <interviewLabel>Unit Flow {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Unit Flow</label>
     <loops>
-        <name>Loop3</name>
-        <label>Loop3</label>
-        <locationX>402</locationX>
-        <locationY>1163</locationY>
-        <collectionReference>Collection_Filter_1</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>Assignment_3</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>Update_Records_6</targetReference>
-        </noMoreValuesConnector>
-    </loops>
-    <loops>
         <name>Loop_for_Maintenance_Plan</name>
         <label>Loop for Maintenance Plan</label>
         <locationX>50</locationX>
@@ -304,10 +290,24 @@
         <collectionReference>Get_Req_MP</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>Assignment_4</targetReference>
+            <targetReference>MP_value_Assignment</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>Update_MP</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Loop_Over_MPs</name>
+        <label>Loop Over MPs</label>
+        <locationX>402</locationX>
+        <locationY>1163</locationY>
+        <collectionReference>Collection_Filter_Over_MP</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>MP_Value_Assignments</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Update_Records_6</targetReference>
         </noMoreValuesConnector>
     </loops>
     <loops>
@@ -406,7 +406,7 @@
         <locationY>947</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Collection_Filter_1</targetReference>
+            <targetReference>Collection_Filter_Over_MP</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -524,7 +524,7 @@
         <connector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
         </connector>
-        <inputReference>Collection_Filter_1</inputReference>
+        <inputReference>Collection_Filter_Over_MP</inputReference>
     </recordUpdates>
     <recordUpdates>
         <name>Update_WO</name>
