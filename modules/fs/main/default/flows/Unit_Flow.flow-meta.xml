@@ -2,22 +2,6 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>59.0</apiVersion>
     <assignments>
-        <name>Assignment_3</name>
-        <label>Assignment 3</label>
-        <locationX>490</locationX>
-        <locationY>1271</locationY>
-        <assignmentItems>
-            <assignToReference>Loop3.NextSuggestedMaintenanceDate</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Loop3.StartDate</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Loop3</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>MP_Id_storage</name>
         <label>MP Id storage</label>
         <locationX>138</locationX>
@@ -31,6 +15,59 @@
         </assignmentItems>
         <connector>
             <targetReference>LoopOver_MA_of_Unit</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>MP_value_Assignment</name>
+        <label>MP value Assignment</label>
+        <locationX>138</locationX>
+        <locationY>1055</locationY>
+        <assignmentItems>
+            <assignToReference>EndDateStoreSingleVar</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_for_Maintenance_Plan.EndDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>EndDateStoreSingleVar</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Loop_for_Maintenance_Plan.NextSuggestedMaintenanceDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>EndDateStoreSingleVar</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>MPRecordCollection</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_for_Maintenance_Plan</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_for_Maintenance_Plan</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>MP_Value_Assignments</name>
+        <label>MP Value Assignments</label>
+        <locationX>490</locationX>
+        <locationY>1271</locationY>
+        <assignmentItems>
+            <assignToReference>Loop_Over_MPs.NextSuggestedMaintenanceDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_Over_MPs.StartDate</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Over_MPs</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -50,9 +87,9 @@
         </connector>
     </assignments>
     <collectionProcessors>
-        <name>Collection_Filter_1</name>
+        <name>Collection_Filter_Over_MP</name>
         <elementSubtype>FilterCollectionProcessor</elementSubtype>
-        <label>Collection Filter 1</label>
+        <label>Collection Filter Over MP</label>
         <locationX>402</locationX>
         <locationY>1055</locationY>
         <assignNextValueToReference>currentItem_Collection_Filter_1</assignNextValueToReference>
@@ -66,15 +103,8 @@
                 <elementReference>$Flow.CurrentDate</elementReference>
             </rightValue>
         </conditions>
-        <conditions>
-            <leftValueReference>currentItem_Collection_Filter_1.StartDate</leftValueReference>
-            <operator>GreaterThanOrEqualTo</operator>
-            <rightValue>
-                <elementReference>$Flow.CurrentDate</elementReference>
-            </rightValue>
-        </conditions>
         <connector>
-            <targetReference>Loop3</targetReference>
+            <targetReference>Loop_Over_MPs</targetReference>
         </connector>
     </collectionProcessors>
     <decisions>
@@ -215,17 +245,17 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.FS_Field_Status__c</leftValueReference>
+                <leftValueReference>$Record__Prior.FS_Field_Status__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>New Equipment</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record__Prior.FS_Field_Status__c</leftValueReference>
-                <operator>EqualTo</operator>
+                <leftValueReference>$Record.FS_Field_Status__c</leftValueReference>
+                <operator>IsChanged</operator>
                 <rightValue>
-                    <stringValue>New Equipment</stringValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -248,19 +278,33 @@
     <formulas>
         <name>NextDayCaluclation</name>
         <dataType>Date</dataType>
-        <expression>{!$Flow.CurrentDate}+1</expression>
+        <expression>{!Loop_for_Maintenance_Plan.EndDate}+1</expression>
     </formulas>
     <interviewLabel>Unit Flow {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Unit Flow</label>
     <loops>
-        <name>Loop3</name>
-        <label>Loop3</label>
-        <locationX>402</locationX>
-        <locationY>1163</locationY>
-        <collectionReference>Collection_Filter_1</collectionReference>
+        <name>Loop_for_Maintenance_Plan</name>
+        <label>Loop for Maintenance Plan</label>
+        <locationX>50</locationX>
+        <locationY>947</locationY>
+        <collectionReference>Get_Req_MP</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>Assignment_3</targetReference>
+            <targetReference>MP_value_Assignment</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Update_MP</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Loop_Over_MPs</name>
+        <label>Loop Over MPs</label>
+        <locationX>402</locationX>
+        <locationY>1163</locationY>
+        <collectionReference>Collection_Filter_Over_MP</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>MP_Value_Assignments</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>Update_Records_6</targetReference>
@@ -277,7 +321,7 @@
             <targetReference>MP_Id_storage</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>Updating_MP</targetReference>
+            <targetReference>Get_Req_MP</targetReference>
         </noMoreValuesConnector>
     </loops>
     <loops>
@@ -362,7 +406,7 @@
         <locationY>947</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Collection_Filter_1</targetReference>
+            <targetReference>Collection_Filter_Over_MP</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -370,6 +414,41 @@
             <operator>In</operator>
             <value>
                 <elementReference>MPIds</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>MaintenancePlan</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Req_MP</name>
+        <label>Get Req MP</label>
+        <locationX>50</locationX>
+        <locationY>839</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_for_Maintenance_Plan</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>MPIds</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>EndDate</field>
+            <operator>GreaterThan</operator>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>StartDate</field>
+            <operator>GreaterThanOrEqualTo</operator>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -428,6 +507,16 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
+        <name>Update_MP</name>
+        <label>Update MP</label>
+        <locationX>50</locationX>
+        <locationY>1247</locationY>
+        <connector>
+            <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
+        </connector>
+        <inputReference>MPRecordCollection</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>Update_Records_6</name>
         <label>Update Records 6</label>
         <locationX>402</locationX>
@@ -435,7 +524,7 @@
         <connector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
         </connector>
-        <inputReference>Collection_Filter_1</inputReference>
+        <inputReference>Collection_Filter_Over_MP</inputReference>
     </recordUpdates>
     <recordUpdates>
         <name>Update_WO</name>
@@ -479,37 +568,6 @@
         </inputAssignments>
         <inputReference>$Record.WorkOrders</inputReference>
     </recordUpdates>
-    <recordUpdates>
-        <name>Updating_MP</name>
-        <label>Updating MP</label>
-        <locationX>50</locationX>
-        <locationY>839</locationY>
-        <connector>
-            <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>In</operator>
-            <value>
-                <elementReference>MPIds</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>EndDate</field>
-            <operator>GreaterThan</operator>
-            <value>
-                <elementReference>$Flow.CurrentDate</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>NextSuggestedMaintenanceDate</field>
-            <value>
-                <elementReference>NextDayCaluclation</elementReference>
-            </value>
-        </inputAssignments>
-        <object>MaintenancePlan</object>
-    </recordUpdates>
     <start>
         <locationX>232</locationX>
         <locationY>0</locationY>
@@ -528,6 +586,20 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>MaintenancePlan</objectType>
+    </variables>
+    <variables>
+        <name>EndDatestore</name>
+        <dataType>Date</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>EndDateStoreSingleVar</name>
+        <dataType>Date</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>mP</name>
@@ -550,6 +622,14 @@
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>MPRecordCollection</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>MaintenancePlan</objectType>
     </variables>
     <variables>
         <name>StartDateStore</name>
