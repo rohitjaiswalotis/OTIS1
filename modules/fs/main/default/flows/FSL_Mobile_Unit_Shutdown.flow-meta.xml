@@ -540,6 +540,7 @@
             </defaultValue>
             <fieldText>Back In Service By</fieldText>
             <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -550,6 +551,7 @@
             </defaultValue>
             <fieldText>Back In Service Date/Time</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -634,6 +636,7 @@
             <dataType>String</dataType>
             <fieldText>Operational Status Reason</fieldText>
             <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -645,6 +648,7 @@
             </defaultValue>
             <fieldText>Shutdown Reported By</fieldText>
             <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -655,6 +659,7 @@
             </defaultValue>
             <fieldText>Shutdown Date/Time</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -662,12 +667,18 @@
             <dataType>DateTime</dataType>
             <fieldText>Projected Restart Date</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
+            <validationRule>
+                <errorMessage>&lt;p&gt;Projected Restart Date/Time should not be the Past Date/Time.&lt;/p&gt;</errorMessage>
+                <formulaExpression>{!Projected_Restart_Date} &gt; {!CurrentDateTime}</formulaExpression>
+            </validationRule>
         </fields>
         <fields>
             <name>Projected_Restart_Reason</name>
             <fieldText>Projected Restart Reason</fieldText>
             <fieldType>LargeTextArea</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
         </fields>
         <showFooter>true</showFooter>
