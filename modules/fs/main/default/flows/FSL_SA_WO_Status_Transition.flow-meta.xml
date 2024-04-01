@@ -327,7 +327,7 @@
         <locationY>539</locationY>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>FS_Work_Order_Type__c</field>
+            <field>FS_WorkOderType__c</field>
             <operator>NotEqualTo</operator>
             <value>
                 <stringValue>Open Order</stringValue>
