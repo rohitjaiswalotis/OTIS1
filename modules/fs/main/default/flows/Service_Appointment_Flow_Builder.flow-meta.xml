@@ -855,7 +855,7 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.WorkOrder__r.FS_Work_Order_Type__c</leftValueReference>
+                <leftValueReference>$Record.WorkOrder__r.FS_WorkOderType__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Open Order</stringValue>
