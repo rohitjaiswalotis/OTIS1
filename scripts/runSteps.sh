@@ -729,6 +729,14 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 					# success
 					if [[ $apexStepResultCode -eq 0 ]]; then
 						
+						# grab return values from execution logs (if any)
+						echo "$APEX_EXEC_RESPONSE" | 
+							jq -r ".result.logs // empty" | 
+							grep '|USER_DEBUG|' | 
+							grep -i 'ApexScriptReturnValue:' | 
+							grep -oi "\{.*\}" | 
+							jq -r '. | to_entries | .[] | .key + "=" + (.value | @sh)' >> ${stepReturnProperties}
+						
 						echo "Apex script '$apexFileName' has been successfully executed."
 						
 						break;
@@ -1504,7 +1512,7 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
     
     
     # define variables from return file produced by step processing (if any)
-    if [[ -f "$stepReturnProperties" ]]; then
+    if [[ -s "$stepReturnProperties" ]]; then
         echo "Defining variables from return file..."
         defineVarsFromProps "$stepReturnProperties"
     fi
