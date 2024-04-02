@@ -1,74 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <actionCalls>
-        <name>Send_Message_to_supervisor</name>
-        <label>Send Message to supervisor</label>
-        <locationX>666</locationX>
-        <locationY>863</locationY>
-        <actionName>liveMessageNotification</actionName>
-        <actionType>liveMessageNotification</actionType>
-        <connector>
-            <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
-        </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <inputParameters>
-            <name>templateDeveloperName</name>
-            <value>
-                <elementReference>MessagingTemplate</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>channelDeveloperName</name>
-            <value>
-                <elementReference>MessagingChannel</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>contextRecordId</name>
-            <value>
-                <elementReference>$Record.Id</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>recipientRecordId</name>
-            <value>
-                <elementReference>get_Supervisor_numbers.Id</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>recipientPhone</name>
-            <value>
-                <elementReference>get_Supervisor_numbers.MobileNumber__c</elementReference>
-            </value>
-        </inputParameters>
-        <nameSegment>liveMessageNotification</nameSegment>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-        <versionSegment>1</versionSegment>
-    </actionCalls>
     <apiVersion>59.0</apiVersion>
-    <assignments>
-        <name>Assigning_message_template_and_channel</name>
-        <label>Assigning message template and channel</label>
-        <locationX>666</locationX>
-        <locationY>755</locationY>
-        <assignmentItems>
-            <assignToReference>MessagingChannel</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Setup.Otis_Settings__c.US_MessagingChannel__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>MessagingTemplate</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Shutdown_Notification</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Send_Message_to_supervisor</targetReference>
-        </connector>
-    </assignments>
     <assignments>
         <name>MP_Id_storage</name>
         <label>MP Id storage</label>
@@ -602,7 +534,7 @@
         <locationY>647</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Assigning_message_template_and_channel</targetReference>
+            <targetReference>send_sms_to_supervisor</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -740,6 +672,35 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>send_sms_to_supervisor</name>
+        <label>send sms to supervisor</label>
+        <locationX>666</locationX>
+        <locationY>755</locationY>
+        <connector>
+            <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
+        </connector>
+        <flowName>Notification_to_Supervisor</flowName>
+        <inputAssignments>
+            <name>Mobile</name>
+            <value>
+                <elementReference>get_Supervisor_numbers.MobileNumber__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>RecordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>SupervisorId</name>
+            <value>
+                <elementReference>get_service_resource.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
     <variables>
         <name>currentItem_Collection_Filter_1</name>
         <dataType>SObject</dataType>
