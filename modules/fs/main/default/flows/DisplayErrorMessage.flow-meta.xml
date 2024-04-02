@@ -73,7 +73,7 @@
         <connector>
             <targetReference>Has_Appointment</targetReference>
         </connector>
-        <filterLogic>or</filterLogic>
+        <filterLogic>(1 OR 2 OR 3) AND 4</filterLogic>
         <filters>
             <field>Status</field>
             <operator>EqualTo</operator>
@@ -93,6 +93,13 @@
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>ParentRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
