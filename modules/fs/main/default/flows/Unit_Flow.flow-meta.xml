@@ -110,7 +110,7 @@
     <decisions>
         <name>Check_if_Changes_Done_in_Checkboxes</name>
         <label>Check if Changes Done in Checkboxes</label>
-        <locationX>358</locationX>
+        <locationX>490</locationX>
         <locationY>1655</locationY>
         <defaultConnector>
             <targetReference>Decision</targetReference>
@@ -177,7 +177,7 @@
     <decisions>
         <name>Decision</name>
         <label>Decision</label>
-        <locationX>358</locationX>
+        <locationX>490</locationX>
         <locationY>1955</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -199,7 +199,7 @@
     <decisions>
         <name>IsChangedNewEqippment</name>
         <label>IsChangedNewEqippment</label>
-        <locationX>358</locationX>
+        <locationX>490</locationX>
         <locationY>323</locationY>
         <defaultConnector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
@@ -263,7 +263,37 @@
             </connector>
             <label>NewEquipment Not changed</label>
         </rules>
+        <rules>
+            <name>Unit_status_is_changed_to_shutdown</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.OperationalStatus__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.OperationalStatus__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Shutdown</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.LastModifiedBy.Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Field Service Mechanic</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>get_service_resource</targetReference>
+            </connector>
+            <label>Unit status is changedto shutdown</label>
+        </rules>
     </decisions>
+    <description>Added one branch regarding US 909355</description>
     <environments>Default</environments>
     <formulas>
         <name>AddressAssignment</name>
@@ -421,6 +451,27 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>get_PCG</name>
+        <label>get PCG</label>
+        <locationX>666</locationX>
+        <locationY>539</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>get_Supervisor_numbers</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>get_service_resource.IndividualCoverage__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ServiceCrew</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Req_MP</name>
         <label>Get Req MP</label>
         <locationX>50</locationX>
@@ -453,6 +504,48 @@
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>MaintenancePlan</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>get_service_resource</name>
+        <label>get service resource</label>
+        <locationX>666</locationX>
+        <locationY>431</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>get_PCG</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>RelatedRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.LastModifiedBy.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ServiceResource</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>get_Supervisor_numbers</name>
+        <label>get Supervisor numbers</label>
+        <locationX>666</locationX>
+        <locationY>647</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>send_sms_to_supervisor</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>get_PCG.Supervisor__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ServiceResource</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
@@ -496,7 +589,7 @@
     <recordUpdates>
         <name>Update</name>
         <label>Update</label>
-        <locationX>226</locationX>
+        <locationX>358</locationX>
         <locationY>2063</locationY>
         <inputAssignments>
             <field>Address_Text__c</field>
@@ -529,7 +622,7 @@
     <recordUpdates>
         <name>Update_WO</name>
         <label>Update WO</label>
-        <locationX>226</locationX>
+        <locationX>358</locationX>
         <locationY>1763</locationY>
         <connector>
             <targetReference>Decision</targetReference>
@@ -569,7 +662,7 @@
         <inputReference>$Record.WorkOrders</inputReference>
     </recordUpdates>
     <start>
-        <locationX>232</locationX>
+        <locationX>364</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>IsChangedNewEqippment</targetReference>
@@ -579,6 +672,35 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>send_sms_to_supervisor</name>
+        <label>send sms to supervisor</label>
+        <locationX>666</locationX>
+        <locationY>755</locationY>
+        <connector>
+            <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
+        </connector>
+        <flowName>Notification_to_Supervisor</flowName>
+        <inputAssignments>
+            <name>Mobile</name>
+            <value>
+                <elementReference>get_Supervisor_numbers.MobileNumber__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>RecordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>SupervisorId</name>
+            <value>
+                <elementReference>get_service_resource.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
     <variables>
         <name>currentItem_Collection_Filter_1</name>
         <dataType>SObject</dataType>
@@ -600,6 +722,20 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>MessagingChannel</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>MessagingTemplate</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
     </variables>
     <variables>
         <name>mP</name>
