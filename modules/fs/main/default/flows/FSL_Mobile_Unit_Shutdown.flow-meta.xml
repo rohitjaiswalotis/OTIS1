@@ -117,10 +117,10 @@
     </assignments>
     <choices>
         <name>AwaitingCustomerProposalSignature</name>
-        <choiceText>Awaiting Customer Proposal Signature</choiceText>
+        <choiceText>Shutdown Awaiting Customer Proposal Signature</choiceText>
         <dataType>String</dataType>
         <value>
-            <stringValue>Awaiting Customer Proposal Signature</stringValue>
+            <stringValue>Shutdown Awaiting Customer Proposal Signature</stringValue>
         </value>
     </choices>
     <choices>
