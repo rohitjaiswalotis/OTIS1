@@ -5,7 +5,7 @@
         <name>Check_Record_Type</name>
         <label>Check Record Type</label>
         <locationX>182</locationX>
-        <locationY>503</locationY>
+        <locationY>803</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_Update_SA_fields_from_Unit_Fields</targetReference>
         </defaultConnector>
@@ -24,6 +24,31 @@
                 <targetReference>Update_SA_fields_from_Unit_Fields</targetReference>
             </connector>
             <label>Maintenance</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Route_Empty</name>
+        <label>Is Route Empty</label>
+        <locationX>182</locationX>
+        <locationY>503</locationY>
+        <defaultConnector>
+            <targetReference>Check_Record_Type</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ServiceTerritoryId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Route_On_SA</targetReference>
+            </connector>
+            <label>yes</label>
         </rules>
     </decisions>
     <description>US#911837 Update SA record with WO flow</description>
@@ -53,7 +78,7 @@
         <name>Copy_1_of_Update_SA_fields_from_Unit_Fields</name>
         <label>Copy 1 of Update SA fields from Unit Fields</label>
         <locationX>314</locationX>
-        <locationY>611</locationY>
+        <locationY>911</locationY>
         <inputAssignments>
             <field>BuildingId__c</field>
             <value>
@@ -99,10 +124,26 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
+        <name>Update_Route_On_SA</name>
+        <label>Update Route On SA</label>
+        <locationX>50</locationX>
+        <locationY>611</locationY>
+        <connector>
+            <targetReference>Check_Record_Type</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>ServiceTerritoryId</field>
+            <value>
+                <elementReference>$Record.WorkOrder__r.ServiceTerritoryId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>Update_SA_fields_from_Unit_Fields</name>
         <label>Update SA fields from Unit Fields</label>
         <locationX>50</locationX>
-        <locationY>611</locationY>
+        <locationY>911</locationY>
         <inputAssignments>
             <field>BuildingId__c</field>
             <value>
@@ -147,7 +188,7 @@
         <locationX>182</locationX>
         <locationY>395</locationY>
         <connector>
-            <targetReference>Check_Record_Type</targetReference>
+            <targetReference>Is_Route_Empty</targetReference>
         </connector>
         <inputAssignments>
             <field>Unit__c</field>
