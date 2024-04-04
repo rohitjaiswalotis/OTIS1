@@ -87,7 +87,7 @@
             <label>yes</label>
         </rules>
     </decisions>
-    <description>US 909355, Sending notification to supervisor when mechanic update the unit status</description>
+    <description>US 909355 Sending notification to supervisor when mechanic update the unit status in FSL</description>
     <environments>Default</environments>
     <formulas>
         <name>operationalstatusreason</name>
