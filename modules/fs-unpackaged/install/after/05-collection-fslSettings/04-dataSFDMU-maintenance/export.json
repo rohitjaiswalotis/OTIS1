@@ -53,12 +53,6 @@
 		},
 		
 		{
-			"query": "SELECT Id, FS_Code__c, FS_Company__c, FS_ContractCategory__c, FS_Frequency__c, FS_Phase__c, FS_ProductClassification__c, FS_VisitPerYear__c, FS_WorkType__c, FS_Work_Type_Name__c FROM FS_MaintenanceTemplate__c",
-			"operation": "Upsert",
-			"externalId": "FS_Code__c;FS_Company__c;FS_ContractCategory__c;FS_Frequency__c;FS_Phase__c;FS_ProductClassification__c;FS_VisitPerYear__c"
-		},
-		
-		{
 			"query": "SELECT Id, Name, DurationType, DurationInMinutes, EstimatedDuration, ShouldAutoCreateSvcAppt, ServiceReportTemplateId FROM WorkType",
 			"operation": "Upsert",
 			"externalId": "Name;DurationType;DurationInMinutes"
