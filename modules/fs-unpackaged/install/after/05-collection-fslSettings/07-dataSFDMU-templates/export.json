@@ -1,0 +1,39 @@
+{
+	
+	"allOrNone" : true,
+	
+	"objects": [
+		
+		{
+			"query": "SELECT Id, Name FROM Account WHERE Name = 'Account Template (DO NOT USE)'",
+			"operation": "Upsert",
+			"externalId": "Name"
+		},
+		
+		{
+			"query": "SELECT Id, Name, IsActive FROM Product2 WHERE Name = 'Product Template'",
+			"operation": "Upsert",
+			"externalId": "Name"
+		},
+		
+		{
+			"query": "SELECT Id, Name, Pricebook2Id, Product2Id, UnitPrice, UseStandardPrice, IsActive FROM PricebookEntry WHERE Product2.Name = 'Product Template' AND Pricebook2.Name = 'Standard Price Book' AND Pricebook2.IsStandard = true",
+			"operation": "Upsert",
+			"externalId": "Name;Product2.Name;Pricebook2.Name"
+		},
+		
+		{
+			"query": "SELECT Id, Name, AccountId, Pricebook2Id, StartDate, EndDate FROM ServiceContract WHERE Name = 'Otis Installation Service Contract Template for <Company Name>' AND Account.Name = 'Account Template (DO NOT USE)'",
+			"operation": "Upsert",
+			"externalId": "Name;Account.Name"
+		},
+		
+		{
+			"query": "SELECT Id, Name__c, PricebookEntryId, Quantity, Type__c, ServiceContractId, UnitPrice FROM ContractLineItem WHERE ServiceContract.Name = 'Otis Installation Service Contract Template for <Company Name>' AND ServiceContract.Account.Name = 'Account Template (DO NOT USE)'",
+			"operation": "Upsert",
+			"externalId": "Name__c;ServiceContract.Name;ServiceContract.Account.Name"
+		}
+		
+	]
+	
+}
