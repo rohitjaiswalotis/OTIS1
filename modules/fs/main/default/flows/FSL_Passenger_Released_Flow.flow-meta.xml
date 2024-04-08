@@ -117,6 +117,11 @@
     </decisions>
     <description>US #913818 - #913817 - FSL Passenger Released Flow</description>
     <environments>Default</environments>
+    <formulas>
+        <name>Time15minprior</name>
+        <dataType>DateTime</dataType>
+        <expression>{!$Flow.CurrentDateTime}-(15/1440)</expression>
+    </formulas>
     <interviewLabel>FSL Passenger Released Flow {!$Flow.CurrentDateTime}</interviewLabel>
     <label>FSL Passenger Released Flow</label>
     <processMetadataValues>
@@ -233,7 +238,7 @@
         <inputAssignments>
             <field>ConfirmedPassengerRelease__c</field>
             <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
+                <elementReference>Passenger_Rescue_Datetime</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -245,7 +250,7 @@
         <inputAssignments>
             <field>SvcReqRescueDateTime__c</field>
             <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
+                <elementReference>Passenger_Rescue_Datetime</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -325,6 +330,20 @@
             <fieldType>InputField</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Passenger_Rescue_Datetime</name>
+            <dataType>DateTime</dataType>
+            <defaultValue>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </defaultValue>
+            <fieldText>Passenger Rescue Datetime</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+            <validationRule>
+                <errorMessage>&lt;p&gt;Release time should not be more than 15 mins in past from current time&lt;/p&gt;</errorMessage>
+                <formulaExpression>{!Passenger_Rescue_Datetime}&gt;{!Time15minprior}</formulaExpression>
+            </validationRule>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
