@@ -37,6 +37,19 @@
             <targetReference>Get_Building</targetReference>
         </connector>
     </assignments>
+    <customErrors>
+        <name>ErrorMessage</name>
+        <label>ErrorMessage</label>
+        <locationX>325</locationX>
+        <locationY>935</locationY>
+        <connector>
+            <targetReference>WorkOrder_RecordType_Service_Request</targetReference>
+        </connector>
+        <customErrorMessages>
+            <errorMessage>SA {!Get_AR_with_same_SR.ServiceAppointment.AppointmentNumber} is already in same status. Please correct status of earlier SA &amp; try again</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
     <decisions>
         <name>Check_for_AR_record</name>
         <label>Check for AR record</label>
