@@ -2,6 +2,7 @@
 Set<String> PERMISSION_SETS_TO_ASSIGN = 
 	new Set<String> {
 		'force.FieldServiceMobileStandardPermSet',
+		'FSL_Dispatcher_Permissions',
 		'FSL_Dispatcher_License',
 		'FSL_Agent_Permissions',
 		'FSL_Agent_License',
