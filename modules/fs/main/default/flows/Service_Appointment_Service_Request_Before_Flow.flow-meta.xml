@@ -5,7 +5,7 @@
         <name>Assign_the_Latitude_and_Longitude_Value</name>
         <label>Assign the Latitude and Longitude Value</label>
         <locationX>50</locationX>
-        <locationY>1043</locationY>
+        <locationY>1751</locationY>
         <assignmentItems>
             <assignToReference>$Record.Latitude</assignToReference>
             <operator>Assign</operator>
@@ -25,7 +25,7 @@
         <name>Assign_WorkOrder</name>
         <label>Assign WorkOrder</label>
         <locationX>182</locationX>
-        <locationY>719</locationY>
+        <locationY>1427</locationY>
         <assignmentItems>
             <assignToReference>$Record.WorkOrder__c</assignToReference>
             <operator>Assign</operator>
@@ -37,11 +37,81 @@
             <targetReference>Get_Building</targetReference>
         </connector>
     </assignments>
+    <customErrors>
+        <name>ErrorMessage</name>
+        <label>ErrorMessage</label>
+        <locationX>325</locationX>
+        <locationY>935</locationY>
+        <connector>
+            <targetReference>WorkOrder_RecordType_Service_Request</targetReference>
+        </connector>
+        <customErrorMessages>
+            <errorMessage>SA {!Get_AR_with_same_SR.ServiceAppointment.AppointmentNumber} is already in same status. Please correct status of earlier SA &amp; try again</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <decisions>
+        <name>Check_for_AR_record</name>
+        <label>Check for AR record</label>
+        <locationX>457</locationX>
+        <locationY>827</locationY>
+        <defaultConnector>
+            <targetReference>WorkOrder_RecordType_Service_Request</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>If_Not_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_AR_with_same_SR</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>ErrorMessage</targetReference>
+            </connector>
+            <label>If Not Null</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_SA_Status</name>
+        <label>Check SA Status</label>
+        <locationX>611</locationX>
+        <locationY>503</locationY>
+        <defaultConnector>
+            <targetReference>WorkOrder_RecordType_Service_Request</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>If_Status_Is_Enroute_OR_Onsite</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Enroute</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Onsite</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_AR_of_Current_Record</targetReference>
+            </connector>
+            <label>If Status Is Enroute OR Onsite</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>Created_Updated</name>
         <label>Created/Updated ?</label>
         <locationX>380</locationX>
-        <locationY>611</locationY>
+        <locationY>1319</locationY>
         <defaultConnector>
             <targetReference>Update_Accepted_and_ETA_Time_difference</targetReference>
         </defaultConnector>
@@ -66,7 +136,7 @@
         <name>Is_Building_Present</name>
         <label>Is Building Present ?</label>
         <locationX>182</locationX>
-        <locationY>935</locationY>
+        <locationY>1643</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Present_Building</name>
@@ -110,7 +180,7 @@
         <name>WorkOrder_RecordType_Service_Request</name>
         <label>WorkOrder RecordType | Service Request ?</label>
         <locationX>611</locationX>
-        <locationY>503</locationY>
+        <locationY>1211</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>YES_Service_Request</name>
@@ -172,10 +242,63 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
+        <name>Get_AR_of_Current_Record</name>
+        <label>Get AR of Current Record</label>
+        <locationX>457</locationX>
+        <locationY>611</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_AR_with_same_SR</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ServiceAppointmentId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>AssignedResource</object>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_AR_with_same_SR</name>
+        <label>Get AR with same SR</label>
+        <locationX>457</locationX>
+        <locationY>719</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_for_AR_record</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ServiceResourceId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_AR_of_Current_Record.ServiceResourceId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>FS_SAStatus__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Status</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>AssignedResource</object>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Building</name>
         <label>Get | Building</label>
         <locationX>182</locationX>
-        <locationY>827</locationY>
+        <locationY>1535</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Is_Building_Present</targetReference>
@@ -199,7 +322,7 @@
         <locationY>395</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>WorkOrder_RecordType_Service_Request</targetReference>
+            <targetReference>Check_SA_Status</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -217,7 +340,7 @@
         <name>Update_Accepted_and_ETA_Time_difference</name>
         <label>Update Accepted and ETA Time difference</label>
         <locationX>578</locationX>
-        <locationY>719</locationY>
+        <locationY>1427</locationY>
         <inputAssignments>
             <field>Appointment_Accepted_Date_Time__c</field>
             <value>
