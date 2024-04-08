@@ -1644,6 +1644,52 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
+        <description>This Update component will work when SPV cancel the WO</description>
+        <name>Mark_For_RM_Review</name>
+        <label>Mark For RM Review</label>
+        <locationX>5462</locationX>
+        <locationY>323</locationY>
+        <connector>
+            <targetReference>Case_related_WO</targetReference>
+        </connector>
+        <filterLogic>(1 OR 2) AND 3 AND 4</filterLogic>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Setup.OTISCustomSettings__c.Work_Order_Maintenance_Record_Type__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Setup.OTISCustomSettings__c.Work_Order_Service_Request_Record_Type__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>FS_CancellationReason__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <elementReference>$Record__Prior.FS_CancellationReason__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>FS_CancellationReason__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Mark_For_RM_Review__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>Set_WO_status_to_OnHold_and_PartsStatus_to_WaitingForParts</name>
         <label>Set WO status to OnHold and PartsStatus to WaitingForParts</label>
         <locationX>4802</locationX>
