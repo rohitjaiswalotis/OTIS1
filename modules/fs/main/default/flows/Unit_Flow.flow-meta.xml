@@ -271,7 +271,8 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Update_Unit3</targetReference>
+                <isGoTo>true</isGoTo>
+                <targetReference>Copy_2_of_Update_Unit</targetReference>
             </connector>
             <label>Yes</label>
         </rules>
@@ -1049,23 +1050,6 @@
         <name>Update_Unit2</name>
         <label>Update Unit</label>
         <locationX>2778</locationX>
-        <locationY>647</locationY>
-        <connector>
-            <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>FS_Field_Status__c</field>
-            <value>
-                <stringValue>Handover</stringValue>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record</inputReference>
-    </recordUpdates>
-    <recordUpdates>
-        <description>Field Status  = Handover</description>
-        <name>Update_Unit3</name>
-        <label>Update Unit</label>
-        <locationX>3042</locationX>
         <locationY>647</locationY>
         <connector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
