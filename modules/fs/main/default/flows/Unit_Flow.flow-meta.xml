@@ -172,6 +172,9 @@
         <label>Decision</label>
         <locationX>2272</locationX>
         <locationY>1847</locationY>
+        <defaultConnector>
+            <targetReference>Unit_Suspension</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Address_Check</name>
@@ -628,6 +631,92 @@
             <label>Status New Equipment</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Unit_Suspension</name>
+        <label>Unit Suspension</label>
+        <locationX>2272</locationX>
+        <locationY>2147</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Suspend_Unit</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.FS_Suspension_StartDate__c</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Flow.CurrentDate</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_Suspension_EndDate__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>$Flow.CurrentDate</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_Suspension_StartDate__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_Suspension_EndDate__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Suspend_The_Unit</targetReference>
+            </connector>
+            <label>Suspend Unit</label>
+        </rules>
+        <rules>
+            <name>Valid_Unit</name>
+            <conditionLogic>1 AND ( 2 OR 3 ) AND 4 AND 5</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.FS_Field_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Suspended</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_Suspension_StartDate__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>$Flow.CurrentDate</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_Suspension_EndDate__c</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Flow.CurrentDate</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_Suspension_StartDate__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_Suspension_EndDate__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Valid_the_Suspended_Unit</targetReference>
+            </connector>
+            <label>Valid Unit</label>
+        </rules>
+    </decisions>
     <description>915792- Updated ( Added  unit in status &quot;OTIS Installation Unit&quot; check for  936080 )
 935198 - Updated (Added new decision &quot;OTIS Installation Unit&quot; )</description>
     <environments>Default</environments>
@@ -962,10 +1051,26 @@
         <object>MaintenancePlan</object>
     </recordUpdates>
     <recordUpdates>
+        <name>Suspend_The_Unit</name>
+        <label>Suspend The Unit</label>
+        <locationX>2008</locationX>
+        <locationY>2255</locationY>
+        <inputAssignments>
+            <field>FS_Field_Status__c</field>
+            <value>
+                <stringValue>Suspended</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>Update</name>
         <label>Update</label>
         <locationX>2140</locationX>
         <locationY>1955</locationY>
+        <connector>
+            <targetReference>Unit_Suspension</targetReference>
+        </connector>
         <inputAssignments>
             <field>Address_Text__c</field>
             <value>
@@ -1103,6 +1208,19 @@
             <field>CaseId</field>
         </inputAssignments>
         <inputReference>$Record.WorkOrders</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Valid_the_Suspended_Unit</name>
+        <label>Valid the Suspended Unit</label>
+        <locationX>2272</locationX>
+        <locationY>2255</locationY>
+        <inputAssignments>
+            <field>FS_Field_Status__c</field>
+            <value>
+                <stringValue>Valid</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
         <locationX>2146</locationX>
