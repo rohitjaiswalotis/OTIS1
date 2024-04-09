@@ -1,5 +1,5 @@
 /**
-* Package install handler interface
+* Field Service package install handler interface.
 */
 global interface FS_FieldServiceInstallHandler {
 	
