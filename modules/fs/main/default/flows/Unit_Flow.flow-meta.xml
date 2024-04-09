@@ -103,7 +103,7 @@
     <decisions>
         <name>Check_if_Changes_Done_in_Checkboxes</name>
         <label>Check if Changes Done in Checkboxes</label>
-        <locationX>2008</locationX>
+        <locationX>2272</locationX>
         <locationY>1547</locationY>
         <defaultConnector>
             <targetReference>Decision</targetReference>
@@ -168,31 +168,9 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Copy_2_of_Is_Running</name>
-        <label>Copy 2 of Is Running</label>
-        <locationX>1854</locationX>
-        <locationY>539</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Copy_2_of_No</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.FS_Handover_Status__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Running</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Copy_1_of_Update_Unit</targetReference>
-            </connector>
-            <label>Copy 2 of No</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>Decision</name>
         <label>Decision</label>
-        <locationX>2008</locationX>
+        <locationX>2272</locationX>
         <locationY>1847</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -239,7 +217,7 @@
     <decisions>
         <name>Is_Route_Null</name>
         <label>Is Route Null</label>
-        <locationX>2184</locationX>
+        <locationX>2646</locationX>
         <locationY>431</locationY>
         <defaultConnector>
             <targetReference>Is_Running</targetReference>
@@ -256,7 +234,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Copy_2_of_Is_Running</targetReference>
+                <targetReference>Is_Running1</targetReference>
             </connector>
             <label>Yes</label>
         </rules>
@@ -264,7 +242,7 @@
     <decisions>
         <name>Is_Running</name>
         <label>Is Running</label>
-        <locationX>2514</locationX>
+        <locationX>3042</locationX>
         <locationY>539</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -278,7 +256,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Copy_4_of_Update_Unit</targetReference>
+                <targetReference>Update_Unit2</targetReference>
             </connector>
             <label>No</label>
         </rules>
@@ -293,15 +271,52 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Copy_2_of_Copy_4_of_Update_Unit</targetReference>
+                <targetReference>Update_Unit3</targetReference>
             </connector>
             <label>Yes</label>
         </rules>
     </decisions>
     <decisions>
+        <name>Is_Running1</name>
+        <label>Is Running</label>
+        <locationX>2250</locationX>
+        <locationY>539</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Running</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.FS_Handover_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Running</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Update_Unit</targetReference>
+            </connector>
+            <label>Running</label>
+        </rules>
+        <rules>
+            <name>Not_Running</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.FS_Handover_Status__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Running</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Field_Status</targetReference>
+            </connector>
+            <label>Not Running</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>IsChangedNewEqippment</name>
         <label>Decision</label>
-        <locationX>2008</locationX>
+        <locationX>2272</locationX>
         <locationY>323</locationY>
         <defaultConnector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
@@ -322,6 +337,13 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>OTIS Installation Unit</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_CancellationEffectiveDate__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -465,6 +487,42 @@
                 <targetReference>Get_Maintenance_Asset</targetReference>
             </connector>
             <label>NewEquipment</label>
+        </rules>
+        <rules>
+            <name>Update_Cancellation_date</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Unit_Cancellation_Effective_Date__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Unit_Cancellation_Effective_Date__c</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Flow.CurrentDate</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Unit_Cancellation_Effective_Date__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_Field_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>OTIS Installation Unit</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Cancel_Related_WO_and_SA</targetReference>
+            </connector>
+            <label>Update- Unit Cancellation date</label>
         </rules>
         <rules>
             <name>Handover</name>
@@ -773,24 +831,7 @@
         <description>Field Status  = Handover</description>
         <name>Copy_1_of_Update_Unit</name>
         <label>Update Unit</label>
-        <locationX>1722</locationX>
-        <locationY>647</locationY>
-        <connector>
-            <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>FS_Field_Status__c</field>
-            <value>
-                <stringValue>Handover</stringValue>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record</inputReference>
-    </recordUpdates>
-    <recordUpdates>
-        <description>Field Status  = Handover</description>
-        <name>Copy_2_of_Copy_4_of_Update_Unit</name>
-        <label>Copy 2 of Copy 4 of Update Unit</label>
-        <locationX>2514</locationX>
+        <locationX>1986</locationX>
         <locationY>647</locationY>
         <connector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
@@ -807,7 +848,7 @@
         <description>Unit Field Status = NIS/Free  AND Status Reason = Free period started</description>
         <name>Copy_2_of_Update_Unit</name>
         <label>Update Unit</label>
-        <locationX>3042</locationX>
+        <locationX>3570</locationX>
         <locationY>431</locationY>
         <connector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
@@ -850,26 +891,9 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
-        <description>Field Status  = Handover</description>
-        <name>Copy_4_of_Update_Unit</name>
-        <label>Copy 4 of Update Unit</label>
-        <locationX>2250</locationX>
-        <locationY>647</locationY>
-        <connector>
-            <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>FS_Field_Status__c</field>
-            <value>
-                <stringValue>Handover</stringValue>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record</inputReference>
-    </recordUpdates>
-    <recordUpdates>
         <name>Process_Type_Update</name>
         <label>Process Type Update</label>
-        <locationX>3306</locationX>
+        <locationX>3834</locationX>
         <locationY>431</locationY>
         <connector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
@@ -885,7 +909,7 @@
     <recordUpdates>
         <name>Process_Type_Update1</name>
         <label>Process Type Update</label>
-        <locationX>3570</locationX>
+        <locationX>4098</locationX>
         <locationY>431</locationY>
         <connector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
@@ -939,12 +963,29 @@
     <recordUpdates>
         <name>Update</name>
         <label>Update</label>
-        <locationX>1876</locationX>
+        <locationX>2140</locationX>
         <locationY>1955</locationY>
         <inputAssignments>
             <field>Address_Text__c</field>
             <value>
                 <elementReference>AddressAssignment</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Field Status  = Handover</description>
+        <name>Update_Field_Status</name>
+        <label>Update Field Status</label>
+        <locationX>2250</locationX>
+        <locationY>647</locationY>
+        <connector>
+            <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FS_Field_Status__c</field>
+            <value>
+                <stringValue>Handover</stringValue>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -1004,9 +1045,43 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
+        <description>Field Status  = Handover</description>
+        <name>Update_Unit2</name>
+        <label>Update Unit</label>
+        <locationX>2778</locationX>
+        <locationY>647</locationY>
+        <connector>
+            <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FS_Field_Status__c</field>
+            <value>
+                <stringValue>Handover</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Field Status  = Handover</description>
+        <name>Update_Unit3</name>
+        <label>Update Unit</label>
+        <locationX>3042</locationX>
+        <locationY>647</locationY>
+        <connector>
+            <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FS_Field_Status__c</field>
+            <value>
+                <stringValue>Handover</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>Update_WO</name>
         <label>Update WO</label>
-        <locationX>1876</locationX>
+        <locationX>2140</locationX>
         <locationY>1655</locationY>
         <connector>
             <targetReference>Decision</targetReference>
@@ -1046,7 +1121,7 @@
         <inputReference>$Record.WorkOrders</inputReference>
     </recordUpdates>
     <start>
-        <locationX>1882</locationX>
+        <locationX>2146</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>IsChangedNewEqippment</targetReference>
@@ -1069,6 +1144,22 @@
             <name>ServiceContractId</name>
             <value>
                 <elementReference>$Record.FS_CurrentServiceContract__c</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <name>Cancel_Related_WO_and_SA</name>
+        <label>Cancel Related WO and SA</label>
+        <locationX>1722</locationX>
+        <locationY>431</locationY>
+        <connector>
+            <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
+        </connector>
+        <flowName>Cancel_Future_WO_SA_related_to_Service_Contract_and_Mplan</flowName>
+        <inputAssignments>
+            <name>ServiceContractId</name>
+            <value>
+                <elementReference>$Record.FS_CurrentServiceContract__r.Id</elementReference>
             </value>
         </inputAssignments>
     </subflows>
