@@ -39,7 +39,7 @@
             <assignToReference>errorMessagesForShutdownDatetime</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Shutdown Date/Time Should not be Future Date/Time.</stringValue>
+                <stringValue>Shutdown Date/Time should not be Future Date/Time.</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
