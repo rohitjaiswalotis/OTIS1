@@ -1,7 +1,7 @@
 /**
-* Core package install handler class.
+* Field Service package install handler class.
 */
-global without sharing class FS_CoreInstallHandlerImpl implements CoreInstallHandler {
+global class FS_FieldServiceInstallHandlerImpl implements FS_FieldServiceInstallHandler {
 	
 	
 	global void beforeInstall(Map<String, Object> context) {
