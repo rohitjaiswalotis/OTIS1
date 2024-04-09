@@ -5,7 +5,7 @@
         <name>Store_Maintenance_Work_Rule_Records</name>
         <label>Store Maintenance Work Rule Records</label>
         <locationX>264</locationX>
-        <locationY>1082</locationY>
+        <locationY>1190</locationY>
         <assignmentItems>
             <assignToReference>workRuleIds</assignToReference>
             <operator>Add</operator>
@@ -13,13 +13,7 @@
                 <elementReference>Iterate_Maintenance_Work_Rule</elementReference>
             </value>
         </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Iterate_Maintenance_Work_Rule.RecurrencePattern</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>workRulePattern</elementReference>
-            </value>
-        </assignmentItems>
+        
         <connector>
             <targetReference>Iterate_Maintenance_Work_Rule</targetReference>
         </connector>
@@ -41,10 +35,26 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Store_Reccurrence_pattern</name>
+        <label>Store Reccurrence pattern</label>
+        <locationX>264</locationX>
+        <locationY>1082</locationY>
+        <assignmentItems>
+            <assignToReference>Iterate_Maintenance_Work_Rule.RecurrencePattern</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>workRulePattern</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Store_Maintenance_Work_Rule_Records</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Store_Service_Appointment_Id</name>
         <label>Store Service Appointment Id</label>
         <locationX>264</locationX>
-        <locationY>2090</locationY>
+        <locationY>2198</locationY>
         <assignmentItems>
             <assignToReference>SaIds</assignToReference>
             <operator>Add</operator>
@@ -60,7 +70,7 @@
         <name>Store_Work_Order_Records</name>
         <label>Store Work Order Records</label>
         <locationX>264</locationX>
-        <locationY>1682</locationY>
+        <locationY>1790</locationY>
         <assignmentItems>
             <assignToReference>WoId</assignToReference>
             <operator>Add</operator>
@@ -92,7 +102,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Store_Maintenance_Work_Rule_Records</targetReference>
+                <targetReference>Store_Reccurrence_pattern</targetReference>
             </connector>
             <label>Not Null</label>
         </rules>
@@ -110,7 +120,7 @@
         <name>Iterate_Future_SA</name>
         <label>Iterate Future SA</label>
         <locationX>176</locationX>
-        <locationY>1982</locationY>
+        <locationY>2090</locationY>
         <collectionReference>Get_Future_SA_records</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -124,7 +134,7 @@
         <name>Iterate_Future_WorkOrder_Records</name>
         <label>Iterate Future WorkOrder Records</label>
         <locationX>176</locationX>
-        <locationY>1574</locationY>
+        <locationY>1682</locationY>
         <collectionReference>Get_Future_WO_Records1</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -185,7 +195,7 @@
         <name>Get_Future_SA_records</name>
         <label>Get Future SA records</label>
         <locationX>176</locationX>
-        <locationY>1874</locationY>
+        <locationY>1982</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Iterate_Future_SA</targetReference>
@@ -227,17 +237,17 @@
         <name>Get_Future_WO_Records1</name>
         <label>Get Future WO Records</label>
         <locationX>176</locationX>
-        <locationY>1466</locationY>
+        <locationY>1574</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Iterate_Future_WorkOrder_Records</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>ServiceContractId</field>
-            <operator>EqualTo</operator>
+            <field>MaintenancePlanId</field>
+            <operator>In</operator>
             <value>
-                <elementReference>Get_Service_Contract_Records.Id</elementReference>
+                <elementReference>MplanId</elementReference>
             </value>
         </filters>
         <filters>
@@ -346,7 +356,7 @@
         <name>Update_Future_SA</name>
         <label>Update Future SA</label>
         <locationX>176</locationX>
-        <locationY>2282</locationY>
+        <locationY>2390</locationY>
         <connector>
             <targetReference>Update_Wo_Records</targetReference>
         </connector>
@@ -370,7 +380,7 @@
         <name>Update_Maintenance_Work_Rule_Records</name>
         <label>Update Maintenance Work Rule Records</label>
         <locationX>176</locationX>
-        <locationY>1358</locationY>
+        <locationY>1466</locationY>
         <connector>
             <targetReference>Get_Future_WO_Records1</targetReference>
         </connector>
@@ -380,7 +390,7 @@
         <name>Update_Mplan_Records</name>
         <label>Update Mplan Records</label>
         <locationX>176</locationX>
-        <locationY>2498</locationY>
+        <locationY>2606</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -419,13 +429,19 @@
                 <elementReference>$Flow.CurrentDate</elementReference>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <field>StatusReason__c</field>
+            <value>
+                <stringValue>Cancelled</stringValue>
+            </value>
+        </inputAssignments>
         <object>ServiceContract</object>
     </recordUpdates>
     <recordUpdates>
         <name>Update_Wo_Records</name>
         <label>Update Wo Records</label>
         <locationX>176</locationX>
-        <locationY>2390</locationY>
+        <locationY>2498</locationY>
         <connector>
             <targetReference>Update_Mplan_Records</targetReference>
         </connector>
