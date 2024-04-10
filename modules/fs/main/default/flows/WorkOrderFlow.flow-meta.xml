@@ -191,7 +191,7 @@
                 <leftValueReference>LoopReleatedSA.Status</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <stringValue>Dispatched</stringValue>
+                    <stringValue>Onsite</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
