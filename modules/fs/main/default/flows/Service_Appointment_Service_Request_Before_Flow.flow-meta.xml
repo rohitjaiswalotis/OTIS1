@@ -177,21 +177,6 @@
                     <stringValue>0WO</stringValue>
                 </rightValue>
             </conditions>
-            <connector>
-                <targetReference>Get_WorkOrder</targetReference>
-            </connector>
-            <label>YES | WorkOrder</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Record_Type_Check</name>
-        <label>Record Type Check</label>
-        <locationX>1114</locationX>
-        <locationY>287</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>is_SR</name>
-            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.WorkOrder__r.RecordType.Id</leftValueReference>
                 <operator>EqualTo</operator>
@@ -200,9 +185,9 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Is_ParentRecord_WorkOrder1</targetReference>
+                <targetReference>Get_WorkOrder</targetReference>
             </connector>
-            <label>is SR</label>
+            <label>YES | WorkOrder</label>
         </rules>
     </decisions>
     <decisions>
