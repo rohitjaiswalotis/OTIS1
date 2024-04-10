@@ -1,5 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignments>
+        <name>AssignErrorMsg</name>
+        <label>AssignErrorMsg</label>
+        <locationX>1106</locationX>
+        <locationY>782</locationY>
+        <assignmentItems>
+            <assignToReference>ErrorForExistingBuildCon</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Building Contact record already exists. Please select other contact.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>ExistingContactSelectionScreen</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assignment2</name>
+        <label>Assignment2</label>
+        <locationX>578</locationX>
+        <locationY>674</locationY>
+        <assignmentItems>
+            <assignToReference>ErrorForExistingBuildCon</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>  Please enter 10 digits in Business Phone.</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>NewConactCreationScreen</targetReference>
+        </connector>
+    </assignments>
     <choices>
         <name>No_Choice</name>
         <choiceText>NO</choiceText>
@@ -25,9 +59,34 @@
         </value>
     </choices>
     <decisions>
+        <name>Can_we_create_new_building_contact</name>
+        <label>Can we create new building contact?</label>
+        <locationX>974</locationX>
+        <locationY>674</locationY>
+        <defaultConnector>
+            <targetReference>AssignErrorMsg</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>yes_create</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>BuildingContactRecord</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_ContactBuildingRecord_for_Existing_Contact</targetReference>
+            </connector>
+            <label>yes create</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Check_User_s_Selection</name>
         <label>Check User&apos;s Selection</label>
-        <locationX>314</locationX>
+        <locationX>644</locationX>
         <locationY>350</locationY>
         <defaultConnector>
             <targetReference>ExistingContactSelectionScreen</targetReference>
@@ -49,6 +108,31 @@
             <label>If YES</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>checking_phone_number_length</name>
+        <label>checking phone number length</label>
+        <locationX>314</locationX>
+        <locationY>566</locationY>
+        <defaultConnector>
+            <targetReference>Assignment2</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>phone_greater_lesser_than_10</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>LengthCheck</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>10.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_New_ContactRecord</targetReference>
+            </connector>
+            <label>phone greater/lesser than 10</label>
+        </rules>
+    </decisions>
     <dynamicChoiceSets>
         <name>ContactsChoiceSet</name>
         <dataType>String</dataType>
@@ -65,6 +149,12 @@
         <valueField>Id</valueField>
     </dynamicChoiceSets>
     <environments>Default</environments>
+    <formulas>
+        <name>LengthCheck</name>
+        <dataType>Number</dataType>
+        <expression>LEN({!Business_Phone})</expression>
+        <scale>0</scale>
+    </formulas>
     <interviewLabel>Building Contact {!$Flow.CurrentDateTime}</interviewLabel>
     <label>New Building Contact Information</label>
     <processMetadataValues>
@@ -89,8 +179,8 @@
     <recordCreates>
         <name>Create_ContactBuildingRecord_for_Existing_Contact</name>
         <label>Create ContactBuildingRecord for Existing Contact</label>
-        <locationX>578</locationX>
-        <locationY>566</locationY>
+        <locationX>842</locationX>
+        <locationY>782</locationY>
         <inputAssignments>
             <field>Building__c</field>
             <value>
@@ -100,7 +190,7 @@
         <inputAssignments>
             <field>Contact__c</field>
             <value>
-                <elementReference>ContactId</elementReference>
+                <elementReference>Contacts</elementReference>
             </value>
         </inputAssignments>
         <object>BuildingContact__c</object>
@@ -109,7 +199,7 @@
         <name>Create_ContactBuildingRecord_for_New_Contact</name>
         <label>Create ContactBuildingRecord for New Contact</label>
         <locationX>50</locationX>
-        <locationY>674</locationY>
+        <locationY>782</locationY>
         <inputAssignments>
             <field>Building__c</field>
             <value>
@@ -128,7 +218,7 @@
         <name>Create_New_ContactRecord</name>
         <label>Create New ContactRecord</label>
         <locationX>50</locationX>
-        <locationY>566</locationY>
+        <locationY>674</locationY>
         <assignRecordIdToReference>ContactId</assignRecordIdToReference>
         <connector>
             <targetReference>Create_ContactBuildingRecord_for_New_Contact</targetReference>
@@ -177,7 +267,7 @@
     <recordLookups>
         <name>get_Current_Building_Record</name>
         <label>get Current Building Record</label>
-        <locationX>314</locationX>
+        <locationX>644</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -197,10 +287,40 @@
         <queriedFields>Account__c</queriedFields>
         <queriedFields>Name</queriedFields>
     </recordLookups>
+    <recordLookups>
+        <name>get_exisiting_building_contacts_records</name>
+        <label>get exisiting building contacts records</label>
+        <locationX>974</locationX>
+        <locationY>566</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Can_we_create_new_building_contact</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Building__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>BuildingRecord.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Contact__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Contacts</elementReference>
+            </value>
+        </filters>
+        <object>BuildingContact__c</object>
+        <outputReference>BuildingContactRecord</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Building__c</queriedFields>
+        <queriedFields>Contact__c</queriedFields>
+    </recordLookups>
     <screens>
         <name>AskForNewContactScreen</name>
         <label>AskForNewContactScreen</label>
-        <locationX>314</locationX>
+        <locationX>644</locationX>
         <locationY>242</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -226,7 +346,7 @@
         <name>ErrorDisplay</name>
         <label>ErrorDisplay</label>
         <locationX>314</locationX>
-        <locationY>674</locationY>
+        <locationY>782</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -241,13 +361,13 @@
     <screens>
         <name>ExistingContactSelectionScreen</name>
         <label>ExistingContactSelectionScreen</label>
-        <locationX>578</locationX>
+        <locationX>974</locationX>
         <locationY>458</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Create_ContactBuildingRecord_for_Existing_Contact</targetReference>
+            <targetReference>get_exisiting_building_contacts_records</targetReference>
         </connector>
         <fields>
             <name>BuildingName</name>
@@ -263,19 +383,24 @@
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
         </fields>
+        <fields>
+            <name>ErrorMessageText</name>
+            <fieldText>&lt;p&gt;{!ErrorForExistingBuildCon}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <screens>
         <name>NewConactCreationScreen</name>
         <label>NewConactCreationScreen</label>
-        <locationX>50</locationX>
+        <locationX>314</locationX>
         <locationY>458</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Create_New_ContactRecord</targetReference>
+            <targetReference>checking_phone_number_length</targetReference>
         </connector>
         <fields>
             <name>First_Name</name>
@@ -319,20 +444,52 @@
         </fields>
         <fields>
             <name>Error</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;font-size: 11px;&quot;&gt;      Please enter 10 digits in Business Phone.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;{!ErrorForExistingBuildCon}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>188</locationX>
+        <locationX>518</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>get_Current_Building_Record</targetReference>
         </connector>
     </start>
     <status>Active</status>
+    <variables>
+        <name>Assignment</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <name>BuildingContactForScreen</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>BuildingContact__c</objectType>
+    </variables>
+    <variables>
+        <name>BuildingContactRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>BuildingContact__c</objectType>
+    </variables>
+    <variables>
+        <name>BuildingContacts</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>BuildingContact__c</objectType>
+    </variables>
     <variables>
         <name>BuildingRecord</name>
         <dataType>SObject</dataType>
@@ -343,6 +500,13 @@
     </variables>
     <variables>
         <name>ContactId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>ErrorForExistingBuildCon</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
@@ -361,5 +525,13 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>loopvariable</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>BuildingContact__c</objectType>
     </variables>
 </Flow>
