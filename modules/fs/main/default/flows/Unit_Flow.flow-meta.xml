@@ -416,13 +416,6 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.FS_Field_Status__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Handover</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
                 <leftValueReference>$Record__Prior.FS_Field_Status__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
