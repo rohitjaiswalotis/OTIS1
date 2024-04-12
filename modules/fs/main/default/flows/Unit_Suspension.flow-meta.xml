@@ -4,7 +4,7 @@
     <assignments>
         <name>Assignment_1</name>
         <label>Assignment 1</label>
-        <locationX>666</locationX>
+        <locationX>1034</locationX>
         <locationY>1284</locationY>
         <assignmentItems>
             <assignToReference>Looping_Maintenance_Plan.NextSuggestedMaintenanceDate</assignToReference>
@@ -25,9 +25,158 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Assignment_2</name>
+        <label>Assignment 2</label>
+        <locationX>303</locationX>
+        <locationY>3540</locationY>
+        <assignmentItems>
+            <assignToReference>Looping_Maintenance_Plan_to_be_hold.NextSuggestedMaintenanceDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>NextSuggestedMaintenanceDateTobeHold</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>MaintenancePlanRecordSet</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Looping_Maintenance_Plan_to_be_hold</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Looping_Maintenance_Plan_to_be_hold</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Cancelling_SA_assignment</name>
+        <label>Cancelling SA assignment</label>
+        <locationX>303</locationX>
+        <locationY>2316</locationY>
+        <assignmentItems>
+            <assignToReference>Looping_Filtered_SA.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Canceled</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>WOidSet_ToBeCancelled</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Looping_Filtered_SA.ParentRecordId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>SATobeCancelled</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Looping_Filtered_SA</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Looping_Filtered_SA</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Copy_1_of_Gather_Maintenance_Plan</name>
+        <label>Copy 1 of Gather Maintenance Plan</label>
+        <locationX>479</locationX>
+        <locationY>3048</locationY>
+        <assignmentItems>
+            <assignToReference>MaintenancePlanIdSet</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Looping_Maintenance_Asset_tobehold.MaintenancePlanId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Looping_Maintenance_Asset_tobehold</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Count_Filter_SA</name>
+        <label>Count {!Filter_SA}</label>
+        <locationX>347</locationX>
+        <locationY>1992</locationY>
+        <assignmentItems>
+            <assignToReference>Filter_SA_Count</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>Filter_SA</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Filter_SA_None_Scheduled_Dispatched</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Count_Filter_SA_Dates_less_than</name>
+        <label>Count Filter_SA_Dates_less_than</label>
+        <locationX>644</locationX>
+        <locationY>5280</locationY>
+        <assignmentItems>
+            <assignToReference>Filter_SA_Dates_less_than_Count</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>Filter_SA_Dates_less_than</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Filter_SA_Dates_less_than_Recs</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Count_Filter_SA_None</name>
+        <label>Count {!Filter_SA_None}</label>
+        <locationX>347</locationX>
+        <locationY>4032</locationY>
+        <assignmentItems>
+            <assignToReference>Filter_SA_None_Count</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>Filter_SA_None</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Filter_SA_None_Recs</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Count_Filter_SA_Scheduled_Dispatched</name>
+        <label>Count Filter_SA_Scheduled_Dispatched</label>
+        <locationX>644</locationX>
+        <locationY>4356</locationY>
+        <assignmentItems>
+            <assignToReference>Filter_SA_Scheduled_Dispatched_Count</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>Filter_SA_Scheduled_Dispatched</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Filter_SA_Scheduled_Dispatched_Recs</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Count_Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range</name>
+        <label>Count Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range</label>
+        <locationX>886</locationX>
+        <locationY>5604</locationY>
+        <assignmentItems>
+            <assignToReference>Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range_Count</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range_recs</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Gather_Maintenance_Plan</name>
         <label>Gather Maintenance Plan</label>
-        <locationX>842</locationX>
+        <locationX>1210</locationX>
         <locationY>792</locationY>
         <assignmentItems>
             <assignToReference>MaintenancePlanIdSet</assignToReference>
@@ -40,10 +189,456 @@
             <targetReference>Looping_Maintenance_Asset</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <description>Due Date = Unit.Suspension Start Date - 1</description>
+        <name>SA_DD_assignment</name>
+        <label>SA DD assignment</label>
+        <locationX>490</locationX>
+        <locationY>5604</locationY>
+        <assignmentItems>
+            <assignToReference>Looping_Filtered_SA_None_Dates_Less_Than.DueDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>NextSuggestedMaintenanceDateTobeHold</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>WOSFNotesId3</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Looping_Filtered_SA_None_Dates_Less_Than.ParentRecordId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>SADDModified</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Looping_Filtered_SA_None_Dates_Less_Than</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Looping_Filtered_SA_None_Dates_Less_Than</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Set Due Date = Unit.Suspension Start Date - 1
+Set SA.Status = &apos;None&apos;
+Set SA.Assigned Resource = BLANK
+Set SA.Scheduled Start = BLANK
+Set SA.Scheduled End = BLANK</description>
+        <name>SA_DD_None_Remove_Mechanic_assignment</name>
+        <label>SA DD,None,Remove Mechanic assignment</label>
+        <locationX>842</locationX>
+        <locationY>5928</locationY>
+        <assignmentItems>
+            <assignToReference>Looping_Filtered_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range.DueDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>NextSuggestedMaintenanceDateTobeHold</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Looping_Filtered_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range.AssignedServiceResource__c</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>UnscheduledDDSA</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Looping_Filtered_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>WOFSNotesID4</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Looping_Filtered_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range.ParentRecordId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Looping_Filtered_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>set Earliest Start Date = Unit.Suspension End Date + 1</description>
+        <name>SA_ESP_assignment</name>
+        <label>SA ESP assignment</label>
+        <locationX>138</locationX>
+        <locationY>4356</locationY>
+        <assignmentItems>
+            <assignToReference>Looping_Filtered_SA_None.EarliestStartTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>NextSuggestedMaintenanceDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>WOFSNotesUpdatedIdSet</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Looping_Filtered_SA_None.ParentRecordId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>SAESPModified</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Looping_Filtered_SA_None</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Looping_Filtered_SA_None</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>set Earliest Start Date = Unit.Suspension End Date + 1
+Set SA.Status = &apos;None&apos;
+Set SA.Assigned Resource = BLANK
+Set SA.Scheduled Start = BLANK
+Set SA.Scheduled End = BLANK</description>
+        <name>SA_ESP_None_Remove_Mechanic_assignment</name>
+        <label>SA ESP,None,Remove Mechanic assignment</label>
+        <locationX>600</locationX>
+        <locationY>4680</locationY>
+        <assignmentItems>
+            <assignToReference>Looping_Filtered_SA_Scheduled_Dispatched.EarliestStartTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>NextSuggestedMaintenanceDate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Looping_Filtered_SA_Scheduled_Dispatched.AssignedServiceResource__c</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>UnscheduledSA</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Looping_Filtered_SA_Scheduled_Dispatched</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>WOFSNoteIdSet2</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Looping_Filtered_SA_Scheduled_Dispatched.ParentRecordId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Looping_Filtered_SA_Scheduled_Dispatched</targetReference>
+        </connector>
+    </assignments>
+    <collectionProcessors>
+        <name>Filter_SA</name>
+        <elementSubtype>FilterCollectionProcessor</elementSubtype>
+        <label>Filter SA(None, Scheduled &amp; Dispatched)</label>
+        <locationX>347</locationX>
+        <locationY>1884</locationY>
+        <assignNextValueToReference>currentItem_Filter_SA_Dates_less_than</assignNextValueToReference>
+        <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
+        <collectionReference>Get_SA_from_Unit</collectionReference>
+        <conditionLogic>formula_evaluates_to_true</conditionLogic>
+        <connector>
+            <targetReference>Count_Filter_SA</targetReference>
+        </connector>
+        <formula>AND(
+DATEVALUE({!currentItem_Filter_SA_Dates_less_than.EarliestStartTime}) = {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA_Dates_less_than.SchedStartTime}) = {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA_Dates_less_than.DueDate}) = {!$Record.FS_Suspension_EndDate__c},
+DATEVALUE({!currentItem_Filter_SA_Dates_less_than.SchedEndTime}) = {!$Record.FS_Suspension_EndDate__c},
+OR(
+
+ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;None&quot;) ,
+ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;Scheduled&quot;) ,
+ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;Dispatched&quot;) 
+)
+)</formula>
+    </collectionProcessors>
+    <collectionProcessors>
+        <name>Filter_SA_Dates_less_than</name>
+        <elementSubtype>FilterCollectionProcessor</elementSubtype>
+        <label>Filter SA Dates less than</label>
+        <locationX>644</locationX>
+        <locationY>5172</locationY>
+        <assignNextValueToReference>currentItem_Filter_SA_Dates_less_than</assignNextValueToReference>
+        <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
+        <collectionReference>Get_SA_from_Unit</collectionReference>
+        <conditionLogic>formula_evaluates_to_true</conditionLogic>
+        <connector>
+            <targetReference>Count_Filter_SA_Dates_less_than</targetReference>
+        </connector>
+        <formula>AND(
+DATEVALUE({!currentItem_Filter_SA_Dates_less_than.EarliestStartTime}) &lt; {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA_Dates_less_than.DueDate}) &lt; {!$Record.FS_Suspension_EndDate__c},
+ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;None&quot;) 
+)</formula>
+    </collectionProcessors>
+    <collectionProcessors>
+        <name>Filter_SA_None</name>
+        <elementSubtype>FilterCollectionProcessor</elementSubtype>
+        <label>Filter SA(None)</label>
+        <locationX>347</locationX>
+        <locationY>3924</locationY>
+        <assignNextValueToReference>currentItem_Filter_SA_Dates_less_than</assignNextValueToReference>
+        <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
+        <collectionReference>Get_SA_from_Unit</collectionReference>
+        <conditionLogic>formula_evaluates_to_true</conditionLogic>
+        <connector>
+            <targetReference>Count_Filter_SA_None</targetReference>
+        </connector>
+        <formula>AND(
+DATEVALUE({!currentItem_Filter_SA_Dates_less_than.EarliestStartTime}) &gt; {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA_Dates_less_than.DueDate}) &gt; {!$Record.FS_Suspension_EndDate__c},
+ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;None&quot;)
+)</formula>
+    </collectionProcessors>
+    <collectionProcessors>
+        <description>(SA.Status = &apos;Scheduled&apos; OR SA.Status = &apos;Dispatched&apos;) AND
+SA.Earliest Start Date &gt; Unit.Suspension Start Date AND
+SA.Due Date &gt; Unit.Suspension End Date AND
+SA.Scheduled Start &gt;= Unit.Suspension Start Date AND
+SA.Scheduled End &lt;= Unit.Suspension End Date</description>
+        <name>Filter_SA_Scheduled_Dispatched</name>
+        <elementSubtype>FilterCollectionProcessor</elementSubtype>
+        <label>Filter SA(Scheduled, Dispatched)</label>
+        <locationX>644</locationX>
+        <locationY>4248</locationY>
+        <assignNextValueToReference>currentItem_Filter_SA_Dates_less_than</assignNextValueToReference>
+        <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
+        <collectionReference>Get_SA_from_Unit</collectionReference>
+        <conditionLogic>formula_evaluates_to_true</conditionLogic>
+        <connector>
+            <targetReference>Count_Filter_SA_Scheduled_Dispatched</targetReference>
+        </connector>
+        <formula>AND(
+DATEVALUE({!currentItem_Filter_SA_Dates_less_than.EarliestStartTime}) &gt; {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA_Dates_less_than.SchedStartTime}) &gt;= {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA_Dates_less_than.DueDate}) &gt; {!$Record.FS_Suspension_EndDate__c},
+DATEVALUE({!currentItem_Filter_SA_Dates_less_than.SchedEndTime}) &lt;= {!$Record.FS_Suspension_EndDate__c},
+OR(
+ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;Scheduled&quot;) ,
+ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;Dispatched&quot;) 
+)
+)</formula>
+    </collectionProcessors>
+    <collectionProcessors>
+        <description>(SA.Status = &apos;Scheduled&apos; OR SA.Status = &apos;Dispatched&apos;) AND
+SA.Earliest Start Date &lt; Unit.Suspension Start Date AND
+SA.Due Date &lt; Unit.Suspension End Date AND
+SA.Scheduled Start &gt;= Unit.Suspension Start Date AND
+SA.Scheduled End &lt;= Unit.Suspension End Date</description>
+        <name>Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range</name>
+        <elementSubtype>FilterCollectionProcessor</elementSubtype>
+        <label>Filter SA(Scheduled, Dispatched) ESP range greater than Suspend Range</label>
+        <locationX>886</locationX>
+        <locationY>5496</locationY>
+        <assignNextValueToReference>currentItem_Filter_SA_Dates_less_than</assignNextValueToReference>
+        <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
+        <collectionReference>Get_SA_from_Unit</collectionReference>
+        <conditionLogic>formula_evaluates_to_true</conditionLogic>
+        <connector>
+            <targetReference>Count_Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range</targetReference>
+        </connector>
+        <formula>AND(
+DATEVALUE({!currentItem_Filter_SA_Dates_less_than.EarliestStartTime}) &lt; {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA_Dates_less_than.SchedStartTime}) &gt;= {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA_Dates_less_than.DueDate}) &lt; {!$Record.FS_Suspension_EndDate__c},
+DATEVALUE({!currentItem_Filter_SA_Dates_less_than.SchedEndTime}) &lt;=  {!$Record.FS_Suspension_EndDate__c},
+OR(
+ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;Scheduled&quot;) 
+,
+ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;Dispatched&quot;) 
+)
+)</formula>
+    </collectionProcessors>
+    <decisions>
+        <name>Copy_1_of_Prevent_Duplicate_Plan_Id</name>
+        <label>Copy 1 of Prevent Duplicate Plan Id</label>
+        <locationX>391</locationX>
+        <locationY>2940</locationY>
+        <defaultConnector>
+            <targetReference>Copy_1_of_Gather_Maintenance_Plan</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_Already_Exists_Id</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>MaintenancePlanIdSet</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <elementReference>Looping_Maintenance_Asset_tobehold.MaintenancePlanId</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Looping_Maintenance_Asset_tobehold</targetReference>
+            </connector>
+            <label>Copy 1 of Already Exists Id</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Decision_2</name>
+        <label>Decision 2</label>
+        <locationX>814</locationX>
+        <locationY>1668</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Suspended_Start_Date_Today_End_Date_Today</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.FS_Field_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Suspended</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_Suspension_StartDate__c</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Flow.CurrentDate</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_Suspension_EndDate__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>$Flow.CurrentDate</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_SA_from_Unit</targetReference>
+            </connector>
+            <label>Suspended &amp; Start Date &lt;= Today &amp; End Date &gt; Today</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Filter_SA_Dates_less_than_Recs</name>
+        <label>Filter_SA_Dates_less_than_Recs</label>
+        <locationX>644</locationX>
+        <locationY>5388</locationY>
+        <defaultConnector>
+            <targetReference>Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>FoundFilter_SA_Dates_less_than</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Filter_SA_Dates_less_than_Count</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Looping_Filtered_SA_None_Dates_Less_Than</targetReference>
+            </connector>
+            <label>Found</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Filter_SA_None_Recs</name>
+        <label>Filter SA None Recs</label>
+        <locationX>347</locationX>
+        <locationY>4140</locationY>
+        <defaultConnector>
+            <targetReference>Filter_SA_Scheduled_Dispatched</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>FoundNone</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Filter_SA_None_Count</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Looping_Filtered_SA_None</targetReference>
+            </connector>
+            <label>Found</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Filter_SA_None_Scheduled_Dispatched</name>
+        <label>Filter SA(None,Scheduled,Dispatched)</label>
+        <locationX>347</locationX>
+        <locationY>2100</locationY>
+        <defaultConnector>
+            <targetReference>Filter_SA_None</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Found</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Filter_SA_Count</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Looping_Filtered_SA</targetReference>
+            </connector>
+            <label>Found</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range_recs</name>
+        <label>Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range_recs</label>
+        <locationX>886</locationX>
+        <locationY>5712</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>FoundFilter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range_Count</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Looping_Filtered_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range</targetReference>
+            </connector>
+            <label>Found</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Filter_SA_Scheduled_Dispatched_Recs</name>
+        <label>Filter SA(Scheduled, Dispatched) Recs</label>
+        <locationX>644</locationX>
+        <locationY>4464</locationY>
+        <defaultConnector>
+            <targetReference>Filter_SA_Dates_less_than</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>FoundFilter_SA_Scheduled_Dispatched_Recs</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Filter_SA_Scheduled_Dispatched_Count</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Looping_Filtered_SA_Scheduled_Dispatched</targetReference>
+            </connector>
+            <label>Found</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>Prevent_Duplicate_Plan_Id</name>
         <label>Prevent Duplicate Plan Id</label>
-        <locationX>754</locationX>
+        <locationX>1122</locationX>
         <locationY>684</locationY>
         <defaultConnector>
             <targetReference>Gather_Maintenance_Plan</targetReference>
@@ -68,8 +663,11 @@
     <decisions>
         <name>Suspension_Range</name>
         <label>Suspension Range</label>
-        <locationX>446</locationX>
+        <locationX>814</locationX>
         <locationY>252</locationY>
+        <defaultConnector>
+            <targetReference>Decision_2</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Starts_Today_not_Suspended</name>
@@ -124,12 +722,87 @@
         <dataType>Date</dataType>
         <expression>{!$Record.FS_Suspension_EndDate__c} + 1</expression>
     </formulas>
+    <formulas>
+        <name>NextSuggestedMaintenanceDateTobeHold</name>
+        <dataType>Date</dataType>
+        <expression>{!$Record.FS_Suspension_StartDate__c} - 1</expression>
+    </formulas>
     <interviewLabel>Unit Suspension {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Unit Suspension</label>
     <loops>
+        <name>Looping_Filtered_SA</name>
+        <label>Looping Filtered SA</label>
+        <locationX>215</locationX>
+        <locationY>2208</locationY>
+        <collectionReference>Filter_SA</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Cancelling_SA_assignment</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Cancelling_WO</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Looping_Filtered_SA_None</name>
+        <label>Looping Filtered SA None</label>
+        <locationX>50</locationX>
+        <locationY>4248</locationY>
+        <collectionReference>Filter_SA_None</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>SA_ESP_assignment</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Updating_ESP_SA</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Looping_Filtered_SA_None_Dates_Less_Than</name>
+        <label>Looping Filtered SA None Dates Less Than</label>
+        <locationX>402</locationX>
+        <locationY>5496</locationY>
+        <collectionReference>Filter_SA_Dates_less_than</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>SA_DD_assignment</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Updating_DD_SA</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Looping_Filtered_SA_Scheduled_Dispatched</name>
+        <label>Looping Filtered SA Scheduled,Dispatched</label>
+        <locationX>512</locationX>
+        <locationY>4572</locationY>
+        <collectionReference>Filter_SA_Scheduled_Dispatched</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>SA_ESP_None_Remove_Mechanic_assignment</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Unscheduling_SA</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Looping_Filtered_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range</name>
+        <label>Looping Filtered SA Scheduled,Dispatched ESP range greater than Suspend Range</label>
+        <locationX>754</locationX>
+        <locationY>5820</locationY>
+        <collectionReference>Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>SA_DD_None_Remove_Mechanic_assignment</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Unscheduling_DD_SA</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
         <name>Looping_Maintenance_Asset</name>
         <label>Looping Maintenance Asset</label>
-        <locationX>578</locationX>
+        <locationX>946</locationX>
         <locationY>576</locationY>
         <collectionReference>Get_Maintenance_Assets</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -141,9 +814,23 @@
         </noMoreValuesConnector>
     </loops>
     <loops>
+        <name>Looping_Maintenance_Asset_tobehold</name>
+        <label>Looping Maintenance Asset tobehold</label>
+        <locationX>215</locationX>
+        <locationY>2832</locationY>
+        <collectionReference>Get_Maintenance_Assets_for_putting_on_hold</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Copy_1_of_Prevent_Duplicate_Plan_Id</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Get_Maintenance_Plans_to_be_Hold</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
         <name>Looping_Maintenance_Plan</name>
         <label>Looping Maintenance Plan</label>
-        <locationX>578</locationX>
+        <locationX>946</locationX>
         <locationY>1176</locationY>
         <collectionReference>Get_Maintenance_Plans</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -152,6 +839,20 @@
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>Update_Maintenance_Plan</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Looping_Maintenance_Plan_to_be_hold</name>
+        <label>Looping Maintenance Plan to be hold</label>
+        <locationX>215</locationX>
+        <locationY>3432</locationY>
+        <collectionReference>Get_Maintenance_Plans_to_be_Hold</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Assignment_2</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Update_Maintenance_Plan_to_be_hold</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -176,7 +877,7 @@
     <recordLookups>
         <name>Get_Maintenance_Assets</name>
         <label>Get Maintenance Assets</label>
-        <locationX>578</locationX>
+        <locationX>946</locationX>
         <locationY>468</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -197,9 +898,32 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>Get_Maintenance_Assets_for_putting_on_hold</name>
+        <label>Get Maintenance Assets for putting on hold</label>
+        <locationX>215</locationX>
+        <locationY>2724</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Looping_Maintenance_Asset_tobehold</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AssetId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>MaintenanceAsset</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>MaintenancePlanId</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Maintenance_Plans</name>
         <label>Get Maintenance Plans</label>
-        <locationX>578</locationX>
+        <locationX>946</locationX>
         <locationY>1068</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -219,11 +943,92 @@
         <queriedFields>NextSuggestedMaintenanceDate</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <name>Get_Maintenance_Plans_to_be_Hold</name>
+        <label>Get Maintenance Plans to be Hold</label>
+        <locationX>215</locationX>
+        <locationY>3324</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Looping_Maintenance_Plan_to_be_hold</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>MaintenancePlanIdSet</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>MaintenancePlan</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>NextSuggestedMaintenanceDate</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_SA_from_Unit</name>
+        <label>Get SA from Unit</label>
+        <locationX>347</locationX>
+        <locationY>1776</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Filter_SA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Unit__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ServiceAppointment</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Cancelling_SA</name>
+        <label>Cancelling SA</label>
+        <locationX>215</locationX>
+        <locationY>2616</locationY>
+        <connector>
+            <targetReference>Get_Maintenance_Assets_for_putting_on_hold</targetReference>
+        </connector>
+        <inputReference>SATobeCancelled</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Cancelling_WO</name>
+        <label>Cancelling WO</label>
+        <locationX>215</locationX>
+        <locationY>2508</locationY>
+        <connector>
+            <targetReference>Cancelling_SA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>WOidSet_ToBeCancelled</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>FS_CancellationReason__c</field>
+            <value>
+                <stringValue>Cancelled due to Unit Suspension</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
     <recordUpdates>
         <name>Suspend_the_Unit</name>
         <label>Suspend the Unit</label>
-        <locationX>50</locationX>
+        <locationX>418</locationX>
         <locationY>360</locationY>
+        <connector>
+            <targetReference>Decision_2</targetReference>
+        </connector>
         <inputAssignments>
             <field>FS_Field_Status__c</field>
             <value>
@@ -235,7 +1040,7 @@
     <recordUpdates>
         <name>Unit_is_Valid</name>
         <label>Unit is Valid</label>
-        <locationX>578</locationX>
+        <locationX>946</locationX>
         <locationY>360</locationY>
         <connector>
             <targetReference>Get_Maintenance_Assets</targetReference>
@@ -249,14 +1054,154 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
+        <name>Unscheduling_DD_SA</name>
+        <label>Unscheduling DD SA</label>
+        <locationX>754</locationX>
+        <locationY>6120</locationY>
+        <connector>
+            <targetReference>Update_FS_Notes_WO3</targetReference>
+        </connector>
+        <inputReference>UnscheduledDDSA</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Unscheduling_SA</name>
+        <label>Unscheduling SA</label>
+        <locationX>512</locationX>
+        <locationY>4872</locationY>
+        <connector>
+            <targetReference>Update_FS_Notes_WO2</targetReference>
+        </connector>
+        <inputReference>UnscheduledSA</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_FS_Notes_WO</name>
+        <label>Update FS Notes WO</label>
+        <locationX>50</locationX>
+        <locationY>4656</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>WOFSNotesUpdatedIdSet</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Comments__c</field>
+            <value>
+                <stringValue>Child Service Appointment Start date updated due to Suspension</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_FS_Notes_WO2</name>
+        <label>Update FS Notes WO2</label>
+        <locationX>512</locationX>
+        <locationY>4980</locationY>
+        <connector>
+            <targetReference>Filter_SA_Dates_less_than</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>WOFSNoteIdSet2</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Comments__c</field>
+            <value>
+                <stringValue>Child Service Appointment Start date updated due to Suspension</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_FS_Notes_WO3</name>
+        <label>Update FS Notes WO3</label>
+        <locationX>754</locationX>
+        <locationY>6228</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>WOFSNotesID4</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Comments__c</field>
+            <value>
+                <stringValue>Child Service Appointment End date updated due to Suspension</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_FS_Notes_WO_3</name>
+        <label>Update FS Notes WO 3</label>
+        <locationX>402</locationX>
+        <locationY>5904</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>WOSFNotesId3</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Comments__c</field>
+            <value>
+                <stringValue>Child Service Appointment End date updated due to Suspension</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
         <name>Update_Maintenance_Plan</name>
         <label>Update Maintenance Plan</label>
-        <locationX>578</locationX>
+        <locationX>946</locationX>
         <locationY>1476</locationY>
+        <connector>
+            <targetReference>Decision_2</targetReference>
+        </connector>
         <inputReference>MaintenancePlanRecordSet</inputReference>
     </recordUpdates>
+    <recordUpdates>
+        <name>Update_Maintenance_Plan_to_be_hold</name>
+        <label>Update Maintenance Plan to be hold</label>
+        <locationX>215</locationX>
+        <locationY>3732</locationY>
+        <connector>
+            <targetReference>Filter_SA_None</targetReference>
+        </connector>
+        <inputReference>MaintenancePlanRecordSet</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Updating_DD_SA</name>
+        <label>Updating DD SA</label>
+        <locationX>402</locationX>
+        <locationY>5796</locationY>
+        <connector>
+            <targetReference>Update_FS_Notes_WO_3</targetReference>
+        </connector>
+        <inputReference>SADDModified</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Updating_ESP_SA</name>
+        <label>Updating ESP SA</label>
+        <locationX>50</locationX>
+        <locationY>4548</locationY>
+        <connector>
+            <targetReference>Update_FS_Notes_WO</targetReference>
+        </connector>
+        <inputReference>SAESPModified</inputReference>
+    </recordUpdates>
     <start>
-        <locationX>320</locationX>
+        <locationX>688</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Suspension_Range</targetReference>
@@ -286,6 +1231,62 @@
     </start>
     <status>Active</status>
     <variables>
+        <name>BlankSA</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
+    </variables>
+    <variables>
+        <name>currentItem_Filter_SA_Dates_less_than</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
+    </variables>
+    <variables>
+        <name>Filter_SA_Count</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+    </variables>
+    <variables>
+        <name>Filter_SA_Dates_less_than_Count</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+    </variables>
+    <variables>
+        <name>Filter_SA_None_Count</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+    </variables>
+    <variables>
+        <name>Filter_SA_Scheduled_Dispatched_Count</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+    </variables>
+    <variables>
+        <name>Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range_Count</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+    </variables>
+    <variables>
         <name>MaintenancePlanIdSet</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
@@ -299,5 +1300,80 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>MaintenancePlan</objectType>
+    </variables>
+    <variables>
+        <name>SADDModified</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
+    </variables>
+    <variables>
+        <name>SAESPModified</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
+    </variables>
+    <variables>
+        <name>SATobeCancelled</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
+    </variables>
+    <variables>
+        <name>UnscheduledDDSA</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
+    </variables>
+    <variables>
+        <name>UnscheduledSA</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
+    </variables>
+    <variables>
+        <name>WOFSNoteIdSet2</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>WOFSNotesID4</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>WOFSNotesUpdatedIdSet</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>WOidSet_ToBeCancelled</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>WOSFNotesId3</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>
