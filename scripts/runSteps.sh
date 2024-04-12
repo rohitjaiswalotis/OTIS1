@@ -1266,7 +1266,7 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 		
 		while true; do 	
 			
-			sf sfdmu:run --sourceusername="csvfile" --targetusername="$sfTargetOrgAlias" --apiversion="$SF_API_VERSION" --verbose; dataStepResultCode=$?;
+			sf sfdmu:run --sourceusername="csvfile" --targetusername="$sfTargetOrgAlias" --apiversion="$SF_API_VERSION" --verbose --noprompt; dataStepResultCode=$?;
 			
 			# success
 			if [[ $dataStepResultCode -eq 0 ]]; then
@@ -1277,8 +1277,20 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 				
 				echo "ERROR: Data SFDMU load failure!"
 				
-				if [[ -f "CSVIssuesReport.csv" ]]; then
+				if [[ -s "CSVIssuesReport.csv" ]]; then
+					echo "Detected CSVIssuesReport.csv file:"
 					cat CSVIssuesReport.csv
+				fi
+				
+				if [[ -s "MissingParentRecordsReport.csv" ]]; then
+					echo "Detected MissingParentRecordsReport.csv file:"
+					cat MissingParentRecordsReport.csv
+				fi
+				
+				# print result records
+				#if [[ -d "target" && $DEBUG_MODE -ge 1 ]]; then
+				if [[ -d "target" ]]; then
+					find ./target -type f -name "*.csv" | xargs tail -n +1
 				fi
 				
 				# ignore failure
