@@ -2,10 +2,65 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>60.0</apiVersion>
     <assignments>
+        <name>Add_Maintenance_Plan_to_Collection</name>
+        <label>Add Maintenance Plan to Collection</label>
+        <locationX>138</locationX>
+        <locationY>1835</locationY>
+        <assignmentItems>
+            <assignToReference>MaintenancePlanCollections</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>MaintenancePlanRecord</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>loop_Maintenance_Plans</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Service_Contract_values</name>
+        <label>Assign Service Contract values</label>
+        <locationX>182</locationX>
+        <locationY>1187</locationY>
+        <assignmentItems>
+            <assignToReference>ServiceContractSingle.EndDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.FS_CancellationEffectiveDate__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ServiceContractSingle.StatusReason__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Cancelled</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Service_Contracts</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Unit_Cancel_Date_for_Subflow</name>
+        <label>Assign Unit Cancel Date for Subflow</label>
+        <locationX>611</locationX>
+        <locationY>431</locationY>
+        <assignmentItems>
+            <assignToReference>CancelEffectiveDateforSubFlow</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.FS_CancellationEffectiveDate__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Unit_Record</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Unit_Field_Assignment</name>
         <label>Unit Field Assignment</label>
-        <locationX>50</locationX>
-        <locationY>539</locationY>
+        <locationX>380</locationX>
+        <locationY>755</locationY>
         <assignmentItems>
             <assignToReference>Get_Unit_Record.FS_Field_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -24,10 +79,47 @@
             <targetReference>Update_Unit_Record</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>Update_Auto_generate_WO_field</name>
+        <label>Update Auto generate WO field</label>
+        <locationX>138</locationX>
+        <locationY>1727</locationY>
+        <assignmentItems>
+            <assignToReference>MPIdForOutput</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>loop_Maintenance_Plans.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>MaintenancePlanRecord.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>loop_Maintenance_Plans.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>MaintenancePlanRecord.DoesAutoGenerateWorkOrders</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>MaintenancePlanRecord.EndDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.FS_CancellationEffectiveDate__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_Maintenance_Plan_to_Collection</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>Check_Cancellation_Effective_Date</name>
         <label>Check Cancellation Effective Date</label>
-        <locationX>182</locationX>
+        <locationX>858</locationX>
         <locationY>323</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -41,9 +133,75 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_Unit_Record</targetReference>
+                <targetReference>Assign_Unit_Cancel_Date_for_Subflow</targetReference>
             </connector>
             <label>Cancellation Effective Date less than Today</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_if_Maintenance_Plan_Exists</name>
+        <label>Check if  Maintenance Plan Exists</label>
+        <locationX>182</locationX>
+        <locationY>1511</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Exists_MP</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>get_Maintainance_plans</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>loop_Maintenance_Plans</targetReference>
+            </connector>
+            <label>Exists MP</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_If_service_contracts_exist</name>
+        <label>Check If service contracts exist</label>
+        <locationX>380</locationX>
+        <locationY>1079</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Exists</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ServiceContractSingle</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Service_Contract_values</targetReference>
+            </connector>
+            <label>Exists</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_if_Unit_Exist</name>
+        <label>Check if Unit Exist</label>
+        <locationX>611</locationX>
+        <locationY>647</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>If_Exist</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Unit_Record</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Unit_Field_Assignment</targetReference>
+            </connector>
+            <label>If Exist</label>
         </rules>
     </decisions>
     <description>Updating the Unit Field Status to Cancelled if Cancellation Effective Date &lt;= TODAY</description>
@@ -55,6 +213,20 @@
     </formulas>
     <interviewLabel>Status Update on Unit from Contract Unit Summary {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Status Update on Unit from Contract Unit Summary</label>
+    <loops>
+        <name>loop_Maintenance_Plans</name>
+        <label>loop Maintenance Plans</label>
+        <locationX>50</locationX>
+        <locationY>1619</locationY>
+        <collectionReference>get_Maintainance_plans</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Update_Auto_generate_WO_field</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Update_Maintenance_Plan_Record</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -75,13 +247,58 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
-        <name>Get_Unit_Record</name>
-        <label>Get Unit Record</label>
-        <locationX>50</locationX>
-        <locationY>431</locationY>
+        <name>get_Maintainance_plans</name>
+        <label>get Maintainance plans</label>
+        <locationX>182</locationX>
+        <locationY>1403</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Unit_Field_Assignment</targetReference>
+            <targetReference>Check_if_Maintenance_Plan_Exists</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ServiceContractId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ServiceContractSingle.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>MaintenancePlan</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Service_Contracts</name>
+        <label>Get Service Contracts</label>
+        <locationX>380</locationX>
+        <locationY>971</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_If_service_contracts_exist</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.FS_ServiceContract__c</elementReference>
+            </value>
+        </filters>
+        <object>ServiceContract</object>
+        <outputReference>ServiceContractSingle</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>EndDate</queriedFields>
+        <queriedFields>StatusReason__c</queriedFields>
+        <queriedFields>Status</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Unit_Record</name>
+        <label>Get Unit Record</label>
+        <locationX>611</locationX>
+        <locationY>539</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_if_Unit_Exist</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -96,14 +313,37 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
+        <name>Update_Maintenance_Plan_Record</name>
+        <label>Update Maintenance Plan Record</label>
+        <locationX>50</locationX>
+        <locationY>2027</locationY>
+        <connector>
+            <targetReference>Subflow_Cancel_WO</targetReference>
+        </connector>
+        <inputReference>MaintenancePlanCollections</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Service_Contracts</name>
+        <label>Update Service Contracts</label>
+        <locationX>182</locationX>
+        <locationY>1295</locationY>
+        <connector>
+            <targetReference>get_Maintainance_plans</targetReference>
+        </connector>
+        <inputReference>ServiceContractSingle</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>Update_Unit_Record</name>
         <label>Update Unit Record</label>
-        <locationX>50</locationX>
-        <locationY>647</locationY>
+        <locationX>380</locationX>
+        <locationY>863</locationY>
+        <connector>
+            <targetReference>Get_Service_Contracts</targetReference>
+        </connector>
         <inputReference>Get_Unit_Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>56</locationX>
+        <locationX>732</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Check_Cancellation_Effective_Date</targetReference>
@@ -128,4 +368,108 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <subflows>
+        <name>Subflow_Cancel_WO</name>
+        <label>Subflow : Cancel WO</label>
+        <locationX>50</locationX>
+        <locationY>2135</locationY>
+        <flowName>Cancel_Future_WO_SA_related_to_Service_Contract_and_Mplan</flowName>
+        <inputAssignments>
+            <name>CancellationEffectivedate</name>
+            <value>
+                <elementReference>CancelEffectiveDateforSubFlow</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>MPlanID2</name>
+            <value>
+                <elementReference>MPIdForOutput</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <variables>
+        <name>CancelEffectiveDateforSubFlow</name>
+        <dataType>Date</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>MaintanancePlanList</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>MaintenancePlan</objectType>
+    </variables>
+    <variables>
+        <name>MaintenancePlanCollections</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>MaintenancePlan</objectType>
+    </variables>
+    <variables>
+        <name>MaintenancePlanRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>MaintenancePlan</objectType>
+    </variables>
+    <variables>
+        <name>MaintenanceSingle</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>MaintenancePlan</objectType>
+    </variables>
+    <variables>
+        <name>MPIdForOutput</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>MPtoUpdate</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>MaintenancePlan</objectType>
+    </variables>
+    <variables>
+        <name>ServiceContractIds</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>ServiceContractList</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceContract</objectType>
+    </variables>
+    <variables>
+        <name>ServiceContractSingle</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceContract</objectType>
+    </variables>
+    <variables>
+        <name>ServiceContractTOUpdate</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceContract</objectType>
+    </variables>
 </Flow>
