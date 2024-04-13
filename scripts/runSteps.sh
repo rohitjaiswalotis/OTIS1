@@ -1266,7 +1266,20 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 		
 		while true; do 	
 			
-			sf sfdmu:run --sourceusername="csvfile" --targetusername="$sfTargetOrgAlias" --apiversion="$SF_API_VERSION" --verbose --noprompt; dataStepResultCode=$?;
+			sf sfdmu:run --sourceusername="csvfile" --targetusername="$sfTargetOrgAlias" --apiversion="$SF_API_VERSION" --noprompt --canmodify --logfullquery --verbose; dataStepResultCode=$?;
+			
+			
+			# print warning/error files (if any)
+			if [[ -s "CSVIssuesReport.csv" ]]; then
+				echo "Detected CSVIssuesReport.csv file:"
+				cat CSVIssuesReport.csv
+			fi
+			
+			if [[ -s "MissingParentRecordsReport.csv" ]]; then
+				echo "Detected MissingParentRecordsReport.csv file:"
+				cat MissingParentRecordsReport.csv
+			fi
+			
 			
 			# success
 			if [[ $dataStepResultCode -eq 0 ]]; then
@@ -1277,27 +1290,24 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 				
 				echo "ERROR: Data SFDMU load failure!"
 				
-				if [[ -s "CSVIssuesReport.csv" ]]; then
-					echo "Detected CSVIssuesReport.csv file:"
-					cat CSVIssuesReport.csv
+				# ignore failure
+				if [[ "${stepFailureIgnore,,}" =~ ^true$ ]]; then
+					echo "Failure has been ignored."
+					break;
 				fi
 				
-				if [[ -s "MissingParentRecordsReport.csv" ]]; then
-					echo "Detected MissingParentRecordsReport.csv file:"
-					cat MissingParentRecordsReport.csv
-				fi
 				
 				# print result records
 				#if [[ -d "target" && $DEBUG_MODE -ge 1 ]]; then
 				if [[ -d "target" ]]; then
 					find ./target -type f -name "*.csv" | xargs tail -n +1
 				fi
-				
-				# ignore failure
-				if [[ "${stepFailureIgnore,,}" =~ ^true$ ]]; then
-					echo "Failure has been ignored."
-					break;
+		
+				# print logs in debug mode
+				if [[ -d "logs" && $DEBUG_MODE -ge 1 ]]; then
+					cat logs/*.log
 				fi
+				
 				
 				# retry if not run out of attempts
 				if [[ $dataStepRetryCounter -lt $dataStepMaxRetryAttempts ]]; then
@@ -1323,6 +1333,11 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 		#if [[ -d "target" && $DEBUG_MODE -ge 1 ]]; then
 		if [[ -d "target" ]]; then
 			find ./target -type f -name "*.csv" | xargs tail -n +1
+		fi
+		
+		# print logs in debug mode
+		if [[ -d "logs" && $DEBUG_MODE -ge 1 ]]; then
+			cat logs/*.log
 		fi
 		
 		
