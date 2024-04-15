@@ -1126,6 +1126,12 @@
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
         </connector>
         <inputAssignments>
+            <field>FS_Field_Status__c</field>
+            <value>
+                <stringValue>Handover</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>StatusReason</field>
             <value>
                 <stringValue>Handover with missing Route</stringValue>
