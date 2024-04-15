@@ -21,4 +21,5 @@ FSL.GlobalAPIS.addStatusTransition('Onsite', 'Cannot Complete');
 FSL.GlobalAPIS.addStatusTransition('Dispatched', 'Onsite');
 FSL.GlobalAPIS.addStatusTransition('None', 'Canceled');
 FSL.GlobalAPIS.addStatusTransition('Scheduled', 'Canceled');
+FSL.GlobalAPIS.addStatusTransition('Dispatched', 'None');
 
