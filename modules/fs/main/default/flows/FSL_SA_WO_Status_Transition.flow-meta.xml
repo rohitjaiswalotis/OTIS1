@@ -338,6 +338,12 @@
         <locationX>1106</locationX>
         <locationY>431</locationY>
         <inputAssignments>
+            <field>FS_CancellationReason__c</field>
+            <value>
+                <stringValue>Contract cancelled on site (not updated in our system)</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Status</field>
             <value>
                 <stringValue>Canceled</stringValue>
