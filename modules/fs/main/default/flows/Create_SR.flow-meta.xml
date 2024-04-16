@@ -70,7 +70,7 @@
         <name>Capture_Signature</name>
         <label>Capture Signature 1</label>
         <locationX>446</locationX>
-        <locationY>890</locationY>
+        <locationY>1298</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_No_Signature_Reason</targetReference>
         </defaultConnector>
@@ -89,10 +89,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Check_for_Order_Work_Type</name>
+        <label>Check for Order Work Type</label>
+        <locationX>446</locationX>
+        <locationY>890</locationY>
+        <defaultConnector>
+            <targetReference>Capture_Signature</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Work_Type_Open_Order</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getWO.FS_WorkOderType__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Open Order</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Open_Order_Completion</targetReference>
+            </connector>
+            <label>Work Type - Open Order</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Copy_1_of_Capture_Signature</name>
         <label>Capture Signature 2</label>
         <locationX>974</locationX>
-        <locationY>890</locationY>
+        <locationY>1298</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_check_Fields</targetReference>
         </defaultConnector>
@@ -108,6 +133,31 @@
                 </rightValue>
             </conditions>
             <label>Copy 1 of SignatureAvailable</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Copy_1_of_Check_for_Order_Work_Type</name>
+        <label>Copy 1 of Check for Order Work Type</label>
+        <locationX>974</locationX>
+        <locationY>890</locationY>
+        <defaultConnector>
+            <targetReference>Copy_1_of_Capture_Signature</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_Work_Type_Open_Order</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>getWO.FS_WorkOderType__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Open Order</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Open_Order_Completion</targetReference>
+            </connector>
+            <label>Copy 1 of Work Type - Open Order</label>
         </rules>
     </decisions>
     <decisions>
@@ -257,12 +307,61 @@
         <queriedFields>ServiceReportTemplateId</queriedFields>
         <queriedFields>AssetId</queriedFields>
         <queriedFields>RecordTypeId</queriedFields>
+        <queriedFields>FS_WorkOderType__c</queriedFields>
     </recordLookups>
+    <recordUpdates>
+        <name>Copy_1_of_Update_SA_1</name>
+        <label>Copy 1 of Update SA 1</label>
+        <locationX>314</locationX>
+        <locationY>1106</locationY>
+        <connector>
+            <targetReference>Capture_Signature</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>storedSA.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Did_you_complete_the_work_for_this_unit__c</field>
+            <value>
+                <elementReference>Did_you_complete_the_work_for_this_unit</elementReference>
+            </value>
+        </inputAssignments>
+        <object>ServiceAppointment</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Copy_1_of_Update_SA_2</name>
+        <label>Copy 1 of Update SA 2</label>
+        <locationX>842</locationX>
+        <locationY>1106</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Capture_Signature</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>storedSA.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Did_you_complete_the_work_for_this_unit__c</field>
+            <value>
+                <elementReference>Did_you_complete_the_work_for_this_unit1</elementReference>
+            </value>
+        </inputAssignments>
+        <object>ServiceAppointment</object>
+    </recordUpdates>
     <recordUpdates>
         <name>Copy_1_of_Update_SA_3</name>
         <label>Update SA 1</label>
         <locationX>578</locationX>
-        <locationY>1106</locationY>
+        <locationY>1514</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -283,7 +382,7 @@
         <name>Update_SA_3</name>
         <label>Update SA 2</label>
         <locationX>1106</locationX>
-        <locationY>1106</locationY>
+        <locationY>1514</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -309,7 +408,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Capture_Signature</targetReference>
+            <targetReference>Check_for_Order_Work_Type</targetReference>
         </connector>
         <fields>
             <name>Textnew</name>
@@ -324,7 +423,6 @@
             </defaultValue>
             <fieldText>Able to Capture Signature?</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -334,7 +432,7 @@
         <name>Copy_1_of_check_Fields</name>
         <label>Generate SR</label>
         <locationX>1106</locationX>
-        <locationY>998</locationY>
+        <locationY>1406</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -347,7 +445,6 @@
             <dataType>String</dataType>
             <fieldText>No Signature Reason</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -357,7 +454,7 @@
         <name>Copy_1_of_No_Signature_Reason</name>
         <label>Generate SR</label>
         <locationX>578</locationX>
-        <locationY>998</locationY>
+        <locationY>1406</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -370,8 +467,31 @@
             <dataType>String</dataType>
             <fieldText>No Signature Reason</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Copy_1_of_Open_Order_Completion</name>
+        <label>Copy 1 of Open Order Completion</label>
+        <locationX>842</locationX>
+        <locationY>998</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Copy_1_of_Update_SA_2</targetReference>
+        </connector>
+        <fields>
+            <name>Did_you_complete_the_work_for_this_unit1</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
+            <fieldText>Did you complete the work for this unit ?</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -385,7 +505,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Copy_1_of_Capture_Signature</targetReference>
+            <targetReference>Copy_1_of_Check_for_Order_Work_Type</targetReference>
         </connector>
         <fields>
             <name>Copy_1_of_IsSignatureAvailable</name>
@@ -395,7 +515,30 @@
             </defaultValue>
             <fieldText>Able to Capture Signature?</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Open_Order_Completion</name>
+        <label>Open Order Completion</label>
+        <locationX>314</locationX>
+        <locationY>998</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Copy_1_of_Update_SA_1</targetReference>
+        </connector>
+        <fields>
+            <name>Did_you_complete_the_work_for_this_unit</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
+            <fieldText>Did you complete the work for this unit ?</fieldText>
+            <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
