@@ -569,7 +569,7 @@ ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;Dispatched&quot
         <locationX>347</locationX>
         <locationY>2100</locationY>
         <defaultConnector>
-            <targetReference>Filter_SA_None</targetReference>
+            <targetReference>Get_Maintenance_Assets_for_putting_on_hold</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -1017,6 +1017,12 @@ ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;Dispatched&quot
             <field>FS_CancellationReason__c</field>
             <value>
                 <stringValue>Cancelled due to Unit Suspension</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Canceled</stringValue>
             </value>
         </inputAssignments>
         <object>WorkOrder</object>
