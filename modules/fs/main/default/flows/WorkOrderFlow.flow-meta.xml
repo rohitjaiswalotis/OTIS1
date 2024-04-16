@@ -64,22 +64,6 @@
         </connector>
     </assignments>
     <assignments>
-        <name>Count_OF_Pending_SA1</name>
-        <label>Count OF Pending SA</label>
-        <locationX>7266</locationX>
-        <locationY>863</locationY>
-        <assignmentItems>
-            <assignToReference>CountPendingSA</assignToReference>
-            <operator>AssignCount</operator>
-            <value>
-                <elementReference>SAIds</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Check_Null</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>Skill_Found</name>
         <label>Skill Found</label>
         <locationX>4890</locationX>
@@ -93,43 +77,6 @@
         </assignmentItems>
         <connector>
             <targetReference>Loop_Skill_Check_Revert</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Store_Assigned_Resource_Id</name>
-        <label>Store Assigned Resource Id</label>
-        <locationX>7222</locationX>
-        <locationY>1187</locationY>
-        <assignmentItems>
-            <assignToReference>ResourceIdSingleVariable</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Loop_Through_SA.AssignedServiceResource__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>ResourceIdList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>ResourceIdSingleVariable</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>AppointmentId</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Loop_Through_SA.Id</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>SAIdCollection</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>AppointmentId</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Loop_Through_SA</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -265,28 +212,6 @@
                 <targetReference>Check_For_Maintenance</targetReference>
             </connector>
             <label>Not Cancelled</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Check_Null</name>
-        <label>Check Null</label>
-        <locationX>7266</locationX>
-        <locationY>971</locationY>
-        <defaultConnectorLabel>Null</defaultConnectorLabel>
-        <rules>
-            <name>Not_Null2</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>CountPendingSA</leftValueReference>
-                <operator>GreaterThanOrEqualTo</operator>
-                <rightValue>
-                    <numberValue>1.0</numberValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Loop_Through_SA</targetReference>
-            </connector>
-            <label>Not Null</label>
         </rules>
     </decisions>
     <decisions>
@@ -791,7 +716,7 @@
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Waiting_For_Parts_OR_Parts_Requested</name>
-            <conditionLogic>(1 OR 2) AND (3 OR 4) and 5</conditionLogic>
+            <conditionLogic>(1 OR 2) AND (3 OR 4) AND 5</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.PartsStatus__c</leftValueReference>
                 <operator>EqualTo</operator>
@@ -808,14 +733,14 @@
             </conditions>
             <conditions>
                 <leftValueReference>$Record__Prior.PartsStatus__c</leftValueReference>
-                <operator>EqualTo</operator>
+                <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue>Waiting For Parts</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>$Record__Prior.PartsStatus__c</leftValueReference>
-                <operator>EqualTo</operator>
+                <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue>Parts Required</stringValue>
                 </rightValue>
@@ -1267,42 +1192,6 @@
             </connector>
             <label>Mark WO as Closed post SPV Review</label>
         </rules>
-        <rules>
-            <name>Parts_Needed</name>
-            <conditionLogic>1 AND (2 OR 3) AND 4</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.Reason__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Parts Needed</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Fixed_Issue__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>No</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Fixed_Issue__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Partially</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Get_Pending_SA1</targetReference>
-            </connector>
-            <label>Parts Needed</label>
-        </rules>
     </decisions>
     <description>WO Flow with Record Type Filter ( With Custom Settings )</description>
     <environments>Default</environments>
@@ -1379,20 +1268,6 @@
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>Update_List_Of_SA1</targetReference>
-        </noMoreValuesConnector>
-    </loops>
-    <loops>
-        <name>Loop_Through_SA</name>
-        <label>Loop Through SA</label>
-        <locationX>7134</locationX>
-        <locationY>1079</locationY>
-        <collectionReference>SAIds</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>Store_Assigned_Resource_Id</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>Fetch_Assigned_Resource_Record</targetReference>
         </noMoreValuesConnector>
     </loops>
     <loops>
@@ -1720,16 +1595,6 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordDeletes>
-        <name>Delete_Assigned_Resource_Record</name>
-        <label>Delete Assigned Resource Record</label>
-        <locationX>7134</locationX>
-        <locationY>1487</locationY>
-        <connector>
-            <targetReference>Update_WO_To_Cannot_Complete</targetReference>
-        </connector>
-        <inputReference>Fetch_Assigned_Resource_Record</inputReference>
-    </recordDeletes>
-    <recordDeletes>
         <name>DeleteSkillRequiredRelatedRecordsFromWOHasContextMenu</name>
         <label>Delete SkillRequired related records from WO has context menu</label>
         <locationX>4670</locationX>
@@ -1747,34 +1612,6 @@
         </filters>
         <object>SkillRequirement</object>
     </recordDeletes>
-    <recordLookups>
-        <name>Fetch_Assigned_Resource_Record</name>
-        <label>Fetch Assigned Resource Record</label>
-        <locationX>7134</locationX>
-        <locationY>1379</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Delete_Assigned_Resource_Record</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>ServiceResourceId</field>
-            <operator>In</operator>
-            <value>
-                <elementReference>ResourceIdList</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>ServiceAppointmentId</field>
-            <operator>In</operator>
-            <value>
-                <elementReference>SAIdCollection</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>AssignedResource</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <recordLookups>
         <name>FetchReleatedSA</name>
         <label>Fetch Releated SA</label>
@@ -1984,56 +1821,6 @@
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>ServiceAppointment</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>Get_Pending_SA1</name>
-        <label>Get Pending SA</label>
-        <locationX>7266</locationX>
-        <locationY>755</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Count_OF_Pending_SA1</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Status</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue>Completed</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>WorkOrder__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Id</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>Status</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue>Cannot Complete</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Status</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue>Canceled</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Status</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue>Cannot Execute</stringValue>
-            </value>
-        </filters>
-        <object>ServiceAppointment</object>
-        <outputReference>SAIds</outputReference>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>AssignedServiceResource__c</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>Get_related_completed_SA_records</name>
@@ -2479,19 +2266,6 @@
             <field>PartsStatus__c</field>
             <value>
                 <stringValue>Part Delivered</stringValue>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record</inputReference>
-    </recordUpdates>
-    <recordUpdates>
-        <name>Update_WO_To_Cannot_Complete</name>
-        <label>Update WO To Cannot Complete</label>
-        <locationX>7134</locationX>
-        <locationY>1595</locationY>
-        <inputAssignments>
-            <field>Status</field>
-            <value>
-                <stringValue>Cannot Complete</stringValue>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
