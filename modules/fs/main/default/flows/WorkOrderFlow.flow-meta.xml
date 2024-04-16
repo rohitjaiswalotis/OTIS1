@@ -215,28 +215,6 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Check_Null</name>
-        <label>Check Null</label>
-        <locationX>7266</locationX>
-        <locationY>971</locationY>
-        <defaultConnectorLabel>Null</defaultConnectorLabel>
-        <rules>
-            <name>Not_Null2</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>CountPendingSA</leftValueReference>
-                <operator>GreaterThanOrEqualTo</operator>
-                <rightValue>
-                    <numberValue>1.0</numberValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Loop_Through_SA</targetReference>
-            </connector>
-            <label>Not Null</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>CheckforInprogressSA</name>
         <label>Check for Inprogress SA</label>
         <locationX>226</locationX>
