@@ -2324,13 +2324,6 @@
             <field>Status</field>
             <operator>NotEqualTo</operator>
             <value>
-                <stringValue>Canceled</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Status</field>
-            <operator>NotEqualTo</operator>
-            <value>
                 <stringValue>Unassigned</stringValue>
             </value>
         </filters>
