@@ -89,31 +89,6 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Check_for_Order_Work_Type</name>
-        <label>Check for Order Work Type</label>
-        <locationX>446</locationX>
-        <locationY>890</locationY>
-        <defaultConnector>
-            <targetReference>Capture_Signature</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Work_Type_Open_Order</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>getWO.FS_WorkOderType__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Open Order</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Open_Order_Completion</targetReference>
-            </connector>
-            <label>Work Type - Open Order</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>Copy_1_of_Capture_Signature</name>
         <label>Capture Signature 2</label>
         <locationX>974</locationX>
