@@ -18,6 +18,11 @@
         <isRequired>false</isRequired>
     </displayedFields>
     <displayedFields>
+        <field>WorkTypeId</field>
+        <isFieldManaged>false</isFieldManaged>
+        <isRequired>false</isRequired>
+    </displayedFields>
+    <displayedFields>
         <field>FSL__GanttColor__c</field>
         <isFieldManaged>false</isFieldManaged>
         <isRequired>false</isRequired>

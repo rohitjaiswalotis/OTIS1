@@ -18,3 +18,4 @@
 "$SF_SR_VAR_MOBILE_SETTING_ID","Passenger Release","Flow","FSL_Passenger_Released_Flow","ServiceAppointment","Passenger Release",
 "$SF_SR_VAR_MOBILE_SETTING_ID","Add New Building Contact","Flow","New_Building_Contact_Information","Location","Add New Building Contact",
 "$SF_SR_VAR_MOBILE_SETTING_ID","Create_WO_for_Repair_Detection","Flow","Create_WO_for_Repair_Detection","ServiceAppointment","Create WO for Repair Detection","/flow/Create_WO_for_Repair_Detection"
+"$SF_SR_VAR_MOBILE_SETTING_ID","Add Image on WO","Flow","Add_Image_on_WorkOrder","WorkOrder","Add Image on WO","/flow/Add_Image_on_WorkOrder"
