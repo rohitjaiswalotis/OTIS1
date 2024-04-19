@@ -335,7 +335,7 @@ Set SA.Scheduled End = BLANK</description>
         <label>Filter SA(None, Scheduled &amp; Dispatched)</label>
         <locationX>347</locationX>
         <locationY>1884</locationY>
-        <assignNextValueToReference>currentItem_Filter_SA_Dates_less_than</assignNextValueToReference>
+        <assignNextValueToReference>currentItem_Filter_SA_None</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
         <collectionReference>Get_SA_from_Unit</collectionReference>
         <conditionLogic>formula_evaluates_to_true</conditionLogic>
@@ -343,25 +343,25 @@ Set SA.Scheduled End = BLANK</description>
             <targetReference>Count_Filter_SA</targetReference>
         </connector>
         <formula>AND(
-DATEVALUE({!currentItem_Filter_SA_Dates_less_than.EarliestStartTime}) = {!$Record.FS_Suspension_StartDate__c},
-DATEVALUE({!currentItem_Filter_SA_Dates_less_than.SchedStartTime}) = {!$Record.FS_Suspension_StartDate__c},
-DATEVALUE({!currentItem_Filter_SA_Dates_less_than.DueDate}) = {!$Record.FS_Suspension_EndDate__c},
-DATEVALUE({!currentItem_Filter_SA_Dates_less_than.SchedEndTime}) = {!$Record.FS_Suspension_EndDate__c},
+DATEVALUE({!currentItem_Filter_SA_None.EarliestStartTime}) &gt;= {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA_None.SchedStartTime}) &gt;= {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA_None.DueDate}) &lt;= {!$Record.FS_Suspension_EndDate__c},
+DATEVALUE({!currentItem_Filter_SA_None.SchedEndTime}) &lt;= {!$Record.FS_Suspension_EndDate__c},
 OR(
-
-ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;None&quot;) ,
-ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;Scheduled&quot;) ,
-ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;Dispatched&quot;) 
+ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;None&quot;) ,
+ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Scheduled&quot;) ,
+ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;) 
 )
 )</formula>
     </collectionProcessors>
     <collectionProcessors>
+        <description>due date overlap</description>
         <name>Filter_SA_Dates_less_than</name>
         <elementSubtype>FilterCollectionProcessor</elementSubtype>
         <label>Filter SA Dates less than</label>
         <locationX>644</locationX>
         <locationY>5172</locationY>
-        <assignNextValueToReference>currentItem_Filter_SA_Dates_less_than</assignNextValueToReference>
+        <assignNextValueToReference>currentItem_Filter_SA_None</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
         <collectionReference>Get_SA_from_Unit</collectionReference>
         <conditionLogic>formula_evaluates_to_true</conditionLogic>
@@ -369,18 +369,20 @@ ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;Dispatched&quot
             <targetReference>Count_Filter_SA_Dates_less_than</targetReference>
         </connector>
         <formula>AND(
-DATEVALUE({!currentItem_Filter_SA_Dates_less_than.EarliestStartTime}) &lt; {!$Record.FS_Suspension_StartDate__c},
-DATEVALUE({!currentItem_Filter_SA_Dates_less_than.DueDate}) &lt; {!$Record.FS_Suspension_EndDate__c},
-ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;None&quot;) 
+DATEVALUE({!currentItem_Filter_SA_None.EarliestStartTime}) &lt; {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA_None.DueDate}) &lt; {!$Record.FS_Suspension_EndDate__c},
+DATEVALUE({!currentItem_Filter_SA_None.DueDate}) &gt; {!$Record.FS_Suspension_StartDate__c},
+ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;None&quot;) 
 )</formula>
     </collectionProcessors>
     <collectionProcessors>
+        <description>Earliest start permitted overlap</description>
         <name>Filter_SA_None</name>
         <elementSubtype>FilterCollectionProcessor</elementSubtype>
         <label>Filter SA(None)</label>
         <locationX>347</locationX>
         <locationY>3924</locationY>
-        <assignNextValueToReference>currentItem_Filter_SA_Dates_less_than</assignNextValueToReference>
+        <assignNextValueToReference>currentItem_Filter_SA_None</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
         <collectionReference>Get_SA_from_Unit</collectionReference>
         <conditionLogic>formula_evaluates_to_true</conditionLogic>
@@ -388,23 +390,20 @@ ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;None&quot;)
             <targetReference>Count_Filter_SA_None</targetReference>
         </connector>
         <formula>AND(
-DATEVALUE({!currentItem_Filter_SA_Dates_less_than.EarliestStartTime}) &gt; {!$Record.FS_Suspension_StartDate__c},
-DATEVALUE({!currentItem_Filter_SA_Dates_less_than.DueDate}) &gt; {!$Record.FS_Suspension_EndDate__c},
-ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;None&quot;)
+DATEVALUE({!currentItem_Filter_SA_None.EarliestStartTime}) &gt; {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA_None.EarliestStartTime}) &lt; {!$Record.FS_Suspension_EndDate__c},
+DATEVALUE({!currentItem_Filter_SA_None.DueDate}) &gt; {!$Record.FS_Suspension_EndDate__c},
+ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;None&quot;)
 )</formula>
     </collectionProcessors>
     <collectionProcessors>
-        <description>(SA.Status = &apos;Scheduled&apos; OR SA.Status = &apos;Dispatched&apos;) AND
-SA.Earliest Start Date &gt; Unit.Suspension Start Date AND
-SA.Due Date &gt; Unit.Suspension End Date AND
-SA.Scheduled Start &gt;= Unit.Suspension Start Date AND
-SA.Scheduled End &lt;= Unit.Suspension End Date</description>
+        <description>Earliest start permitted overlap</description>
         <name>Filter_SA_Scheduled_Dispatched</name>
         <elementSubtype>FilterCollectionProcessor</elementSubtype>
         <label>Filter SA(Scheduled, Dispatched)</label>
         <locationX>644</locationX>
         <locationY>4248</locationY>
-        <assignNextValueToReference>currentItem_Filter_SA_Dates_less_than</assignNextValueToReference>
+        <assignNextValueToReference>currentItem_Filter_SA_None</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
         <collectionReference>Get_SA_from_Unit</collectionReference>
         <conditionLogic>formula_evaluates_to_true</conditionLogic>
@@ -412,28 +411,25 @@ SA.Scheduled End &lt;= Unit.Suspension End Date</description>
             <targetReference>Count_Filter_SA_Scheduled_Dispatched</targetReference>
         </connector>
         <formula>AND(
-DATEVALUE({!currentItem_Filter_SA_Dates_less_than.EarliestStartTime}) &gt; {!$Record.FS_Suspension_StartDate__c},
-DATEVALUE({!currentItem_Filter_SA_Dates_less_than.SchedStartTime}) &gt;= {!$Record.FS_Suspension_StartDate__c},
-DATEVALUE({!currentItem_Filter_SA_Dates_less_than.DueDate}) &gt; {!$Record.FS_Suspension_EndDate__c},
-DATEVALUE({!currentItem_Filter_SA_Dates_less_than.SchedEndTime}) &lt;= {!$Record.FS_Suspension_EndDate__c},
+DATEVALUE({!currentItem_Filter_SA_None.EarliestStartTime}) &gt; {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA_None.EarliestStartTime}) &lt; {!$Record.FS_Suspension_EndDate__c},
+DATEVALUE({!currentItem_Filter_SA_None.SchedStartTime}) &gt;= {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA_None.DueDate}) &gt; {!$Record.FS_Suspension_EndDate__c},
+DATEVALUE({!currentItem_Filter_SA_None.SchedEndTime}) &lt;= {!$Record.FS_Suspension_EndDate__c},
 OR(
-ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;Scheduled&quot;) ,
-ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;Dispatched&quot;) 
+ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Scheduled&quot;) ,
+ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;) 
 )
 )</formula>
     </collectionProcessors>
     <collectionProcessors>
-        <description>(SA.Status = &apos;Scheduled&apos; OR SA.Status = &apos;Dispatched&apos;) AND
-SA.Earliest Start Date &lt; Unit.Suspension Start Date AND
-SA.Due Date &lt; Unit.Suspension End Date AND
-SA.Scheduled Start &gt;= Unit.Suspension Start Date AND
-SA.Scheduled End &lt;= Unit.Suspension End Date</description>
+        <description>due date overlap</description>
         <name>Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range</name>
         <elementSubtype>FilterCollectionProcessor</elementSubtype>
         <label>Filter SA(Scheduled, Dispatched) ESP range greater than Suspend Range</label>
         <locationX>886</locationX>
         <locationY>5496</locationY>
-        <assignNextValueToReference>currentItem_Filter_SA_Dates_less_than</assignNextValueToReference>
+        <assignNextValueToReference>currentItem_Filter_SA_None</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
         <collectionReference>Get_SA_from_Unit</collectionReference>
         <conditionLogic>formula_evaluates_to_true</conditionLogic>
@@ -441,14 +437,15 @@ SA.Scheduled End &lt;= Unit.Suspension End Date</description>
             <targetReference>Count_Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range</targetReference>
         </connector>
         <formula>AND(
-DATEVALUE({!currentItem_Filter_SA_Dates_less_than.EarliestStartTime}) &lt; {!$Record.FS_Suspension_StartDate__c},
-DATEVALUE({!currentItem_Filter_SA_Dates_less_than.SchedStartTime}) &gt;= {!$Record.FS_Suspension_StartDate__c},
-DATEVALUE({!currentItem_Filter_SA_Dates_less_than.DueDate}) &lt; {!$Record.FS_Suspension_EndDate__c},
-DATEVALUE({!currentItem_Filter_SA_Dates_less_than.SchedEndTime}) &lt;=  {!$Record.FS_Suspension_EndDate__c},
+DATEVALUE({!currentItem_Filter_SA_None.EarliestStartTime}) &lt; {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA_None.SchedStartTime}) &gt;= {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA_None.DueDate}) &lt; {!$Record.FS_Suspension_EndDate__c},
+DATEVALUE({!currentItem_Filter_SA_None.DueDate}) &gt; {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA_None.SchedEndTime}) &lt;=  {!$Record.FS_Suspension_EndDate__c},
 OR(
-ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;Scheduled&quot;) 
+ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Scheduled&quot;) 
 ,
-ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;Dispatched&quot;) 
+ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;) 
 )
 )</formula>
     </collectionProcessors>
@@ -1245,7 +1242,7 @@ ISPICKVAL({!currentItem_Filter_SA_Dates_less_than.Status}, &quot;Dispatched&quot
         <objectType>ServiceAppointment</objectType>
     </variables>
     <variables>
-        <name>currentItem_Filter_SA_Dates_less_than</name>
+        <name>currentItem_Filter_SA_None</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
