@@ -15,6 +15,7 @@
     <doesShareSaParentWoWithAr>true</doesShareSaParentWoWithAr>
     <doesShareSaWithAr>true</doesShareSaWithAr>
     <doesAllowEditSaForCrew>true</doesAllowEditSaForCrew>
+    <enableDocumentBuilder>true</enableDocumentBuilder>
 	<!--
     <enableBatchWindow>false</enableBatchWindow>
     <enableFloatingWorkOrder>false</enableFloatingWorkOrder>
