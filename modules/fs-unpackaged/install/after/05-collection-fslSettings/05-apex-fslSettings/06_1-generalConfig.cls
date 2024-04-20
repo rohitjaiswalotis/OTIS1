@@ -14,7 +14,7 @@ FSL.SettingsAPI.setCustomSettings(
         'rule validation after delta' => true,
         'rule validation frequency level' => 'Always',
         'Timezone display mode' => 'user',
-        'Total allowed seconds of inactivity' => 7200,
+        //'Total allowed seconds of inactivity' => 7200,
         'Delta Will Run Every' => 10
     }
 );
