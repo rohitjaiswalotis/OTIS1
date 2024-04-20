@@ -90,7 +90,7 @@ async function main() {
 		// log in to SF
 		await basicService.logIn(opts);
 		
-		// open Contract.Status field details in Setup area
+		// open DigitalSignature.SignatureType field details in Setup area
 		await basicService.goToPage(SETUP_DIGITAL_SIGNATURE_TYPE_FIELD_URL);
 		BasicService.logMessage(`Digital Signature Type Picklist Field Details page has appeared: ${basicService.page.url()}`);
 		
