@@ -1,6 +1,121 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>send_notification_to_mechanic</name>
+        <label>send notification to mechanic</label>
+        <locationX>4538</locationX>
+        <locationY>1079</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>get_custom_notification_type.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>Mechanic</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <stringValue>{!$Record.Name} Cancellation  Notification</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>MessagingTemplate</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>send_notification_to_supervisor</name>
+        <label>send notification to supervisor</label>
+        <locationX>4538</locationX>
+        <locationY>971</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <connector>
+            <targetReference>send_notification_to_mechanic</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>get_custom_notification_type.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>Supervisor</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <stringValue>{!$Record.Name} Cancellation  Notification</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>MessagingTemplate</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
     <apiVersion>59.0</apiVersion>
+    <assignments>
+        <name>Assigning_message_template_and_channel</name>
+        <label>Assigning message template and channel</label>
+        <locationX>4538</locationX>
+        <locationY>863</locationY>
+        <assignmentItems>
+            <assignToReference>MessagingTemplate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>{!$Record.Name} is not under contract</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Supervisor</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>get_Service_Resource.RelatedRecordId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Mechanic</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Get_Mechanic.RelatedRecordId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>send_notification_to_supervisor</targetReference>
+        </connector>
+    </assignments>
     <assignments>
         <name>MP_Id_storage</name>
         <label>MP Id storage</label>
@@ -142,7 +257,7 @@
     <decisions>
         <name>Check_if_Changes_Done_in_Checkboxes</name>
         <label>Check if Changes Done in Checkboxes</label>
-        <locationX>2360</locationX>
+        <locationX>2492</locationX>
         <locationY>1547</locationY>
         <defaultConnector>
             <targetReference>Decision</targetReference>
@@ -209,7 +324,7 @@
     <decisions>
         <name>Decision</name>
         <label>Decision</label>
-        <locationX>2360</locationX>
+        <locationX>2492</locationX>
         <locationY>1847</locationY>
         <defaultConnector>
             <targetReference>Unit_Suspension</targetReference>
@@ -394,7 +509,7 @@
     <decisions>
         <name>IsChangedNewEqippment</name>
         <label>Decision</label>
-        <locationX>2360</locationX>
+        <locationX>2492</locationX>
         <locationY>323</locationY>
         <defaultConnector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
@@ -690,11 +805,26 @@
             </connector>
             <label>Status New Equipment</label>
         </rules>
+        <rules>
+            <name>Cancel</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.FS_Field_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cancelled</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Route</targetReference>
+            </connector>
+            <label>Cancel</label>
+        </rules>
     </decisions>
     <decisions>
         <name>Unit_Suspension</name>
         <label>Unit Suspension</label>
-        <locationX>2360</locationX>
+        <locationX>2492</locationX>
         <locationY>2147</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -871,6 +1001,27 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
+        <name>get_custom_notification_type</name>
+        <label>get_custom_notification_type</label>
+        <locationX>4538</locationX>
+        <locationY>755</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assigning_message_template_and_channel</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Unit_Cancellation_Notification</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>CustomNotificationType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Maintenance_Asset</name>
         <label>Get Maintenance Asset</label>
         <locationX>1458</locationX>
@@ -948,6 +1099,27 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>Get_Mechanic</name>
+        <label>Get Mechanic</label>
+        <locationX>4538</locationX>
+        <locationY>647</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>get_custom_notification_type</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Route.PrimaryMechanic__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ServiceResource</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Req_MP</name>
         <label>Get Req MP</label>
         <locationX>1458</locationX>
@@ -973,6 +1145,48 @@
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>MaintenancePlan</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Route</name>
+        <label>Get Route</label>
+        <locationX>4538</locationX>
+        <locationY>431</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>get_Service_Resource</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.RouteName__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ServiceTerritory</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>get_Service_Resource</name>
+        <label>get Service Resource</label>
+        <locationX>4538</locationX>
+        <locationY>539</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Mechanic</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Route.FieldSupervisor__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ServiceResource</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
@@ -1117,7 +1331,7 @@
     <recordUpdates>
         <name>Suspend_The_Unit</name>
         <label>Suspend The Unit</label>
-        <locationX>2096</locationX>
+        <locationX>2228</locationX>
         <locationY>2255</locationY>
         <inputAssignments>
             <field>FS_Field_Status__c</field>
@@ -1130,7 +1344,7 @@
     <recordUpdates>
         <name>Update</name>
         <label>Update</label>
-        <locationX>2228</locationX>
+        <locationX>2360</locationX>
         <locationY>1955</locationY>
         <connector>
             <targetReference>Unit_Suspension</targetReference>
@@ -1309,7 +1523,7 @@
     <recordUpdates>
         <name>Update_WO</name>
         <label>Update WO</label>
-        <locationX>2228</locationX>
+        <locationX>2360</locationX>
         <locationY>1655</locationY>
         <connector>
             <targetReference>Decision</targetReference>
@@ -1351,7 +1565,7 @@
     <recordUpdates>
         <name>Valid_the_Suspended_Unit</name>
         <label>Valid the Suspended Unit</label>
-        <locationX>2360</locationX>
+        <locationX>2492</locationX>
         <locationY>2255</locationY>
         <inputAssignments>
             <field>FS_Field_Status__c</field>
@@ -1362,7 +1576,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>2234</locationX>
+        <locationX>2366</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>IsChangedNewEqippment</targetReference>
@@ -1427,6 +1641,27 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>GroupMemberid</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Mechanic</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>MessagingTemplate</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>mP</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
@@ -1459,6 +1694,13 @@
     <variables>
         <name>StartDateStore</name>
         <dataType>Date</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Supervisor</name>
+        <dataType>String</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
