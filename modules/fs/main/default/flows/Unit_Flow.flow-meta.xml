@@ -1,6 +1,207 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Send_Email_to_Recipients</name>
+        <label>Send Email to Recipients</label>
+        <locationX>4626</locationX>
+        <locationY>2003</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>send_notification_to_supervisor</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailAddressesArray</name>
+            <value>
+                <elementReference>RecipientEmailList</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <stringValue>Track contract cancelled Units</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>EmailBody</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>send_notification_to_mechanic</name>
+        <label>send notification to mechanic</label>
+        <locationX>4626</locationX>
+        <locationY>2219</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>get_custom_notification_type.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>Mechanic</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <stringValue>{!$Record.Name} Cancellation  Notification</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>MessagingTemplate</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>send_notification_to_supervisor</name>
+        <label>send notification to supervisor</label>
+        <locationX>4626</locationX>
+        <locationY>2111</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <connector>
+            <targetReference>send_notification_to_mechanic</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>get_custom_notification_type.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>Supervisor</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <stringValue>{!$Record.Name} Cancellation  Notification</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>MessagingTemplate</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
     <apiVersion>59.0</apiVersion>
+    <assignments>
+        <name>Add_Group_Members_Id</name>
+        <label>Add Group Members Id</label>
+        <locationX>4714</locationX>
+        <locationY>1403</locationY>
+        <assignmentItems>
+            <assignToReference>GroupMemberid</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_the_Public_Group_to_Add_Members.UserOrGroupId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_the_Public_Group_to_Add_Members</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Email_for_Branch_Manager</name>
+        <label>Assign Email for Branch Manager</label>
+        <locationX>4626</locationX>
+        <locationY>1187</locationY>
+        <assignmentItems>
+            <assignToReference>RecipientEmailList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>$Record.Branch__r.BranchManager__r.PrimaryEmail__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_the_Public_Group_to_Add_Members</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Email_to_List</name>
+        <label>Assign Email to List</label>
+        <locationX>4714</locationX>
+        <locationY>1811</locationY>
+        <assignmentItems>
+            <assignToReference>RecipientEmailList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_the_User_to_Capture_Email.Email</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_the_User_to_Capture_Email</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assigning_message_template_and_channel</name>
+        <label>Assigning message template and channel</label>
+        <locationX>4626</locationX>
+        <locationY>1079</locationY>
+        <assignmentItems>
+            <assignToReference>MessagingTemplate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>{!$Record.Name} is not under contract</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Supervisor</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>get_Service_Resource.RelatedRecordId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Mechanic</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Get_Mechanic.RelatedRecordId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_Email_for_Branch_Manager</targetReference>
+        </connector>
+    </assignments>
     <assignments>
         <name>MP_Id_storage</name>
         <label>MP Id storage</label>
@@ -142,8 +343,8 @@
     <decisions>
         <name>Check_if_Changes_Done_in_Checkboxes</name>
         <label>Check if Changes Done in Checkboxes</label>
-        <locationX>2360</locationX>
-        <locationY>1547</locationY>
+        <locationX>2536</locationX>
+        <locationY>2519</locationY>
         <defaultConnector>
             <targetReference>Decision</targetReference>
         </defaultConnector>
@@ -209,8 +410,8 @@
     <decisions>
         <name>Decision</name>
         <label>Decision</label>
-        <locationX>2360</locationX>
-        <locationY>1847</locationY>
+        <locationX>2536</locationX>
+        <locationY>2819</locationY>
         <defaultConnector>
             <targetReference>Unit_Suspension</targetReference>
         </defaultConnector>
@@ -394,7 +595,7 @@
     <decisions>
         <name>IsChangedNewEqippment</name>
         <label>Decision</label>
-        <locationX>2360</locationX>
+        <locationX>2536</locationX>
         <locationY>323</locationY>
         <defaultConnector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
@@ -690,12 +891,27 @@
             </connector>
             <label>Status New Equipment</label>
         </rules>
+        <rules>
+            <name>Cancel</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.FS_Field_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cancelled</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Route</targetReference>
+            </connector>
+            <label>Cancel</label>
+        </rules>
     </decisions>
     <decisions>
         <name>Unit_Suspension</name>
         <label>Unit Suspension</label>
-        <locationX>2360</locationX>
-        <locationY>2147</locationY>
+        <locationX>2536</locationX>
+        <locationY>3119</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Suspend_Unit</name>
@@ -824,6 +1040,34 @@
         </noMoreValuesConnector>
     </loops>
     <loops>
+        <name>Loop_the_Public_Group_to_Add_Members</name>
+        <label>Loop the Public Group to Add Members</label>
+        <locationX>4626</locationX>
+        <locationY>1295</locationY>
+        <collectionReference>Get_the_Group_Member_Record</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Add_Group_Members_Id</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Get_Users_Email_ID</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Loop_the_User_to_Capture_Email</name>
+        <label>Loop the User to Capture Email</label>
+        <locationX>4626</locationX>
+        <locationY>1703</locationY>
+        <collectionReference>Get_Users_Email_ID</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Assign_Email_to_List</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Send_Email_to_Recipients</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
         <name>LoopOver_MA_of_Unit</name>
         <label>LoopOver MA of Unit</label>
         <locationX>1458</locationX>
@@ -870,6 +1114,27 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>get_custom_notification_type</name>
+        <label>get_custom_notification_type</label>
+        <locationX>4626</locationX>
+        <locationY>755</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Metadata_for_the_Comissioning_Team_Email</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Unit_Cancellation_Notification</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>CustomNotificationType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
         <name>Get_Maintenance_Asset</name>
         <label>Get Maintenance Asset</label>
@@ -948,6 +1213,48 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>Get_Mechanic</name>
+        <label>Get Mechanic</label>
+        <locationX>4626</locationX>
+        <locationY>647</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>get_custom_notification_type</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Route.PrimaryMechanic__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ServiceResource</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Metadata_for_the_Comissioning_Team_Email</name>
+        <label>Get Metadata for the Comissioning Team Email</label>
+        <locationX>4626</locationX>
+        <locationY>863</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_the_Group_Member_Record</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Label</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>OTIS Switzerland</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>FS_OTISCompanyWideSettings__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Req_MP</name>
         <label>Get Req MP</label>
         <locationX>1458</locationX>
@@ -973,6 +1280,90 @@
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>MaintenancePlan</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Route</name>
+        <label>Get Route</label>
+        <locationX>4626</locationX>
+        <locationY>431</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>get_Service_Resource</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.RouteName__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ServiceTerritory</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>get_Service_Resource</name>
+        <label>get Service Resource</label>
+        <locationX>4626</locationX>
+        <locationY>539</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Mechanic</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Route.FieldSupervisor__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ServiceResource</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_the_Group_Member_Record</name>
+        <label>Get the Group Member Record</label>
+        <locationX>4626</locationX>
+        <locationY>971</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assigning_message_template_and_channel</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>GroupId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Metadata_for_the_Comissioning_Team_Email.FS_Commission_Team_Public_Group__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>GroupMember</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Users_Email_ID</name>
+        <label>Get Users Email ID</label>
+        <locationX>4626</locationX>
+        <locationY>1595</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_the_User_to_Capture_Email</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>GroupMemberid</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>User</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
@@ -1117,8 +1508,8 @@
     <recordUpdates>
         <name>Suspend_The_Unit</name>
         <label>Suspend The Unit</label>
-        <locationX>2096</locationX>
-        <locationY>2255</locationY>
+        <locationX>2272</locationX>
+        <locationY>3227</locationY>
         <inputAssignments>
             <field>FS_Field_Status__c</field>
             <value>
@@ -1130,8 +1521,8 @@
     <recordUpdates>
         <name>Update</name>
         <label>Update</label>
-        <locationX>2228</locationX>
-        <locationY>1955</locationY>
+        <locationX>2404</locationX>
+        <locationY>2927</locationY>
         <connector>
             <targetReference>Unit_Suspension</targetReference>
         </connector>
@@ -1309,8 +1700,8 @@
     <recordUpdates>
         <name>Update_WO</name>
         <label>Update WO</label>
-        <locationX>2228</locationX>
-        <locationY>1655</locationY>
+        <locationX>2404</locationX>
+        <locationY>2627</locationY>
         <connector>
             <targetReference>Decision</targetReference>
         </connector>
@@ -1351,8 +1742,8 @@
     <recordUpdates>
         <name>Valid_the_Suspended_Unit</name>
         <label>Valid the Suspended Unit</label>
-        <locationX>2360</locationX>
-        <locationY>2255</locationY>
+        <locationX>2536</locationX>
+        <locationY>3227</locationY>
         <inputAssignments>
             <field>FS_Field_Status__c</field>
             <value>
@@ -1362,7 +1753,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>2234</locationX>
+        <locationX>2410</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>IsChangedNewEqippment</targetReference>
@@ -1404,6 +1795,11 @@
             </value>
         </inputAssignments>
     </subflows>
+    <textTemplates>
+        <name>EmailBody</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;&lt;strong&gt;{!$Record.Name} is not under contract.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;img src=&quot;https://otisdevelopmentaccount--fsnaadev1.sandbox.file.force.com/sfc/dist/version/renditionDownload?rendition=ORIGINAL_Png&amp;amp;versionId=068DQ000000Rhqe&amp;amp;operationContext=DELIVERY&amp;amp;contentId=05TDQ000001YgpD&amp;amp;page=0&amp;amp;d=/a/DQ000000KHg5/yYMI85zP.yFIg7rTDU3MUGZeTiSHT5TbYcwRjB0cSv0&amp;amp;oid=00DDQ0000008gin&amp;amp;dpt=null&amp;amp;viewId=&quot; alt=&quot;&quot;&gt;&lt;/p&gt;</text>
+    </textTemplates>
     <variables>
         <name>currentItem_Collection_Filter_Over_MP</name>
         <dataType>SObject</dataType>
@@ -1422,6 +1818,27 @@
     <variables>
         <name>EndDateStoreSingleVar</name>
         <dataType>Date</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>GroupMemberid</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Mechanic</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>MessagingTemplate</name>
+        <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
@@ -1457,8 +1874,22 @@
         <objectType>MaintenancePlan</objectType>
     </variables>
     <variables>
+        <name>RecipientEmailList</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>StartDateStore</name>
         <dataType>Date</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Supervisor</name>
+        <dataType>String</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
