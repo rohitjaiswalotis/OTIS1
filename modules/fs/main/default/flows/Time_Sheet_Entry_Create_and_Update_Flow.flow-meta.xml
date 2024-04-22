@@ -102,6 +102,29 @@
             <targetReference>Add_TSE_Record_to_TSECollection</targetReference>
         </connector>
     </assignments>
+    <customErrors>
+        <name>Error</name>
+        <label>Error</label>
+        <locationX>248</locationX>
+        <locationY>1739</locationY>
+        <customErrorMessages>
+            <errorMessage>You Cannot Modify, Not Submitted or Approved Timesheet</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <customErrors>
+        <name>Multiple_TSE_Error</name>
+        <label>Multiple TSE Error</label>
+        <locationX>314</locationX>
+        <locationY>755</locationY>
+        <connector>
+            <targetReference>Check_for_Parent_TImesheet</targetReference>
+        </connector>
+        <customErrorMessages>
+            <errorMessage>You cannot adjust the time sheet entry as multiple time sheet entries are getting affected by your adjustment. Please make sure the change only impact predecessor and successor time sheet entry only</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
     <decisions>
         <name>Check_for_Parent_TImesheet</name>
         <label>Check for Parent TImesheet</label>
