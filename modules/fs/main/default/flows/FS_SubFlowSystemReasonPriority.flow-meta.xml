@@ -2,48 +2,9 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>59.0</apiVersion>
     <assignments>
-        <name>Assignment_4</name>
-        <label>Assignment 4</label>
-        <locationX>666</locationX>
-        <locationY>1058</locationY>
-        <assignmentItems>
-            <assignToReference>FinalSystemReason</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>PriorReason</elementReference>
-            </value>
-        </assignmentItems>
-    </assignments>
-    <assignments>
-        <name>Assignment_5</name>
-        <label>Assignment 5</label>
-        <locationX>930</locationX>
-        <locationY>1058</locationY>
-        <assignmentItems>
-            <assignToReference>FinalSystemReason</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>PresentReason</elementReference>
-            </value>
-        </assignmentItems>
-    </assignments>
-    <assignments>
-        <name>Assignment_6</name>
-        <label>Assignment 6</label>
-        <locationX>50</locationX>
-        <locationY>242</locationY>
-        <assignmentItems>
-            <assignToReference>FinalSystemReason</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Sys_Reason_From_WO</elementReference>
-            </value>
-        </assignmentItems>
-    </assignments>
-    <assignments>
         <name>Get_Priority_Value</name>
         <label>Get Priority Value</label>
-        <locationX>930</locationX>
+        <locationX>578</locationX>
         <locationY>242</locationY>
         <assignmentItems>
             <assignToReference>PriorReason</assignToReference>
@@ -60,59 +21,66 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Get_Sys_Reason_Priority_Matrix</targetReference>
+            <targetReference>Check_For_System_Reason_Priority</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>Present_Val</name>
-        <label>Present Val</label>
-        <locationX>1282</locationX>
-        <locationY>674</locationY>
+        <name>System_Reason_Update</name>
+        <label>System Reason Update</label>
+        <locationX>50</locationX>
+        <locationY>242</locationY>
         <assignmentItems>
-            <assignToReference>PresentVal</assignToReference>
+            <assignToReference>FinalSystemReason</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Get_Actual_System_Reason.Priority_Value__c</elementReference>
+                <elementReference>Sys_Reason_From_WO</elementReference>
             </value>
         </assignmentItems>
-        <connector>
-            <targetReference>Get_Actual_System_Reason</targetReference>
-        </connector>
     </assignments>
     <assignments>
-        <name>Prior_Val</name>
-        <label>Prior Val</label>
-        <locationX>1018</locationX>
-        <locationY>674</locationY>
+        <name>System_Reason_Update_with_Present</name>
+        <label>System Reason Update with Present</label>
+        <locationX>578</locationX>
+        <locationY>458</locationY>
         <assignmentItems>
-            <assignToReference>PriorVal</assignToReference>
+            <assignToReference>FinalSystemReason</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Get_Actual_System_Reason.Priority_Value__c</elementReference>
+                <elementReference>PresentReason</elementReference>
             </value>
         </assignmentItems>
-        <connector>
-            <targetReference>Get_Actual_System_Reason</targetReference>
-        </connector>
+    </assignments>
+    <assignments>
+        <name>SystemReason_Update_with_Prior</name>
+        <label>SystemReason Update with Prior</label>
+        <locationX>314</locationX>
+        <locationY>458</locationY>
+        <assignmentItems>
+            <assignToReference>FinalSystemReason</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>PriorReason</elementReference>
+            </value>
+        </assignmentItems>
     </assignments>
     <decisions>
         <name>Check_For_System_Reason_Priority</name>
         <label>Check For System Reason Priority</label>
-        <locationX>930</locationX>
-        <locationY>950</locationY>
+        <locationX>578</locationX>
+        <locationY>350</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>If_Prior_Greater_Than_Present</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>PriorVal</leftValueReference>
+                <leftValueReference>PriorReasonValue</leftValueReference>
                 <operator>LessThan</operator>
                 <rightValue>
-                    <elementReference>PresentVal</elementReference>
+                    <elementReference>PresentReasonValue</elementReference>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Assignment_4</targetReference>
+                <targetReference>SystemReason_Update_with_Prior</targetReference>
             </connector>
             <label>If Prior Greater Than Present</label>
         </rules>
@@ -120,62 +88,22 @@
             <name>If_Present_Greater_Than_Prior</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>PresentVal</leftValueReference>
+                <leftValueReference>PresentReasonValue</leftValueReference>
                 <operator>LessThan</operator>
                 <rightValue>
-                    <elementReference>PriorVal</elementReference>
+                    <elementReference>PriorReasonValue</elementReference>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Assignment_5</targetReference>
+                <targetReference>System_Reason_Update_with_Present</targetReference>
             </connector>
             <label>If Present Greater Than Prior</label>
         </rules>
     </decisions>
     <decisions>
-        <name>Check_Value</name>
-        <label>Check Value</label>
-        <locationX>1282</locationX>
-        <locationY>566</locationY>
-        <defaultConnector>
-            <targetReference>Get_Actual_System_Reason</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default</defaultConnectorLabel>
-        <rules>
-            <name>If_Prior</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Get_Actual_System_Reason.Label</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <elementReference>PriorReason</elementReference>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Prior_Val</targetReference>
-            </connector>
-            <label>If Prior</label>
-        </rules>
-        <rules>
-            <name>If_Present</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Get_Actual_System_Reason.Label</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <elementReference>PresentReason</elementReference>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Present_Val</targetReference>
-            </connector>
-            <label>If Present</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>Checking_the_Value_Null_or_Not</name>
         <label>Checking the Value Null or Not</label>
-        <locationX>754</locationX>
+        <locationX>578</locationX>
         <locationY>134</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -196,7 +124,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Assignment_6</targetReference>
+                <targetReference>System_Reason_Update</targetReference>
             </connector>
             <label>When Prior IsNull</label>
         </rules>
@@ -223,24 +151,24 @@
             <label>Is Not Null</label>
         </rules>
     </decisions>
-    <description>This Flow will Update the System Reason 1field on WO Level</description>
+    <description>This Flow will Update the System Reason 1field on WO Level ( Without Meta Data)</description>
     <environments>Default</environments>
+    <formulas>
+        <description>This Formula variable will hold the Value of the Present System Reason Value</description>
+        <name>PresentReasonValue</name>
+        <dataType>Number</dataType>
+        <expression>VALUE(LEFT({!PresentReason} ,FIND(&apos;.&apos;, {!PresentReason}) ))</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <description>This variable will hold the value for the Prior System Reason</description>
+        <name>PriorReasonValue</name>
+        <dataType>Number</dataType>
+        <expression>VALUE(LEFT({!PriorReason} ,FIND(&apos;.&apos; , {!PriorReason}) ))</expression>
+        <scale>0</scale>
+    </formulas>
     <interviewLabel>SubFlow:System Reason Priority {!$Flow.CurrentDateTime}</interviewLabel>
     <label>SubFlow:System Reason Priority</label>
-    <loops>
-        <name>Get_Actual_System_Reason</name>
-        <label>Get Actual System Reason</label>
-        <locationX>930</locationX>
-        <locationY>458</locationY>
-        <collectionReference>Get_Sys_Reason_Priority_Matrix</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>Check_Value</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>Check_For_System_Reason_Priority</targetReference>
-        </noMoreValuesConnector>
-    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -260,21 +188,8 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
-    <recordLookups>
-        <name>Get_Sys_Reason_Priority_Matrix</name>
-        <label>Get Sys Reason Priority Matrix</label>
-        <locationX>930</locationX>
-        <locationY>350</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Get_Actual_System_Reason</targetReference>
-        </connector>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>System_Reason_Priority_Matrix__mdt</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <start>
-        <locationX>628</locationX>
+        <locationX>452</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Checking_the_Value_Null_or_Not</targetReference>
@@ -296,14 +211,6 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>PresentVal</name>
-        <dataType>Number</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <scale>0</scale>
-    </variables>
-    <variables>
         <name>Prio_Sys_Reason_From_WO</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -316,14 +223,6 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>PriorVal</name>
-        <dataType>Number</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <scale>0</scale>
     </variables>
     <variables>
         <name>Sys_Reason_From_WO</name>
