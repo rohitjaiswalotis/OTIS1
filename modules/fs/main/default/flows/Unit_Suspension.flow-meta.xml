@@ -60,6 +60,13 @@
             </value>
         </assignmentItems>
         <assignmentItems>
+            <assignToReference>Looping_Filtered_SA.FSL__Pinned__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
             <assignToReference>WOidSet_ToBeCancelled</assignToReference>
             <operator>Add</operator>
             <value>
@@ -1008,6 +1015,13 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
             <operator>In</operator>
             <value>
                 <elementReference>WOidSet_ToBeCancelled</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Canceled</stringValue>
             </value>
         </filters>
         <inputAssignments>
