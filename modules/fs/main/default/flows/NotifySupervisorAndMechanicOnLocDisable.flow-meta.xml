@@ -3,7 +3,7 @@
     <actionCalls>
         <name>Send_Notification_to_supervisor_and_mechanic</name>
         <label>Send Notification to supervisor and mechanic</label>
-        <locationX>143</locationX>
+        <locationX>50</locationX>
         <locationY>924</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
@@ -41,11 +41,28 @@
         <nameSegment>customNotificationAction</nameSegment>
         <versionSegment>1</versionSegment>
     </actionCalls>
+    <actionCalls>
+        <name>To_send_reminder_email_to_FS_Admin_to_deactivate_the_User1</name>
+        <label>To send reminder email to FS Admin to deactivate the User1</label>
+        <locationX>842</locationX>
+        <locationY>276</locationY>
+        <actionName>ServiceResource.To_send_reminder_email_to_FS_Admin_to_deactivate_the_User</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>ServiceResource.To_send_reminder_email_to_FS_Admin_to_deactivate_the_User</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
     <apiVersion>59.0</apiVersion>
     <assignments>
         <name>Assign_Notification_Data</name>
         <label>Assign Notification Data</label>
-        <locationX>275</locationX>
+        <locationX>182</locationX>
         <locationY>600</locationY>
         <assignmentItems>
             <assignToReference>RecepientIds</assignToReference>
@@ -75,7 +92,7 @@
     <decisions>
         <name>Check_if_Login_history_exist</name>
         <label>Check if Login history exist</label>
-        <locationX>473</locationX>
+        <locationX>380</locationX>
         <locationY>384</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -104,7 +121,7 @@
     <decisions>
         <name>location_updated1</name>
         <label>location updated ?</label>
-        <locationX>275</locationX>
+        <locationX>182</locationX>
         <locationY>816</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -153,7 +170,7 @@
     <recordLookups>
         <name>Get_Custom_Notification</name>
         <label>Get Custom Notification</label>
-        <locationX>275</locationX>
+        <locationX>182</locationX>
         <locationY>708</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -174,7 +191,7 @@
     <recordLookups>
         <name>Get_Last_Login_History</name>
         <label>Get Last Login History</label>
-        <locationX>473</locationX>
+        <locationX>380</locationX>
         <locationY>276</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -204,7 +221,7 @@
     <recordLookups>
         <name>Get_SuperVisor</name>
         <label>Get SuperVisor</label>
-        <locationX>275</locationX>
+        <locationX>182</locationX>
         <locationY>492</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -230,11 +247,18 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>50</locationX>
+        <locationX>188</locationX>
         <locationY>0</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>RelatedRecordId</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>ReplacementEffectiveDate__c</field>
             <operator>IsNull</operator>
             <value>
                 <booleanValue>false</booleanValue>
@@ -251,6 +275,17 @@
             <offsetNumber>2</offsetNumber>
             <offsetUnit>Minutes</offsetUnit>
             <recordField>LastModifiedDate</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <scheduledPaths>
+            <name>send_reminder_email_to_FS_Admin_to_deactivate_the_User</name>
+            <connector>
+                <targetReference>To_send_reminder_email_to_FS_Admin_to_deactivate_the_User1</targetReference>
+            </connector>
+            <label>send reminder email to FS Admin to deactivate the User.</label>
+            <offsetNumber>2</offsetNumber>
+            <offsetUnit>Minutes</offsetUnit>
+            <recordField>ReplacementEffectiveDate__c</recordField>
             <timeSource>RecordField</timeSource>
         </scheduledPaths>
         <triggerType>RecordAfterSave</triggerType>
