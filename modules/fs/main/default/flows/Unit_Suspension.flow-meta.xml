@@ -28,7 +28,7 @@
         <name>Assignment_2</name>
         <label>Assignment 2</label>
         <locationX>303</locationX>
-        <locationY>3540</locationY>
+        <locationY>3840</locationY>
         <assignmentItems>
             <assignToReference>Looping_Maintenance_Plan_to_be_hold.NextSuggestedMaintenanceDate</assignToReference>
             <operator>Assign</operator>
@@ -88,7 +88,7 @@
         <name>Copy_1_of_Gather_Maintenance_Plan</name>
         <label>Copy 1 of Gather Maintenance Plan</label>
         <locationX>479</locationX>
-        <locationY>3048</locationY>
+        <locationY>3348</locationY>
         <assignmentItems>
             <assignToReference>MaintenancePlanIdSet</assignToReference>
             <operator>Add</operator>
@@ -120,7 +120,7 @@
         <name>Count_Filter_SA_Dates_less_than</name>
         <label>Count Filter_SA_Dates_less_than</label>
         <locationX>644</locationX>
-        <locationY>5280</locationY>
+        <locationY>5580</locationY>
         <assignmentItems>
             <assignToReference>Filter_SA_Dates_less_than_Count</assignToReference>
             <operator>AssignCount</operator>
@@ -136,7 +136,7 @@
         <name>Count_Filter_SA_None</name>
         <label>Count {!Filter_SA_None}</label>
         <locationX>347</locationX>
-        <locationY>4032</locationY>
+        <locationY>4332</locationY>
         <assignmentItems>
             <assignToReference>Filter_SA_None_Count</assignToReference>
             <operator>AssignCount</operator>
@@ -152,7 +152,7 @@
         <name>Count_Filter_SA_Scheduled_Dispatched</name>
         <label>Count Filter_SA_Scheduled_Dispatched</label>
         <locationX>644</locationX>
-        <locationY>4356</locationY>
+        <locationY>4656</locationY>
         <assignmentItems>
             <assignToReference>Filter_SA_Scheduled_Dispatched_Count</assignToReference>
             <operator>AssignCount</operator>
@@ -168,7 +168,7 @@
         <name>Count_Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range</name>
         <label>Count Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range</label>
         <locationX>886</locationX>
-        <locationY>5604</locationY>
+        <locationY>5904</locationY>
         <assignmentItems>
             <assignToReference>Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range_Count</assignToReference>
             <operator>AssignCount</operator>
@@ -178,6 +178,22 @@
         </assignmentItems>
         <connector>
             <targetReference>Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range_recs</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Count_Maintenance_Asset</name>
+        <label>Count Maintenance Asset</label>
+        <locationX>347</locationX>
+        <locationY>2916</locationY>
+        <assignmentItems>
+            <assignToReference>CountMaintenanceAsset</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>Get_Maintenance_Assets_for_putting_on_hold</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Maintenance_Asset_linked_to_Unit</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -201,7 +217,7 @@
         <name>SA_DD_assignment</name>
         <label>SA DD assignment</label>
         <locationX>490</locationX>
-        <locationY>5604</locationY>
+        <locationY>5904</locationY>
         <assignmentItems>
             <assignToReference>Looping_Filtered_SA_None_Dates_Less_Than.DueDate</assignToReference>
             <operator>Assign</operator>
@@ -236,7 +252,7 @@ Set SA.Scheduled End = BLANK</description>
         <name>SA_DD_None_Remove_Mechanic_assignment</name>
         <label>SA DD,None,Remove Mechanic assignment</label>
         <locationX>842</locationX>
-        <locationY>5928</locationY>
+        <locationY>6228</locationY>
         <assignmentItems>
             <assignToReference>Looping_Filtered_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range.DueDate</assignToReference>
             <operator>Assign</operator>
@@ -271,7 +287,7 @@ Set SA.Scheduled End = BLANK</description>
         <name>SA_ESP_assignment</name>
         <label>SA ESP assignment</label>
         <locationX>138</locationX>
-        <locationY>4356</locationY>
+        <locationY>4656</locationY>
         <assignmentItems>
             <assignToReference>Looping_Filtered_SA_None.EarliestStartTime</assignToReference>
             <operator>Assign</operator>
@@ -306,7 +322,7 @@ Set SA.Scheduled End = BLANK</description>
         <name>SA_ESP_None_Remove_Mechanic_assignment</name>
         <label>SA ESP,None,Remove Mechanic assignment</label>
         <locationX>600</locationX>
-        <locationY>4680</locationY>
+        <locationY>4980</locationY>
         <assignmentItems>
             <assignToReference>Looping_Filtered_SA_Scheduled_Dispatched.EarliestStartTime</assignToReference>
             <operator>Assign</operator>
@@ -342,7 +358,7 @@ Set SA.Scheduled End = BLANK</description>
         <label>Filter SA(None, Scheduled &amp; Dispatched)</label>
         <locationX>347</locationX>
         <locationY>1884</locationY>
-        <assignNextValueToReference>currentItem_Filter_SA_None</assignNextValueToReference>
+        <assignNextValueToReference>currentItem_Filter_SA</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
         <collectionReference>Get_SA_from_Unit</collectionReference>
         <conditionLogic>formula_evaluates_to_true</conditionLogic>
@@ -350,14 +366,14 @@ Set SA.Scheduled End = BLANK</description>
             <targetReference>Count_Filter_SA</targetReference>
         </connector>
         <formula>AND(
-DATEVALUE({!currentItem_Filter_SA_None.EarliestStartTime}) &gt;= {!$Record.FS_Suspension_StartDate__c},
-DATEVALUE({!currentItem_Filter_SA_None.SchedStartTime}) &gt;= {!$Record.FS_Suspension_StartDate__c},
-DATEVALUE({!currentItem_Filter_SA_None.DueDate}) &lt;= {!$Record.FS_Suspension_EndDate__c},
-DATEVALUE({!currentItem_Filter_SA_None.SchedEndTime}) &lt;= {!$Record.FS_Suspension_EndDate__c},
+DATEVALUE({!currentItem_Filter_SA.EarliestStartTime}) &gt;= {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA.SchedStartTime}) &gt;= {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA.DueDate}) &lt;= {!$Record.FS_Suspension_EndDate__c},
+DATEVALUE({!currentItem_Filter_SA.SchedEndTime}) &lt;= {!$Record.FS_Suspension_EndDate__c},
 OR(
-ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;None&quot;) ,
-ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Scheduled&quot;) ,
-ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;) 
+ISPICKVAL({!currentItem_Filter_SA.Status}, &quot;None&quot;) ,
+ISPICKVAL({!currentItem_Filter_SA.Status}, &quot;Scheduled&quot;) ,
+ISPICKVAL({!currentItem_Filter_SA.Status}, &quot;Dispatched&quot;) 
 )
 )</formula>
     </collectionProcessors>
@@ -367,8 +383,8 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <elementSubtype>FilterCollectionProcessor</elementSubtype>
         <label>Filter SA Dates less than</label>
         <locationX>644</locationX>
-        <locationY>5172</locationY>
-        <assignNextValueToReference>currentItem_Filter_SA_None</assignNextValueToReference>
+        <locationY>5472</locationY>
+        <assignNextValueToReference>currentItem_Filter_SA</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
         <collectionReference>Get_SA_from_Unit</collectionReference>
         <conditionLogic>formula_evaluates_to_true</conditionLogic>
@@ -376,10 +392,10 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
             <targetReference>Count_Filter_SA_Dates_less_than</targetReference>
         </connector>
         <formula>AND(
-DATEVALUE({!currentItem_Filter_SA_None.EarliestStartTime}) &lt; {!$Record.FS_Suspension_StartDate__c},
-DATEVALUE({!currentItem_Filter_SA_None.DueDate}) &lt; {!$Record.FS_Suspension_EndDate__c},
-DATEVALUE({!currentItem_Filter_SA_None.DueDate}) &gt; {!$Record.FS_Suspension_StartDate__c},
-ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;None&quot;) 
+DATEVALUE({!currentItem_Filter_SA.EarliestStartTime}) &lt; {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA.DueDate}) &lt; {!$Record.FS_Suspension_EndDate__c},
+DATEVALUE({!currentItem_Filter_SA.DueDate}) &gt; {!$Record.FS_Suspension_StartDate__c},
+ISPICKVAL({!currentItem_Filter_SA.Status}, &quot;None&quot;) 
 )</formula>
     </collectionProcessors>
     <collectionProcessors>
@@ -388,8 +404,8 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;None&quot;)
         <elementSubtype>FilterCollectionProcessor</elementSubtype>
         <label>Filter SA(None)</label>
         <locationX>347</locationX>
-        <locationY>3924</locationY>
-        <assignNextValueToReference>currentItem_Filter_SA_None</assignNextValueToReference>
+        <locationY>4224</locationY>
+        <assignNextValueToReference>currentItem_Filter_SA</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
         <collectionReference>Get_SA_from_Unit</collectionReference>
         <conditionLogic>formula_evaluates_to_true</conditionLogic>
@@ -397,10 +413,10 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;None&quot;)
             <targetReference>Count_Filter_SA_None</targetReference>
         </connector>
         <formula>AND(
-DATEVALUE({!currentItem_Filter_SA_None.EarliestStartTime}) &gt; {!$Record.FS_Suspension_StartDate__c},
-DATEVALUE({!currentItem_Filter_SA_None.EarliestStartTime}) &lt; {!$Record.FS_Suspension_EndDate__c},
-DATEVALUE({!currentItem_Filter_SA_None.DueDate}) &gt; {!$Record.FS_Suspension_EndDate__c},
-ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;None&quot;)
+DATEVALUE({!currentItem_Filter_SA.EarliestStartTime}) &gt; {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA.EarliestStartTime}) &lt; {!$Record.FS_Suspension_EndDate__c},
+DATEVALUE({!currentItem_Filter_SA.DueDate}) &gt; {!$Record.FS_Suspension_EndDate__c},
+ISPICKVAL({!currentItem_Filter_SA.Status}, &quot;None&quot;)
 )</formula>
     </collectionProcessors>
     <collectionProcessors>
@@ -409,8 +425,8 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;None&quot;)
         <elementSubtype>FilterCollectionProcessor</elementSubtype>
         <label>Filter SA(Scheduled, Dispatched)</label>
         <locationX>644</locationX>
-        <locationY>4248</locationY>
-        <assignNextValueToReference>currentItem_Filter_SA_None</assignNextValueToReference>
+        <locationY>4548</locationY>
+        <assignNextValueToReference>currentItem_Filter_SA</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
         <collectionReference>Get_SA_from_Unit</collectionReference>
         <conditionLogic>formula_evaluates_to_true</conditionLogic>
@@ -418,14 +434,14 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;None&quot;)
             <targetReference>Count_Filter_SA_Scheduled_Dispatched</targetReference>
         </connector>
         <formula>AND(
-DATEVALUE({!currentItem_Filter_SA_None.EarliestStartTime}) &gt; {!$Record.FS_Suspension_StartDate__c},
-DATEVALUE({!currentItem_Filter_SA_None.EarliestStartTime}) &lt; {!$Record.FS_Suspension_EndDate__c},
-DATEVALUE({!currentItem_Filter_SA_None.SchedStartTime}) &gt;= {!$Record.FS_Suspension_StartDate__c},
-DATEVALUE({!currentItem_Filter_SA_None.DueDate}) &gt; {!$Record.FS_Suspension_EndDate__c},
-DATEVALUE({!currentItem_Filter_SA_None.SchedEndTime}) &lt;= {!$Record.FS_Suspension_EndDate__c},
+DATEVALUE({!currentItem_Filter_SA.EarliestStartTime}) &gt; {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA.EarliestStartTime}) &lt; {!$Record.FS_Suspension_EndDate__c},
+DATEVALUE({!currentItem_Filter_SA.SchedStartTime}) &gt;= {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA.DueDate}) &gt; {!$Record.FS_Suspension_EndDate__c},
+DATEVALUE({!currentItem_Filter_SA.SchedEndTime}) &lt;= {!$Record.FS_Suspension_EndDate__c},
 OR(
-ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Scheduled&quot;) ,
-ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;) 
+ISPICKVAL({!currentItem_Filter_SA.Status}, &quot;Scheduled&quot;) ,
+ISPICKVAL({!currentItem_Filter_SA.Status}, &quot;Dispatched&quot;) 
 )
 )</formula>
     </collectionProcessors>
@@ -435,8 +451,8 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <elementSubtype>FilterCollectionProcessor</elementSubtype>
         <label>Filter SA(Scheduled, Dispatched) ESP range greater than Suspend Range</label>
         <locationX>886</locationX>
-        <locationY>5496</locationY>
-        <assignNextValueToReference>currentItem_Filter_SA_None</assignNextValueToReference>
+        <locationY>5796</locationY>
+        <assignNextValueToReference>currentItem_Filter_SA</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
         <collectionReference>Get_SA_from_Unit</collectionReference>
         <conditionLogic>formula_evaluates_to_true</conditionLogic>
@@ -444,15 +460,15 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
             <targetReference>Count_Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range</targetReference>
         </connector>
         <formula>AND(
-DATEVALUE({!currentItem_Filter_SA_None.EarliestStartTime}) &lt; {!$Record.FS_Suspension_StartDate__c},
-DATEVALUE({!currentItem_Filter_SA_None.SchedStartTime}) &gt;= {!$Record.FS_Suspension_StartDate__c},
-DATEVALUE({!currentItem_Filter_SA_None.DueDate}) &lt; {!$Record.FS_Suspension_EndDate__c},
-DATEVALUE({!currentItem_Filter_SA_None.DueDate}) &gt; {!$Record.FS_Suspension_StartDate__c},
-DATEVALUE({!currentItem_Filter_SA_None.SchedEndTime}) &lt;=  {!$Record.FS_Suspension_EndDate__c},
+DATEVALUE({!currentItem_Filter_SA.EarliestStartTime}) &lt; {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA.SchedStartTime}) &gt;= {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA.DueDate}) &lt; {!$Record.FS_Suspension_EndDate__c},
+DATEVALUE({!currentItem_Filter_SA.DueDate}) &gt; {!$Record.FS_Suspension_StartDate__c},
+DATEVALUE({!currentItem_Filter_SA.SchedEndTime}) &lt;=  {!$Record.FS_Suspension_EndDate__c},
 OR(
-ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Scheduled&quot;) 
+ISPICKVAL({!currentItem_Filter_SA.Status}, &quot;Scheduled&quot;) 
 ,
-ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;) 
+ISPICKVAL({!currentItem_Filter_SA.Status}, &quot;Dispatched&quot;) 
 )
 )</formula>
     </collectionProcessors>
@@ -460,7 +476,7 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <name>Copy_1_of_Prevent_Duplicate_Plan_Id</name>
         <label>Copy 1 of Prevent Duplicate Plan Id</label>
         <locationX>391</locationX>
-        <locationY>2940</locationY>
+        <locationY>3240</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_Gather_Maintenance_Plan</targetReference>
         </defaultConnector>
@@ -521,7 +537,7 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <name>Filter_SA_Dates_less_than_Recs</name>
         <label>Filter_SA_Dates_less_than_Recs</label>
         <locationX>644</locationX>
-        <locationY>5388</locationY>
+        <locationY>5688</locationY>
         <defaultConnector>
             <targetReference>Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range</targetReference>
         </defaultConnector>
@@ -546,7 +562,7 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <name>Filter_SA_None_Recs</name>
         <label>Filter SA None Recs</label>
         <locationX>347</locationX>
-        <locationY>4140</locationY>
+        <locationY>4440</locationY>
         <defaultConnector>
             <targetReference>Filter_SA_Scheduled_Dispatched</targetReference>
         </defaultConnector>
@@ -596,7 +612,7 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <name>Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range_recs</name>
         <label>Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range_recs</label>
         <locationX>886</locationX>
-        <locationY>5712</locationY>
+        <locationY>6012</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>FoundFilter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range</name>
@@ -618,7 +634,7 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <name>Filter_SA_Scheduled_Dispatched_Recs</name>
         <label>Filter SA(Scheduled, Dispatched) Recs</label>
         <locationX>644</locationX>
-        <locationY>4464</locationY>
+        <locationY>4764</locationY>
         <defaultConnector>
             <targetReference>Filter_SA_Dates_less_than</targetReference>
         </defaultConnector>
@@ -635,6 +651,31 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
             </conditions>
             <connector>
                 <targetReference>Looping_Filtered_SA_Scheduled_Dispatched</targetReference>
+            </connector>
+            <label>Found</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Maintenance_Asset_linked_to_Unit</name>
+        <label>Maintenance Asset linked to Unit</label>
+        <locationX>347</locationX>
+        <locationY>3024</locationY>
+        <defaultConnector>
+            <targetReference>Filter_SA_None</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Found_Count_Maintenance_Asset</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>CountMaintenanceAsset</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Looping_Maintenance_Asset_tobehold</targetReference>
             </connector>
             <label>Found</label>
         </rules>
@@ -751,7 +792,7 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <name>Looping_Filtered_SA_None</name>
         <label>Looping Filtered SA None</label>
         <locationX>50</locationX>
-        <locationY>4248</locationY>
+        <locationY>4548</locationY>
         <collectionReference>Filter_SA_None</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -765,7 +806,7 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <name>Looping_Filtered_SA_None_Dates_Less_Than</name>
         <label>Looping Filtered SA None Dates Less Than</label>
         <locationX>402</locationX>
-        <locationY>5496</locationY>
+        <locationY>5796</locationY>
         <collectionReference>Filter_SA_Dates_less_than</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -779,7 +820,7 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <name>Looping_Filtered_SA_Scheduled_Dispatched</name>
         <label>Looping Filtered SA Scheduled,Dispatched</label>
         <locationX>512</locationX>
-        <locationY>4572</locationY>
+        <locationY>4872</locationY>
         <collectionReference>Filter_SA_Scheduled_Dispatched</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -793,7 +834,7 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <name>Looping_Filtered_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range</name>
         <label>Looping Filtered SA Scheduled,Dispatched ESP range greater than Suspend Range</label>
         <locationX>754</locationX>
-        <locationY>5820</locationY>
+        <locationY>6120</locationY>
         <collectionReference>Filter_SA_Scheduled_Dispatched_ESP_range_greater_than_Suspend_Range</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -821,7 +862,7 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <name>Looping_Maintenance_Asset_tobehold</name>
         <label>Looping Maintenance Asset tobehold</label>
         <locationX>215</locationX>
-        <locationY>2832</locationY>
+        <locationY>3132</locationY>
         <collectionReference>Get_Maintenance_Assets_for_putting_on_hold</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -849,7 +890,7 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <name>Looping_Maintenance_Plan_to_be_hold</name>
         <label>Looping Maintenance Plan to be hold</label>
         <locationX>215</locationX>
-        <locationY>3432</locationY>
+        <locationY>3732</locationY>
         <collectionReference>Get_Maintenance_Plans_to_be_Hold</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -904,11 +945,11 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
     <recordLookups>
         <name>Get_Maintenance_Assets_for_putting_on_hold</name>
         <label>Get Maintenance Assets for putting on hold</label>
-        <locationX>215</locationX>
-        <locationY>2724</locationY>
+        <locationX>347</locationX>
+        <locationY>2808</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Looping_Maintenance_Asset_tobehold</targetReference>
+            <targetReference>Count_Maintenance_Asset</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -951,7 +992,7 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <name>Get_Maintenance_Plans_to_be_Hold</name>
         <label>Get Maintenance Plans to be Hold</label>
         <locationX>215</locationX>
-        <locationY>3324</locationY>
+        <locationY>3624</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Looping_Maintenance_Plan_to_be_hold</targetReference>
@@ -1074,7 +1115,7 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <name>Unscheduling_DD_SA</name>
         <label>Unscheduling DD SA</label>
         <locationX>754</locationX>
-        <locationY>6120</locationY>
+        <locationY>6420</locationY>
         <connector>
             <targetReference>Update_FS_Notes_WO3</targetReference>
         </connector>
@@ -1084,7 +1125,7 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <name>Unscheduling_SA</name>
         <label>Unscheduling SA</label>
         <locationX>512</locationX>
-        <locationY>4872</locationY>
+        <locationY>5172</locationY>
         <connector>
             <targetReference>Update_FS_Notes_WO2</targetReference>
         </connector>
@@ -1094,7 +1135,7 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <name>Update_FS_Notes_WO</name>
         <label>Update FS Notes WO</label>
         <locationX>50</locationX>
-        <locationY>4656</locationY>
+        <locationY>4956</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -1115,7 +1156,7 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <name>Update_FS_Notes_WO2</name>
         <label>Update FS Notes WO2</label>
         <locationX>512</locationX>
-        <locationY>4980</locationY>
+        <locationY>5280</locationY>
         <connector>
             <targetReference>Filter_SA_Dates_less_than</targetReference>
         </connector>
@@ -1139,7 +1180,7 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <name>Update_FS_Notes_WO3</name>
         <label>Update FS Notes WO3</label>
         <locationX>754</locationX>
-        <locationY>6228</locationY>
+        <locationY>6528</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -1160,7 +1201,7 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <name>Update_FS_Notes_WO_3</name>
         <label>Update FS Notes WO 3</label>
         <locationX>402</locationX>
-        <locationY>5904</locationY>
+        <locationY>6204</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -1191,7 +1232,7 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <name>Update_Maintenance_Plan_to_be_hold</name>
         <label>Update Maintenance Plan to be hold</label>
         <locationX>215</locationX>
-        <locationY>3732</locationY>
+        <locationY>4032</locationY>
         <connector>
             <targetReference>Filter_SA_None</targetReference>
         </connector>
@@ -1201,7 +1242,7 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <name>Updating_DD_SA</name>
         <label>Updating DD SA</label>
         <locationX>402</locationX>
-        <locationY>5796</locationY>
+        <locationY>6096</locationY>
         <connector>
             <targetReference>Update_FS_Notes_WO_3</targetReference>
         </connector>
@@ -1211,7 +1252,7 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <name>Updating_ESP_SA</name>
         <label>Updating ESP SA</label>
         <locationX>50</locationX>
-        <locationY>4548</locationY>
+        <locationY>4848</locationY>
         <connector>
             <targetReference>Update_FS_Notes_WO</targetReference>
         </connector>
@@ -1241,8 +1282,8 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <object>Asset</object>
         <schedule>
             <frequency>Daily</frequency>
-            <startDate>2024-04-09</startDate>
-            <startTime>00:00:00.000Z</startTime>
+            <startDate>2024-04-24</startDate>
+            <startTime>03:30:00.000Z</startTime>
         </schedule>
         <triggerType>Scheduled</triggerType>
     </start>
@@ -1256,7 +1297,18 @@ ISPICKVAL({!currentItem_Filter_SA_None.Status}, &quot;Dispatched&quot;)
         <objectType>ServiceAppointment</objectType>
     </variables>
     <variables>
-        <name>currentItem_Filter_SA_None</name>
+        <name>CountMaintenanceAsset</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <name>currentItem_Filter_SA</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
