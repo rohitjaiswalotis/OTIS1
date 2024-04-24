@@ -1,6 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Sending_Email_to_BM_and_CT</name>
+        <label>Sending Email to BM and CT</label>
+        <locationX>1766</locationX>
+        <locationY>2147</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailAddressesArray</name>
+            <value>
+                <elementReference>recipientEmailList</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <stringValue>Cancelled Unit Notification</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>EmailBody</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
     <apiVersion>60.0</apiVersion>
+    <assignments>
+        <name>Add_Group_Members_Id</name>
+        <label>Add Group Members Id</label>
+        <locationX>1854</locationX>
+        <locationY>1547</locationY>
+        <assignmentItems>
+            <assignToReference>GroupMemberid</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_the_Public_Group_to_Add_Members.UserOrGroupId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_the_Public_Group_to_Add_Members</targetReference>
+        </connector>
+    </assignments>
     <assignments>
         <name>Add_Maintenance_Plan_to_Collection</name>
         <label>Add Maintenance Plan to Collection</label>
@@ -15,6 +66,38 @@
         </assignmentItems>
         <connector>
             <targetReference>loop_Maintenance_Plans</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Email_to_List</name>
+        <label>Assign Email to List</label>
+        <locationX>1854</locationX>
+        <locationY>1955</locationY>
+        <assignmentItems>
+            <assignToReference>recipientEmailList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_the_User_to_Capture_Email.Email</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_the_User_to_Capture_Email</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Reciepient_Email</name>
+        <label>Assign Reciepient Email</label>
+        <locationX>1766</locationX>
+        <locationY>1331</locationY>
+        <assignmentItems>
+            <assignToReference>recipientEmailList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>$Record.FS_Unit__r.Branch__r.BranchManager__r.PrimaryEmail__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_the_Public_Group_to_Add_Members</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -38,6 +121,22 @@
         </assignmentItems>
         <connector>
             <targetReference>Update_Service_Contracts</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_the_Public_Group_Id</name>
+        <label>Assign the Public Group Id</label>
+        <locationX>1854</locationX>
+        <locationY>863</locationY>
+        <assignmentItems>
+            <assignToReference>PublicGroupId</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_Company_Wide_Settings.FS_Commission_Team_Public_Group__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Company_Wide_Settings</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -119,7 +218,7 @@
     <decisions>
         <name>Check_Cancellation_Effective_Date</name>
         <label>Check Cancellation Effective Date</label>
-        <locationX>858</locationX>
+        <locationX>1320</locationX>
         <locationY>323</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -136,6 +235,46 @@
                 <targetReference>Assign_Unit_Cancel_Date_for_Subflow</targetReference>
             </connector>
             <label>Cancellation Effective Date less than Today</label>
+        </rules>
+        <rules>
+            <name>Cancellation_Effective_Date_Greater_than_Today</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.FS_CancellationEffectiveDate__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>Today</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Metadata_for_the_Commissioning_Team_Email</targetReference>
+            </connector>
+            <label>Cancellation Effective Date Greater than Today</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_Company_Wide_Setting</name>
+        <label>Check Company Wide Setting</label>
+        <locationX>1986</locationX>
+        <locationY>755</locationY>
+        <defaultConnector>
+            <targetReference>Loop_Company_Wide_Settings</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Not Match</defaultConnectorLabel>
+        <rules>
+            <name>Match</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.FS_Unit__r.FS_UnitCompany__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Loop_Company_Wide_Settings.Label</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_the_Public_Group_Id</targetReference>
+            </connector>
+            <label>Match</label>
         </rules>
     </decisions>
     <decisions>
@@ -204,6 +343,28 @@
             <label>If Exist</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Null_Check_for_Unit_Company</name>
+        <label>Null Check for Unit Company</label>
+        <locationX>2140</locationX>
+        <locationY>647</locationY>
+        <defaultConnectorLabel>Null</defaultConnectorLabel>
+        <rules>
+            <name>Not_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.FS_Unit__r.FS_UnitCompany__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_Company_Wide_Setting</targetReference>
+            </connector>
+            <label>Not Null</label>
+        </rules>
+    </decisions>
     <description>Updating the Unit Field Status to Cancelled if Cancellation Effective Date &lt;= TODAY</description>
     <environments>Default</environments>
     <formulas>
@@ -213,6 +374,20 @@
     </formulas>
     <interviewLabel>Status Update on Unit from Contract Unit Summary {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Status Update on Unit from Contract Unit Summary</label>
+    <loops>
+        <name>Loop_Company_Wide_Settings</name>
+        <label>Loop Company Wide Settings</label>
+        <locationX>1766</locationX>
+        <locationY>539</locationY>
+        <collectionReference>Get_Metadata_for_the_Commissioning_Team_Email</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Null_Check_for_Unit_Company</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Get_the_Group_Member_Record</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <loops>
         <name>loop_Maintenance_Plans</name>
         <label>loop Maintenance Plans</label>
@@ -225,6 +400,34 @@
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>Update_Maintenance_Plan_Record</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Loop_the_Public_Group_to_Add_Members</name>
+        <label>Loop the Public Group to Add Members</label>
+        <locationX>1766</locationX>
+        <locationY>1439</locationY>
+        <collectionReference>Get_the_Group_Member_Record</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Add_Group_Members_Id</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Get_Users_Email_ID</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Loop_the_User_to_Capture_Email</name>
+        <label>Loop the User to Capture Email</label>
+        <locationX>1766</locationX>
+        <locationY>1847</locationY>
+        <collectionReference>Get_Users_Email_ID</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Assign_Email_to_List</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Sending_Email_to_BM_and_CT</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -268,6 +471,19 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>Get_Metadata_for_the_Commissioning_Team_Email</name>
+        <label>Get Metadata for the Commissioning Team Email</label>
+        <locationX>1766</locationX>
+        <locationY>431</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_Company_Wide_Settings</targetReference>
+        </connector>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>FS_OTISCompanyWideSettings__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Service_Contracts</name>
         <label>Get Service Contracts</label>
         <locationX>380</locationX>
@@ -292,6 +508,27 @@
         <queriedFields>Status</queriedFields>
     </recordLookups>
     <recordLookups>
+        <name>Get_the_Group_Member_Record</name>
+        <label>Get the Group Member Record</label>
+        <locationX>1766</locationX>
+        <locationY>1223</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assign_Reciepient_Email</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>GroupId</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>PublicGroupId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>GroupMember</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Unit_Record</name>
         <label>Get Unit Record</label>
         <locationX>611</locationX>
@@ -310,6 +547,27 @@
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Asset</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Users_Email_ID</name>
+        <label>Get Users Email ID</label>
+        <locationX>1766</locationX>
+        <locationY>1739</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_the_User_to_Capture_Email</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>GroupMemberid</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>User</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
@@ -343,7 +601,7 @@
         <inputReference>Get_Unit_Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>732</locationX>
+        <locationX>1194</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Check_Cancellation_Effective_Date</targetReference>
@@ -367,7 +625,7 @@
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <subflows>
         <name>Subflow_Cancel_WO</name>
         <label>Subflow : Cancel WO</label>
@@ -387,12 +645,31 @@
             </value>
         </inputAssignments>
     </subflows>
+    <textTemplates>
+        <name>EmailBody</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;&lt;strong&gt;{!$Record.Name} &lt;/strong&gt;&lt;strong style=&quot;background-color: rgb(255, 255, 255); font-size: 15px; font-family: &amp;quot;Segoe UI VSS (Regular)&amp;quot;, &amp;quot;Segoe UI&amp;quot;, -apple-system, BlinkMacSystemFont, Roboto, &amp;quot;Helvetica Neue&amp;quot;, Helvetica, Ubuntu, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;, &amp;quot;Segoe UI Symbol&amp;quot;; color: rgba(0, 0, 0, 0.9);&quot;&gt;&amp;nbsp;won&apos;t be under contract from {!$Record.FS_CancellationEffectiveDate__c}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;img src=&quot;https://otisdevelopmentaccount--fsnaadev1.sandbox.file.force.com/sfc/dist/version/renditionDownload?rendition=ORIGINAL_Png&amp;amp;versionId=068DQ000000Rhqe&amp;amp;operationContext=DELIVERY&amp;amp;contentId=05TDQ000001YgpD&amp;amp;page=0&amp;amp;d=/a/DQ000000KHg5/yYMI85zP.yFIg7rTDU3MUGZeTiSHT5TbYcwRjB0cSv0&amp;amp;oid=00DDQ0000008gin&amp;amp;dpt=null&amp;amp;viewId=&quot; alt=&quot;&quot;&gt;&lt;/p&gt;</text>
+    </textTemplates>
     <variables>
         <name>CancelEffectiveDateforSubFlow</name>
         <dataType>Date</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>GroupMemberid</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Listofemailids</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>MaintanancePlanList</name>
@@ -442,6 +719,20 @@
         <objectType>MaintenancePlan</objectType>
     </variables>
     <variables>
+        <name>PublicGroupId</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>recipientEmailList</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>ServiceContractIds</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
@@ -471,5 +762,13 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>ServiceContract</objectType>
+    </variables>
+    <variables>
+        <name>tempGorupEmail</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Group</objectType>
     </variables>
 </Flow>
