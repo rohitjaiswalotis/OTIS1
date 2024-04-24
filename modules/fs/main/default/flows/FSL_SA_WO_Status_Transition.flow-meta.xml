@@ -4,7 +4,7 @@
     <decisions>
         <name>Check_Fixed_Issue</name>
         <label>Check Fixed Issue</label>
-        <locationX>1964</locationX>
+        <locationX>2228</locationX>
         <locationY>431</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -26,7 +26,7 @@
     <decisions>
         <name>Check_SA_Status</name>
         <label>Check SA Status</label>
-        <locationX>1238</locationX>
+        <locationX>1370</locationX>
         <locationY>323</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -163,7 +163,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Update_Related_WO5</targetReference>
+                <targetReference>Check_WO_already_Cancelled</targetReference>
             </connector>
             <label>Cancelled</label>
         </rules>
@@ -237,7 +237,7 @@
     <decisions>
         <name>Check_Work_Order_Type</name>
         <label>Check Work Order Type</label>
-        <locationX>1766</locationX>
+        <locationX>2030</locationX>
         <locationY>539</locationY>
         <defaultConnector>
             <targetReference>Update_Related_WO7</targetReference>
@@ -285,7 +285,7 @@
     <recordUpdates>
         <name>Open_order_WO_status_Cannot_Complete</name>
         <label>Open order WO status Cannot Complete</label>
-        <locationX>1634</locationX>
+        <locationX>1898</locationX>
         <locationY>647</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -351,7 +351,7 @@
         <name>Update_Related_WO5</name>
         <label>Update Related WO</label>
         <locationX>1106</locationX>
-        <locationY>431</locationY>
+        <locationY>539</locationY>
         <inputAssignments>
             <field>FS_CancellationReason__c</field>
             <value>
@@ -369,7 +369,7 @@
     <recordUpdates>
         <name>Update_Related_WO6</name>
         <label>Update Related WO</label>
-        <locationX>1370</locationX>
+        <locationX>1634</locationX>
         <locationY>431</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -382,7 +382,7 @@
     <recordUpdates>
         <name>Update_Related_WO7</name>
         <label>Update Related WO</label>
-        <locationX>1898</locationX>
+        <locationX>2162</locationX>
         <locationY>647</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -399,7 +399,7 @@
         <inputReference>$Record.WorkOrder__r</inputReference>
     </recordUpdates>
     <start>
-        <locationX>1112</locationX>
+        <locationX>1244</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Check_SA_Status</targetReference>
