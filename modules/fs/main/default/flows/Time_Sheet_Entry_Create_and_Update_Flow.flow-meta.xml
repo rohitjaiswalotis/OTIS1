@@ -5,7 +5,7 @@
         <name>Add_TSE_Record_to_TSECollection</name>
         <label>Add TSE Record to TSECollection</label>
         <locationX>402</locationX>
-        <locationY>1163</locationY>
+        <locationY>1463</locationY>
         <assignmentItems>
             <assignToReference>TSERecordCollection</assignToReference>
             <operator>Add</operator>
@@ -21,7 +21,7 @@
         <name>Assign_Overlapped_Timesheet_Entry_Count</name>
         <label>Assign Overlapped Timesheet Entry Count</label>
         <locationX>182</locationX>
-        <locationY>539</locationY>
+        <locationY>839</locationY>
         <assignmentItems>
             <assignToReference>OverlappedTSECount</assignToReference>
             <operator>AssignCount</operator>
@@ -37,7 +37,7 @@
         <name>TimeSheet_Record_Assignment</name>
         <label>TimeSheet Record Assignment</label>
         <locationX>138</locationX>
-        <locationY>971</locationY>
+        <locationY>1271</locationY>
         <assignmentItems>
             <assignToReference>TimeSheetEntryRecord.Id</assignToReference>
             <operator>Assign</operator>
@@ -60,7 +60,7 @@
         <name>TimeSheet_Record_Assignment_1</name>
         <label>TimeSheet Record Assignment</label>
         <locationX>666</locationX>
-        <locationY>971</locationY>
+        <locationY>1271</locationY>
         <assignmentItems>
             <assignToReference>TimeSheetEntryRecord.Id</assignToReference>
             <operator>Assign</operator>
@@ -83,7 +83,7 @@
         <name>TimeSheet_Record_Assignment_2</name>
         <label>TimeSheet Record Assignment</label>
         <locationX>402</locationX>
-        <locationY>971</locationY>
+        <locationY>1271</locationY>
         <assignmentItems>
             <assignToReference>TimeSheetEntryRecord.Id</assignToReference>
             <operator>Assign</operator>
@@ -102,73 +102,11 @@
             <targetReference>Add_TSE_Record_to_TSECollection</targetReference>
         </connector>
     </assignments>
-    <customErrors>
-        <name>Error</name>
-        <label>Error</label>
-        <locationX>248</locationX>
-        <locationY>1739</locationY>
-        <customErrorMessages>
-            <errorMessage>You Cannot Modify, Not Submitted or Approved Timesheet</errorMessage>
-            <isFieldError>false</isFieldError>
-        </customErrorMessages>
-    </customErrors>
-    <customErrors>
-        <name>Multiple_TSE_Error</name>
-        <label>Multiple TSE Error</label>
-        <locationX>314</locationX>
-        <locationY>755</locationY>
-        <connector>
-            <targetReference>Check_for_Parent_TImesheet</targetReference>
-        </connector>
-        <customErrorMessages>
-            <errorMessage>You cannot adjust the time sheet entry as multiple time sheet entries are getting affected by your adjustment. Please make sure the change only impact predecessor and successor time sheet entry only</errorMessage>
-            <isFieldError>false</isFieldError>
-        </customErrorMessages>
-    </customErrors>
-    <decisions>
-        <name>Check_for_Parent_TImesheet</name>
-        <label>Check for Parent TImesheet</label>
-        <locationX>380</locationX>
-        <locationY>1631</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Approved</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.TimeSheet.Status</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Submitted</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>IsNew</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Profile.Name</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Field Service Supervisor</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Error</targetReference>
-            </connector>
-            <label>Approved</label>
-        </rules>
-    </decisions>
     <decisions>
         <name>Check_Record_Is_New_or_Old</name>
         <label>Check Record Is New or Old</label>
         <locationX>380</locationX>
-        <locationY>323</locationY>
-        <defaultConnector>
-            <targetReference>Check_for_Parent_TImesheet</targetReference>
-        </defaultConnector>
+        <locationY>623</locationY>
         <defaultConnectorLabel>Default</defaultConnectorLabel>
         <rules>
             <name>If_Old_New_with_Start_EndTime_Change</name>
@@ -211,7 +149,7 @@
         <name>Check_Record_Overlapping</name>
         <label>Check Record  Overlapping</label>
         <locationX>182</locationX>
-        <locationY>647</locationY>
+        <locationY>947</locationY>
         <defaultConnector>
             <targetReference>Multiple_TSE_Error</targetReference>
         </defaultConnector>
@@ -236,7 +174,7 @@
         <name>Check_StartTime_Overlapped</name>
         <label>Check StartTime Overlapped</label>
         <locationX>402</locationX>
-        <locationY>863</locationY>
+        <locationY>1163</locationY>
         <defaultConnector>
             <targetReference>TimeSheet_Record_Assignment_1</targetReference>
         </defaultConnector>
@@ -286,6 +224,81 @@
             <label>If EndTime Overlapped with StartTime</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Check_Update_Record_Validation</name>
+        <label>Check Update Record Validation</label>
+        <locationX>380</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>Check_Record_Is_New_or_Old</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>If_Parent_TS_is_Submitted_Approval</name>
+            <conditionLogic>(1 OR 2) AND 3 AND 4</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.TimeSheet.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Submitted</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.TimeSheet.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Approved</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Field Service Mechanic</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Submitted_Approved_Error</targetReference>
+            </connector>
+            <label>If Parent TS is Submitted/Approval</label>
+        </rules>
+        <rules>
+            <name>If_ParentTS_is_Not_Submitted</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Field Service Supervisor</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.TimeSheet.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Submitted</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Not_Submitted_Approved_Error</targetReference>
+            </connector>
+            <label>If ParentTS is Not Submitted</label>
+        </rules>
+    </decisions>
     <description>This FLow will restrict to modify once time sheet entry is submited.</description>
     <environments>Default</environments>
     <formulas>
@@ -304,7 +317,7 @@
         <name>Overlapped_TSE_Loop</name>
         <label>Overlapped TSE Loop</label>
         <locationX>50</locationX>
-        <locationY>755</locationY>
+        <locationY>1055</locationY>
         <collectionReference>Get_Overlapped_TimeSheetEntry_Of_Today</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -337,7 +350,7 @@
         <name>Get_Overlapped_TimeSheetEntry_Of_Today</name>
         <label>Get Overlapped TimeSheetEntry Of Today</label>
         <locationX>182</locationX>
-        <locationY>431</locationY>
+        <locationY>731</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Assign_Overlapped_Timesheet_Entry_Count</targetReference>
@@ -400,17 +413,14 @@
         <name>Update_Overlapped_TSE</name>
         <label>Update Overlapped TSE</label>
         <locationX>50</locationX>
-        <locationY>1355</locationY>
-        <connector>
-            <targetReference>Check_for_Parent_TImesheet</targetReference>
-        </connector>
+        <locationY>1655</locationY>
         <inputReference>TSERecordCollection</inputReference>
     </recordUpdates>
     <start>
         <locationX>254</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Check_Record_Is_New_or_Old</targetReference>
+            <targetReference>Check_Update_Record_Validation</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
