@@ -106,9 +106,35 @@
         <name>Multiple_TSE_Error</name>
         <label>Multiple TSE Error</label>
         <locationX>314</locationX>
-        <locationY>755</locationY>
+        <locationY>1055</locationY>
         <customErrorMessages>
             <errorMessage>You cannot adjust the time sheet entry as multiple time sheet entries are getting affected by your adjustment. Please make sure the change only impact predecessor and successor time sheet entry only</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <customErrors>
+        <name>Not_Submitted_Approved_Error</name>
+        <label>Not Submitted/Approved Error</label>
+        <locationX>380</locationX>
+        <locationY>431</locationY>
+        <connector>
+            <targetReference>Check_Record_Is_New_or_Old</targetReference>
+        </connector>
+        <customErrorMessages>
+            <errorMessage>You cannot modify, Not Submitted or Approved Timesheet</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <customErrors>
+        <name>Submitted_Approved_Error</name>
+        <label>Submitted/Approved Error</label>
+        <locationX>116</locationX>
+        <locationY>431</locationY>
+        <connector>
+            <targetReference>Check_Record_Is_New_or_Old</targetReference>
+        </connector>
+        <customErrorMessages>
+            <errorMessage>You cannot modify Submitted or Approved Time Sheet {!$Record.TimeSheetEntryNumber}</errorMessage>
             <isFieldError>false</isFieldError>
         </customErrorMessages>
     </customErrors>
