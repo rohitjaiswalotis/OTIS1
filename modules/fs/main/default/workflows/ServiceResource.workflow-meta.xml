@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <alerts>
+        <fullName>To_send_reminder_email_to_FS_Admin_to_deactivate_the_User</fullName>
+        <description>To send reminder email to FS Admin to deactivate the User1</description>
+        <protected>false</protected>
+        <recipients>
+            <recipient>andriy.vesolovskyi@otis.com.devhub</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>andy.bannerjee.sys_admin@otis.com.devhub</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>mastanreddy.chilamathuru.sys_admin@otis.com.devhub</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>rodney.henson.sys_admin@otis.com.devhub</recipient>
+            <type>user</type>
+        </recipients>
+        <senderType>CurrentUser</senderType>
+        <template>unfiled$public/send_reminder_email_to_FS_Admin_to_deactivate_the_User</template>
+    </alerts>
+</Workflow>
