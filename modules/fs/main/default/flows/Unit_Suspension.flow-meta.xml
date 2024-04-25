@@ -785,7 +785,7 @@ ISPICKVAL({!currentItem_Filter_SA.Status}, &quot;Dispatched&quot;)
             <targetReference>Cancelling_SA_assignment</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>Cancelling_WO</targetReference>
+            <targetReference>Cancelling_SA</targetReference>
         </noMoreValuesConnector>
     </loops>
     <loops>
@@ -1036,9 +1036,9 @@ ISPICKVAL({!currentItem_Filter_SA.Status}, &quot;Dispatched&quot;)
         <name>Cancelling_SA</name>
         <label>Cancelling SA</label>
         <locationX>215</locationX>
-        <locationY>2616</locationY>
+        <locationY>2508</locationY>
         <connector>
-            <targetReference>Get_Maintenance_Assets_for_putting_on_hold</targetReference>
+            <targetReference>Cancelling_WO</targetReference>
         </connector>
         <inputReference>SATobeCancelled</inputReference>
     </recordUpdates>
@@ -1046,9 +1046,9 @@ ISPICKVAL({!currentItem_Filter_SA.Status}, &quot;Dispatched&quot;)
         <name>Cancelling_WO</name>
         <label>Cancelling WO</label>
         <locationX>215</locationX>
-        <locationY>2508</locationY>
+        <locationY>2616</locationY>
         <connector>
-            <targetReference>Cancelling_SA</targetReference>
+            <targetReference>Get_Maintenance_Assets_for_putting_on_hold</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1056,13 +1056,6 @@ ISPICKVAL({!currentItem_Filter_SA.Status}, &quot;Dispatched&quot;)
             <operator>In</operator>
             <value>
                 <elementReference>WOidSet_ToBeCancelled</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>Status</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue>Canceled</stringValue>
             </value>
         </filters>
         <inputAssignments>
@@ -1282,8 +1275,8 @@ ISPICKVAL({!currentItem_Filter_SA.Status}, &quot;Dispatched&quot;)
         <object>Asset</object>
         <schedule>
             <frequency>Daily</frequency>
-            <startDate>2024-04-24</startDate>
-            <startTime>03:30:00.000Z</startTime>
+            <startDate>2024-04-25</startDate>
+            <startTime>05:03:00.000Z</startTime>
         </schedule>
         <triggerType>Scheduled</triggerType>
     </start>
