@@ -1,130 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>60.0</apiVersion>
-    <assignments>
-        <name>Assignment_2</name>
-        <label>Assignment 2</label>
-        <locationX>468</locationX>
-        <locationY>1163</locationY>
-        <assignmentItems>
-            <assignToReference>ExistingTimeSheetNew</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>looping_through_timesheets</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>looping_through_timesheets</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Assignment_3</name>
-        <label>Assignment 3</label>
-        <locationX>270</locationX>
-        <locationY>1979</locationY>
-        <assignmentItems>
-            <assignToReference>EnrouteNTS</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>looping_on_New_Time_Sheet_Data</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>looping_on_New_Time_Sheet_Data</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Assignment_4</name>
-        <label>Assignment 4</label>
-        <locationX>1282</locationX>
-        <locationY>2195</locationY>
-        <assignmentItems>
-            <assignToReference>newTimeSheetOnsite</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>looping_on_New_Onsite_Time_Sheet</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>looping_on_New_Onsite_Time_Sheet</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Assignment_Update</name>
-        <label>Assignment Update</label>
-        <locationX>1480</locationX>
-        <locationY>1379</locationY>
-        <assignmentItems>
-            <assignToReference>existingTimeSheetNew1</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>looping_through_the_Time_Sheet_1</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>looping_through_the_Time_Sheet_1</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Store_Time_Sheet_Data_for_this_User</name>
-        <label>Store Time Sheet Data for this User</label>
-        <locationX>1601</locationX>
-        <locationY>647</locationY>
-        <assignmentItems>
-            <assignToReference>StoredTimeSheetData</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>Get_Time_Sheet_Record</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Get_All_time_Sheets</targetReference>
-        </connector>
-    </assignments>
     <decisions>
-        <name>Check_Onsite_timesheet_is_present_or_not</name>
-        <label>Check Onsite timesheet is present or not</label>
-        <locationX>1612</locationX>
-        <locationY>1271</locationY>
+        <name>Check_For_TimeSheet_Record</name>
+        <label>Check For TimeSheet Record</label>
+        <locationX>380</locationX>
+        <locationY>647</locationY>
         <defaultConnector>
-            <targetReference>looping_through_the_Time_Sheet_1</targetReference>
+            <targetReference>Create_Time_Sheet_Entry_for_Enroute</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>Check_the_Date</name>
+            <name>If_Null</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>looping_through_the_Time_Sheet_1.StartDate</leftValueReference>
-                <operator>LessThanOrEqualTo</operator>
+                <leftValueReference>Get_ServiceResource_Related_TimeSheet_Record</leftValueReference>
+                <operator>IsNull</operator>
                 <rightValue>
-                    <elementReference>$Flow.CurrentDateTime</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>looping_through_the_Time_Sheet_1.EndDate</leftValueReference>
-                <operator>GreaterThanOrEqualTo</operator>
-                <rightValue>
-                    <elementReference>$Flow.CurrentDateTime</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>looping_through_the_Time_Sheet_1.Status</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>New</stringValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Assignment_Update</targetReference>
+                <targetReference>Create_TimeSheet_Record</targetReference>
             </connector>
-            <label>Check the Date</label>
+            <label>If Null</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_For_TimeSheet_Records</name>
+        <label>Check For TimeSheet Records</label>
+        <locationX>1172</locationX>
+        <locationY>863</locationY>
+        <defaultConnector>
+            <targetReference>Create_Time_Sheet_Entry_for_Onsite</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_If_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_ServiceResource_Related_TimeSheet_Records</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_TimeSheet_Records</targetReference>
+            </connector>
+            <label>Copy 1 of If Null</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_New_Created_Record</name>
+        <label>Check New Created Record</label>
+        <locationX>182</locationX>
+        <locationY>863</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>If_Not_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Create_TimeSheet_Record</leftValueReference>
+                <operator>NotEqualTo</operator>
+            </conditions>
+            <connector>
+                <targetReference>Create_Time_Sheet_Entry</targetReference>
+            </connector>
+            <label>If Not Null</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_New_Created_Records</name>
+        <label>Check New Created Records</label>
+        <locationX>974</locationX>
+        <locationY>1079</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_If_Not_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_ServiceResource_Related_TimeSheet_Records</leftValueReference>
+                <operator>NotEqualTo</operator>
+            </conditions>
+            <connector>
+                <targetReference>Create_Time_Sheet_Entry_for_Onsites</targetReference>
+            </connector>
+            <label>Copy 1 of If Not Null</label>
         </rules>
     </decisions>
     <decisions>
         <name>Check_the_Status</name>
         <label>Check the Status</label>
-        <locationX>1513</locationX>
-        <locationY>839</locationY>
+        <locationX>1403</locationX>
+        <locationY>431</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Enroute</name>
@@ -144,7 +113,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>looping_through_timesheets</targetReference>
+                <targetReference>Get_ServiceResource_Related_TimeSheet_Record</targetReference>
             </connector>
             <label>Enroute</label>
         </rules>
@@ -258,217 +227,6 @@
             <label>Can not Complete - SA Status Enroute</label>
         </rules>
     </decisions>
-    <decisions>
-        <name>Check_timesheet_is_present_or_not</name>
-        <label>Check timesheet is present or not</label>
-        <locationX>600</locationX>
-        <locationY>1055</locationY>
-        <defaultConnector>
-            <targetReference>looping_through_timesheets</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Checking_dates</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>looping_through_timesheets.StartDate</leftValueReference>
-                <operator>LessThanOrEqualTo</operator>
-                <rightValue>
-                    <elementReference>$Flow.CurrentDateTime</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>looping_through_timesheets.EndDate</leftValueReference>
-                <operator>GreaterThanOrEqualTo</operator>
-                <rightValue>
-                    <elementReference>$Flow.CurrentDateTime</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>looping_through_timesheets.Status</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>New</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Assignment_2</targetReference>
-            </connector>
-            <label>Checking dates</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Not_Null</name>
-        <label>Not Null</label>
-        <locationX>182</locationX>
-        <locationY>2255</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Outcome_1_of_Not_Null</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>EnrouteNTS</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Create_Time_Sheet_Entry</targetReference>
-            </connector>
-            <label>Outcome 1 of Not Null</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Not_Nulls</name>
-        <label>Not Null</label>
-        <locationX>1194</locationX>
-        <locationY>2471</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Is_Null</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>newTimeSheetOnsite</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>CreateTimeSheetEntryforOnsites</targetReference>
-            </connector>
-            <label>Is Null</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Time_Sheet_Data_is_Present</name>
-        <label>Time Sheet Data is Present</label>
-        <locationX>402</locationX>
-        <locationY>1871</locationY>
-        <defaultConnector>
-            <targetReference>looping_on_New_Time_Sheet_Data</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Checking_dates_of_New_Time_Sheet</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>looping_on_New_Time_Sheet_Data.StartDate</leftValueReference>
-                <operator>LessThanOrEqualTo</operator>
-                <rightValue>
-                    <elementReference>$Flow.CurrentDateTime</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>looping_on_New_Time_Sheet_Data.EndDate</leftValueReference>
-                <operator>GreaterThanOrEqualTo</operator>
-                <rightValue>
-                    <elementReference>$Flow.CurrentDateTime</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>looping_on_New_Time_Sheet_Data.Status</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>New</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Assignment_3</targetReference>
-            </connector>
-            <label>Checking dates of New Time Sheet</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Time_Sheet_Data_is_Present_or_Not</name>
-        <label>Time Sheet Data is Present or Not</label>
-        <locationX>1414</locationX>
-        <locationY>2087</locationY>
-        <defaultConnector>
-            <targetReference>looping_on_New_Onsite_Time_Sheet</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Checking_dates_of_New_Time_Sheets</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>looping_on_New_Onsite_Time_Sheet.StartDate</leftValueReference>
-                <operator>LessThanOrEqualTo</operator>
-                <rightValue>
-                    <elementReference>$Flow.CurrentDateTime</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>looping_on_New_Onsite_Time_Sheet.EndDate</leftValueReference>
-                <operator>GreaterThanOrEqualTo</operator>
-                <rightValue>
-                    <elementReference>$Flow.CurrentDateTime</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>looping_on_New_Onsite_Time_Sheet.Status</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>New</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Assignment_4</targetReference>
-            </connector>
-            <label>Checking dates of New Time Sheets</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Time_sheet_present_or_not</name>
-        <label>Time sheet present or not</label>
-        <locationX>380</locationX>
-        <locationY>1439</locationY>
-        <defaultConnector>
-            <targetReference>Create_Time_Sheet_Entry_for_Enroute</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Null_check</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>ExistingTimeSheetNew</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>create_time_sheet</targetReference>
-            </connector>
-            <label>Null check</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Time_sheet_Rec_is_Null</name>
-        <label>Time sheet Rec is Null</label>
-        <locationX>1392</locationX>
-        <locationY>1655</locationY>
-        <defaultConnector>
-            <targetReference>Create_Time_Sheet_Entry_for_Onsite</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Null_checks</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>existingTimeSheetNew1</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Create_Time_Sheets</targetReference>
-            </connector>
-            <label>Null checks</label>
-        </rules>
-    </decisions>
     <description>US913825 flow is used for this US, when SA status is changed at that time time sheet entry will be created on the time sheet Object.</description>
     <environments>Default</environments>
     <formulas>
@@ -478,76 +236,6 @@
     </formulas>
     <interviewLabel>Create Time Sheet and Time Sheet Entry {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Create Time Sheet and Time Sheet Entry</label>
-    <loops>
-        <name>Get_All_time_Sheets</name>
-        <label>Get All time Sheets</label>
-        <locationX>1513</locationX>
-        <locationY>539</locationY>
-        <collectionReference>Get_Time_Sheet_Record</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>Store_Time_Sheet_Data_for_this_User</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>Check_the_Status</targetReference>
-        </noMoreValuesConnector>
-    </loops>
-    <loops>
-        <name>looping_on_New_Onsite_Time_Sheet</name>
-        <label>looping on New Onsite Time Sheet</label>
-        <locationX>1194</locationX>
-        <locationY>1979</locationY>
-        <collectionReference>Get_New_Time_Sheet_Rec</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>Time_Sheet_Data_is_Present_or_Not</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>Not_Nulls</targetReference>
-        </noMoreValuesConnector>
-    </loops>
-    <loops>
-        <name>looping_on_New_Time_Sheet_Data</name>
-        <label>looping on New Time Sheet Data</label>
-        <locationX>182</locationX>
-        <locationY>1763</locationY>
-        <collectionReference>Get_New_Time_Sheet</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>Time_Sheet_Data_is_Present</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>Not_Null</targetReference>
-        </noMoreValuesConnector>
-    </loops>
-    <loops>
-        <name>looping_through_the_Time_Sheet_1</name>
-        <label>looping through the Time Sheet 1</label>
-        <locationX>1392</locationX>
-        <locationY>1163</locationY>
-        <collectionReference>StoredTimeSheetData</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>Check_Onsite_timesheet_is_present_or_not</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>Time_sheet_Rec_is_Null</targetReference>
-        </noMoreValuesConnector>
-    </loops>
-    <loops>
-        <name>looping_through_timesheets</name>
-        <label>looping through timesheets</label>
-        <locationX>380</locationX>
-        <locationY>947</locationY>
-        <collectionReference>StoredTimeSheetData</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>Check_timesheet_is_present_or_not</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>Time_sheet_present_or_not</targetReference>
-        </noMoreValuesConnector>
-    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -568,45 +256,10 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
-        <name>create_time_sheet</name>
-        <label>create time sheet</label>
-        <locationX>182</locationX>
-        <locationY>1547</locationY>
-        <connector>
-            <targetReference>Get_New_Time_Sheet</targetReference>
-        </connector>
-        <inputAssignments>
-            <field>EndDate</field>
-            <value>
-                <elementReference>TimeSheetEndDate</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>ServiceResourceId</field>
-            <value>
-                <elementReference>$Record.AssignedServiceResource__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>StartDate</field>
-            <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Status</field>
-            <value>
-                <stringValue>New</stringValue>
-            </value>
-        </inputAssignments>
-        <object>TimeSheet</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
         <name>Create_Time_Sheet_Entry</name>
         <label>Create Time Sheet Entry</label>
         <locationX>50</locationX>
-        <locationY>2363</locationY>
+        <locationY>971</locationY>
         <inputAssignments>
             <field>EndTime</field>
         </inputAssignments>
@@ -643,7 +296,7 @@
         <inputAssignments>
             <field>TimeSheetId</field>
             <value>
-                <elementReference>EnrouteNTS.Id</elementReference>
+                <elementReference>Create_TimeSheet_Record</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -665,7 +318,7 @@
         <name>Create_Time_Sheet_Entry_for_Enroute</name>
         <label>Create Time Sheet Entry for Enroute</label>
         <locationX>578</locationX>
-        <locationY>1547</locationY>
+        <locationY>755</locationY>
         <inputAssignments>
             <field>EndTime</field>
         </inputAssignments>
@@ -702,7 +355,7 @@
         <inputAssignments>
             <field>TimeSheetId</field>
             <value>
-                <elementReference>ExistingTimeSheetNew.Id</elementReference>
+                <elementReference>Get_ServiceResource_Related_TimeSheet_Record.Id</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -723,8 +376,8 @@
     <recordCreates>
         <name>Create_Time_Sheet_Entry_for_Onsite</name>
         <label>Create Time Sheet Entry for Onsite</label>
-        <locationX>1590</locationX>
-        <locationY>1763</locationY>
+        <locationX>1370</locationX>
+        <locationY>971</locationY>
         <inputAssignments>
             <field>EndTime</field>
         </inputAssignments>
@@ -761,7 +414,7 @@
         <inputAssignments>
             <field>TimeSheetId</field>
             <value>
-                <elementReference>existingTimeSheetNew1.Id</elementReference>
+                <elementReference>Get_ServiceResource_Related_TimeSheet_Records.Id</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -780,12 +433,71 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
-        <name>Create_Time_Sheets</name>
-        <label>Create Time Sheet</label>
-        <locationX>1194</locationX>
-        <locationY>1763</locationY>
+        <name>Create_Time_Sheet_Entry_for_Onsites</name>
+        <label>Create Time Sheet Entry for Onsites</label>
+        <locationX>842</locationX>
+        <locationY>1187</locationY>
+        <inputAssignments>
+            <field>EndTime</field>
+        </inputAssignments>
+        <inputAssignments>
+            <field>LocationTimeZone</field>
+            <value>
+                <elementReference>Get_Service_Resource.TimeZone__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Multiplier_Values__c</field>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Multiplier__c</field>
+            <value>
+                <stringValue>Reg</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Service_Appointment__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>StartTime</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>TimeSheetId</field>
+            <value>
+                <elementReference>Get_ServiceResource_Related_TimeSheet_Records.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Time_Entry_Type__c</field>
+            <value>
+                <stringValue>Work</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WorkOrderId</field>
+            <value>
+                <elementReference>$Record.WorkOrder__r.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>TimeSheetEntry</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_TimeSheet_Record</name>
+        <label>Create TimeSheet Record</label>
+        <locationX>182</locationX>
+        <locationY>755</locationY>
         <connector>
-            <targetReference>Get_New_Time_Sheet_Rec</targetReference>
+            <targetReference>Check_New_Created_Record</targetReference>
         </connector>
         <inputAssignments>
             <field>EndDate</field>
@@ -815,121 +527,55 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordCreates>
-        <name>CreateTimeSheetEntryforOnsites</name>
-        <label>Create Time Sheet Entry for OnSites</label>
-        <locationX>1062</locationX>
-        <locationY>2579</locationY>
+        <name>Create_TimeSheet_Records</name>
+        <label>Create TimeSheet Records</label>
+        <locationX>974</locationX>
+        <locationY>971</locationY>
+        <connector>
+            <targetReference>Check_New_Created_Records</targetReference>
+        </connector>
         <inputAssignments>
-            <field>EndTime</field>
-        </inputAssignments>
-        <inputAssignments>
-            <field>LocationTimeZone</field>
+            <field>EndDate</field>
             <value>
-                <elementReference>Get_Service_Resource.TimeZone__c</elementReference>
+                <elementReference>TimeSheetEndDate</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Multiplier_Values__c</field>
+            <field>ServiceResourceId</field>
             <value>
-                <numberValue>1.0</numberValue>
+                <elementReference>$Record.AssignedServiceResource__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Multiplier__c</field>
-            <value>
-                <stringValue>Reg</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Service_Appointment__c</field>
-            <value>
-                <elementReference>$Record.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>StartTime</field>
+            <field>StartDate</field>
             <value>
                 <elementReference>$Flow.CurrentDateTime</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>TimeSheetId</field>
+            <field>Status</field>
             <value>
-                <elementReference>newTimeSheetOnsite.Id</elementReference>
+                <stringValue>New</stringValue>
             </value>
         </inputAssignments>
-        <inputAssignments>
-            <field>Time_Entry_Type__c</field>
-            <value>
-                <stringValue>Work</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>WorkOrderId</field>
-            <value>
-                <elementReference>$Record.WorkOrder__r.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <object>TimeSheetEntry</object>
+        <object>TimeSheet</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
-        <name>Get_New_Time_Sheet</name>
-        <label>Get New Time Sheet</label>
-        <locationX>182</locationX>
-        <locationY>1655</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>looping_on_New_Time_Sheet_Data</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>ServiceResourceId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.AssignedServiceResource__r.Id</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>TimeSheet</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>Get_New_Time_Sheet_Rec</name>
-        <label>Get New Time Sheet Rec</label>
-        <locationX>1194</locationX>
-        <locationY>1871</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>looping_on_New_Onsite_Time_Sheet</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>ServiceResourceId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.AssignedServiceResource__r.Id</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>TimeSheet</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
         <name>Get_Service_Resource</name>
         <label>Get Service Resource</label>
-        <locationX>1513</locationX>
+        <locationX>1403</locationX>
         <locationY>323</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Time_Sheet_Record</targetReference>
+            <targetReference>Check_the_Status</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$Record.AssignedServiceResource__r.Id</elementReference>
+                <elementReference>$Record.AssignedServiceResource__c</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -937,10 +583,98 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>Get_ServiceResource_Related_TimeSheet_Record</name>
+        <label>Get ServiceResource Related TimeSheet Record</label>
+        <locationX>380</locationX>
+        <locationY>539</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_For_TimeSheet_Record</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ServiceResourceId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Service_Resource.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>StartDate</field>
+            <operator>LessThanOrEqualTo</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>EndDate</field>
+            <operator>GreaterThanOrEqualTo</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>New</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>TimeSheet</object>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_ServiceResource_Related_TimeSheet_Records</name>
+        <label>Get ServiceResource Related TimeSheet Records</label>
+        <locationX>1172</locationX>
+        <locationY>755</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_For_TimeSheet_Records</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ServiceResourceId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Service_Resource.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>StartDate</field>
+            <operator>LessThanOrEqualTo</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>EndDate</field>
+            <operator>GreaterThanOrEqualTo</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>New</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>TimeSheet</object>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Time_Sheet_Entry_for_Completed_Status</name>
         <label>Get Time Sheet Entry for Completed Status</label>
-        <locationX>1854</locationX>
-        <locationY>947</locationY>
+        <locationX>1634</locationX>
+        <locationY>539</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Update_the_Completed_Time_Sheet_Entry</targetReference>
@@ -962,8 +696,8 @@
     <recordLookups>
         <name>Get_Time_Sheet_Entry_for_Onsite_Status</name>
         <label>Get Time Sheet Entry for Onsite Status</label>
-        <locationX>1392</locationX>
-        <locationY>947</locationY>
+        <locationX>1172</locationX>
+        <locationY>539</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>UpdatetheOnsiteTimeSheetEntry</targetReference>
@@ -985,8 +719,8 @@
     <recordLookups>
         <name>Get_Time_Sheet_Entry_for_SA_Can_not_Complete_Status</name>
         <label>Get Time Sheet Entry for SA Can not Complete Status</label>
-        <locationX>2118</locationX>
-        <locationY>947</locationY>
+        <locationX>1898</locationX>
+        <locationY>539</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Update_the_SA_Can_not_Complete_Time_Sheet_Entry_on_ON</targetReference>
@@ -1008,8 +742,8 @@
     <recordLookups>
         <name>Get_Time_Sheet_Entry_for_the_SA_can_not_Complete_Status</name>
         <label>Get Time Sheet Entry for the SA can not Complete Status</label>
-        <locationX>2382</locationX>
-        <locationY>947</locationY>
+        <locationX>2162</locationX>
+        <locationY>539</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Update_the_SA_Can_not_Complete_Time_Sheet_Entry_on_EN</targetReference>
@@ -1028,36 +762,18 @@
         <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
-    <recordLookups>
-        <name>Get_Time_Sheet_Record</name>
-        <label>Get Time Sheet Record</label>
-        <locationX>1513</locationX>
-        <locationY>431</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Get_All_time_Sheets</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>ServiceResourceId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>Get_Service_Resource.Id</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>TimeSheet</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <recordUpdates>
         <name>Update_the_Completed_Time_Sheet_Entry</name>
         <label>Update the Completed Time Sheet Entry</label>
-        <locationX>1854</locationX>
-        <locationY>1055</locationY>
+        <locationX>1634</locationX>
+        <locationY>647</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>EndTime</field>
-            <operator>EqualTo</operator>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
         </filters>
         <filters>
             <field>Service_Appointment__c</field>
@@ -1126,12 +842,15 @@
     <recordUpdates>
         <name>Update_the_SA_Can_not_Complete_Time_Sheet_Entry_on_EN</name>
         <label>Update the SA Can not Complete Time Sheet Entry on EN</label>
-        <locationX>2382</locationX>
-        <locationY>1055</locationY>
+        <locationX>2162</locationX>
+        <locationY>647</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>EndTime</field>
-            <operator>EqualTo</operator>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
         </filters>
         <filters>
             <field>Service_Appointment__c</field>
@@ -1200,12 +919,15 @@
     <recordUpdates>
         <name>Update_the_SA_Can_not_Complete_Time_Sheet_Entry_on_ON</name>
         <label>Update the SA Can not Complete Time Sheet Entry on ON</label>
-        <locationX>2118</locationX>
-        <locationY>1055</locationY>
+        <locationX>1898</locationX>
+        <locationY>647</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>EndTime</field>
-            <operator>EqualTo</operator>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
         </filters>
         <filters>
             <field>Service_Appointment__c</field>
@@ -1274,10 +996,10 @@
     <recordUpdates>
         <name>UpdatetheOnsiteTimeSheetEntry</name>
         <label>Update the Onsite Time Sheet Entry</label>
-        <locationX>1392</locationX>
-        <locationY>1055</locationY>
+        <locationX>1172</locationX>
+        <locationY>647</locationY>
         <connector>
-            <targetReference>looping_through_the_Time_Sheet_1</targetReference>
+            <targetReference>Get_ServiceResource_Related_TimeSheet_Records</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1349,7 +1071,7 @@
         <object>TimeSheetEntry</object>
     </recordUpdates>
     <start>
-        <locationX>1387</locationX>
+        <locationX>1277</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_Service_Resource</targetReference>
