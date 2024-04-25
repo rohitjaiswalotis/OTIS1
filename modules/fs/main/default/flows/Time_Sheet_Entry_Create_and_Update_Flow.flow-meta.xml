@@ -4,8 +4,8 @@
     <assignments>
         <name>Add_TSE_Record_to_TSECollection</name>
         <label>Add TSE Record to TSECollection</label>
-        <locationX>402</locationX>
-        <locationY>1463</locationY>
+        <locationX>1546</locationX>
+        <locationY>1271</locationY>
         <assignmentItems>
             <assignToReference>TSERecordCollection</assignToReference>
             <operator>Add</operator>
@@ -20,8 +20,8 @@
     <assignments>
         <name>Assign_Overlapped_Timesheet_Entry_Count</name>
         <label>Assign Overlapped Timesheet Entry Count</label>
-        <locationX>182</locationX>
-        <locationY>839</locationY>
+        <locationX>1326</locationX>
+        <locationY>647</locationY>
         <assignmentItems>
             <assignToReference>OverlappedTSECount</assignToReference>
             <operator>AssignCount</operator>
@@ -36,8 +36,8 @@
     <assignments>
         <name>TimeSheet_Record_Assignment</name>
         <label>TimeSheet Record Assignment</label>
-        <locationX>138</locationX>
-        <locationY>1271</locationY>
+        <locationX>1282</locationX>
+        <locationY>1079</locationY>
         <assignmentItems>
             <assignToReference>TimeSheetEntryRecord.Id</assignToReference>
             <operator>Assign</operator>
@@ -59,8 +59,8 @@
     <assignments>
         <name>TimeSheet_Record_Assignment_1</name>
         <label>TimeSheet Record Assignment</label>
-        <locationX>666</locationX>
-        <locationY>1271</locationY>
+        <locationX>1810</locationX>
+        <locationY>1079</locationY>
         <assignmentItems>
             <assignToReference>TimeSheetEntryRecord.Id</assignToReference>
             <operator>Assign</operator>
@@ -82,8 +82,8 @@
     <assignments>
         <name>TimeSheet_Record_Assignment_2</name>
         <label>TimeSheet Record Assignment</label>
-        <locationX>402</locationX>
-        <locationY>1271</locationY>
+        <locationX>1546</locationX>
+        <locationY>1079</locationY>
         <assignmentItems>
             <assignToReference>TimeSheetEntryRecord.Id</assignToReference>
             <operator>Assign</operator>
@@ -141,8 +141,8 @@
     <decisions>
         <name>Check_Record_Is_New_or_Old</name>
         <label>Check Record Is New or Old</label>
-        <locationX>380</locationX>
-        <locationY>623</locationY>
+        <locationX>1524</locationX>
+        <locationY>431</locationY>
         <defaultConnectorLabel>Default</defaultConnectorLabel>
         <rules>
             <name>If_Old_New_with_Start_EndTime_Change</name>
@@ -184,8 +184,8 @@
     <decisions>
         <name>Check_Record_Overlapping</name>
         <label>Check Record  Overlapping</label>
-        <locationX>182</locationX>
-        <locationY>947</locationY>
+        <locationX>1326</locationX>
+        <locationY>755</locationY>
         <defaultConnector>
             <targetReference>Multiple_TSE_Error</targetReference>
         </defaultConnector>
@@ -209,8 +209,8 @@
     <decisions>
         <name>Check_StartTime_Overlapped</name>
         <label>Check StartTime Overlapped</label>
-        <locationX>402</locationX>
-        <locationY>1163</locationY>
+        <locationX>1546</locationX>
+        <locationY>971</locationY>
         <defaultConnector>
             <targetReference>TimeSheet_Record_Assignment_1</targetReference>
         </defaultConnector>
@@ -263,7 +263,7 @@
     <decisions>
         <name>Check_Update_Record_Validation</name>
         <label>Check Update Record Validation</label>
-        <locationX>380</locationX>
+        <locationX>787</locationX>
         <locationY>323</locationY>
         <defaultConnector>
             <targetReference>Check_Record_Is_New_or_Old</targetReference>
@@ -352,8 +352,8 @@
     <loops>
         <name>Overlapped_TSE_Loop</name>
         <label>Overlapped TSE Loop</label>
-        <locationX>50</locationX>
-        <locationY>1055</locationY>
+        <locationX>1194</locationX>
+        <locationY>863</locationY>
         <collectionReference>Get_Overlapped_TimeSheetEntry_Of_Today</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -385,8 +385,8 @@
     <recordLookups>
         <name>Get_Overlapped_TimeSheetEntry_Of_Today</name>
         <label>Get Overlapped TimeSheetEntry Of Today</label>
-        <locationX>182</locationX>
-        <locationY>731</locationY>
+        <locationX>1326</locationX>
+        <locationY>539</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Assign_Overlapped_Timesheet_Entry_Count</targetReference>
@@ -448,12 +448,12 @@
     <recordUpdates>
         <name>Update_Overlapped_TSE</name>
         <label>Update Overlapped TSE</label>
-        <locationX>50</locationX>
-        <locationY>1655</locationY>
+        <locationX>1194</locationX>
+        <locationY>1463</locationY>
         <inputReference>TSERecordCollection</inputReference>
     </recordUpdates>
     <start>
-        <locationX>254</locationX>
+        <locationX>661</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Check_Update_Record_Validation</targetReference>
