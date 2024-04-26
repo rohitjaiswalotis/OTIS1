@@ -56,7 +56,7 @@
         <name>Add_Maintenance_Plan_to_Collection</name>
         <label>Add Maintenance Plan to Collection</label>
         <locationX>138</locationX>
-        <locationY>1835</locationY>
+        <locationY>2027</locationY>
         <assignmentItems>
             <assignToReference>MaintenancePlanCollections</assignToReference>
             <operator>Add</operator>
@@ -119,15 +119,8 @@
                 <stringValue>Cancelled</stringValue>
             </value>
         </assignmentItems>
-        <assignmentItems>
-            <assignToReference>ServiceContractSingle.Status</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Expired</stringValue>
-            </value>
-        </assignmentItems>
         <connector>
-            <targetReference>Update_Service_Contracts</targetReference>
+            <targetReference>Check_End_Date</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -189,7 +182,7 @@
         <name>Update_Auto_generate_WO_field</name>
         <label>Update Auto generate WO field</label>
         <locationX>138</locationX>
-        <locationY>1727</locationY>
+        <locationY>1919</locationY>
         <assignmentItems>
             <assignToReference>MPIdForOutput</assignToReference>
             <operator>Add</operator>
@@ -285,10 +278,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Check_End_Date</name>
+        <label>Check End Date</label>
+        <locationX>182</locationX>
+        <locationY>1295</locationY>
+        <defaultConnector>
+            <targetReference>Update_Service_Contracts</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Equals_Today</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.FS_CancellationEffectiveDate__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Today</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Service_Contract</targetReference>
+            </connector>
+            <label>Equals Today</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Check_if_Maintenance_Plan_Exists</name>
         <label>Check if  Maintenance Plan Exists</label>
         <locationX>182</locationX>
-        <locationY>1511</locationY>
+        <locationY>1703</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Exists_MP</name>
@@ -375,6 +393,11 @@
     <description>Updating the Unit Field Status to Cancelled if Cancellation Effective Date &lt;= TODAY</description>
     <environments>Default</environments>
     <formulas>
+        <name>Pastdate</name>
+        <dataType>Date</dataType>
+        <expression>TODAY()-1</expression>
+    </formulas>
+    <formulas>
         <name>Today</name>
         <dataType>Date</dataType>
         <expression>TODAY()</expression>
@@ -399,7 +422,7 @@
         <name>loop_Maintenance_Plans</name>
         <label>loop Maintenance Plans</label>
         <locationX>50</locationX>
-        <locationY>1619</locationY>
+        <locationY>1811</locationY>
         <collectionReference>get_Maintainance_plans</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -460,7 +483,7 @@
         <name>get_Maintainance_plans</name>
         <label>get Maintainance plans</label>
         <locationX>182</locationX>
-        <locationY>1403</locationY>
+        <locationY>1595</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_if_Maintenance_Plan_Exists</targetReference>
@@ -581,17 +604,44 @@
         <name>Update_Maintenance_Plan_Record</name>
         <label>Update Maintenance Plan Record</label>
         <locationX>50</locationX>
-        <locationY>2027</locationY>
+        <locationY>2219</locationY>
         <connector>
             <targetReference>Subflow_Cancel_WO</targetReference>
         </connector>
         <inputReference>MaintenancePlanCollections</inputReference>
     </recordUpdates>
     <recordUpdates>
+        <name>Update_Service_Contract</name>
+        <label>Update Service Contract</label>
+        <locationX>50</locationX>
+        <locationY>1403</locationY>
+        <connector>
+            <targetReference>get_Maintainance_plans</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.FS_ServiceContract__r.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>EndDate</field>
+            <value>
+                <elementReference>Pastdate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>StatusReason__c</field>
+        </inputAssignments>
+        <object>ServiceContract</object>
+    </recordUpdates>
+    <recordUpdates>
         <name>Update_Service_Contracts</name>
         <label>Update Service Contracts</label>
-        <locationX>182</locationX>
-        <locationY>1295</locationY>
+        <locationX>314</locationX>
+        <locationY>1403</locationY>
         <connector>
             <targetReference>get_Maintainance_plans</targetReference>
         </connector>
@@ -632,12 +682,12 @@
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <subflows>
         <name>Subflow_Cancel_WO</name>
         <label>Subflow : Cancel WO</label>
         <locationX>50</locationX>
-        <locationY>2135</locationY>
+        <locationY>2327</locationY>
         <flowName>Cancel_Future_WO_SA_related_to_Service_Contract_and_Mplan</flowName>
         <inputAssignments>
             <name>CancellationEffectivedate</name>
