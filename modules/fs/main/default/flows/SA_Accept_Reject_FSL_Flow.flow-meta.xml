@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-   <assignments>
+    <assignments>
         <name>Assign_Accept_Status</name>
         <label>Assign Accept Status</label>
         <locationX>314</locationX>
@@ -627,6 +627,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>SvcReqAssignmentStatus__c</field>
+            <value>
+                <stringValue>R-Reject</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>SvcReqRejectReason__c</field>
             <value>
                 <stringValue>Give to Supervisor</stringValue>
@@ -647,6 +653,12 @@
                 <elementReference>serviceAppointmentRec.ParentRecordId</elementReference>
             </value>
         </filters>
+        <inputAssignments>
+            <field>SvcReqAssignmentStatus__c</field>
+            <value>
+                <stringValue>R-Reject</stringValue>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>SvcReqRejectReason__c</field>
             <value>
@@ -776,6 +788,9 @@
             <name>Rejection_reasons_test</name>
             <choiceReferences>RejectionReasonFromWO</choiceReferences>
             <dataType>String</dataType>
+            <defaultValue>
+                <stringValue>Reschedule</stringValue>
+            </defaultValue>
             <fieldText>Rejection reasons test</fieldText>
             <fieldType>DropdownBox</fieldType>
             <isRequired>true</isRequired>
