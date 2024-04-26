@@ -4,8 +4,8 @@
     <decisions>
         <name>Check_Work_Order_Record_Type</name>
         <label>Check Work Order Record Type</label>
-        <locationX>374</locationX>
-        <locationY>395</locationY>
+        <locationX>605</locationX>
+        <locationY>503</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Service_Request</name>
@@ -29,17 +29,39 @@
         <locationX>176</locationX>
         <locationY>287</locationY>
         <defaultConnector>
-            <targetReference>Check_Work_Order_Record_Type</targetReference>
+            <targetReference>Is_Work_Order_Work_Type_Set</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
-            <name>Yes</name>
+            <name>Is_Bypass_Enabled_Yes</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Setup.CS_KillSwitch__c.DisableFlows__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Work_Order_Work_Type_Set</name>
+        <label>Is Work Order Work Type Set?</label>
+        <locationX>407</locationX>
+        <locationY>395</locationY>
+        <defaultConnector>
+            <targetReference>Check_Work_Order_Record_Type</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Is_Work_Order_Work_Type_Set_Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkTypeId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <label>Yes</label>
@@ -70,8 +92,8 @@
     <recordUpdates>
         <name>Set_Work_Order_Work_Type</name>
         <label>Set Work Order Work Type</label>
-        <locationX>242</locationX>
-        <locationY>503</locationY>
+        <locationX>473</locationX>
+        <locationY>611</locationY>
         <inputAssignments>
             <field>WorkTypeId</field>
             <value>
