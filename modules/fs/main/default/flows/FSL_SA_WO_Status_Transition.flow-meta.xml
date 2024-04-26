@@ -4,7 +4,7 @@
     <decisions>
         <name>Check_Fixed_Issue</name>
         <label>Check Fixed Issue</label>
-        <locationX>2228</locationX>
+        <locationX>2404</locationX>
         <locationY>431</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -24,9 +24,31 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Check_if_the_WO_Should_be_auto_Assigned</name>
+        <label>Check if the WO Should be auto Assigned?</label>
+        <locationX>446</locationX>
+        <locationY>431</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Auto_Assigned</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.AssignmentType__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Auto</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_SA_Auto_Schedule</targetReference>
+            </connector>
+            <label>Auto Assigned</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Check_SA_Status</name>
         <label>Check SA Status</label>
-        <locationX>1370</locationX>
+        <locationX>1458</locationX>
         <locationY>323</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -50,6 +72,21 @@
                 <targetReference>Update_Related_WO</targetReference>
             </connector>
             <label>None</label>
+        </rules>
+        <rules>
+            <name>None_created</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>None</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_if_the_WO_Should_be_auto_Assigned</targetReference>
+            </connector>
+            <label>None (created)</label>
         </rules>
         <rules>
             <name>Scheduled_Or_Dispacthed</name>
@@ -163,7 +200,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Check_WO_already_Cancelled</targetReference>
+                <targetReference>Update_Related_WO5</targetReference>
             </connector>
             <label>Cancelled</label>
         </rules>
@@ -213,7 +250,7 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Check_WO_already_Cancelled</name>
+         <name>Check_WO_already_Cancelled</name>
         <label>Check WO already Cancelled?</label>
         <locationX>1238</locationX>
         <locationY>431</locationY>
@@ -237,7 +274,7 @@
     <decisions>
         <name>Check_Work_Order_Type</name>
         <label>Check Work Order Type</label>
-        <locationX>2030</locationX>
+        <locationX>2206</locationX>
         <locationY>539</locationY>
         <defaultConnector>
             <targetReference>Update_Related_WO7</targetReference>
@@ -285,7 +322,7 @@
     <recordUpdates>
         <name>Open_order_WO_status_Cannot_Complete</name>
         <label>Open order WO status Cannot Complete</label>
-        <locationX>1898</locationX>
+        <locationX>2074</locationX>
         <locationY>647</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -311,7 +348,7 @@
     <recordUpdates>
         <name>Update_Related_WO1</name>
         <label>Update Related WO</label>
-        <locationX>314</locationX>
+        <locationX>754</locationX>
         <locationY>431</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -324,7 +361,7 @@
     <recordUpdates>
         <name>Update_Related_WO3</name>
         <label>Update Related WO</label>
-        <locationX>578</locationX>
+        <locationX>1018</locationX>
         <locationY>431</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -337,7 +374,7 @@
     <recordUpdates>
         <name>Update_Related_WO4</name>
         <label>Update Related WO</label>
-        <locationX>842</locationX>
+        <locationX>1282</locationX>
         <locationY>431</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -350,8 +387,8 @@
     <recordUpdates>
         <name>Update_Related_WO5</name>
         <label>Update Related WO</label>
-        <locationX>1106</locationX>
-        <locationY>539</locationY>
+        <locationX>1546</locationX>
+        <locationY>431</locationY>
         <inputAssignments>
             <field>FS_CancellationReason__c</field>
             <value>
@@ -369,7 +406,7 @@
     <recordUpdates>
         <name>Update_Related_WO6</name>
         <label>Update Related WO</label>
-        <locationX>1634</locationX>
+        <locationX>1810</locationX>
         <locationY>431</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -382,7 +419,7 @@
     <recordUpdates>
         <name>Update_Related_WO7</name>
         <label>Update Related WO</label>
-        <locationX>2162</locationX>
+        <locationX>2338</locationX>
         <locationY>647</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -398,8 +435,29 @@
         </inputAssignments>
         <inputReference>$Record.WorkOrder__r</inputReference>
     </recordUpdates>
+    <recordUpdates>
+        <name>Update_SA_Auto_Schedule</name>
+        <label>Update SA Auto Schedule</label>
+        <locationX>314</locationX>
+        <locationY>539</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>FSL__Auto_Schedule__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
     <start>
-        <locationX>1244</locationX>
+        <locationX>1332</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Check_SA_Status</targetReference>
