@@ -4,7 +4,7 @@
     <assignments>
         <name>Get_Priority_Value</name>
         <label>Get Priority Value</label>
-        <locationX>578</locationX>
+        <locationX>314</locationX>
         <locationY>242</locationY>
         <assignmentItems>
             <assignToReference>PriorReason</assignToReference>
@@ -27,8 +27,8 @@
     <assignments>
         <name>System_Reason_Update</name>
         <label>System Reason Update</label>
-        <locationX>50</locationX>
-        <locationY>242</locationY>
+        <locationX>270</locationX>
+        <locationY>842</locationY>
         <assignmentItems>
             <assignToReference>FinalSystemReason</assignToReference>
             <operator>Assign</operator>
@@ -40,7 +40,7 @@
     <assignments>
         <name>System_Reason_Update_with_Present</name>
         <label>System Reason Update with Present</label>
-        <locationX>578</locationX>
+        <locationX>314</locationX>
         <locationY>458</locationY>
         <assignmentItems>
             <assignToReference>FinalSystemReason</assignToReference>
@@ -53,7 +53,7 @@
     <assignments>
         <name>SystemReason_Update_with_Prior</name>
         <label>SystemReason Update with Prior</label>
-        <locationX>314</locationX>
+        <locationX>50</locationX>
         <locationY>458</locationY>
         <assignmentItems>
             <assignToReference>FinalSystemReason</assignToReference>
@@ -66,7 +66,7 @@
     <decisions>
         <name>Check_For_System_Reason_Priority</name>
         <label>Check For System Reason Priority</label>
-        <locationX>578</locationX>
+        <locationX>314</locationX>
         <locationY>350</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -103,7 +103,7 @@
     <decisions>
         <name>Checking_the_Value_Null_or_Not</name>
         <label>Checking the Value Null or Not</label>
-        <locationX>578</locationX>
+        <locationX>270</locationX>
         <locationY>134</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -127,6 +127,21 @@
                 <targetReference>System_Reason_Update</targetReference>
             </connector>
             <label>When Prior IsNull</label>
+        </rules>
+        <rules>
+            <name>If_Same_Same</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Prio_Sys_Reason_From_WO</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Sys_Reason_From_WO</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>System_Reason_Update</targetReference>
+            </connector>
+            <label>If Same</label>
         </rules>
         <rules>
             <name>Is_Not_Null</name>
@@ -189,7 +204,7 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <start>
-        <locationX>452</locationX>
+        <locationX>144</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Checking_the_Value_Null_or_Not</targetReference>
