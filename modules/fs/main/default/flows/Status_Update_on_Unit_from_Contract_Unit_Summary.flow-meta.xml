@@ -119,6 +119,13 @@
                 <stringValue>Cancelled</stringValue>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>ServiceContractSingle.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Expired</stringValue>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Update_Service_Contracts</targetReference>
         </connector>
