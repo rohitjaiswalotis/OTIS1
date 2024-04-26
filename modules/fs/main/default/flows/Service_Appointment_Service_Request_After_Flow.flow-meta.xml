@@ -170,6 +170,13 @@
                     <stringValue>Field Service Mechanic</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.AssignedServiceResource__r.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>get_user_data</targetReference>
             </connector>
