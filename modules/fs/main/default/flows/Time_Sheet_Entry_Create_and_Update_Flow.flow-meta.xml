@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>60.0</apiVersion>
+    <apiVersion>59.0</apiVersion>
     <assignments>
         <name>Add_TSE_Record_to_TSECollection</name>
         <label>Add TSE Record to TSECollection</label>
-        <locationX>1546</locationX>
+        <locationX>1810</locationX>
         <locationY>1271</locationY>
         <assignmentItems>
             <assignToReference>TSERecordCollection</assignToReference>
@@ -20,7 +20,7 @@
     <assignments>
         <name>Assign_Overlapped_Timesheet_Entry_Count</name>
         <label>Assign Overlapped Timesheet Entry Count</label>
-        <locationX>1326</locationX>
+        <locationX>1590</locationX>
         <locationY>647</locationY>
         <assignmentItems>
             <assignToReference>OverlappedTSECount</assignToReference>
@@ -36,7 +36,7 @@
     <assignments>
         <name>TimeSheet_Record_Assignment</name>
         <label>TimeSheet Record Assignment</label>
-        <locationX>1282</locationX>
+        <locationX>1546</locationX>
         <locationY>1079</locationY>
         <assignmentItems>
             <assignToReference>TimeSheetEntryRecord.Id</assignToReference>
@@ -59,7 +59,7 @@
     <assignments>
         <name>TimeSheet_Record_Assignment_1</name>
         <label>TimeSheet Record Assignment</label>
-        <locationX>1810</locationX>
+        <locationX>2074</locationX>
         <locationY>1079</locationY>
         <assignmentItems>
             <assignToReference>TimeSheetEntryRecord.Id</assignToReference>
@@ -82,7 +82,7 @@
     <assignments>
         <name>TimeSheet_Record_Assignment_2</name>
         <label>TimeSheet Record Assignment</label>
-        <locationX>1546</locationX>
+        <locationX>1810</locationX>
         <locationY>1079</locationY>
         <assignmentItems>
             <assignToReference>TimeSheetEntryRecord.Id</assignToReference>
@@ -141,7 +141,7 @@
     <decisions>
         <name>Check_Record_Is_New_or_Old</name>
         <label>Check Record Is New or Old</label>
-        <locationX>1524</locationX>
+        <locationX>1788</locationX>
         <locationY>431</locationY>
         <defaultConnectorLabel>Default</defaultConnectorLabel>
         <rules>
@@ -184,7 +184,7 @@
     <decisions>
         <name>Check_Record_Overlapping</name>
         <label>Check Record  Overlapping</label>
-        <locationX>1326</locationX>
+        <locationX>1590</locationX>
         <locationY>755</locationY>
         <defaultConnector>
             <targetReference>Multiple_TSE_Error</targetReference>
@@ -209,7 +209,7 @@
     <decisions>
         <name>Check_StartTime_Overlapped</name>
         <label>Check StartTime Overlapped</label>
-        <locationX>1546</locationX>
+        <locationX>1810</locationX>
         <locationY>971</locationY>
         <defaultConnector>
             <targetReference>TimeSheet_Record_Assignment_1</targetReference>
@@ -263,7 +263,7 @@
     <decisions>
         <name>Check_Update_Record_Validation</name>
         <label>Check Update Record Validation</label>
-        <locationX>787</locationX>
+        <locationX>919</locationX>
         <locationY>323</locationY>
         <defaultConnector>
             <targetReference>Check_Record_Is_New_or_Old</targetReference>
@@ -334,13 +334,46 @@
             </connector>
             <label>If ParentTS is Not Submitted</label>
         </rules>
+        <rules>
+            <name>Refrain_Time_Frame</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.TimeSheet.StartDate</leftValueReference>
+                <operator>GreaterThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>StartDateVal</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.TimeSheet.EndDate</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>EndDateVal</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Error</targetReference>
+            </connector>
+            <label>Refrain Time Frame</label>
+        </rules>
     </decisions>
     <description>This FLow will restrict to modify once time sheet entry is submited.</description>
     <environments>Default</environments>
     <formulas>
+        <name>EndDateVal</name>
+        <dataType>Date</dataType>
+        <expression>DATEVALUE({!$Record.EndTime})</expression>
+    </formulas>
+    <formulas>
         <name>IsNew</name>
         <dataType>Boolean</dataType>
         <expression>ISNEW()</expression>
+    </formulas>
+    <formulas>
+        <description>This Will hold the val for start Date from Date time Field</description>
+        <name>StartDateVal</name>
+        <dataType>Date</dataType>
+        <expression>DATEVALUE({!$Record.StartTime})</expression>
     </formulas>
     <formulas>
         <name>Today</name>
@@ -352,7 +385,7 @@
     <loops>
         <name>Overlapped_TSE_Loop</name>
         <label>Overlapped TSE Loop</label>
-        <locationX>1194</locationX>
+        <locationX>1458</locationX>
         <locationY>863</locationY>
         <collectionReference>Get_Overlapped_TimeSheetEntry_Of_Today</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -385,7 +418,7 @@
     <recordLookups>
         <name>Get_Overlapped_TimeSheetEntry_Of_Today</name>
         <label>Get Overlapped TimeSheetEntry Of Today</label>
-        <locationX>1326</locationX>
+        <locationX>1590</locationX>
         <locationY>539</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -448,12 +481,12 @@
     <recordUpdates>
         <name>Update_Overlapped_TSE</name>
         <label>Update Overlapped TSE</label>
-        <locationX>1194</locationX>
+        <locationX>1458</locationX>
         <locationY>1463</locationY>
         <inputReference>TSERecordCollection</inputReference>
     </recordUpdates>
     <start>
-        <locationX>661</locationX>
+        <locationX>793</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Check_Update_Record_Validation</targetReference>
