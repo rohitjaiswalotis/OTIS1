@@ -634,6 +634,9 @@
         </inputAssignments>
         <inputAssignments>
             <field>StatusReason__c</field>
+            <value>
+                <stringValue>Cancelled</stringValue>
+            </value>
         </inputAssignments>
         <object>ServiceContract</object>
     </recordUpdates>
