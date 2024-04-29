@@ -392,17 +392,17 @@
         </rules>
         <rules>
             <name>Refrain_Time_Frame</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.TimeSheet.StartDate</leftValueReference>
-                <operator>GreaterThanOrEqualTo</operator>
+                <operator>GreaterThan</operator>
                 <rightValue>
                     <elementReference>StartDateVal</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>$Record.TimeSheet.EndDate</leftValueReference>
-                <operator>LessThanOrEqualTo</operator>
+                <operator>LessThan</operator>
                 <rightValue>
                     <elementReference>EndDateVal</elementReference>
                 </rightValue>
