@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Send_Email_to_All_Recipients</name>
         <label>Send Email to All Recipients</label>
-        <locationX>176</locationX>
-        <locationY>2039</locationY>
+        <locationX>50</locationX>
+        <locationY>2255</locationY>
         <actionName>emailSimple</actionName>
         <actionType>emailSimple</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -32,6 +32,12 @@
                 <booleanValue>true</booleanValue>
             </value>
         </inputParameters>
+        <inputParameters>
+            <name>relatedRecordId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
         <nameSegment>emailSimple</nameSegment>
         <versionSegment>1</versionSegment>
     </actionCalls>
@@ -39,8 +45,8 @@
     <assignments>
         <name>Assign_Email_to_List</name>
         <label>Assign Email to List</label>
-        <locationX>264</locationX>
-        <locationY>1847</locationY>
+        <locationX>270</locationX>
+        <locationY>1955</locationY>
         <assignmentItems>
             <assignToReference>EmailList</assignToReference>
             <operator>Add</operator>
@@ -55,8 +61,8 @@
     <assignments>
         <name>Assign_Reciepient_Email</name>
         <label>Assign Reciepient Email</label>
-        <locationX>176</locationX>
-        <locationY>1223</locationY>
+        <locationX>182</locationX>
+        <locationY>1331</locationY>
         <assignmentItems>
             <assignToReference>EmailList</assignToReference>
             <operator>Add</operator>
@@ -71,8 +77,8 @@
     <assignments>
         <name>Assign_the_Public_Group_Id</name>
         <label>Assign the Public Group Id</label>
-        <locationX>264</locationX>
-        <locationY>755</locationY>
+        <locationX>270</locationX>
+        <locationY>863</locationY>
         <assignmentItems>
             <assignToReference>PublicGroupId</assignToReference>
             <operator>Add</operator>
@@ -87,8 +93,8 @@
     <assignments>
         <name>Assign_User_ID</name>
         <label>Assign User ID</label>
-        <locationX>264</locationX>
-        <locationY>1439</locationY>
+        <locationX>270</locationX>
+        <locationY>1547</locationY>
         <assignmentItems>
             <assignToReference>GroupMemberId</assignToReference>
             <operator>Add</operator>
@@ -103,8 +109,8 @@
     <decisions>
         <name>Check_Company_Wide_Setting</name>
         <label>Check Company Wide Setting</label>
-        <locationX>396</locationX>
-        <locationY>647</locationY>
+        <locationX>402</locationX>
+        <locationY>755</locationY>
         <defaultConnector>
             <targetReference>Loop_Company_Wide_Settings</targetReference>
         </defaultConnector>
@@ -126,10 +132,54 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Condition_Check</name>
+        <label>Condition Check</label>
+        <locationX>380</locationX>
+        <locationY>323</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Unit_Cancelled</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.FS_Field_Status__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cancelled</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Metadata_for_Commission_Team_Email</targetReference>
+            </connector>
+            <label>Unit Cancelled</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Null_Check_For_Email</name>
+        <label>Null Check For Email</label>
+        <locationX>182</locationX>
+        <locationY>2147</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Not_Null1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EmailList</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Email_to_All_Recipients</targetReference>
+            </connector>
+            <label>Not Null</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Null_Check_for_Unit_Company</name>
         <label>Null Check for Unit Company</label>
-        <locationX>550</locationX>
-        <locationY>539</locationY>
+        <locationX>556</locationX>
+        <locationY>647</locationY>
         <defaultConnectorLabel>Null</defaultConnectorLabel>
         <rules>
             <name>Not_Null</name>
@@ -153,8 +203,8 @@
     <loops>
         <name>Loop_Company_Wide_Settings</name>
         <label>Loop Company Wide Settings</label>
-        <locationX>176</locationX>
-        <locationY>431</locationY>
+        <locationX>182</locationX>
+        <locationY>539</locationY>
         <collectionReference>Get_Metadata_for_Commission_Team_Email</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -167,8 +217,8 @@
     <loops>
         <name>Loop_Public_Group_to_add_users</name>
         <label>Loop Public Group to add users</label>
-        <locationX>176</locationX>
-        <locationY>1331</locationY>
+        <locationX>182</locationX>
+        <locationY>1439</locationY>
         <collectionReference>Get_Group_Member_Record</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -181,15 +231,15 @@
     <loops>
         <name>Loop_Users_to_get_email</name>
         <label>Loop Users to get email</label>
-        <locationX>176</locationX>
-        <locationY>1739</locationY>
+        <locationX>182</locationX>
+        <locationY>1847</locationY>
         <collectionReference>Get_Users</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
             <targetReference>Assign_Email_to_List</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>Send_Email_to_All_Recipients</targetReference>
+            <targetReference>Null_Check_For_Email</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -214,8 +264,8 @@
     <recordLookups>
         <name>Get_Group_Member_Record</name>
         <label>Get Group Member Record</label>
-        <locationX>176</locationX>
-        <locationY>1115</locationY>
+        <locationX>182</locationX>
+        <locationY>1223</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Assign_Reciepient_Email</targetReference>
@@ -235,8 +285,8 @@
     <recordLookups>
         <name>Get_Metadata_for_Commission_Team_Email</name>
         <label>Get Metadata for Commission Team Email</label>
-        <locationX>176</locationX>
-        <locationY>323</locationY>
+        <locationX>182</locationX>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Loop_Company_Wide_Settings</targetReference>
@@ -248,8 +298,8 @@
     <recordLookups>
         <name>Get_Users</name>
         <label>Get Users</label>
-        <locationX>176</locationX>
-        <locationY>1631</locationY>
+        <locationX>182</locationX>
+        <locationY>1739</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Loop_Users_to_get_email</targetReference>
@@ -267,19 +317,11 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>50</locationX>
+        <locationX>254</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Metadata_for_Commission_Team_Email</targetReference>
+            <targetReference>Condition_Check</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>FS_Field_Status__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Cancelled</stringValue>
-            </value>
-        </filters>
         <object>Asset</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
@@ -287,8 +329,8 @@
     <status>Active</status>
     <textTemplates>
         <name>EmailBody</name>
-        <isViewedAsPlainText>false</isViewedAsPlainText>
-        <text>&lt;p&gt;&lt;strong&gt;{!$Record.Name} is not under contract.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;img src=&quot;https://otisdevelopmentaccount--fsnaadev1.sandbox.file.force.com/sfc/dist/version/renditionDownload?rendition=ORIGINAL_Png&amp;amp;versionId=068DQ000000Rhqe&amp;amp;operationContext=DELIVERY&amp;amp;contentId=05TDQ000001YgpD&amp;amp;page=0&amp;amp;d=/a/DQ000000KHg5/yYMI85zP.yFIg7rTDU3MUGZeTiSHT5TbYcwRjB0cSv0&amp;amp;oid=00DDQ0000008gin&amp;amp;dpt=null&amp;amp;viewId=&quot; alt=&quot;&quot;&gt;&lt;/p&gt;</text>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;p&gt;&lt;img src=&quot;https://otisdevelopmentaccount--fsnaadev1.sandbox.file.force.com/sfc/dist/version/renditionDownload?rendition=ORIGINAL_Png&amp;amp;versionId=068DQ000000Rhqe&amp;amp;operationContext=DELIVERY&amp;amp;contentId=05TDQ000001YgpD&amp;amp;page=0&amp;amp;d=/a/DQ000000KHg5/yYMI85zP.yFIg7rTDU3MUGZeTiSHT5TbYcwRjB0cSv0&amp;amp;oid=00DDQ0000008gin&amp;amp;dpt=null&amp;amp;viewId=&quot; width=&quot;100&quot; height=&quot;25 alt=&quot;&quot;&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-family: sans-serif; font-size: 16px;&quot;&gt;{!$Record.Name} is not under contract.&lt;/span&gt;&lt;/p&gt;</text>
     </textTemplates>
     <variables>
         <name>EmailList</name>
