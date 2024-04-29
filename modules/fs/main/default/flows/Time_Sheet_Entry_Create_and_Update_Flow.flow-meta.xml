@@ -4,7 +4,7 @@
     <assignments>
         <name>Add_TSE_Record_to_TSECollection</name>
         <label>Add TSE Record to TSECollection</label>
-        <locationX>2206</locationX>
+        <locationX>1942</locationX>
         <locationY>1271</locationY>
         <assignmentItems>
             <assignToReference>TSERecordCollection</assignToReference>
@@ -20,7 +20,7 @@
     <assignments>
         <name>Assign_Overlapped_Timesheet_Entry_Count</name>
         <label>Assign Overlapped Timesheet Entry Count</label>
-        <locationX>1854</locationX>
+        <locationX>1590</locationX>
         <locationY>647</locationY>
         <assignmentItems>
             <assignToReference>OverlappedTSECount</assignToReference>
@@ -34,39 +34,9 @@
         </connector>
     </assignments>
     <assignments>
-        <name>TimeSheet_Record_Assignment</name>
+        <name>Copy_1_of_TimeSheet_Record_Assignment</name>
         <label>TimeSheet Record Assignment</label>
-        <locationX>1810</locationX>
-        <locationY>1079</locationY>
-        <assignmentItems>
-            <assignToReference>TimeSheetEntryRecord.Id</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Overlapped_TSE_Loop.Id</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>TimeSheetEntryRecord.StartTime</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Record.EndTime</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>OverlappedSTCount</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <numberValue>1.0</numberValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Add_TSE_Record_to_TSECollection</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>TimeSheet_Record_Assignment_1</name>
-        <label>TimeSheet Record Assignment</label>
-        <locationX>2338</locationX>
+        <locationX>1546</locationX>
         <locationY>1079</locationY>
         <assignmentItems>
             <assignToReference>TimeSheetEntryRecord.Id</assignToReference>
@@ -82,14 +52,28 @@
                 <elementReference>$Record.StartTime</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>OverlappedSTCount</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>TimeSheetEntryRecord.StartTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Overlapped_TSE_Loop.StartTime</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Add_TSE_Record_to_TSECollection</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>TimeSheet_Record_Assignment_2</name>
+        <name>Copy_3_of_TimeSheet_Record_Assignment</name>
         <label>TimeSheet Record Assignment</label>
-        <locationX>2074</locationX>
+        <locationX>1810</locationX>
         <locationY>1079</locationY>
         <assignmentItems>
             <assignToReference>TimeSheetEntryRecord.Id</assignToReference>
@@ -112,6 +96,36 @@
                 <numberValue>1.0</numberValue>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>TimeSheetEntryRecord.EndTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Overlapped_TSE_Loop.EndTime</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_TSE_Record_to_TSECollection</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>TimeSheet_Record_Assignment_1</name>
+        <label>TimeSheet Record Assignment</label>
+        <locationX>2074</locationX>
+        <locationY>1079</locationY>
+        <assignmentItems>
+            <assignToReference>TimeSheetEntryRecord.Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Overlapped_TSE_Loop.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>TimeSheetEntryRecord.EndTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.StartTime</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Add_TSE_Record_to_TSECollection</targetReference>
         </connector>
@@ -119,7 +133,7 @@
     <customErrors>
         <name>Error</name>
         <label>Error</label>
-        <locationX>578</locationX>
+        <locationX>314</locationX>
         <locationY>431</locationY>
         <customErrorMessages>
             <errorMessage>You Cannot Add Entries Outside Timesheet Dates.</errorMessage>
@@ -129,7 +143,7 @@
     <customErrors>
         <name>Multiple_TSE_Error</name>
         <label>Multiple TSE Error</label>
-        <locationX>1986</locationX>
+        <locationX>1722</locationX>
         <locationY>863</locationY>
         <customErrorMessages>
             <errorMessage>You cannot adjust the time sheet entry as multiple time sheet entries are getting affected by your adjustment. Please make sure the change only impact predecessor and successor time sheet entry only</errorMessage>
@@ -139,27 +153,17 @@
     <customErrors>
         <name>Not_Submitted_Approved_Error</name>
         <label>Not Submitted/Approved Error</label>
-        <locationX>314</locationX>
+        <locationX>50</locationX>
         <locationY>431</locationY>
         <customErrorMessages>
             <errorMessage>You cannot modify, Not Submitted or Approved Timesheet</errorMessage>
             <isFieldError>false</isFieldError>
         </customErrorMessages>
     </customErrors>
-    <customErrors>
-        <name>Submitted_Approved_Error</name>
-        <label>Submitted/Approved Error</label>
-        <locationX>50</locationX>
-        <locationY>431</locationY>
-        <customErrorMessages>
-            <errorMessage>You cannot modify Submitted or Approved Time Sheet {!$Record.TimeSheetEntryNumber}</errorMessage>
-            <isFieldError>false</isFieldError>
-        </customErrorMessages>
-    </customErrors>
     <decisions>
         <name>Check_Record_Is_New_or_Old</name>
         <label>Check Record Is New or Old</label>
-        <locationX>2052</locationX>
+        <locationX>1788</locationX>
         <locationY>431</locationY>
         <defaultConnectorLabel>Default</defaultConnectorLabel>
         <rules>
@@ -202,7 +206,7 @@
     <decisions>
         <name>Check_Record_Overlapping</name>
         <label>Check Record  Overlapping</label>
-        <locationX>1854</locationX>
+        <locationX>1590</locationX>
         <locationY>755</locationY>
         <defaultConnector>
             <targetReference>Multiple_TSE_Error</targetReference>
@@ -227,7 +231,7 @@
     <decisions>
         <name>Check_StartTime_Overlapped</name>
         <label>Check StartTime Overlapped</label>
-        <locationX>2206</locationX>
+        <locationX>1942</locationX>
         <locationY>971</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
@@ -239,14 +243,14 @@
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>Overlapped_TSE_Loop.StartTime</leftValueReference>
-                <operator>GreaterThan</operator>
+                <operator>LessThan</operator>
                 <rightValue>
                     <elementReference>$Record.StartTime</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>Overlapped_TSE_Loop.EndTime</leftValueReference>
-                <operator>LessThan</operator>
+                <operator>GreaterThan</operator>
                 <rightValue>
                     <elementReference>$Record.StartTime</elementReference>
                 </rightValue>
@@ -259,7 +263,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>TimeSheet_Record_Assignment</targetReference>
+                <targetReference>Copy_1_of_TimeSheet_Record_Assignment</targetReference>
             </connector>
             <label>If Start Time Overlapped</label>
         </rules>
@@ -288,9 +292,8 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>TimeSheet_Record_Assignment_2</targetReference>
+                <targetReference>Copy_3_of_TimeSheet_Record_Assignment</targetReference>
             </connector>
-            <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
             <label>If EndTime Overlapped with StartTime</label>
         </rules>
         <rules>
@@ -319,48 +322,12 @@
     <decisions>
         <name>Check_Update_Record_Validation</name>
         <label>Check Update Record Validation</label>
-        <locationX>1051</locationX>
+        <locationX>919</locationX>
         <locationY>323</locationY>
         <defaultConnector>
             <targetReference>Check_Record_Is_New_or_Old</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>If_Parent_TS_is_Submitted_Approval</name>
-            <conditionLogic>(1 OR 2) AND 3 AND 4</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.TimeSheet.Status</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Submitted</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.TimeSheet.Status</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Approved</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Profile.Name</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Field Service Mechanic</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>IsNew</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Submitted_Approved_Error</targetReference>
-            </connector>
-            <label>If Parent TS is Submitted/Approval</label>
-        </rules>
         <rules>
             <name>If_ParentTS_is_Not_Submitted</name>
             <conditionLogic>and</conditionLogic>
@@ -392,17 +359,17 @@
         </rules>
         <rules>
             <name>Refrain_Time_Frame</name>
-            <conditionLogic>or</conditionLogic>
+            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.TimeSheet.StartDate</leftValueReference>
-                <operator>GreaterThan</operator>
+                <operator>GreaterThanOrEqualTo</operator>
                 <rightValue>
                     <elementReference>StartDateVal</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
                 <leftValueReference>$Record.TimeSheet.EndDate</leftValueReference>
-                <operator>LessThan</operator>
+                <operator>LessThanOrEqualTo</operator>
                 <rightValue>
                     <elementReference>EndDateVal</elementReference>
                 </rightValue>
@@ -441,7 +408,7 @@
     <loops>
         <name>Overlapped_TSE_Loop</name>
         <label>Overlapped TSE Loop</label>
-        <locationX>1722</locationX>
+        <locationX>1458</locationX>
         <locationY>863</locationY>
         <collectionReference>Get_Overlapped_TimeSheetEntry_Of_Today</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -474,13 +441,13 @@
     <recordLookups>
         <name>Get_Overlapped_TimeSheetEntry_Of_Today</name>
         <label>Get Overlapped TimeSheetEntry Of Today</label>
-        <locationX>1854</locationX>
+        <locationX>1590</locationX>
         <locationY>539</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Assign_Overlapped_Timesheet_Entry_Count</targetReference>
         </connector>
-        <filterLogic>((1 AND 2) OR (3 AND 4) OR (6 AND 7)) AND 5</filterLogic>
+        <filterLogic>((1 AND 2) OR (3 AND 4) OR (6 AND 7) OR (8 AND 9)) AND 5</filterLogic>
         <filters>
             <field>StartTime</field>
             <operator>LessThan</operator>
@@ -530,6 +497,20 @@
                 <elementReference>$Record.EndTime</elementReference>
             </value>
         </filters>
+        <filters>
+            <field>StartTime</field>
+            <operator>GreaterThan</operator>
+            <value>
+                <elementReference>$Record.StartTime</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>EndTime</field>
+            <operator>LessThan</operator>
+            <value>
+                <elementReference>$Record.EndTime</elementReference>
+            </value>
+        </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>TimeSheetEntry</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -537,12 +518,12 @@
     <recordUpdates>
         <name>Update_Overlapped_TSE</name>
         <label>Update Overlapped TSE</label>
-        <locationX>1722</locationX>
+        <locationX>1458</locationX>
         <locationY>1463</locationY>
         <inputReference>TSERecordCollection</inputReference>
     </recordUpdates>
     <start>
-        <locationX>925</locationX>
+        <locationX>793</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Check_Update_Record_Validation</targetReference>
