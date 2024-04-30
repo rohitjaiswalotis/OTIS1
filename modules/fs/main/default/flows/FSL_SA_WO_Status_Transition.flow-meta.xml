@@ -24,11 +24,37 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Check_for_WT_Assignment</name>
+        <label>Check for WT Assignment</label>
+        <locationX>886</locationX>
+        <locationY>539</locationY>
+        <defaultConnectorLabel>WT Auto False</defaultConnectorLabel>
+        <rules>
+            <name>WT_True</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.WorkType.FS_AutoSchedule__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Update_SA_Auto_Schedule</targetReference>
+            </connector>
+            <label>WT Auto True</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Check_if_the_WO_Should_be_auto_Assigned</name>
         <label>Check if the WO Should be auto Assigned?</label>
         <locationX>446</locationX>
         <locationY>431</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <defaultConnector>
+            <targetReference>Check_for_WT_Assignment</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>None</defaultConnectorLabel>
         <rules>
             <name>Auto_Assigned</name>
             <conditionLogic>and</conditionLogic>
@@ -43,6 +69,18 @@
                 <targetReference>Update_SA_Auto_Schedule</targetReference>
             </connector>
             <label>Auto Assigned</label>
+        </rules>
+        <rules>
+            <name>Manual_Assigned</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.AssignmentType__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Manual</stringValue>
+                </rightValue>
+            </conditions>
+            <label>Manual Assigned</label>
         </rules>
     </decisions>
     <decisions>
@@ -81,6 +119,13 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>None</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ISCreated</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -298,6 +343,11 @@
     </decisions>
     <description>Work Order Status changes when related Service Appointment status is changed by the Mechanic</description>
     <environments>Default</environments>
+    <formulas>
+        <name>ISCreated</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNEW()</expression>
+    </formulas>
     <interviewLabel>SA WO Status Transition {!$Flow.CurrentDateTime}</interviewLabel>
     <label>SA WO Status Transition</label>
     <processMetadataValues>
