@@ -327,6 +327,20 @@
                     <stringValue>Rejected</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>Service_Appointment_Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cannot Execute</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Service_Appointment_Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>SA_Iteration</targetReference>
             </connector>
