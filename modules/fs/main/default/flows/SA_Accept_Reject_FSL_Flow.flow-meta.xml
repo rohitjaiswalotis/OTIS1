@@ -627,6 +627,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>FS_System_Reason__c</field>
+            <value>
+                <stringValue>Next Action Required</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>SvcReqAssignmentStatus__c</field>
             <value>
                 <stringValue>R-Reject</stringValue>
