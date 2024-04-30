@@ -198,6 +198,11 @@
         </rules>
     </decisions>
     <environments>Default</environments>
+    <formulas>
+        <name>recordLink</name>
+        <dataType>String</dataType>
+        <expression>LEFT($Api.Partner_Server_URL_260, FIND( &apos;/services&apos;, $Api.Partner_Server_URL_260)) &amp; {!$Record.Id}</expression>
+    </formulas>
     <interviewLabel>Unit Flow to send Cancelation Notification {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Unit Flow to send Cancelation Notification</label>
     <loops>
@@ -329,8 +334,8 @@
     <status>Active</status>
     <textTemplates>
         <name>EmailBody</name>
-        <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>&lt;p&gt;&lt;img src=&quot;https://otisdevelopmentaccount--fsnaadev1.sandbox.file.force.com/sfc/dist/version/renditionDownload?rendition=ORIGINAL_Png&amp;amp;versionId=068DQ000000Rhqe&amp;amp;operationContext=DELIVERY&amp;amp;contentId=05TDQ000001YgpD&amp;amp;page=0&amp;amp;d=/a/DQ000000KHg5/yYMI85zP.yFIg7rTDU3MUGZeTiSHT5TbYcwRjB0cSv0&amp;amp;oid=00DDQ0000008gin&amp;amp;dpt=null&amp;amp;viewId=&quot; width=&quot;100&quot; height=&quot;25 alt=&quot;&quot;&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-family: sans-serif; font-size: 16px;&quot;&gt;{!$Record.Name} is not under contract.&lt;/span&gt;&lt;/p&gt;</text>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;&lt;img src=&quot;https://otisdevelopmentaccount--fsnaadev1.sandbox.file.force.com/sfc/dist/version/renditionDownload?rendition=ORIGINAL_Png&amp;amp;versionId=068DQ000000Rhqe&amp;amp;operationContext=DELIVERY&amp;amp;contentId=05TDQ000001YgpD&amp;amp;page=0&amp;amp;d=/a/DQ000000KHg5/yYMI85zP.yFIg7rTDU3MUGZeTiSHT5TbYcwRjB0cSv0&amp;amp;oid=00DDQ0000008gin&amp;amp;dpt=null&amp;amp;viewId=&quot; width=&quot;100&quot; height=&quot;30&quot; &gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt; Greetings !&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt; Unit &lt;/strong&gt;&lt;a href=&quot;{!recordLink}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; style=&quot;font-size: 16px;&quot;&gt;&lt;strong&gt;{!$Record.Name}&lt;/strong&gt;&lt;/a&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt; is not under contract.&lt;/strong&gt;&lt;/p&gt;</text>
     </textTemplates>
     <variables>
         <name>EmailList</name>
