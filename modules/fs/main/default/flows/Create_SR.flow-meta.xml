@@ -10,6 +10,14 @@
         </value>
     </choices>
     <choices>
+        <name>CustomerNotAvailables</name>
+        <choiceText>Customer Not Available</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Customer Not Available</stringValue>
+        </value>
+    </choices>
+    <choices>
         <name>Reason1</name>
         <choiceText>Reason 1</choiceText>
         <dataType>String</dataType>
@@ -28,6 +36,14 @@
     </choices>
     <choices>
         <name>UnwillingtoSign</name>
+        <choiceText>Unwilling to Sign</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Unwilling to Sign</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>UnwillingtoSigns</name>
         <choiceText>Unwilling to Sign</choiceText>
         <dataType>String</dataType>
         <value>
@@ -344,12 +360,13 @@
         </connector>
         <fields>
             <name>NoSignatureReasons</name>
-            <choiceReferences>SignatureReasons</choiceReferences>
+            <choiceReferences>CustomerNotAvailables</choiceReferences>
+            <choiceReferences>UnwillingtoSigns</choiceReferences>
             <dataType>String</dataType>
             <fieldText>No Signature Reason</fieldText>
             <fieldType>DropdownBox</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -367,12 +384,13 @@
         </connector>
         <fields>
             <name>Copy_1_of_NoSignatureReasons</name>
-            <choiceReferences>SignatureReasons</choiceReferences>
+            <choiceReferences>CustomerNotAvailables</choiceReferences>
+            <choiceReferences>UnwillingtoSigns</choiceReferences>
             <dataType>String</dataType>
             <fieldText>No Signature Reason</fieldText>
             <fieldType>DropdownBox</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
