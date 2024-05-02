@@ -216,6 +216,20 @@
                     <stringValue>Cannot Complete</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>WorkOrderRecord.TrappedPassengerReleasedByOTIS__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>WorkOrderRecord.Reason__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Need New Visit On Site</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Check_Work_order_Details</targetReference>
             </connector>
@@ -647,6 +661,8 @@
         <queriedFields>WorkOrderNumber</queriedFields>
         <queriedFields>Priority</queriedFields>
         <queriedFields>LastModifiedById</queriedFields>
+        <queriedFields>TrappedPassengerReleasedByOTIS__c</queriedFields>
+        <queriedFields>Reason__c</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>Get_Work_Type</name>
