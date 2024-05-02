@@ -134,6 +134,22 @@ stages:
                     continueOnError: true
                     
                   
+                # evaluate test level: skip tests if requested
+                - ${{ if contains(variables['Build.SourceVersionMessage'], '[SKIP TESTS]') }}:
+                  
+                  - script: |
+                        
+                        # set variable to skip tests execution
+                        echo "##vso[task.setvariable variable=TARGET_ORG_TEST_LEVEL]NoTestRun"
+                        
+                - ${{ else }}:
+                  
+                  - script: |
+                        
+                        # set variable to skip tests execution
+                        echo "##vso[task.setvariable variable=TARGET_ORG_TEST_LEVEL]${TARGET_ORG_TEST_LEVEL:-RunLocalTests}"
+                    
+                  
                 - bash: |
                         
                         # enable exit on error
@@ -172,7 +188,7 @@ stages:
                           
                           if [[ "$DX_DEPLOY_STATUS_CODE" == "0" ]]; then
                             echo "Actually deploying artifacts into $(OrgAliasDevFS)..."
-                            sf force source deploy --sourcepath="$(packageBaseDir)" -u $(OrgAliasDevFS) --testlevel RunLocalTests --junit --coverageformatters cobertura --ignorewarnings -w 1000 --verbose 2>&1 | tee $DEPLOYMENT_LOG_FILE; DX_DEPLOY_STATUS_CODE=${PIPESTATUS[0]};
+                            sf force source deploy --sourcepath="$(packageBaseDir)" -u $(OrgAliasDevFS) --testlevel "$TARGET_ORG_TEST_LEVEL" --junit --coverageformatters cobertura --ignorewarnings -w 1000 --verbose 2>&1 | tee $DEPLOYMENT_LOG_FILE; DX_DEPLOY_STATUS_CODE=${PIPESTATUS[0]};
                           fi
                           
                           if [[ "$DX_DEPLOY_STATUS_CODE" == "0" ]]; then
@@ -231,18 +247,22 @@ stages:
                     testResultsFiles: '**/junit/junit.xml'
                   displayName: 'Publish Test Results'
                   continueOnError: true
+                  condition: not(eq(variables['TARGET_ORG_TEST_LEVEL'], 'NoTestRun'))
                   
                 - task: UseDotNet@2
                   displayName: 'Use .NET Core sdk 7.0.x'
                   inputs:
                     packageType: 'sdk'
                     version: 7.0.x
+                  condition: not(eq(variables['TARGET_ORG_TEST_LEVEL'], 'NoTestRun'))
                     
                 - task: PublishCodeCoverageResults@2
                   inputs:
                     summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage/cobertura.xml'
                   displayName: 'Publish Coverage Results'
                   continueOnError: true
+                  condition: not(eq(variables['TARGET_ORG_TEST_LEVEL'], 'NoTestRun'))
+                  
                   
                 - bash: |
                         
