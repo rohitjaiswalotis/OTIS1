@@ -861,7 +861,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>updating_reason_on_WO</targetReference>
+                <targetReference>System_Reason_Compare</targetReference>
             </connector>
             <label>SA Not Completed WithinTime</label>
         </rules>
@@ -1424,7 +1424,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
         <name>ClearGanttIconOnCompletion</name>
         <label>Clear GanttIcon On Completion</label>
         <locationX>3570</locationX>
-        <locationY>816</locationY>
+        <locationY>924</locationY>
         <connector>
             <targetReference>Copy_1_of_Get_SA_associated_with_Unit</targetReference>
         </connector>
@@ -1891,7 +1891,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
         <name>updating_reason_on_WO</name>
         <label>Updating Reason On WO</label>
         <locationX>3570</locationX>
-        <locationY>708</locationY>
+        <locationY>816</locationY>
         <connector>
             <targetReference>ClearGanttIconOnCompletion</targetReference>
         </connector>
@@ -1904,7 +1904,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
         <inputAssignments>
             <field>FS_System_Reason__c</field>
             <value>
-                <stringValue>Actual Duration Inadequate</stringValue>
+                <elementReference>UpdatedSystemReason</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -2175,6 +2175,32 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
                 <elementReference>$Record.WorkOrder__r.Id</elementReference>
             </value>
         </inputAssignments>
+    </subflows>
+    <subflows>
+        <name>System_Reason_Compare</name>
+        <label>System Reason Compare</label>
+        <locationX>3570</locationX>
+        <locationY>708</locationY>
+        <connector>
+            <targetReference>updating_reason_on_WO</targetReference>
+        </connector>
+        <flowName>FS_SubFlowSystemReasonPriority</flowName>
+        <inputAssignments>
+            <name>Prio_Sys_Reason_From_WO</name>
+            <value>
+                <elementReference>$Record__Prior.WorkOrder__r.FS_System_Reason__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Sys_Reason_From_WO</name>
+            <value>
+                <elementReference>$Record.WorkOrder__r.FS_System_Reason__c</elementReference>
+            </value>
+        </inputAssignments>
+        <outputAssignments>
+            <assignToReference>UpdatedSystemReason</assignToReference>
+            <name>FinalSystemReason</name>
+        </outputAssignments>
     </subflows>
     <textTemplates>
         <name>MissedVisit</name>
