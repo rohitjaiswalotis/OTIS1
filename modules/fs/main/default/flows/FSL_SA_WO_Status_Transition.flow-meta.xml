@@ -39,6 +39,13 @@
                     <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.FS_Total_Budget_Duration__c</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <numberValue>5.0</numberValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <isGoTo>true</isGoTo>
                 <targetReference>Update_SA_Auto_Schedule</targetReference>
@@ -63,6 +70,13 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Auto</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.FS_Total_Budget_Duration__c</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <numberValue>5.0</numberValue>
                 </rightValue>
             </conditions>
             <connector>
