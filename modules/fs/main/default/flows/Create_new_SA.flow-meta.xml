@@ -292,7 +292,7 @@
                 <leftValueReference>WorkOrderRecord.Priority</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>S1</stringValue>
+                    <stringValue>S1 - Emergency</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
