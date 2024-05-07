@@ -108,7 +108,7 @@
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>When_Prior_IsNull</name>
-            <conditionLogic>or</conditionLogic>
+            <conditionLogic>(1 OR 2) OR 3</conditionLogic>
             <conditions>
                 <leftValueReference>Prio_Sys_Reason_From_WO</leftValueReference>
                 <operator>EqualTo</operator>
@@ -121,6 +121,13 @@
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Sys_Reason_From_WO</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Prio_Sys_Reason_From_WO</elementReference>
                 </rightValue>
             </conditions>
             <connector>
