@@ -795,7 +795,7 @@
             <targetReference>Check_Status_Changes</targetReference>
         </connector>
         <inputAssignments>
-            <field>Latest_Time_of_Arrival__c</field>
+            <field>ArrivalWindowEndTime</field>
             <value>
                 <elementReference>ServiceLTADate</elementReference>
             </value>

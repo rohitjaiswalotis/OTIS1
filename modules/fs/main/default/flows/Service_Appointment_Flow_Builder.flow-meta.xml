@@ -1,6 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Custom_Notification_to_Mechanic</name>
+        <label>Custom Notification to Mechanic</label>
+        <locationX>6562</locationX>
+        <locationY>924</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value>
+                <elementReference>Get_Notification_Type.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value>
+                <elementReference>MechanicId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value>
+                <stringValue>Alert!!!!</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <stringValue>Initial ETA is greater than LTA</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>customNotificationAction</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
     <apiVersion>59.0</apiVersion>
+    <assignments>
+        <name>Assign_Recipient_Id</name>
+        <label>Assign Recipient Id</label>
+        <locationX>6562</locationX>
+        <locationY>708</locationY>
+        <assignmentItems>
+            <assignToReference>MechanicId</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>$Record.LastModifiedById</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Notification_Type</targetReference>
+        </connector>
+    </assignments>
     <assignments>
         <name>Assign_SA_Completed_to_a_Variable</name>
         <label>Assign SA Completed to a Variable</label>
@@ -193,7 +250,7 @@
         <description>This decision will check whether  the related work Oder&apos;s record type is maintenance or not</description>
         <name>Check_For_Maintenance</name>
         <label>Check For Maintenance</label>
-        <locationX>7156</locationX>
+        <locationX>7420</locationX>
         <locationY>276</locationY>
         <defaultConnectorLabel>Not maintenance</defaultConnectorLabel>
         <rules>
@@ -216,8 +273,11 @@
         <description>This decision will check whether  the related work Oder&apos;s record type is maintenance or not</description>
         <name>Check_For_Maintenancee</name>
         <label>Check For Maintenance</label>
-        <locationX>4802</locationX>
+        <locationX>4868</locationX>
         <locationY>276</locationY>
+        <defaultConnector>
+            <targetReference>If_SA_Status_changed_to_Accepted</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Not maintenance</defaultConnectorLabel>
         <rules>
             <name>Copy_1_of_Maintenance</name>
@@ -377,7 +437,7 @@
     <decisions>
         <name>Condition_Check</name>
         <label>Condition Check</label>
-        <locationX>6958</locationX>
+        <locationX>7222</locationX>
         <locationY>384</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -480,6 +540,10 @@
         <label>Copy 1 of Is WO Maintenance type</label>
         <locationX>974</locationX>
         <locationY>1248</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>If_SA_Status_changed_to_Accepted</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Copy_2_of_Yes</name>
@@ -582,10 +646,43 @@
         </rules>
     </decisions>
     <decisions>
+        <name>If_SA_Status_changed_to_Accepted</name>
+        <label>If SA Status changed to Accepted</label>
+        <locationX>6694</locationX>
+        <locationY>384</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>SA_status_changed_to_Accepted</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Accepted</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_User</targetReference>
+            </connector>
+            <label>SA status changed to Accepted</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Is_WO_Maintenance_type</name>
         <label>Is WO Maintenance type</label>
         <locationX>446</locationX>
         <locationY>1140</locationY>
+        <defaultConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>If_SA_Status_changed_to_Accepted</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>YesMaintenance</name>
@@ -1265,6 +1362,27 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
         </outputAssignments>
     </recordLookups>
     <recordLookups>
+        <name>Get_Notification_Type</name>
+        <label>Get Notification Type</label>
+        <locationX>6562</locationX>
+        <locationY>816</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Custom_Notification_to_Mechanic</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Custom_Notification_for_Mechanic</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>CustomNotificationType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Pending_SA</name>
         <label>Get Pending SA</label>
         <locationX>2910</locationX>
@@ -1364,6 +1482,48 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>Get_Service_Resource</name>
+        <label>Get Service Resource</label>
+        <locationX>6562</locationX>
+        <locationY>600</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Assign_Recipient_Id</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>RelatedRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.LastModifiedById</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ServiceResource</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_User</name>
+        <label>Get User</label>
+        <locationX>6562</locationX>
+        <locationY>492</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Service_Resource</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.LastModifiedById</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_WO_Fixed_Issue</name>
         <label>Get WO Fixed Issue</label>
         <locationX>2910</locationX>
@@ -1424,7 +1584,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
         <name>ClearGanttIconOnCompletion</name>
         <label>Clear GanttIcon On Completion</label>
         <locationX>3570</locationX>
-        <locationY>924</locationY>
+        <locationY>816</locationY>
         <connector>
             <targetReference>Copy_1_of_Get_SA_associated_with_Unit</targetReference>
         </connector>
@@ -1512,7 +1672,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>Udate_WO_Safety_Check</name>
         <label>Udate WO Safety Check</label>
-        <locationX>6826</locationX>
+        <locationX>7090</locationX>
         <locationY>492</locationY>
         <connector>
             <targetReference>Update_Gantt_Icon_on_SA</targetReference>
@@ -1534,7 +1694,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>Update_Gantt_Icon_on_SA</name>
         <label>Update Gantt Icon on SA</label>
-        <locationX>6826</locationX>
+        <locationX>7090</locationX>
         <locationY>600</locationY>
         <connector>
             <targetReference>SendCustomNotificationToMaintenanceSupervisor</targetReference>
@@ -1891,7 +2051,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
         <name>updating_reason_on_WO</name>
         <label>Updating Reason On WO</label>
         <locationX>3570</locationX>
-        <locationY>816</locationY>
+        <locationY>708</locationY>
         <connector>
             <targetReference>ClearGanttIconOnCompletion</targetReference>
         </connector>
@@ -1944,7 +2104,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
         <inputReference>$Record.WorkOrder__r</inputReference>
     </recordUpdates>
     <start>
-        <locationX>5853</locationX>
+        <locationX>6018</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Check_For_Maintenancee</targetReference>
@@ -2142,7 +2302,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <subflows>
         <name>SendCustomNotificationToMaintenanceSupervisor</name>
         <label>SendCustomNotificationToMaintenanceSupervisor</label>
-        <locationX>6826</locationX>
+        <locationX>7090</locationX>
         <locationY>708</locationY>
         <flowName>SendCustomNotification</flowName>
         <inputAssignments>
@@ -2254,6 +2414,13 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>ServiceAppointment</objectType>
+    </variables>
+    <variables>
+        <name>MechanicId</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>RecordsWithSLA</name>
