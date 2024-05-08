@@ -40,10 +40,10 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.WorkOrder__r.FS_Total_Budget_Duration__c</leftValueReference>
-                <operator>LessThanOrEqualTo</operator>
+                <leftValueReference>$Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <numberValue>5.0</numberValue>
+                    <stringValue>Field Service Admin</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -73,10 +73,10 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.WorkOrder__r.FS_Total_Budget_Duration__c</leftValueReference>
-                <operator>LessThanOrEqualTo</operator>
+                <leftValueReference>$Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <numberValue>5.0</numberValue>
+                    <stringValue>Field Service Admin</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -92,6 +92,13 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Manual</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Field Service Admin</stringValue>
                 </rightValue>
             </conditions>
             <label>Manual Assigned</label>
