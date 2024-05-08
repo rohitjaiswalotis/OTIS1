@@ -216,6 +216,38 @@
         </connector>
     </assignments>
     <decisions>
+        <name>Check_Contract_Status</name>
+        <label>Check Contract Status</label>
+        <locationX>5198</locationX>
+        <locationY>647</locationY>
+        <defaultConnector>
+            <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Booked</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_ContractUnitSummaryRecords.FS_SalesContract__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Get_ContractUnitSummaryRecords.FS_SalesContract__r.StatusReason__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Booked</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Unit_Record</targetReference>
+            </connector>
+            <label>Booked</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Check_Handover_is_set</name>
         <label>Check Handover is set</label>
         <locationX>182</locationX>
@@ -820,6 +852,28 @@
             </connector>
             <label>Cancel</label>
         </rules>
+        <rules>
+            <name>Created_or_Updated_by_User_Boomi_Integration</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CreatedById</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Get_Boomi_Integration_User.Id</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.LastModifiedById</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Get_Boomi_Integration_User.Id</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_ContractUnitSummaryRecords</targetReference>
+            </connector>
+            <label>Created or Updated by User = Boomi Integration</label>
+        </rules>
     </decisions>
     <decisions>
         <name>Unit_Suspension</name>
@@ -954,6 +1008,7 @@
             <label>check if Supervisor email is present</label>
         </rules>
     </decisions>
+    <description>935180</description>
     <environments>Default</environments>
     <formulas>
         <name>AddressAssignment</name>
@@ -1047,6 +1102,56 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_Boomi_Integration_User</name>
+        <label>Get Boomi Integration User</label>
+        <locationX>2844</locationX>
+        <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>IsChangedNewEqippment</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Boomi Integration</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.CreatedById</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Gets the Contract Unit Summary Records.</description>
+        <name>Get_ContractUnitSummaryRecords</name>
+        <label>Get_ContractUnitSummaryRecords</label>
+        <locationX>5198</locationX>
+        <locationY>539</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_Contract_Status</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>FS_Unit__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ContractUnitSummary__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
         <name>get_custom_notification_type</name>
         <label>get_custom_notification_type</label>
@@ -1546,6 +1651,28 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
+        <name>Update_Unit_Record</name>
+        <label>Update Unit Record</label>
+        <locationX>5066</locationX>
+        <locationY>755</locationY>
+        <connector>
+            <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FS_Field_Status__c</field>
+            <value>
+                <stringValue>New Equipment</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>StatusReason</field>
+            <value>
+                <stringValue>New equipment unit pending Handover</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>Update_Unit_Two</name>
         <label>Update Unit</label>
         <locationX>50</locationX>
@@ -1626,7 +1753,7 @@
         <locationX>2498</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>IsChangedNewEqippment</targetReference>
+            <targetReference>Get_Boomi_Integration_User</targetReference>
         </connector>
         <object>Asset</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
