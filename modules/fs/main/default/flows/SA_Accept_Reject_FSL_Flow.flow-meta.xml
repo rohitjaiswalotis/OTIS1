@@ -191,7 +191,7 @@
         <locationX>1612</locationX>
         <locationY>1322</locationY>
         <defaultConnector>
-            <targetReference>Update_SAToRejected</targetReference>
+            <targetReference>AR_Check</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -533,6 +533,37 @@
             <field>Id</field>
         </outputAssignments>
     </recordLookups>
+    <recordUpdates>
+        <name>AR_Check</name>
+        <label>AR Check</label>
+        <locationX>1898</locationX>
+        <locationY>1430</locationY>
+        <connector>
+            <targetReference>Update_SAToRejected</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ServiceResourceId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>serviceAppointmentRec.AssignedServiceResource__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>ServiceAppointmentId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>serviceAppointmentRec.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>AssignedResourceDeletedManually__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <object>AssignedResource</object>
+    </recordUpdates>
     <recordUpdates>
         <name>Copy_1_of_Update_SA</name>
         <label>Update SA To None</label>

@@ -316,25 +316,235 @@
         </rules>
     </decisions>
     <decisions>
-         <name>Check_WO_already_Cancelled</name>
-        <label>Check WO already Cancelled?</label>
-        <locationX>1238</locationX>
+        <name>Check_SA_Status_SR</name>
+        <label>Check SA Status SR</label>
+        <locationX>5022</locationX>
         <locationY>431</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>Cancelled_One</name>
+            <name>SA_None</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.WorkOrder__r.Status</leftValueReference>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>None</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>WO_Of_SA_None</targetReference>
+            </connector>
+            <label>SA None</label>
+        </rules>
+        <rules>
+            <name>SA_None_created</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>None</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ISCreated</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Updating_WO_Of_SA_created</targetReference>
+            </connector>
+            <label>SA None (created)</label>
+        </rules>
+        <rules>
+            <name>SA_Scheduled_Or_Dispacthed</name>
+            <conditionLogic>(1 OR 2 OR 4 OR 5) AND 3 AND 6</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Scheduled</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Dispatched</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Accepted</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Rejected</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ISCreated</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Updating_WO_Of_SA_In_Sch_EnR_Onsite_Disp</targetReference>
+            </connector>
+            <label>SA Scheduled Or Dispacthed</label>
+        </rules>
+        <rules>
+            <name>SA_En_Route</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Enroute</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Updating_WO_Of_SA_In_EnRoute</targetReference>
+            </connector>
+            <label>SA En-Route</label>
+        </rules>
+        <rules>
+            <name>SA_On_Site</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Onsite</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.Reason__c</leftValueReference>
                 <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Parts Needed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Updating_WO_Of_SA_In_Onsite</targetReference>
+            </connector>
+            <label>SA On-Site</label>
+        </rules>
+        <rules>
+            <name>SA_Cancelled</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Canceled</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
-                <targetReference>Update_Related_WO5</targetReference>
+                <targetReference>Updating_WO_Of_SA_Cancelled</targetReference>
             </connector>
-            <label>Cancelled</label>
+            <label>SA Cancelled</label>
+        </rules>
+        <rules>
+            <name>SA_Cannot_Complete</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cannot Complete</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Updating_WO_Of_SA_Cannot_Complete</targetReference>
+            </connector>
+            <label>SA Cannot Complete</label>
+        </rules>
+        <rules>
+            <name>SA_Completed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Completed_Diff_Scenarios</targetReference>
+            </connector>
+            <label>SA Completed</label>
         </rules>
     </decisions>
     <decisions>
@@ -360,6 +570,112 @@
                 <targetReference>Open_order_WO_status_Cannot_Complete</targetReference>
             </connector>
             <label>Open Order</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Completed_Diff_Scenarios</name>
+        <label>Completed Diff Scenarios</label>
+        <locationX>5814</locationX>
+        <locationY>539</locationY>
+        <defaultConnector>
+            <targetReference>Updating_WO_Of_SA_With_No_Issues</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No Issues Reported</defaultConnectorLabel>
+        <rules>
+            <name>Fixed_Issue</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.Fixed_Issue__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>No</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.Fixed_Issue__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Partially</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>WO_Of_SA_With_Issue</targetReference>
+            </connector>
+            <label>Fixed Issue</label>
+        </rules>
+        <rules>
+            <name>Unit_Status</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.UnitStatusOnSiteDeparture__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Shutdown</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Updating_WO_Of_SA_With_Shutdown_Unit</targetReference>
+            </connector>
+            <label>Unit Status</label>
+        </rules>
+        <rules>
+            <name>If_There_Are_Items_Pending_Approval</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.Total_WOLI_with_Checked_Review__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.FS_Mark_For_Supervisor_Review__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Updating_WO_Of_SA_With_WOLI_Or_SPV_Review</targetReference>
+            </connector>
+            <label>If There Are Items Pending Approval</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Record_Type_Check</name>
+        <label>Record Type Check</label>
+        <locationX>4208</locationX>
+        <locationY>323</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>MP_Check</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Maintanance</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_SA_Status</targetReference>
+            </connector>
+            <label>MP Check</label>
+        </rules>
+        <rules>
+            <name>SR_Check</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Service_Request</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_SA_Status_SR</targetReference>
+            </connector>
+            <label>SR Check</label>
         </rules>
     </decisions>
     <description>Work Order Status changes when related Service Appointment status is changed by the Mechanic</description>
@@ -527,11 +843,248 @@
         </inputAssignments>
         <inputReference>$Record</inputReference>
     </recordUpdates>
+    <recordUpdates>
+        <name>Updating_WO_Of_SA_Cancelled</name>
+        <label>Updating WO Of SA Cancelled</label>
+        <locationX>4890</locationX>
+        <locationY>539</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Canceled</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Updating_WO_Of_SA_Cannot_Complete</name>
+        <label>Updating WO Of SA Cannot Complete</label>
+        <locationX>5154</locationX>
+        <locationY>539</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Cannot Complete</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Updating_WO_Of_SA_created</name>
+        <label>Updating WO Of SA created</label>
+        <locationX>3834</locationX>
+        <locationY>539</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Unassigned</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Updating_WO_Of_SA_In_EnRoute</name>
+        <label>Updating WO Of SA In  EnRoute</label>
+        <locationX>4362</locationX>
+        <locationY>539</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>In Progress</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Updating_WO_Of_SA_In_Onsite</name>
+        <label>Updating WO Of SA In Onsite</label>
+        <locationX>4626</locationX>
+        <locationY>539</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>In Progress</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Updating_WO_Of_SA_In_Sch_EnR_Onsite_Disp</name>
+        <label>Updating WO Of SA In Sch EnR Onsite Disp</label>
+        <locationX>4098</locationX>
+        <locationY>539</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Assigned</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Updating_WO_Of_SA_With_No_Issues</name>
+        <label>Updating WO Of SA With No Issues</label>
+        <locationX>6210</locationX>
+        <locationY>647</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Completed - Shutdown</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SvcReqAssignedMechanic__c</field>
+            <value>
+                <elementReference>$Record.AssignedServiceResource__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Updating_WO_Of_SA_With_Shutdown_Unit</name>
+        <label>Updating WO Of SA With Shutdown Unit</label>
+        <locationX>5682</locationX>
+        <locationY>647</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Cannot Complete</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Updating_WO_Of_SA_With_WOLI_Or_SPV_Review</name>
+        <label>Updating WO Of SA With WOLI Or SPV Review</label>
+        <locationX>5946</locationX>
+        <locationY>647</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Cannot Complete</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>WO_Of_SA_None</name>
+        <label>WO Of SA None</label>
+        <locationX>3570</locationX>
+        <locationY>539</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Unassigned</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>WO_Of_SA_With_Issue</name>
+        <label>WO Of SA With Issue</label>
+        <locationX>5418</locationX>
+        <locationY>647</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Cannot Complete</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
     <start>
         <locationX>1332</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Check_SA_Status</targetReference>
+            <targetReference>Record_Type_Check</targetReference>
         </connector>
         <object>ServiceAppointment</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
