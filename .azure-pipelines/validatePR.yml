@@ -181,6 +181,8 @@ stages:
                       # set variable to pass test level to next steps
                       echo "##vso[task.setvariable variable=TARGET_ORG_TEST_LEVEL]$TARGET_ORG_TEST_LEVEL"
                       
+                  displayName: Evaluate test level
+                  
                   env:
                     AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
                   
