@@ -1322,7 +1322,7 @@
             <fieldText>Multiplier Values</fieldText>
             <fieldType>RadioButtons</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
             <scale>1</scale>
         </fields>
         <fields>
