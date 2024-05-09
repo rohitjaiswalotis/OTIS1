@@ -130,6 +130,29 @@
             <targetReference>Add_TSE_Record_to_TSECollection</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>Update_Time_Sheet_End_Time</name>
+        <label>Update Time Sheet End Time</label>
+        <locationX>578</locationX>
+        <locationY>755</locationY>
+        <assignmentItems>
+            <assignToReference>TimeSheetEntryRecord.EndTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.EndTime</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <customErrors>
+        <name>Display_Error</name>
+        <label>Display Error</label>
+        <locationX>842</locationX>
+        <locationY>755</locationY>
+        <customErrorMessages>
+            <errorMessage>only 15 minutes adjustment is allowed on End Time.</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
     <customErrors>
         <name>Error</name>
         <label>Error</label>
@@ -379,6 +402,50 @@
             </connector>
             <label>Refrain Time Frame</label>
         </rules>
+        <rules>
+            <name>If_New_End_Time_is_less_than_Previous_End_time</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EndTimeDifference</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>Get_OTIS_Company_Wide_Settings.Timesheet_Adjustment_Minutes__c</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Field Service Mechanic</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Time_Sheet_End_Time</targetReference>
+            </connector>
+            <label>If New End Time is less than Previous End time</label>
+        </rules>
+        <rules>
+            <name>If_New_End_Time_is_greater_than_Previous_End_time</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EndTimeDifference</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <elementReference>Get_OTIS_Company_Wide_Settings.Timesheet_Adjustment_Minutes__c</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Field Service Mechanic</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Display_Error</targetReference>
+            </connector>
+            <label>If New End Time is greater than Previous End time</label>
+        </rules>
     </decisions>
     <description>This FLow will restrict to modify once time sheet entry is submited.</description>
     <environments>Default</environments>
@@ -386,6 +453,12 @@
         <name>EndDateVal</name>
         <dataType>Date</dataType>
         <expression>DATEVALUE({!$Record.EndTime})</expression>
+    </formulas>
+    <formulas>
+        <name>EndTimeDifference</name>
+        <dataType>Number</dataType>
+        <expression>({!$Record.EndTime} - {!$Record__Prior.EndTime}) *24 *60</expression>
+        <scale>2</scale>
     </formulas>
     <formulas>
         <name>IsNew</name>
@@ -438,6 +511,27 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_OTIS_Company_Wide_Settings</name>
+        <label>Get OTIS Company Wide Settings</label>
+        <locationX>1183</locationX>
+        <locationY>539</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_Update_Record_Validation</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Label</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Service_Resource.Company__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>FS_OTISCompanyWideSettings__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
         <name>Get_Overlapped_TimeSheetEntry_Of_Today</name>
         <label>Get Overlapped TimeSheetEntry Of Today</label>
@@ -515,6 +609,48 @@
         <object>TimeSheetEntry</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <name>Get_Service_Appointment</name>
+        <label>Get Service Appointment</label>
+        <locationX>1183</locationX>
+        <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Service_Resource</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>TimeSheetEntry</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Service_Resource</name>
+        <label>Get Service Resource</label>
+        <locationX>1183</locationX>
+        <locationY>431</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_OTIS_Company_Wide_Settings</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Service_Appointment.Service_Appointment__r.AssignedServiceResource__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ServiceResource</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordUpdates>
         <name>Update_Overlapped_TSE</name>
         <label>Update Overlapped TSE</label>
@@ -526,7 +662,7 @@
         <locationX>793</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Check_Update_Record_Validation</targetReference>
+            <targetReference>Get_Service_Appointment</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
