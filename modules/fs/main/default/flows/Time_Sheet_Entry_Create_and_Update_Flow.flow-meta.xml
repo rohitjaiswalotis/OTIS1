@@ -149,7 +149,7 @@
         <locationX>842</locationX>
         <locationY>755</locationY>
         <customErrorMessages>
-            <errorMessage>only 15 minutes adjustment is allowed on End Time.</errorMessage>
+            <errorMessage>Only 15 minutes adjustment is allowed on End Time.</errorMessage>
             <isFieldError>false</isFieldError>
         </customErrorMessages>
     </customErrors>
