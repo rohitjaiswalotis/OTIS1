@@ -665,8 +665,6 @@
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>SlaProcess</object>
-        <sortField>VersionNumber</sortField>
-        <sortOrder>Desc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
