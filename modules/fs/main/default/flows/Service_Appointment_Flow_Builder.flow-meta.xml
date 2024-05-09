@@ -29,7 +29,7 @@
         <inputParameters>
             <name>body</name>
             <value>
-                <stringValue>Initial ETA is greater than LTA</stringValue>
+                <stringValue>{!$Record.AppointmentNumber} Initial ETA is greater than LTA</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
