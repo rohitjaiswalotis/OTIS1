@@ -4,8 +4,8 @@
     <decisions>
         <name>Check_Fixed_Issue</name>
         <label>Check Fixed Issue</label>
-        <locationX>2404</locationX>
-        <locationY>431</locationY>
+        <locationX>3284</locationX>
+        <locationY>539</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>If_Fixed_Issue_Yes</name>
@@ -26,8 +26,8 @@
     <decisions>
         <name>Check_for_WT_Assignment</name>
         <label>Check for WT Assignment</label>
-        <locationX>886</locationX>
-        <locationY>539</locationY>
+        <locationX>974</locationX>
+        <locationY>647</locationY>
         <defaultConnectorLabel>WT Auto False</defaultConnectorLabel>
         <rules>
             <name>WT_True</name>
@@ -56,8 +56,8 @@
     <decisions>
         <name>Check_if_the_WO_Should_be_auto_Assigned</name>
         <label>Check if the WO Should be auto Assigned?</label>
-        <locationX>446</locationX>
-        <locationY>431</locationY>
+        <locationX>644</locationX>
+        <locationY>539</locationY>
         <defaultConnector>
             <targetReference>Check_for_WT_Assignment</targetReference>
         </defaultConnector>
@@ -107,8 +107,8 @@
     <decisions>
         <name>Check_SA_Status</name>
         <label>Check SA Status</label>
-        <locationX>1458</locationX>
-        <locationY>323</locationY>
+        <locationX>1898</locationX>
+        <locationY>431</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>None</name>
@@ -156,7 +156,7 @@
         </rules>
         <rules>
             <name>Scheduled_Or_Dispacthed</name>
-            <conditionLogic>(1 OR 2) AND 3</conditionLogic>
+            <conditionLogic>(1 OR 2) AND 3 AND 4</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Status</leftValueReference>
                 <operator>EqualTo</operator>
@@ -176,6 +176,13 @@
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -266,7 +273,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Update_Related_WO5</targetReference>
+                <targetReference>WO_Canceled_M</targetReference>
             </connector>
             <label>Cancelled</label>
         </rules>
@@ -318,7 +325,7 @@
     <decisions>
         <name>Check_SA_Status_SR</name>
         <label>Check SA Status SR</label>
-        <locationX>5022</locationX>
+        <locationX>5594</locationX>
         <locationY>431</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -498,7 +505,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Updating_WO_Of_SA_Cancelled</targetReference>
+                <targetReference>WO_Canceled</targetReference>
             </connector>
             <label>SA Cancelled</label>
         </rules>
@@ -550,8 +557,8 @@
     <decisions>
         <name>Check_Work_Order_Type</name>
         <label>Check Work Order Type</label>
-        <locationX>2206</locationX>
-        <locationY>539</locationY>
+        <locationX>3086</locationX>
+        <locationY>647</locationY>
         <defaultConnector>
             <targetReference>Update_Related_WO7</targetReference>
         </defaultConnector>
@@ -575,7 +582,7 @@
     <decisions>
         <name>Completed_Diff_Scenarios</name>
         <label>Completed Diff Scenarios</label>
-        <locationX>5814</locationX>
+        <locationX>6518</locationX>
         <locationY>539</locationY>
         <defaultConnector>
             <targetReference>Updating_WO_Of_SA_With_No_Issues</targetReference>
@@ -644,7 +651,7 @@
     <decisions>
         <name>Record_Type_Check</name>
         <label>Record Type Check</label>
-        <locationX>4208</locationX>
+        <locationX>4670</locationX>
         <locationY>323</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -678,6 +685,50 @@
             <label>SR Check</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>WO_Canceled</name>
+        <label>WO Canceled</label>
+        <locationX>5462</locationX>
+        <locationY>539</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Canceled_two</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Canceled</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Updating_WO_Of_SA_Cancelled</targetReference>
+            </connector>
+            <label>Canceled</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>WO_Canceled_M</name>
+        <label>WO Canceled</label>
+        <locationX>2294</locationX>
+        <locationY>539</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Cancelled_One</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Canceled</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Related_WO5</targetReference>
+            </connector>
+            <label>Cancelled</label>
+        </rules>
+    </decisions>
     <description>Work Order Status changes when related Service Appointment status is changed by the Mechanic</description>
     <environments>Default</environments>
     <formulas>
@@ -709,8 +760,8 @@
     <recordUpdates>
         <name>Open_order_WO_status_Cannot_Complete</name>
         <label>Open order WO status Cannot Complete</label>
-        <locationX>2074</locationX>
-        <locationY>647</locationY>
+        <locationX>2954</locationX>
+        <locationY>755</locationY>
         <inputAssignments>
             <field>Status</field>
             <value>
@@ -723,7 +774,7 @@
         <name>Update_Related_WO</name>
         <label>Update Related WO</label>
         <locationX>50</locationX>
-        <locationY>431</locationY>
+        <locationY>539</locationY>
         <inputAssignments>
             <field>Status</field>
             <value>
@@ -735,8 +786,8 @@
     <recordUpdates>
         <name>Update_Related_WO1</name>
         <label>Update Related WO</label>
-        <locationX>754</locationX>
-        <locationY>431</locationY>
+        <locationX>1370</locationX>
+        <locationY>539</locationY>
         <inputAssignments>
             <field>Status</field>
             <value>
@@ -748,8 +799,8 @@
     <recordUpdates>
         <name>Update_Related_WO3</name>
         <label>Update Related WO</label>
-        <locationX>1018</locationX>
-        <locationY>431</locationY>
+        <locationX>1634</locationX>
+        <locationY>539</locationY>
         <inputAssignments>
             <field>Status</field>
             <value>
@@ -761,8 +812,8 @@
     <recordUpdates>
         <name>Update_Related_WO4</name>
         <label>Update Related WO</label>
-        <locationX>1282</locationX>
-        <locationY>431</locationY>
+        <locationX>1898</locationX>
+        <locationY>539</locationY>
         <inputAssignments>
             <field>Status</field>
             <value>
@@ -774,8 +825,8 @@
     <recordUpdates>
         <name>Update_Related_WO5</name>
         <label>Update Related WO</label>
-        <locationX>1546</locationX>
-        <locationY>431</locationY>
+        <locationX>2162</locationX>
+        <locationY>647</locationY>
         <inputAssignments>
             <field>FS_CancellationReason__c</field>
             <value>
@@ -793,8 +844,8 @@
     <recordUpdates>
         <name>Update_Related_WO6</name>
         <label>Update Related WO</label>
-        <locationX>1810</locationX>
-        <locationY>431</locationY>
+        <locationX>2690</locationX>
+        <locationY>539</locationY>
         <inputAssignments>
             <field>Status</field>
             <value>
@@ -806,8 +857,8 @@
     <recordUpdates>
         <name>Update_Related_WO7</name>
         <label>Update Related WO</label>
-        <locationX>2338</locationX>
-        <locationY>647</locationY>
+        <locationX>3218</locationX>
+        <locationY>755</locationY>
         <inputAssignments>
             <field>Status</field>
             <value>
@@ -826,7 +877,7 @@
         <name>Update_SA_Auto_Schedule</name>
         <label>Update SA Auto Schedule</label>
         <locationX>314</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -846,8 +897,8 @@
     <recordUpdates>
         <name>Updating_WO_Of_SA_Cancelled</name>
         <label>Updating WO Of SA Cancelled</label>
-        <locationX>4890</locationX>
-        <locationY>539</locationY>
+        <locationX>5330</locationX>
+        <locationY>647</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -867,7 +918,7 @@
     <recordUpdates>
         <name>Updating_WO_Of_SA_Cannot_Complete</name>
         <label>Updating WO Of SA Cannot Complete</label>
-        <locationX>5154</locationX>
+        <locationX>5858</locationX>
         <locationY>539</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -888,7 +939,7 @@
     <recordUpdates>
         <name>Updating_WO_Of_SA_created</name>
         <label>Updating WO Of SA created</label>
-        <locationX>3834</locationX>
+        <locationX>4274</locationX>
         <locationY>539</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -909,7 +960,7 @@
     <recordUpdates>
         <name>Updating_WO_Of_SA_In_EnRoute</name>
         <label>Updating WO Of SA In  EnRoute</label>
-        <locationX>4362</locationX>
+        <locationX>4802</locationX>
         <locationY>539</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -930,7 +981,7 @@
     <recordUpdates>
         <name>Updating_WO_Of_SA_In_Onsite</name>
         <label>Updating WO Of SA In Onsite</label>
-        <locationX>4626</locationX>
+        <locationX>5066</locationX>
         <locationY>539</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -951,7 +1002,7 @@
     <recordUpdates>
         <name>Updating_WO_Of_SA_In_Sch_EnR_Onsite_Disp</name>
         <label>Updating WO Of SA In Sch EnR Onsite Disp</label>
-        <locationX>4098</locationX>
+        <locationX>4538</locationX>
         <locationY>539</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -972,7 +1023,7 @@
     <recordUpdates>
         <name>Updating_WO_Of_SA_With_No_Issues</name>
         <label>Updating WO Of SA With No Issues</label>
-        <locationX>6210</locationX>
+        <locationX>6914</locationX>
         <locationY>647</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -999,7 +1050,7 @@
     <recordUpdates>
         <name>Updating_WO_Of_SA_With_Shutdown_Unit</name>
         <label>Updating WO Of SA With Shutdown Unit</label>
-        <locationX>5682</locationX>
+        <locationX>6386</locationX>
         <locationY>647</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1020,7 +1071,7 @@
     <recordUpdates>
         <name>Updating_WO_Of_SA_With_WOLI_Or_SPV_Review</name>
         <label>Updating WO Of SA With WOLI Or SPV Review</label>
-        <locationX>5946</locationX>
+        <locationX>6650</locationX>
         <locationY>647</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1041,7 +1092,7 @@
     <recordUpdates>
         <name>WO_Of_SA_None</name>
         <label>WO Of SA None</label>
-        <locationX>3570</locationX>
+        <locationX>4010</locationX>
         <locationY>539</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1062,7 +1113,7 @@
     <recordUpdates>
         <name>WO_Of_SA_With_Issue</name>
         <label>WO Of SA With Issue</label>
-        <locationX>5418</locationX>
+        <locationX>6122</locationX>
         <locationY>647</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1081,7 +1132,7 @@
         <object>WorkOrder</object>
     </recordUpdates>
     <start>
-        <locationX>1332</locationX>
+        <locationX>4544</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Record_Type_Check</targetReference>
