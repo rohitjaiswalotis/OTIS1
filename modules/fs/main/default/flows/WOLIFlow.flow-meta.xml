@@ -4,9 +4,21 @@
     <decisions>
         <name>Check_if_Updated_by_Supervisor_user</name>
         <label>Check if Updated by Supervisor user</label>
-        <locationX>314</locationX>
+        <locationX>182</locationX>
         <locationY>323</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Check_For_SR</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder.RecordTypeId</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Setup.OTISCustomSettings__c.Work_Order_Maintenance_Record_Type__c</elementReference>
+                </rightValue>
+            </conditions>
+            <label>Check For SR</label>
+        </rules>
         <rules>
             <name>If_WOLI_Approval_Status_Approved</name>
             <conditionLogic>1 AND 2 AND 3 AND (4 OR 5)</conditionLogic>
@@ -80,6 +92,7 @@
             <label>Update WO Based On Chargeable Item</label>
         </rules>
     </decisions>
+    <description>-Record Type Check Implemented</description>
     <environments>Default</environments>
     <interviewLabel>WOLI Flow {!$Flow.CurrentDateTime}</interviewLabel>
     <label>WOLI Flow</label>
@@ -165,7 +178,7 @@
         <inputReference>$Record.WorkOrder</inputReference>
     </recordUpdates>
     <start>
-        <locationX>188</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Check_if_Updated_by_Supervisor_user</targetReference>

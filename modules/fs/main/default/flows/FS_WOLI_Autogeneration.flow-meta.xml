@@ -4,8 +4,8 @@
     <assignments>
         <name>Assign_WOLI_from_WOLI_Template</name>
         <label>Assign WOLI from WOLI Template</label>
-        <locationX>824</locationX>
-        <locationY>478</locationY>
+        <locationX>138</locationX>
+        <locationY>755</locationY>
         <assignmentItems>
             <assignToReference>WOLIRecord.WorkOrderId</assignToReference>
             <operator>Assign</operator>
@@ -39,10 +39,32 @@
         </connector>
     </assignments>
     <decisions>
+        <name>CheckForRecordType</name>
+        <label>Check For Record Type</label>
+        <locationX>380</locationX>
+        <locationY>323</locationY>
+        <defaultConnectorLabel>Service Request</defaultConnectorLabel>
+        <rules>
+            <name>Maintenance</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$Setup.OTISCustomSettings__c.Work_Order_Maintenance_Record_Type__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Woli_template</targetReference>
+            </connector>
+            <label>Maintenance</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>If_WOLI_templates_found</name>
         <label>If WOLI templates found</label>
-        <locationX>315</locationX>
-        <locationY>428</locationY>
+        <locationX>182</locationX>
+        <locationY>539</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Woli_templates_found</name>
@@ -60,15 +82,16 @@
             <label>Woli templates found</label>
         </rules>
     </decisions>
-    <description>This flow retrieves WOLI Template records associated to Work order&apos;s Work type &amp; generates WOLI</description>
+    <description>This flow retrieves WOLI Template records associated to Work order&apos;s Work type &amp; generates WOLI
+- Record Type Check Implemented</description>
     <environments>Default</environments>
     <interviewLabel>WOLI Records Creation {!$Flow.CurrentDateTime}</interviewLabel>
     <label>WOLI Autogeneration</label>
     <loops>
         <name>WOLI_Template_iteration</name>
         <label>WOLI Template iteration</label>
-        <locationX>536</locationX>
-        <locationY>477</locationY>
+        <locationX>50</locationX>
+        <locationY>647</locationY>
         <collectionReference>Get_Woli_template</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -87,7 +110,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>FREE_FORM_CANVAS</stringValue>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -100,15 +123,15 @@
     <recordCreates>
         <name>WOLI_Records_Create</name>
         <label>WOLI Records create</label>
-        <locationX>548</locationX>
-        <locationY>682</locationY>
+        <locationX>50</locationX>
+        <locationY>947</locationY>
         <inputReference>WOLICollection</inputReference>
     </recordCreates>
     <recordLookups>
         <name>Get_Woli_template</name>
         <label>Get Woli template</label>
-        <locationX>530</locationX>
-        <locationY>364</locationY>
+        <locationX>182</locationX>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>If_WOLI_templates_found</targetReference>
@@ -126,10 +149,10 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>401</locationX>
-        <locationY>48</locationY>
+        <locationX>254</locationX>
+        <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Woli_template</targetReference>
+            <targetReference>CheckForRecordType</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
