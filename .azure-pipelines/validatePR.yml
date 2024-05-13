@@ -59,6 +59,13 @@ stages:
             steps:
                 
                 - template: templates/init.yml
+                
+                - template: templates/scanCode.yml
+                  parameters:
+                    pathToScan: $(packageBaseDir)
+                    reportFormat: 'html'
+                    continueOnError: true
+                    active: $(enableCodeScan)
                   
                 - task: DownloadSEcureFile@1
                   name: fsPoolAuthFile
