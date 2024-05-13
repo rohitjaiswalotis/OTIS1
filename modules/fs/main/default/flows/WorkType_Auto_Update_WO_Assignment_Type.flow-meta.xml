@@ -5,7 +5,7 @@
         <name>Assign_WorkType_Field</name>
         <label>Assign WorkType Field</label>
         <locationX>270</locationX>
-        <locationY>971</locationY>
+        <locationY>1271</locationY>
         <assignmentItems>
             <assignToReference>WORecord.AssignmentType__c</assignToReference>
             <operator>Assign</operator>
@@ -35,7 +35,7 @@
         <name>Copy_1_of_Assign_WorkType_Field</name>
         <label>Copy 1 of Assign WorkType Field</label>
         <locationX>534</locationX>
-        <locationY>971</locationY>
+        <locationY>1271</locationY>
         <assignmentItems>
             <assignToReference>WORecord.AssignmentType__c</assignToReference>
             <operator>Assign</operator>
@@ -61,11 +61,27 @@
             <targetReference>Loop_WO_s</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>Loop</name>
+        <label>Loop RT</label>
+        <locationX>699</locationX>
+        <locationY>539</locationY>
+        <assignmentItems>
+            <assignToReference>rtIdCollection</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_2.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_2</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>Check_Auto_SCHD</name>
         <label>Check Auto SCHD</label>
         <locationX>402</locationX>
-        <locationY>863</locationY>
+        <locationY>1163</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_Assign_WorkType_Field</targetReference>
         </defaultConnector>
@@ -90,7 +106,7 @@
         <name>Null_Check_2</name>
         <label>Null Check 2</label>
         <locationX>182</locationX>
-        <locationY>1331</locationY>
+        <locationY>1547</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Not_Null2</name>
@@ -112,7 +128,7 @@
         <name>Null_Check_WO</name>
         <label>Null Check WO</label>
         <locationX>380</locationX>
-        <locationY>539</locationY>
+        <locationY>947</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Not_Null</name>
@@ -134,7 +150,7 @@
         <name>Profile_Check</name>
         <label>Profile Check</label>
         <locationX>611</locationX>
-        <locationY>323</locationY>
+        <locationY>731</locationY>
         <defaultConnectorLabel>Other Profile</defaultConnectorLabel>
         <rules>
             <name>FSAdmin</name>
@@ -152,50 +168,32 @@
             <label>FS Admin</label>
         </rules>
     </decisions>
-    <decisions>
-        <name>Record_Type_check</name>
-        <label>Record Type check</label>
-        <locationX>600</locationX>
-        <locationY>755</locationY>
-        <defaultConnector>
-            <targetReference>Loop_WO_s</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Service_or_Maintenance</name>
-            <conditionLogic>or</conditionLogic>
-            <conditions>
-                <leftValueReference>Loop_WO_s.RecordType.DeveloperName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Maintanance</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Loop_WO_s.RecordType.DeveloperName</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Service_Request</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Check_Auto_SCHD</targetReference>
-            </connector>
-            <label>Service or Maintenance</label>
-        </rules>
-    </decisions>
     <environments>Default</environments>
     <interviewLabel>WorkType : Auto Update WO Assignment Type {!$Flow.CurrentDateTime}</interviewLabel>
     <label>WorkType : Auto Update WO Assignment Type</label>
     <loops>
+        <name>Loop_2</name>
+        <label>Loop 2</label>
+        <locationX>611</locationX>
+        <locationY>431</locationY>
+        <collectionReference>Get_RT_for_WO</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Loop</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Profile_Check</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
         <name>Loop_WO_s</name>
         <label>Loop WO&apos;s</label>
         <locationX>182</locationX>
-        <locationY>647</locationY>
+        <locationY>1055</locationY>
         <collectionReference>Get_WO_Records</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>Record_Type_check</targetReference>
+            <targetReference>Check_Auto_SCHD</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>Null_Check_2</targetReference>
@@ -221,15 +219,50 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordLookups>
+        <name>Get_RT_for_WO</name>
+        <label>Get RT for WO</label>
+        <locationX>611</locationX>
+        <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_2</targetReference>
+        </connector>
+        <filterLogic>1 AND (2 OR 3)</filterLogic>
+        <filters>
+            <field>SobjectType</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>WorkOrder</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Maintanance</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Service_Request</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>RecordType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_WO_Records</name>
         <label>Get WO Records</label>
         <locationX>380</locationX>
-        <locationY>431</locationY>
+        <locationY>839</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Null_Check_WO</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>1 AND (2 OR 3) AND 4</filterLogic>
         <filters>
             <field>WorkTypeId</field>
             <operator>EqualTo</operator>
@@ -237,22 +270,45 @@
                 <elementReference>$Record.Id</elementReference>
             </value>
         </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Unassigned</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Assigned</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>In</operator>
+            <value>
+                <elementReference>rtIdCollection</elementReference>
+            </value>
+        </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>WorkOrder</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>AssignmentType__c</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
         <name>Update_WO_record</name>
         <label>Update WO record</label>
         <locationX>50</locationX>
-        <locationY>1439</locationY>
+        <locationY>1655</locationY>
         <inputReference>WOCollection</inputReference>
     </recordUpdates>
     <start>
         <locationX>485</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Profile_Check</targetReference>
+            <targetReference>Get_RT_for_WO</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -267,6 +323,13 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>rtIdCollection</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>WOCollection</name>
         <dataType>SObject</dataType>
