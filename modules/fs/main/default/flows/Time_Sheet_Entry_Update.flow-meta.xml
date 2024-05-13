@@ -112,6 +112,23 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Assignment_5</name>
+        <label>Assignment 5</label>
+        <locationX>314</locationX>
+        <locationY>1214</locationY>
+        <assignmentItems>
+            <assignToReference>errorMessage5</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>For OT, Multiplier value cannot be 1.0 </stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Update_Time_Sheets_Entry</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Assignment_9</name>
         <label>Assignment 9</label>
         <locationX>1799</locationX>
@@ -477,6 +494,35 @@
                 <targetReference>Assignment_3</targetReference>
             </connector>
             <label>Checking the Multiplier Type</label>
+        </rules>
+        <rules>
+            <name>Checking_the_Multiplier_Type_is_OT</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Multiplier_Type</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>OT</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Multiplier_Values</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>1.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Multiplier_Values</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assignment_5</targetReference>
+            </connector>
+            <label>Checking the Multiplier Type is OT</label>
         </rules>
     </decisions>
     <decisions>
@@ -1341,6 +1387,11 @@
             <fieldText>&lt;p&gt;&lt;strong&gt;{!errorMessage3}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
+        <fields>
+            <name>errorMessageForOT</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;{!errorMessage5}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
@@ -1382,6 +1433,13 @@
     </variables>
     <variables>
         <name>errorMessage4</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>errorMessage5</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
