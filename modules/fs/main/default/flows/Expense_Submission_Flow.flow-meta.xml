@@ -4,7 +4,7 @@
         <name>Add_the_Expense_Report_Id</name>
         <label>Add the Expense Report Id</label>
         <locationX>1282</locationX>
-        <locationY>2822</locationY>
+        <locationY>2522</locationY>
         <assignmentItems>
             <assignToReference>allReportIds</assignToReference>
             <operator>Add</operator>
@@ -20,7 +20,7 @@
         <name>allExpenseRecordIds</name>
         <label>allExpenseRecordIds</label>
         <locationX>1282</locationX>
-        <locationY>2414</locationY>
+        <locationY>2114</locationY>
         <assignmentItems>
             <assignToReference>allExpenseRecordId</assignToReference>
             <operator>Add</operator>
@@ -128,7 +128,7 @@
         <name>StoringNewStatusReport</name>
         <label>StoringNewStatusReport</label>
         <locationX>1282</locationX>
-        <locationY>3338</locationY>
+        <locationY>3038</locationY>
         <assignmentItems>
             <assignToReference>reportCollectionSingle</assignToReference>
             <operator>Assign</operator>
@@ -144,7 +144,7 @@
         <name>StoringOtherThanNewStatusReport</name>
         <label>StoringOtherThanNewStatusReport</label>
         <locationX>1546</locationX>
-        <locationY>3338</locationY>
+        <locationY>3038</locationY>
         <assignmentItems>
             <assignToReference>reportNoNewCollection</assignToReference>
             <operator>Add</operator>
@@ -210,7 +210,7 @@
         <name>check_if_Expense_report_exist</name>
         <label>check if Expense report exist</label>
         <locationX>1194</locationX>
-        <locationY>3614</locationY>
+        <locationY>3314</locationY>
         <defaultConnector>
             <targetReference>expense_report</targetReference>
         </defaultConnector>
@@ -237,7 +237,7 @@
         <locationX>622</locationX>
         <locationY>1274</locationY>
         <defaultConnector>
-            <targetReference>Validate_Mileage</targetReference>
+            <targetReference>Upload_Image</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -267,7 +267,7 @@
         <name>Checking_the_Status_of_the_Report_Id</name>
         <label>Checking the Status of the Report Id</label>
         <locationX>1414</locationX>
-        <locationY>3230</locationY>
+        <locationY>2930</locationY>
         <defaultConnector>
             <targetReference>StoringOtherThanNewStatusReport</targetReference>
         </defaultConnector>
@@ -286,38 +286,6 @@
                 <targetReference>StoringNewStatusReport</targetReference>
             </connector>
             <label>New</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Upload_Image_if</name>
-        <label>Upload Image if receipt is required</label>
-        <locationX>1194</locationX>
-        <locationY>1898</locationY>
-        <defaultConnector>
-            <targetReference>get_Expense_Record</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Receipt_Required1</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>receiptNotPresent</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Receipt_Required_Variable</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Upload_Image</targetReference>
-            </connector>
-            <label>Receipt Required ?</label>
         </rules>
     </decisions>
     <decisions>
@@ -441,7 +409,7 @@
         <name>expenseReportStatus</name>
         <label>expenseReportStatus</label>
         <locationX>1194</locationX>
-        <locationY>3122</locationY>
+        <locationY>2822</locationY>
         <assignNextValueToReference>expenseReportStatusN</assignNextValueToReference>
         <collectionReference>alltheReportRecord</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -456,7 +424,7 @@
         <name>get_expense_id</name>
         <label>get expense id</label>
         <locationX>1194</locationX>
-        <locationY>2306</locationY>
+        <locationY>2006</locationY>
         <assignNextValueToReference>expenseData</assignNextValueToReference>
         <collectionReference>ExpenseRecord</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -471,7 +439,7 @@
         <name>Loop_2</name>
         <label>Loop 2</label>
         <locationX>1194</locationX>
-        <locationY>2714</locationY>
+        <locationY>2414</locationY>
         <assignNextValueToReference>expesnesEntriesNew</assignNextValueToReference>
         <collectionReference>allExpenseEntry</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -505,7 +473,7 @@
         <name>Copy_1_of_Expense_report_entity</name>
         <label>Copy 1 of Expense report entity</label>
         <locationX>1326</locationX>
-        <locationY>3830</locationY>
+        <locationY>3530</locationY>
         <inputAssignments>
             <field>ExpenseId</field>
             <value>
@@ -527,7 +495,7 @@
         <locationY>1790</locationY>
         <assignRecordIdToReference>expenseRecordId</assignRecordIdToReference>
         <connector>
-            <targetReference>Upload_Image_if</targetReference>
+            <targetReference>get_Expense_Record</targetReference>
         </connector>
         <inputAssignments>
             <field>AccountId</field>
@@ -625,7 +593,7 @@
         <name>expense_report</name>
         <label>expense report</label>
         <locationX>1326</locationX>
-        <locationY>3722</locationY>
+        <locationY>3422</locationY>
         <assignRecordIdToReference>ExpenseReportId</assignRecordIdToReference>
         <connector>
             <targetReference>Copy_1_of_Expense_report_entity</targetReference>
@@ -654,7 +622,7 @@
         <name>Expense_report_entity</name>
         <label>Expense report entity</label>
         <locationX>1062</locationX>
-        <locationY>3722</locationY>
+        <locationY>3422</locationY>
         <inputAssignments>
             <field>ExpenseId</field>
             <value>
@@ -711,7 +679,7 @@
         <name>Expense_Reports</name>
         <label>Expense Report</label>
         <locationX>1194</locationX>
-        <locationY>3014</locationY>
+        <locationY>2714</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>expenseReportStatus</targetReference>
@@ -733,7 +701,7 @@
         <name>get_Expense_Record</name>
         <label>get Expense Record</label>
         <locationX>1194</locationX>
-        <locationY>2198</locationY>
+        <locationY>1898</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>get_expense_id</targetReference>
@@ -763,7 +731,7 @@
         <name>get_Expense_Report_Entries</name>
         <label>get Expense Report Entries</label>
         <locationX>1194</locationX>
-        <locationY>2606</locationY>
+        <locationY>2306</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Loop_2</targetReference>
@@ -868,7 +836,7 @@
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Expense_Submission</name>
@@ -972,7 +940,7 @@
             <isRequired>false</isRequired>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Expension_Submission1</name>
@@ -1016,7 +984,7 @@
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>per_Diem_Can_not_be</name>
@@ -1037,13 +1005,13 @@
     <screens>
         <name>Upload_Image</name>
         <label>Upload Image</label>
-        <locationX>1062</locationX>
-        <locationY>2006</locationY>
+        <locationX>754</locationX>
+        <locationY>1382</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>get_Expense_Record</targetReference>
+            <targetReference>Validate_Mileage</targetReference>
         </connector>
         <fields>
             <name>Upload_Receipt_Image</name>
@@ -1065,7 +1033,7 @@
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Validate_Mileage1</name>
