@@ -1036,7 +1036,7 @@
         <inputAssignments>
             <field>Status</field>
             <value>
-                <stringValue>Completed - Shutdown</stringValue>
+                <stringValue>Closed</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
