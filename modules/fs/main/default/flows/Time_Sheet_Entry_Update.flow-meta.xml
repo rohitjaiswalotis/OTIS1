@@ -3,7 +3,7 @@
     <assignments>
         <name>Assign_Multiplier_value_for_other_multiplier_Type</name>
         <label>Assign Multiplier value for other multiplier Type</label>
-        <locationX>842</locationX>
+        <locationX>1106</locationX>
         <locationY>2978</locationY>
         <assignmentItems>
             <assignToReference>multiplierfornewTSE</assignToReference>
@@ -19,7 +19,7 @@
     <assignments>
         <name>Assign_Multiplier_value_for_Reg</name>
         <label>Assign Multiplier value for Reg</label>
-        <locationX>578</locationX>
+        <locationX>842</locationX>
         <locationY>2870</locationY>
         <assignmentItems>
             <assignToReference>multiplierfornewTSE</assignToReference>
@@ -35,7 +35,7 @@
     <assignments>
         <name>Assign_Start_and_End_Date</name>
         <label>Assign Start and End Date</label>
-        <locationX>974</locationX>
+        <locationX>1238</locationX>
         <locationY>2546</locationY>
         <assignmentItems>
             <assignToReference>startDate</assignToReference>
@@ -58,7 +58,7 @@
     <assignments>
         <name>Assign_temp_variables</name>
         <label>Assign temp variables</label>
-        <locationX>2008</locationX>
+        <locationX>2272</locationX>
         <locationY>1646</locationY>
         <assignmentItems>
             <assignToReference>tempDate</assignToReference>
@@ -81,7 +81,7 @@
     <assignments>
         <name>Assign_update_TSE_multiplier_Value</name>
         <label>Assign update TSE multiplier Value</label>
-        <locationX>2426</locationX>
+        <locationX>2690</locationX>
         <locationY>1430</locationY>
         <assignmentItems>
             <assignToReference>UpdateTSEMultiplier</assignToReference>
@@ -131,7 +131,7 @@
     <assignments>
         <name>Assignment_9</name>
         <label>Assignment 9</label>
-        <locationX>1799</locationX>
+        <locationX>2063</locationX>
         <locationY>1322</locationY>
         <assignmentItems>
             <assignToReference>newdate</assignToReference>
@@ -161,7 +161,7 @@
     <assignments>
         <name>Copy_1_of_Assign_update_TSE_multiplier_Value</name>
         <label>Copy 1 of Assign update TSE multiplier Value</label>
-        <locationX>2690</locationX>
+        <locationX>2954</locationX>
         <locationY>1430</locationY>
         <assignmentItems>
             <assignToReference>UpdateTSEMultiplier</assignToReference>
@@ -177,7 +177,7 @@
     <assignments>
         <name>Copy_1_of_Copy_1_of_createddate</name>
         <label>Copy 1 of Copy 1 of createddate</label>
-        <locationX>1788</locationX>
+        <locationX>2052</locationX>
         <locationY>1970</locationY>
         <assignmentItems>
             <assignToReference>maxStartTime</assignToReference>
@@ -193,7 +193,7 @@
     <assignments>
         <name>Copy_1_of_createddate</name>
         <label>Copy 1 of createddate</label>
-        <locationX>1524</locationX>
+        <locationX>1788</locationX>
         <locationY>1970</locationY>
         <assignmentItems>
             <assignToReference>minStarttime</assignToReference>
@@ -209,7 +209,7 @@
     <assignments>
         <name>Error_Message_1</name>
         <label>Error Message 1</label>
-        <locationX>1106</locationX>
+        <locationX>1370</locationX>
         <locationY>2762</locationY>
         <assignmentItems>
             <assignToReference>errorMessage1</assignToReference>
@@ -226,7 +226,7 @@
     <assignments>
         <name>Error_Message_2</name>
         <label>Error Message 2</label>
-        <locationX>1370</locationX>
+        <locationX>1634</locationX>
         <locationY>2762</locationY>
         <assignmentItems>
             <assignToReference>ErrorMessage2</assignToReference>
@@ -243,7 +243,7 @@
     <assignments>
         <name>Error_Message_4</name>
         <label>Error Message 4</label>
-        <locationX>314</locationX>
+        <locationX>578</locationX>
         <locationY>2762</locationY>
         <assignmentItems>
             <assignToReference>errorMessage4</assignToReference>
@@ -316,7 +316,7 @@
     <decisions>
         <name>check_min_start_time</name>
         <label>check min start time</label>
-        <locationX>1788</locationX>
+        <locationX>2052</locationX>
         <locationY>1862</locationY>
         <defaultConnector>
             <targetReference>loop_over_all_records</targetReference>
@@ -356,7 +356,7 @@
     <decisions>
         <name>check_Multiplier_Type</name>
         <label>check Multiplier Type</label>
-        <locationX>710</locationX>
+        <locationX>974</locationX>
         <locationY>2762</locationY>
         <defaultConnector>
             <targetReference>Create_Time_Sheet_Entrys</targetReference>
@@ -381,7 +381,7 @@
     <decisions>
         <name>check_TSE_createddate</name>
         <label>check TSE createddate</label>
-        <locationX>2008</locationX>
+        <locationX>2272</locationX>
         <locationY>1754</locationY>
         <defaultConnector>
             <targetReference>loop_over_all_records</targetReference>
@@ -406,7 +406,7 @@
     <decisions>
         <name>Checking_Split_TSE</name>
         <label>Checking Split TSE</label>
-        <locationX>2178</locationX>
+        <locationX>2442</locationX>
         <locationY>1214</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_check_Multiplier_Type</targetReference>
@@ -431,7 +431,7 @@
     <decisions>
         <name>Checking_the_Date</name>
         <label>Checking the Date</label>
-        <locationX>1436</locationX>
+        <locationX>1700</locationX>
         <locationY>2330</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -460,7 +460,7 @@
     <decisions>
         <name>Checking_the_Multiplier_Value</name>
         <label>Checking the Multiplier Value</label>
-        <locationX>1114</locationX>
+        <locationX>1246</locationX>
         <locationY>1106</locationY>
         <defaultConnector>
             <targetReference>Checking_Split_TSE</targetReference>
@@ -528,7 +528,7 @@
     <decisions>
         <name>Checking_the_Start_Time_of_the_TSE</name>
         <label>Checking the Start Time of the TSE</label>
-        <locationX>974</locationX>
+        <locationX>1238</locationX>
         <locationY>2654</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -623,7 +623,7 @@
     <decisions>
         <name>Copy_1_of_check_Multiplier_Type</name>
         <label>Copy 1 of check Multiplier Type</label>
-        <locationX>2558</locationX>
+        <locationX>2822</locationX>
         <locationY>1322</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_Assign_update_TSE_multiplier_Value</targetReference>
@@ -648,7 +648,7 @@
     <decisions>
         <name>Decision_7</name>
         <label>Decision 7</label>
-        <locationX>1799</locationX>
+        <locationX>2063</locationX>
         <locationY>1430</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -841,7 +841,7 @@
     <loops>
         <name>loop_over_all_records</name>
         <label>loop over all records</label>
-        <locationX>1436</locationX>
+        <locationX>1700</locationX>
         <locationY>1538</locationY>
         <assignNextValueToReference>loopTSE</assignNextValueToReference>
         <collectionReference>TimeSheetEntryRecord</collectionReference>
@@ -875,7 +875,7 @@
     <recordCreates>
         <name>Copy_1_of_Create_Time_Sheet_Entry</name>
         <label>Copy 1 of Create Time Sheet Entry</label>
-        <locationX>710</locationX>
+        <locationX>974</locationX>
         <locationY>3170</locationY>
         <assignRecordIdToReference>SplitTSEID</assignRecordIdToReference>
         <inputAssignments>
@@ -931,7 +931,7 @@
     <recordLookups>
         <name>Get_Meta_Data</name>
         <label>Get Meta Data</label>
-        <locationX>1114</locationX>
+        <locationX>1246</locationX>
         <locationY>890</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -962,7 +962,7 @@
     <recordLookups>
         <name>Get_Record_of_Time_Sheet_Entry</name>
         <label>Get Record of Time Sheet Entry</label>
-        <locationX>1114</locationX>
+        <locationX>1246</locationX>
         <locationY>566</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -998,7 +998,7 @@
     <recordLookups>
         <name>Get_Service_Appointment_Record</name>
         <label>Get Service Appointment Record</label>
-        <locationX>1114</locationX>
+        <locationX>1246</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1022,7 +1022,7 @@
     <recordLookups>
         <name>Get_Service_Appointments</name>
         <label>Get Service Appointments</label>
-        <locationX>1114</locationX>
+        <locationX>1246</locationX>
         <locationY>674</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1045,7 +1045,7 @@
     <recordLookups>
         <name>Get_Time_sheetId_from_Assigned_Resource</name>
         <label>Get Time sheetId from Assigned Resource</label>
-        <locationX>1114</locationX>
+        <locationX>1246</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1089,7 +1089,7 @@
     <recordLookups>
         <name>Get_Timesheet_Entry_Records</name>
         <label>Get Timesheet Entry Records</label>
-        <locationX>1114</locationX>
+        <locationX>1246</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1117,7 +1117,7 @@
     <recordLookups>
         <name>Get_Unit_Record</name>
         <label>Get Unit Record</label>
-        <locationX>1114</locationX>
+        <locationX>1246</locationX>
         <locationY>782</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1140,7 +1140,7 @@
     <recordUpdates>
         <name>Update_the_Time_Sheet_Entry</name>
         <label>Update the Time Sheet Entry</label>
-        <locationX>2558</locationX>
+        <locationX>2822</locationX>
         <locationY>1622</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1148,6 +1148,13 @@
             <operator>EqualTo</operator>
             <value>
                 <elementReference>Time_Sheet_Entry_Records</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>TimeRecordData.Id</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -1179,7 +1186,7 @@
     <screens>
         <name>Create_Time_Sheet_Entry</name>
         <label>Create Time Sheet Entry</label>
-        <locationX>974</locationX>
+        <locationX>1238</locationX>
         <locationY>2438</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -1252,7 +1259,7 @@
     <screens>
         <name>Create_Time_Sheet_Entrys</name>
         <label>Create Time Sheet Entry</label>
-        <locationX>842</locationX>
+        <locationX>1106</locationX>
         <locationY>2870</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -1276,7 +1283,7 @@
     <screens>
         <name>Display_the_Time_Sheet_Entry_Records</name>
         <label>Display the Time Sheet Entry Records</label>
-        <locationX>1114</locationX>
+        <locationX>1246</locationX>
         <locationY>458</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -1299,7 +1306,7 @@
     <screens>
         <name>Update_Time_Sheets_Entry</name>
         <label>Update Time Sheet Entry</label>
-        <locationX>1114</locationX>
+        <locationX>1246</locationX>
         <locationY>998</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -1396,7 +1403,7 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>988</locationX>
+        <locationX>1120</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_Service_Appointment_Record</targetReference>
