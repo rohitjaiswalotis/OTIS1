@@ -19,13 +19,6 @@
                 <elementReference>Back_In_Service_By</elementReference>
             </value>
         </assignmentItems>
-        <assignmentItems>
-            <assignToReference>storeShutdownLogRecords.WorkOrderForUnitInService__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>WORecords.Id</elementReference>
-            </value>
-        </assignmentItems>
         <connector>
             <targetReference>Update_shutdown_log</targetReference>
         </connector>
