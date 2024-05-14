@@ -227,6 +227,12 @@ while getopts ":d:a:w:u:p:r:n:o:x:e:t:l:c:h" opt; do
 done
 
 
+if [[ ! -d "${PARAM_STEPS_DIR}" ]]; then
+    echo "WARNING: Steps directory '${PARAM_STEPS_DIR}' does not exist!"
+    exit 0;
+fi
+
+
 # setting defaults
 PARAM_STEP_TO_RUN="${PARAM_STEP_TO_RUN:-*}"
 PARAM_SCRIPT_SANDBOX_DIR="${PARAM_SCRIPT_SANDBOX_DIR:-$(mktemp -d)}"

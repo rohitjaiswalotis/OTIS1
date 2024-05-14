@@ -174,7 +174,25 @@ steps:
         echo "Applying transformation to source code..."
         
         TESTS_METADATA_DIR="$(packageBaseDir)-tests-meta/main"
-        bash $(stepsRunnerUtil) -d "$TESTS_METADATA_DIR" -o "$TESTS_METADATA_DIR"
+        bash $(stepsRunnerUtil) -d "$TESTS_METADATA_DIR" -o "$TESTS_METADATA_DIR"; DX_STATUS_CODE=$?;
+        
+        if [[ "$DX_STATUS_CODE" == "0" ]]; then
+          
+          PACKAGE_BEFORE_DIR="$(packageBaseDir)-unpackaged/package/before"
+          
+          if [[ -d "${PACKAGE_BEFORE_DIR}" ]]; then
+            bash $(stepsRunnerUtil) -d "$PACKAGE_BEFORE_DIR" -w "$(pwd)"; DX_STATUS_CODE=$?;
+          else
+            echo "WARNING: No '$PACKAGE_BEFORE_DIR' detected to run before package version creation"
+          fi
+          
+        fi
+        
+        # early exit - error when applying transformation to source code
+        if [[ "$DX_STATUS_CODE" != "0" ]]; then
+          echo "Error when applying transformation to source code!"
+          exit 1
+        fi
         
         
         set -e
@@ -271,6 +289,25 @@ steps:
         echo "$FS_PACKAGE_VERSION_DETAILS" | jq .
         
         FS_PACKAGE_VERSION_NUMBER=$(echo "$FS_PACKAGE_VERSION_DETAILS" | jq -r '.result.Version // empty')
+        
+        
+        PACKAGE_AFTER_DIR="$(packageBaseDir)-unpackaged/package/after"
+        
+        if [[ -d "${PACKAGE_AFTER_DIR}" ]]; then
+          
+          bash $(stepsRunnerUtil) -d "$PACKAGE_AFTER_DIR" -w "$(pwd)"; DX_STATUS_CODE=$?;
+          
+          # early exit - error when executing after upload actions
+          if [[ "$DX_STATUS_CODE" != "0" ]]; then
+            echo "Error when executing after upload actions!"
+            exit 1
+          fi
+          
+        else
+          
+          echo "WARNING: No '$PACKAGE_AFTER_DIR' detected to run after package version creation!"
+          
+        fi
         
         
         # optionally create tag in repo with the following format: v{major}.{minor}.{build}.{patch}-{valid|skip}-{04txxxxxxxxxxxxxxx}-{branchName}
