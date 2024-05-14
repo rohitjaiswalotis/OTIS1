@@ -12,6 +12,10 @@ public without sharing class FS_WorkOrderTriggerHandler extends TriggerHandler {
         List<WorkOrder> newWorkOrders = RecordTypeUtilities.filterRecordsByRecordTypeName(
             (List<WorkOrder>) newList, UTIL_Constants.WORK_ORDER_CLASSIC_RECORD_TYPE, false
         );
+
+        if (newWorkOrders.isEmpty()) {
+            return;
+        }
     }
 
     public override void afterInsert(List<SObject> newList, Map<Id, SObject> newMap) {
@@ -19,6 +23,10 @@ public without sharing class FS_WorkOrderTriggerHandler extends TriggerHandler {
         List<WorkOrder> newWorkOrdersList = RecordTypeUtilities.filterRecordsByRecordTypeName(
             (List<WorkOrder>) newList, UTIL_Constants.WORK_ORDER_CLASSIC_RECORD_TYPE, false
         );
+
+        if (newWorkOrdersList.isEmpty()) {
+            return;
+        }
 
         Map<Id, WorkOrder> newWorkOrdersMap = new Map<Id, WorkOrder>(
             (List<WorkOrder>) RecordTypeUtilities.filterRecordsByRecordTypeName(
@@ -35,6 +43,10 @@ public without sharing class FS_WorkOrderTriggerHandler extends TriggerHandler {
             )
         );
 
+        if (newWorkOrders.isEmpty()) {
+            return;
+        }
+
         Map<Id, WorkOrder> oldWorkOrders = new Map<Id, WorkOrder>(
             (List<WorkOrder>) RecordTypeUtilities.filterRecordsByRecordTypeName(
                 (List<WorkOrder>) oldMap.values(), UTIL_Constants.WORK_ORDER_CLASSIC_RECORD_TYPE, false
@@ -49,6 +61,10 @@ public without sharing class FS_WorkOrderTriggerHandler extends TriggerHandler {
                 (List<WorkOrder>) newMap.values(), UTIL_Constants.WORK_ORDER_CLASSIC_RECORD_TYPE, false
             )
         );
+
+        if (newWorkOrders.isEmpty()) {
+            return;
+        }
 
         Map<Id, WorkOrder> oldWorkOrders = new Map<Id, WorkOrder>(
             (List<WorkOrder>) RecordTypeUtilities.filterRecordsByRecordTypeName(
