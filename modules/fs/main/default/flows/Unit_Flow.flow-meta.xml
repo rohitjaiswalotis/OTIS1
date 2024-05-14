@@ -869,6 +869,20 @@
                     <elementReference>Get_Boomi_Integration_User.Id</elementReference>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.CreatedById</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>Get_Boomi_Integration_User.Id</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.LastModifiedById</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>Get_Boomi_Integration_User.Id</elementReference>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Get_ContractUnitSummaryRecords</targetReference>
             </connector>
@@ -1116,13 +1130,6 @@
             <operator>EqualTo</operator>
             <value>
                 <stringValue>Boomi Integration</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.CreatedById</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
