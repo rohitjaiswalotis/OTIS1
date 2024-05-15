@@ -191,7 +191,7 @@
         <inputAssignments>
             <field>SupervisorApproval__c</field>
             <value>
-                <elementReference>SUpervisor_Approval</elementReference>
+                <booleanValue>true</booleanValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -226,6 +226,7 @@
             <dataType>String</dataType>
             <fieldText>Is Task Chargeable ?</fieldText>
             <fieldType>RadioButtons</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -236,6 +237,7 @@
             <dataType>String</dataType>
             <fieldText>Action Performed</fieldText>
             <fieldType>RadioButtons</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -245,6 +247,7 @@
             <dataType>String</dataType>
             <fieldText>Reason To Perform</fieldText>
             <fieldType>RadioButtons</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -254,6 +257,7 @@
             <dataType>String</dataType>
             <fieldText>Type Of Labour</fieldText>
             <fieldType>RadioButtons</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -268,6 +272,7 @@
             <dataType>String</dataType>
             <fieldText>Hours</fieldText>
             <fieldType>RadioButtons</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -279,6 +284,7 @@
             <dataType>String</dataType>
             <fieldText>Minutes</fieldText>
             <fieldType>RadioButtons</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -286,6 +292,7 @@
             <dataType>Currency</dataType>
             <fieldText>Purchase Cost</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <scale>0</scale>
         </fields>
@@ -294,6 +301,7 @@
             <dataType>Currency</dataType>
             <fieldText>Material Cost</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
             <scale>0</scale>
         </fields>
@@ -302,6 +310,7 @@
             <dataType>String</dataType>
             <fieldText>Part Id</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
         </fields>
         <fields>
@@ -309,17 +318,8 @@
             <dataType>String</dataType>
             <fieldText>Context</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
-        </fields>
-        <fields>
-            <name>SUpervisor_Approval</name>
-            <dataType>Boolean</dataType>
-            <defaultValue>
-                <booleanValue>true</booleanValue>
-            </defaultValue>
-            <fieldText>SUpervisor Approval</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>true</isRequired>
         </fields>
         <nextOrFinishButtonLabel>Save</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
@@ -332,7 +332,7 @@
             <targetReference>Additional_Work</targetReference>
         </connector>
     </start>
-    <status>Obsolete</status>
+    <status>Active</status>
     <variables>
         <name>Id</name>
         <dataType>String</dataType>
