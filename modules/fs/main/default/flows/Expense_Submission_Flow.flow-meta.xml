@@ -4,7 +4,7 @@
         <name>Add_the_Expense_Report_Id</name>
         <label>Add the Expense Report Id</label>
         <locationX>1282</locationX>
-        <locationY>2522</locationY>
+        <locationY>2822</locationY>
         <assignmentItems>
             <assignToReference>allReportIds</assignToReference>
             <operator>Add</operator>
@@ -20,7 +20,7 @@
         <name>allExpenseRecordIds</name>
         <label>allExpenseRecordIds</label>
         <locationX>1282</locationX>
-        <locationY>2114</locationY>
+        <locationY>2414</locationY>
         <assignmentItems>
             <assignToReference>allExpenseRecordId</assignToReference>
             <operator>Add</operator>
@@ -128,7 +128,7 @@
         <name>StoringNewStatusReport</name>
         <label>StoringNewStatusReport</label>
         <locationX>1282</locationX>
-        <locationY>3038</locationY>
+        <locationY>3338</locationY>
         <assignmentItems>
             <assignToReference>reportCollectionSingle</assignToReference>
             <operator>Assign</operator>
@@ -144,7 +144,7 @@
         <name>StoringOtherThanNewStatusReport</name>
         <label>StoringOtherThanNewStatusReport</label>
         <locationX>1546</locationX>
-        <locationY>3038</locationY>
+        <locationY>3338</locationY>
         <assignmentItems>
             <assignToReference>reportNoNewCollection</assignToReference>
             <operator>Add</operator>
@@ -210,7 +210,7 @@
         <name>check_if_Expense_report_exist</name>
         <label>check if Expense report exist</label>
         <locationX>1194</locationX>
-        <locationY>3314</locationY>
+        <locationY>3614</locationY>
         <defaultConnector>
             <targetReference>expense_report</targetReference>
         </defaultConnector>
@@ -237,7 +237,7 @@
         <locationX>622</locationX>
         <locationY>1274</locationY>
         <defaultConnector>
-            <targetReference>Upload_Image</targetReference>
+            <targetReference>Validate_Mileage</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -267,7 +267,7 @@
         <name>Checking_the_Status_of_the_Report_Id</name>
         <label>Checking the Status of the Report Id</label>
         <locationX>1414</locationX>
-        <locationY>2930</locationY>
+        <locationY>3230</locationY>
         <defaultConnector>
             <targetReference>StoringOtherThanNewStatusReport</targetReference>
         </defaultConnector>
@@ -286,6 +286,38 @@
                 <targetReference>StoringNewStatusReport</targetReference>
             </connector>
             <label>New</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Upload_File_or_not</name>
+        <label>Upload File or not</label>
+        <locationX>1194</locationX>
+        <locationY>1898</locationY>
+        <defaultConnector>
+            <targetReference>get_Expense_Record</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Upload</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>receiptNotPresent</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Receipt_Required_Variable</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Upload_Image</targetReference>
+            </connector>
+            <label>Upload ?</label>
         </rules>
     </decisions>
     <decisions>
@@ -409,7 +441,7 @@
         <name>expenseReportStatus</name>
         <label>expenseReportStatus</label>
         <locationX>1194</locationX>
-        <locationY>2822</locationY>
+        <locationY>3122</locationY>
         <assignNextValueToReference>expenseReportStatusN</assignNextValueToReference>
         <collectionReference>alltheReportRecord</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -424,7 +456,7 @@
         <name>get_expense_id</name>
         <label>get expense id</label>
         <locationX>1194</locationX>
-        <locationY>2006</locationY>
+        <locationY>2306</locationY>
         <assignNextValueToReference>expenseData</assignNextValueToReference>
         <collectionReference>ExpenseRecord</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -439,7 +471,7 @@
         <name>Loop_2</name>
         <label>Loop 2</label>
         <locationX>1194</locationX>
-        <locationY>2414</locationY>
+        <locationY>2714</locationY>
         <assignNextValueToReference>expesnesEntriesNew</assignNextValueToReference>
         <collectionReference>allExpenseEntry</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -473,7 +505,7 @@
         <name>Copy_1_of_Expense_report_entity</name>
         <label>Copy 1 of Expense report entity</label>
         <locationX>1326</locationX>
-        <locationY>3530</locationY>
+        <locationY>3830</locationY>
         <inputAssignments>
             <field>ExpenseId</field>
             <value>
@@ -495,7 +527,7 @@
         <locationY>1790</locationY>
         <assignRecordIdToReference>expenseRecordId</assignRecordIdToReference>
         <connector>
-            <targetReference>get_Expense_Record</targetReference>
+            <targetReference>Upload_File_or_not</targetReference>
         </connector>
         <inputAssignments>
             <field>AccountId</field>
@@ -593,7 +625,7 @@
         <name>expense_report</name>
         <label>expense report</label>
         <locationX>1326</locationX>
-        <locationY>3422</locationY>
+        <locationY>3722</locationY>
         <assignRecordIdToReference>ExpenseReportId</assignRecordIdToReference>
         <connector>
             <targetReference>Copy_1_of_Expense_report_entity</targetReference>
@@ -622,7 +654,7 @@
         <name>Expense_report_entity</name>
         <label>Expense report entity</label>
         <locationX>1062</locationX>
-        <locationY>3422</locationY>
+        <locationY>3722</locationY>
         <inputAssignments>
             <field>ExpenseId</field>
             <value>
@@ -679,7 +711,7 @@
         <name>Expense_Reports</name>
         <label>Expense Report</label>
         <locationX>1194</locationX>
-        <locationY>2714</locationY>
+        <locationY>3014</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>expenseReportStatus</targetReference>
@@ -701,7 +733,7 @@
         <name>get_Expense_Record</name>
         <label>get Expense Record</label>
         <locationX>1194</locationX>
-        <locationY>1898</locationY>
+        <locationY>2198</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>get_expense_id</targetReference>
@@ -731,7 +763,7 @@
         <name>get_Expense_Report_Entries</name>
         <label>get Expense Report Entries</label>
         <locationX>1194</locationX>
-        <locationY>2306</locationY>
+        <locationY>2606</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Loop_2</targetReference>
@@ -823,6 +855,7 @@
             </defaultValue>
             <fieldText>Receipt Required</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -833,6 +866,7 @@
             </defaultValue>
             <fieldText>Receipt Not Present</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -854,6 +888,7 @@
             <dataType>String</dataType>
             <fieldText>Title</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -861,6 +896,7 @@
             <dataType>String</dataType>
             <fieldText>Description</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -873,6 +909,7 @@
             <dataType>Date</dataType>
             <fieldText>Transaction Date</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -880,6 +917,7 @@
             <dataType>Date</dataType>
             <fieldText>Start Date</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -887,6 +925,7 @@
             <dataType>Date</dataType>
             <fieldText>End Date</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
         </fields>
         <fields>
@@ -900,6 +939,7 @@
             <dataType>String</dataType>
             <fieldText>Expense Type</fieldText>
             <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -908,6 +948,7 @@
             <dataType>String</dataType>
             <fieldText>Expense Category</fieldText>
             <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -915,6 +956,7 @@
             <dataType>Currency</dataType>
             <fieldText>Amount</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <scale>0</scale>
         </fields>
@@ -937,7 +979,8 @@
             <dataType>String</dataType>
             <fieldText>Reason</fieldText>
             <fieldType>InputField</fieldType>
-            <isRequired>false</isRequired>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -961,6 +1004,7 @@
             </defaultValue>
             <fieldText>Per Diem Overnight</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -971,6 +1015,7 @@
             </defaultValue>
             <fieldText>Receipt Required</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -981,6 +1026,7 @@
             </defaultValue>
             <fieldText>Receipt Not Present</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -996,7 +1042,7 @@
         <allowPause>true</allowPause>
         <fields>
             <name>Per_Diem_Validation</name>
-            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Arial, Helvetica, sans-serif; font-size: 11.36px;&quot;&gt;PerDiem overnight cannot be checked if total per diem is 0 or empty. Cannot save Data.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;{!validation2}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -1005,13 +1051,13 @@
     <screens>
         <name>Upload_Image</name>
         <label>Upload Image</label>
-        <locationX>754</locationX>
-        <locationY>1382</locationY>
+        <locationX>1062</locationX>
+        <locationY>2006</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Validate_Mileage</targetReference>
+            <targetReference>get_Expense_Record</targetReference>
         </connector>
         <fields>
             <name>Upload_Receipt_Image</name>
@@ -1045,7 +1091,7 @@
         <allowPause>true</allowPause>
         <fields>
             <name>Validate_milage</name>
-            <fieldText>&lt;table class=&quot;ql-table-blob&quot; border=&quot;0&quot; style=&quot;width: 991.333px; color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11.36px;&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;dataCol col02&quot; style=&quot;margin: 0px; font-family: Arial, Helvetica, sans-serif; padding: 3px 2px 3px 10px; vertical-align: top; border-bottom: 1px solid rgb(236, 236, 236); border-top-color: rgb(236, 236, 236); border-right-color: rgb(255, 255, 255); border-left-color: rgb(236, 236, 236); width: 385.562px;&quot;&gt;Please enter a valid distance travelled&lt;br&gt;&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;{!validation1}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -1061,7 +1107,7 @@
         <allowPause>true</allowPause>
         <fields>
             <name>Copy_1_of_Copy_1_of_Validate_milage</name>
-            <fieldText>&lt;table class=&quot;ql-table-blob&quot; border=&quot;0&quot; style=&quot;width: 991.333px; color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11.36px;&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;dataCol col02&quot; style=&quot;margin: 0px; font-family: Arial, Helvetica, sans-serif; padding: 3px 2px 3px 10px; vertical-align: top; border-bottom: 1px solid rgb(236, 236, 236); border-top-color: rgb(236, 236, 236); border-right-color: rgb(255, 255, 255); border-left-color: rgb(236, 236, 236); width: 385.562px;&quot;&gt;Please enter a valid expense&lt;br&gt;&lt;br&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;{!Validation3}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -1393,6 +1439,36 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>validation1</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Please enter a valid distance travelled</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>validation2</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>PerDiem overnight cannot be checked if total per diem is 0 or empty. Cannot save Data.</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>Validation3</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Please enter a valid expense</stringValue>
+        </value>
     </variables>
     <variables>
         <name>workOrder</name>
