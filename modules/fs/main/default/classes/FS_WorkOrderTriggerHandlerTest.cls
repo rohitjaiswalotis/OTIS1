@@ -20,29 +20,25 @@ private class FS_WorkOrderTriggerHandlerTest {
 
         Boolean hasException = false;
 
-        Map<String, Object> branchFieldsMap = new Map<String, Object> {'FSLEnabled__c' => false};
-        Branch__c createdBranch = UTIL_TestDataFactory.createBranch(branchFieldsMap, true);
+        Branch__c branchToInsert = UTIL_TestDataFactory.createBranch(null, null, null);
+        branchToInsert.FSLEnabled__c = false;
+        insert branchToInsert;
 
-        Map<String, Object> assetFieldsMap = new Map<String, Object> {
-            'Name' => 'Test',
-            'Branch__c' => createdBranch.Id
-        };
-        Asset createdAsset = UTIL_TestDataFactory.createAsset(assetFieldsMap, true);
+        Asset assetToInsert = UTIL_TestDataFactory.createAsset('Test', null,  branchToInsert.Id);
+        insert assetToInsert;
 
-        Map<String, Object> caseFieldsMap = new Map<String, Object> {};
-        Case createdCase = UTIL_TestDataFactory.createCase(caseFieldsMap, true);
+        Case caseToInsert = UTIL_TestDataFactory.createCase(null, null);
+        insert caseToInsert;
 
-        Map<String, Object> workOrderFieldsMap = new Map<String, Object> {
-            'CaseId' => createdCase.Id,
-            'AssetId' => createdAsset.Id
-        };
+        WorkOrder workOrderToInsert = UTIL_TestDataFactory.createWorkOrder(null, null, assetToInsert);
+        workOrderToInsert.CaseId = caseToInsert.Id;
 
         System.runAs(
             UTIL_TestDataFactory.getUserByEmailPostfix(UTIL_TestDataFactory.OTIS_INTEGRATION_USER_EMAIL_POSTFIX)
         ) {
             Test.startTest();
                 try {
-                    UTIL_TestDataFactory.createWorkOrder(workOrderFieldsMap, true);
+                    insert workOrderToInsert;
                 } catch (Exception e) {
                     hasException = true;
                 }
