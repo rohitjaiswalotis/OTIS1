@@ -278,7 +278,7 @@
         <inputAssignments>
             <field>Multiplier__c</field>
             <value>
-                <stringValue>Reg</stringValue>
+                <stringValue>Regular</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -337,7 +337,7 @@
         <inputAssignments>
             <field>Multiplier__c</field>
             <value>
-                <stringValue>Reg</stringValue>
+                <stringValue>Regular</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -396,7 +396,7 @@
         <inputAssignments>
             <field>Multiplier__c</field>
             <value>
-                <stringValue>Reg</stringValue>
+                <stringValue>Regular</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -455,7 +455,7 @@
         <inputAssignments>
             <field>Multiplier__c</field>
             <value>
-                <stringValue>Reg</stringValue>
+                <stringValue>Regular</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -810,7 +810,7 @@
         <inputAssignments>
             <field>Multiplier__c</field>
             <value>
-                <stringValue>Reg</stringValue>
+                <stringValue>Regular</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -887,7 +887,7 @@
         <inputAssignments>
             <field>Multiplier__c</field>
             <value>
-                <stringValue>Reg</stringValue>
+                <stringValue>Regular</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -964,7 +964,7 @@
         <inputAssignments>
             <field>Multiplier__c</field>
             <value>
-                <stringValue>Reg</stringValue>
+                <stringValue>Regular</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1041,7 +1041,7 @@
         <inputAssignments>
             <field>Multiplier__c</field>
             <value>
-                <stringValue>Reg</stringValue>
+                <stringValue>Regular</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>

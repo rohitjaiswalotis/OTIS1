@@ -106,22 +106,38 @@
                 <stringValue>For Reg, Multiplier value cannot be other than 1.0 </stringValue>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>errorMessage5</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>errorMessage8</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
         <connector>
             <isGoTo>true</isGoTo>
             <targetReference>Update_Time_Sheets_Entry</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>Assignment_5</name>
-        <label>Assignment 5</label>
+        <name>Assignment_8</name>
+        <label>Assignment 8</label>
         <locationX>314</locationX>
         <locationY>1214</locationY>
         <assignmentItems>
-            <assignToReference>errorMessage5</assignToReference>
+            <assignToReference>errorMessage8</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>For OT, Multiplier value cannot be 1.0 </stringValue>
+                <stringValue>Please select Multiplier Value.</stringValue>
             </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>errorMessage5</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>errorMessage3</assignToReference>
+            <operator>Assign</operator>
         </assignmentItems>
         <connector>
             <isGoTo>true</isGoTo>
@@ -275,10 +291,10 @@
     </choices>
     <choices>
         <name>OT</name>
-        <choiceText>OT</choiceText>
+        <choiceText>Overtime</choiceText>
         <dataType>String</dataType>
         <value>
-            <stringValue>OT</stringValue>
+            <stringValue>Overtime</stringValue>
         </value>
     </choices>
     <choices>
@@ -286,7 +302,7 @@
         <choiceText>Reg</choiceText>
         <dataType>String</dataType>
         <value>
-            <stringValue>Reg</stringValue>
+            <stringValue>Regular</stringValue>
         </value>
     </choices>
     <choices>
@@ -496,7 +512,7 @@
             <label>Checking the Multiplier Type</label>
         </rules>
         <rules>
-            <name>Checking_the_Multiplier_Type_is_OT</name>
+            <name>Select_Multiplier_Value</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>Multiplier_Type</leftValueReference>
@@ -507,22 +523,15 @@
             </conditions>
             <conditions>
                 <leftValueReference>Multiplier_Values</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <numberValue>1.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Multiplier_Values</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
-                    <booleanValue>false</booleanValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Assignment_5</targetReference>
+                <targetReference>Assignment_8</targetReference>
             </connector>
-            <label>Checking the Multiplier Type is OT</label>
+            <label>Select Multiplier Value</label>
         </rules>
     </decisions>
     <decisions>
@@ -1375,7 +1384,7 @@
             <fieldText>Multiplier Values</fieldText>
             <fieldType>RadioButtons</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
+            <isRequired>false</isRequired>
             <scale>1</scale>
         </fields>
         <fields>
@@ -1397,6 +1406,11 @@
         <fields>
             <name>errorMessageForOT</name>
             <fieldText>&lt;p&gt;&lt;strong&gt;{!errorMessage5}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>errorMesg8</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0);&quot;&gt;{!errorMessage8}&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -1447,6 +1461,13 @@
     </variables>
     <variables>
         <name>errorMessage5</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>errorMessage8</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
