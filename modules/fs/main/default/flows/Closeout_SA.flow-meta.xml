@@ -281,6 +281,7 @@
         <object xsi:nil="true"/>
         <picklistField>Category__c</picklistField>
         <picklistObject>WorkOrder</picklistObject>
+        <sortOrder>Asc</sortOrder>
     </dynamicChoiceSets>
     <dynamicChoiceSets>
         <name>ComponentCodeValues</name>
@@ -296,8 +297,8 @@
         </filters>
         <limit>100</limit>
         <object>ComponentCode__c</object>
-        <sortField>LastModifiedDate</sortField>
-        <sortOrder>Desc</sortOrder>
+        <sortField>ComponentDescription__c</sortField>
+        <sortOrder>Asc</sortOrder>
         <valueField>Id</valueField>
     </dynamicChoiceSets>
     <dynamicChoiceSets>
