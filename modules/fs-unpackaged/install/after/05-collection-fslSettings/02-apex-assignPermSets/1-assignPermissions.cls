@@ -8,7 +8,9 @@ Set<String> PERMISSION_SETS_TO_ASSIGN =
 		'FSL_Agent_License',
 		'FSL_Admin_Permissions',
 		'FSL_Admin_License',
-		'Field_Service_Mobile_App_Builder_Permissions'
+		'Field_Service_Mobile_App_Builder_Permissions',
+		'Field_Service_Document_Builder',
+		'force.FieldServiceDocumentBuilderDispatcher'
 	}
 ;
 
