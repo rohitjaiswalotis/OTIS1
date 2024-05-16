@@ -1,0 +1,305 @@
+$$Product_Type__c$Component__c$Sub_Component__c,Adjust__c,Clean__c,Component__c,Id,Lubricate__c,Product_Type__c,Repair__c,Replace__c,Sub_Component__c,Verify__c
+Elevator;Hall Fixture;Display,true,true,Hall Fixture,a2gDD000002qOD9YAM,false,Elevator,true,true,Display,true
+Elevator;Hall Fixture;Indicator,true,true,Hall Fixture,a2gDD000002qODAYA2,false,Elevator,true,true,Indicator,true
+Elevator;Hall Fixture;Alarm,true,false,Hall Fixture,a2gDD000002qODBYA2,false,Elevator,true,true,Alarm,true
+Elevator;Hall Fixture;Connector,false,false,Hall Fixture,a2gDD000002qODCYA2,false,Elevator,false,true,Connector,true
+Elevator;Hall Fixture;Others,true,true,Hall Fixture,a2gDD000002qODDYA2,true,Elevator,true,true,Others,true
+Elevator;Hoistway;Hoistway,false,true,Hoistway,a2gDD000002qODEYA2,false,Elevator,false,false,Hoistway,true
+Elevator;Hoistway;Guide Rail,true,true,Hoistway,a2gDD000002qODFYA2,true,Elevator,true,true,Guide Rail,true
+Elevator;Hoistway;Sheave,true,true,Hoistway,a2gDD000002qODGYA2,false,Elevator,false,true,Sheave,true
+Elevator;Hoistway;Bearing,false,false,Hoistway,a2gDD000002qODHYA2,true,Elevator,false,true,Bearing,true
+Elevator;Hoistway;Switch,true,true,Hoistway,a2gDD000002qODIYA2,false,Elevator,false,true,Switch,true
+Elevator;Hoistway;Lighting,false,true,Hoistway,a2gDD000002qODJYA2,false,Elevator,false,true,Lighting,true
+Elevator;Hoistway;Lamp,false,false,Hoistway,a2gDD000002qODKYA2,false,Elevator,false,true,Lamp,true
+Elevator;Hoistway;Traveling Cable,true,true,Hoistway,a2gDD000002qODLYA2,false,Elevator,true,true,Traveling Cable,true
+Elevator;Hoistway;Others,true,true,Hoistway,a2gDD000002qODMYA2,true,Elevator,true,true,Others,true
+Elevator;Pit;Pit,false,true,Pit,a2gDD000002qODNYA2,false,Elevator,false,false,Pit,true
+Elevator;Pit;Buffer,true,true,Pit,a2gDD000002qODOYA2,false,Elevator,false,true,Buffer,true
+Elevator;Pit;Switch,true,true,Pit,a2gDD000002qODPYA2,false,Elevator,false,true,Switch,true
+Elevator;Pit;Ladder,true,true,Pit,a2gDD000002qODQYA2,false,Elevator,true,true,Ladder,true
+Elevator;Pit;Others,true,true,Pit,a2gDD000002qODRYA2,true,Elevator,true,true,Others,true
+Elevator;Hydro Aggregate;Hydro Aggregate,true,true,Hydro Aggregate,a2gDD000002qOA3YAM,false,Elevator,true,true,Hydro Aggregate,true
+Elevator;Hydro Aggregate;Motor,false,true,Hydro Aggregate,a2gDD000002qOA4YAM,false,Elevator,true,true,Motor,true
+Elevator;Hydro Aggregate;Pump,false,true,Hydro Aggregate,a2gDD000002qOA5YAM,false,Elevator,true,true,Pump,true
+Elevator;Hydro Aggregate;Handpump,true,true,Hydro Aggregate,a2gDD000002qOA6YAM,false,Elevator,true,true,Handpump,true
+Elevator;Hydro Aggregate;Heating,true,true,Hydro Aggregate,a2gDD000002qOA7YAM,false,Elevator,true,true,Heating,true
+Elevator;Hydro Aggregate;Valve,true,true,Hydro Aggregate,a2gDD000002qOA8YAM,false,Elevator,true,true,Valve,true
+Elevator;Hydro Aggregate;Gasket / Seal,false,false,Hydro Aggregate,a2gDD000002qOA9YAM,false,Elevator,true,true,Gasket / Seal,true
+Elevator;Hydro Aggregate;Oil,false,false,Hydro Aggregate,a2gDD000002qOAAYA2,false,Elevator,false,true,Oil,true
+Elevator;Hydro Aggregate;Others,true,true,Hydro Aggregate,a2gDD000002qOABYA2,true,Elevator,true,true,Others,true
+Elevator;Hydraulic Cylinder;Hydraulic Cylinder,true,true,Hydraulic Cylinder,a2gDD000002qOACYA2,false,Elevator,true,true,Hydraulic Cylinder,true
+Elevator;Hydraulic Cylinder;Hydraulic Piston,true,true,Hydraulic Cylinder,a2gDD000002qOADYA2,false,Elevator,true,true,Hydraulic Piston,true
+Elevator;Brake;Others,true,true,Brake,a2gDD000002qOAXYA2,true,Elevator,true,true,Others,true
+Elevator;Controller;Controller,true,true,Controller,a2gDD000002qOAYYA2,false,Elevator,true,true,Controller,true
+Elevator;Controller;Electronic Board,true,false,Controller,a2gDD000002qOAZYA2,false,Elevator,true,true,Electronic Board,true
+Elevator;Controller;Cable,true,false,Controller,a2gDD000002qOAaYAM,false,Elevator,false,true,Cable,true
+Elevator;Controller;Connector,false,false,Controller,a2gDD000002qOAbYAM,false,Elevator,false,true,Connector,true
+Elevator;Controller;Fuse,false,false,Controller,a2gDD000002qOAcYAM,false,Elevator,false,true,Fuse,true
+Elevator;Controller;Filter,false,true,Controller,a2gDD000002qOAdYAM,false,Elevator,false,true,Filter,true
+Elevator;Controller;Relay,false,true,Controller,a2gDD000002qOAeYAM,false,Elevator,false,true,Relay,true
+Elevator;Controller;Time Relay,true,false,Controller,a2gDD000002qOAfYAM,false,Elevator,false,true,Time Relay,true
+Elevator;Hydraulic Cylinder;Bearing,false,true,Hydraulic Cylinder,a2gDD000002qOAEYA2,true,Elevator,false,true,Bearing,true
+Elevator;Hydraulic Cylinder;Sheave,false,true,Hydraulic Cylinder,a2gDD000002qOAFYA2,false,Elevator,false,true,Sheave,true
+Elevator;Hydraulic Cylinder;Switch,true,true,Hydraulic Cylinder,a2gDD000002qOAGYA2,false,Elevator,false,true,Switch,true
+Elevator;Hydraulic Cylinder;Rupture Valve,true,true,Hydraulic Cylinder,a2gDD000002qOAHYA2,false,Elevator,false,true,Rupture Valve,true
+Elevator;Hydraulic Cylinder;Gasket / Seal,false,false,Hydraulic Cylinder,a2gDD000002qOAIYA2,false,Elevator,false,true,Gasket / Seal,true
+Elevator;Hydraulic Cylinder;Others,true,true,Hydraulic Cylinder,a2gDD000002qOAJYA2,true,Elevator,true,true,Others,true
+Elevator;Motor;Motor,false,true,Motor,a2gDD000002qOAKYA2,false,Elevator,true,true,Motor,true
+Elevator;Motor;Bearing,false,true,Motor,a2gDD000002qOALYA2,true,Elevator,false,true,Bearing,true
+Elevator;Motor;Stator,false,true,Motor,a2gDD000002qOAMYA2,false,Elevator,true,true,Stator,true
+Elevator;Motor;Rotor,false,true,Motor,a2gDD000002qOANYA2,false,Elevator,false,true,Rotor,true
+Elevator;Motor;Gasket / Seal,false,false,Motor,a2gDD000002qOAOYA2,false,Elevator,false,true,Gasket / Seal,true
+Elevator;Motor;Brush,true,true,Motor,a2gDD000002qOAPYA2,false,Elevator,false,true,Brush,true
+Elevator;Motor;Others,true,true,Motor,a2gDD000002qOAQYA2,true,Elevator,true,true,Others,true
+Elevator;Brake;Brake,true,true,Brake,a2gDD000002qOARYA2,false,Elevator,true,true,Brake,true
+Elevator;Brake;Lining,true,true,Brake,a2gDD000002qOASYA2,false,Elevator,false,true,Lining,true
+Elevator;Brake;Switch,true,true,Brake,a2gDD000002qOATYA2,false,Elevator,false,true,Switch,true
+Elevator;Brake;Coil,false,true,Brake,a2gDD000002qOAUYA2,false,Elevator,false,true,Coil,true
+Elevator;Brake;Magnet,true,true,Brake,a2gDD000002qOAVYA2,true,Elevator,true,true,Magnet,true
+Elevator;Brake;Lever,true,true,Brake,a2gDD000002qOAWYA2,true,Elevator,false,true,Lever,true
+Elevator;Controller;Contactor,true,true,Controller,a2gDD000002qOAgYAM,false,Elevator,false,true,Contactor,true
+Elevator;Controller;Contact,true,true,Controller,a2gDD000002qOAhYAM,false,Elevator,true,true,Contact,true
+Elevator;Controller;Rectifier,false,false,Controller,a2gDD000002qOAiYAM,false,Elevator,false,true,Rectifier,true
+Elevator;Controller;Transformer,true,false,Controller,a2gDD000002qOAjYAM,false,Elevator,false,true,Transformer,true
+Elevator;Controller;Battery,false,false,Controller,a2gDD000002qOAkYAM,false,Elevator,false,true,Battery,true
+Elevator;Controller;Ventilator,false,true,Controller,a2gDD000002qOAlYAM,false,Elevator,false,true,Ventilator,true
+Elevator;Controller;Remote Monitoring,true,false,Controller,a2gDD000002qOAmYAM,false,Elevator,true,true,Remote Monitoring,true
+Elevator;Controller;Circuit Breaker,true,false,Controller,a2gDD000002qOAnYAM,false,Elevator,false,true,Circuit Breaker,true
+Elevator;Machine;Machine,true,true,Machine,a2gDD000002qO9vYAE,false,Elevator,true,true,Machine,true
+Elevator;Machine;Bearing,false,false,Machine,a2gDD000002qO9wYAE,true,Elevator,false,true,Bearing,true
+Elevator;Machine;Sheave,false,true,Machine,a2gDD000002qO9xYAE,true,Elevator,false,true,Sheave,true
+Elevator;Machine;Gasket / Seal,false,false,Machine,a2gDD000002qO9yYAE,false,Elevator,false,true,Gasket / Seal,true
+Elevator;Machine;Worm Wheel,true,false,Machine,a2gDD000002qO9zYAE,false,Elevator,false,true,Worm Wheel,true
+Elevator;Machine;Oil,false,false,Machine,a2gDD000002qOA0YAM,false,Elevator,false,true,Oil,true
+Elevator;Machine;Encoder,true,true,Machine,a2gDD000002qOA1YAM,false,Elevator,true,true,Encoder,true
+Elevator;Machine;Others,true,true,Machine,a2gDD000002qOA2YAM,true,Elevator,true,true,Others,true
+Elevator;Car Door;Rope,true,true,Car Door,a2gDD000002qOC7YAM,false,Elevator,false,true,Rope,true
+Elevator;Car Door;Cam,true,true,Car Door,a2gDD000002qOC8YAM,true,Elevator,true,true,Cam,true
+Elevator;Car Door;Coupling,true,true,Car Door,a2gDD000002qOC9YAM,true,Elevator,true,true,Coupling,true
+Elevator;Car Door;Bumper,true,false,Car Door,a2gDD000002qOCAYA2,false,Elevator,false,true,Bumper,true
+Elevator;Car Door;Track,true,true,Car Door,a2gDD000002qOCBYA2,true,Elevator,true,true,Track,true
+Elevator;Car Door;Roller,false,true,Car Door,a2gDD000002qOCCYA2,true,Elevator,false,true,Roller,true
+Elevator;Car Door;Sill,true,true,Car Door,a2gDD000002qOCDYA2,false,Elevator,true,true,Sill,true
+Elevator;Car Door;Guide,true,true,Car Door,a2gDD000002qOCEYA2,false,Elevator,false,true,Guide,true
+Elevator;Car Door;Others,true,true,Car Door,a2gDD000002qOCFYA2,true,Elevator,true,true,Others,true
+Elevator;Door Detector;Door Detector,true,true,Door Detector,a2gDD000002qOCGYA2,false,Elevator,true,true,Door Detector,true
+Elevator;Hoistway Door;Glass,false,true,Hoistway Door,a2gDD000002qOCrYAM,false,Elevator,false,true,Glass,true
+Elevator;Hoistway Door;Hinge,true,true,Hoistway Door,a2gDD000002qOCsYAM,true,Elevator,true,true,Hinge,true
+Elevator;Hoistway Door;Lock Roller,true,true,Hoistway Door,a2gDD000002qOCtYAM,true,Elevator,false,true,Lock Roller,true
+Elevator;Door Detector;Light Ray Device,true,true,Door Detector,a2gDD000002qOCHYA2,false,Elevator,true,true,Light Ray Device,true
+Elevator;Door Detector;Reflector,true,true,Door Detector,a2gDD000002qOCIYA2,false,Elevator,false,true,Reflector,true
+Elevator;Door Detector;Infrared Detector,true,true,Door Detector,a2gDD000002qOCJYA2,false,Elevator,true,true,Infrared Detector,true
+Elevator;Door Detector;Power Supply,false,false,Door Detector,a2gDD000002qOCKYA2,false,Elevator,true,true,Power Supply,true
+Elevator;Door Detector;Deterrent Device,true,true,Door Detector,a2gDD000002qOCLYA2,true,Elevator,true,true,Deterrent Device,true
+Elevator;Door Detector;Switch,true,true,Door Detector,a2gDD000002qOCMYA2,false,Elevator,false,true,Switch,true
+Elevator;Door Detector;Others,true,true,Door Detector,a2gDD000002qOCNYA2,true,Elevator,true,true,Others,true
+Elevator;Door Operator;Door Operator,true,true,Door Operator,a2gDD000002qOCOYA2,true,Elevator,true,true,Door Operator,true
+Elevator;Door Operator;Motor,true,true,Door Operator,a2gDD000002qOCPYA2,false,Elevator,true,true,Motor,true
+Elevator;Door Operator;Rotor,false,false,Door Operator,a2gDD000002qOCQYA2,false,Elevator,true,true,Rotor,true
+Elevator;Door Operator;Stator,false,false,Door Operator,a2gDD000002qOCRYA2,false,Elevator,false,true,Stator,true
+Elevator;Door Operator;Cam,true,true,Door Operator,a2gDD000002qOCSYA2,true,Elevator,true,true,Cam,true
+Elevator;Door Operator;Cable,true,false,Door Operator,a2gDD000002qOCTYA2,false,Elevator,false,true,Cable,true
+Elevator;Door Operator;Pouille,true,true,Door Operator,a2gDD000002qOCUYA2,false,Elevator,false,true,Pouille,true
+Elevator;Door Operator;Belt,true,true,Door Operator,a2gDD000002qOCVYA2,false,Elevator,false,true,Belt,true
+Elevator;Door Operator;Chain,true,true,Door Operator,a2gDD000002qOCWYA2,true,Elevator,false,true,Chain,true
+Elevator;Door Operator;Control Unit,true,true,Door Operator,a2gDD000002qOCXYA2,false,Elevator,true,true,Control Unit,true
+Elevator;Door Operator;Electronic Board,true,false,Door Operator,a2gDD000002qOCYYA2,false,Elevator,true,true,Electronic Board,true
+Elevator;Door Operator;Bumper,true,false,Door Operator,a2gDD000002qOCZYA2,false,Elevator,false,true,Bumper,true
+Elevator;Door Operator;Bearing,false,true,Door Operator,a2gDD000002qOCaYAM,true,Elevator,false,true,Bearing,true
+Elevator;Door Operator;Switch,true,true,Door Operator,a2gDD000002qOCbYAM,false,Elevator,false,true,Switch,true
+Elevator;Door Operator;Others,true,true,Door Operator,a2gDD000002qOCcYAM,true,Elevator,true,true,Others,true
+Elevator;Hoistway Door;Hoistway Door,true,true,Hoistway Door,a2gDD000002qOCdYAM,true,Elevator,true,true,Hoistway Door,true
+Elevator;Hoistway Door;Panel,true,true,Hoistway Door,a2gDD000002qOCeYAM,false,Elevator,true,true,Panel,true
+Elevator;Hoistway Door;Door Lock,true,true,Hoistway Door,a2gDD000002qOCfYAM,true,Elevator,true,true,Door Lock,true
+Elevator;Hoistway Door;Contact,true,true,Hoistway Door,a2gDD000002qOCgYAM,false,Elevator,false,true,Contact,true
+Elevator;Hoistway Door;Shunt,true,true,Hoistway Door,a2gDD000002qOChYAM,false,Elevator,false,true,Shunt,true
+Elevator;Hoistway Door;Pouille,true,true,Hoistway Door,a2gDD000002qOCiYAM,true,Elevator,false,true,Pouille,true
+Elevator;Hoistway Door;Rope,true,true,Hoistway Door,a2gDD000002qOCjYAM,false,Elevator,false,true,Rope,true
+Elevator;Hoistway Door;Bumper,true,false,Hoistway Door,a2gDD000002qOCkYAM,false,Elevator,false,true,Bumper,true
+Elevator;Hoistway Door;Track,true,true,Hoistway Door,a2gDD000002qOClYAM,true,Elevator,true,true,Track,true
+Elevator;Hoistway Door;Roller,true,true,Hoistway Door,a2gDD000002qOCmYAM,true,Elevator,false,true,Roller,true
+Elevator;Hoistway Door;Sill,true,true,Hoistway Door,a2gDD000002qOCnYAM,false,Elevator,true,true,Sill,true
+Elevator;Hoistway Door;Guide,true,true,Hoistway Door,a2gDD000002qOCoYAM,false,Elevator,false,true,Guide,true
+Elevator;Hoistway Door;Unlocking Device,true,true,Hoistway Door,a2gDD000002qOCpYAM,true,Elevator,true,true,Unlocking Device,true
+Elevator;Hoistway Door;Door Closer,true,true,Hoistway Door,a2gDD000002qOCqYAM,true,Elevator,true,true,Door Closer,true
+Elevator;Car Positioning System;Selector,true,true,Car Positioning System,a2gDD000002qOB0YAM,true,Elevator,true,true,Selector,true
+Elevator;Car Positioning System;Switch,true,true,Car Positioning System,a2gDD000002qOB1YAM,false,Elevator,false,true,Switch,true
+Elevator;Car Positioning System;Magnet,true,true,Car Positioning System,a2gDD000002qOB2YAM,false,Elevator,false,true,Magnet,true
+Elevator;Car Positioning System;Steel Band,true,true,Car Positioning System,a2gDD000002qOB3YAM,false,Elevator,false,true,Steel Band,true
+Elevator;Car Positioning System;Cam,true,true,Car Positioning System,a2gDD000002qOB4YAM,true,Elevator,true,true,Cam,true
+Elevator;Car Positioning System;Others,true,true,Car Positioning System,a2gDD000002qOB5YAM,true,Elevator,true,true,Others,true
+Elevator;Car Frame;Car Frame,true,true,Car Frame,a2gDD000002qOB6YAM,false,Elevator,true,false,Car Frame,true
+Elevator;Car Frame;Guide Shoe,true,true,Car Frame,a2gDD000002qOB7YAM,false,Elevator,true,true,Guide Shoe,true
+Elevator;Hoistway Door;Emergency Panel,true,true,Hoistway Door,a2gDD000002qOCuYAM,false,Elevator,true,true,Emergency Panel,true
+Elevator;Hoistway Door;Relay,false,false,Hoistway Door,a2gDD000002qOCvYAM,false,Elevator,false,true,Relay,true
+Elevator;Hoistway Door;Fuse,false,false,Hoistway Door,a2gDD000002qOCwYAM,false,Elevator,false,true,Fuse,true
+Elevator;Hoistway Door;Circuit Breaker,true,false,Hoistway Door,a2gDD000002qOCxYAM,false,Elevator,false,true,Circuit Breaker,true
+Elevator;Hoistway Door;Lamp,false,false,Hoistway Door,a2gDD000002qOCyYAM,false,Elevator,false,true,Lamp,true
+Elevator;Hoistway Door;Others,true,true,Hoistway Door,a2gDD000002qOCzYAM,true,Elevator,true,true,Others,true
+Elevator;Hall Fixture;Hall Fixture,true,true,Hall Fixture,a2gDD000002qOD0YAM,false,Elevator,true,true,Hall Fixture,true
+Elevator;Hall Fixture;Button,true,true,Hall Fixture,a2gDD000002qOD1YAM,false,Elevator,true,true,Button,true
+Elevator;Hall Fixture;Key Contact,true,true,Hall Fixture,a2gDD000002qOD2YAM,false,Elevator,true,true,Key Contact,true
+Elevator;Hall Fixture;Remote Station,false,false,Hall Fixture,a2gDD000002qOD3YAM,false,Elevator,false,true,Remote Station,true
+Elevator;Hall Fixture;Lamp,false,false,Hall Fixture,a2gDD000002qOD4YAM,false,Elevator,false,true,Lamp,true
+Elevator;Hall Fixture;Chicklet,false,false,Hall Fixture,a2gDD000002qOD5YAM,false,Elevator,false,true,Chicklet,true
+Elevator;Hall Fixture;Microphone,true,false,Hall Fixture,a2gDD000002qOD6YAM,false,Elevator,true,true,Microphone,true
+Elevator;Hall Fixture;Speaker,true,false,Hall Fixture,a2gDD000002qOD7YAM,false,Elevator,true,true,Speaker,true
+Elevator;Hall Fixture;Switch,true,true,Hall Fixture,a2gDD000002qOD8YAM,false,Elevator,false,true,Switch,true
+Elevator;Car Frame;Gib,false,true,Car Frame,a2gDD000002qOB8YAM,true,Elevator,false,true,Gib,true
+Elevator;Car Frame;Guide Roller,true,true,Car Frame,a2gDD000002qOB9YAM,false,Elevator,true,true,Guide Roller,true
+Elevator;Car Frame;Roller,true,true,Car Frame,a2gDD000002qOBAYA2,true,Elevator,false,true,Roller,true
+Elevator;Car Frame;Safety Gear,true,true,Car Frame,a2gDD000002qOBBYA2,false,Elevator,false,true,Safety Gear,true
+Elevator;Car Frame;Safety Gear Linkage,true,true,Car Frame,a2gDD000002qOBCYA2,true,Elevator,true,true,Safety Gear Linkage,true
+Elevator;Car Frame;Switch,true,true,Car Frame,a2gDD000002qOBDYA2,false,Elevator,false,true,Switch,true
+Elevator;Car Frame;Sheave,true,true,Car Frame,a2gDD000002qOBEYA2,false,Elevator,false,true,Sheave,true
+Elevator;Car Frame;Bearing,false,false,Car Frame,a2gDD000002qOBFYA2,true,Elevator,false,true,Bearing,true
+Elevator;Car Frame;Inspection Box,false,false,Car Frame,a2gDD000002qOBGYA2,false,Elevator,true,true,Inspection Box,true
+Elevator;Controller;Others,true,true,Controller,a2gDD000002qOAoYAM,true,Elevator,true,true,Others,true
+Elevator;Wire Rope;Wire Rope,false,true,Wire Rope,a2gDD000002qOApYAM,true,Elevator,false,true,Wire Rope,true
+Elevator;Wire Rope;Rope Termination,true,true,Wire Rope,a2gDD000002qOAqYAM,false,Elevator,true,true,Rope Termination,true
+Elevator;Wire Rope;Clamp,true,true,Wire Rope,a2gDD000002qOArYAM,false,Elevator,false,true,Clamp,true
+Elevator;Wire Rope;Switch,true,true,Wire Rope,a2gDD000002qOAsYAM,false,Elevator,false,true,Switch,true
+Elevator;Wire Rope;Others,true,true,Wire Rope,a2gDD000002qOAtYAM,true,Elevator,true,true,Others,true
+Elevator;Coated Steel Belt;Coated Steel Belt,false,true,Coated Steel Belt,a2gDD000002qOAuYAM,false,Elevator,false,true,Coated Steel Belt,true
+Elevator;Coated Steel Belt;Belt Termination,true,true,Coated Steel Belt,a2gDD000002qOAvYAM,false,Elevator,false,true,Belt Termination,true
+Elevator;Coated Steel Belt;RBI,true,false,Coated Steel Belt,a2gDD000002qOAwYAM,false,Elevator,true,true,RBI,true
+Elevator;Coated Steel Belt;Switch,true,true,Coated Steel Belt,a2gDD000002qOAxYAM,false,Elevator,false,true,Switch,true
+Elevator;Coated Steel Belt;Others,true,true,Coated Steel Belt,a2gDD000002qOAyYAM,true,Elevator,true,true,Others,true
+Elevator;Car Positioning System;Car Positioning System,true,true,Car Positioning System,a2gDD000002qOAzYAM,true,Elevator,true,true,Car Positioning System,true
+Elevator;Car Frame;Junction Box,false,false,Car Frame,a2gDD000002qOBHYA2,false,Elevator,true,true,Junction Box,true
+Elevator;Car Frame;Electronic Board,true,false,Car Frame,a2gDD000002qOBIYA2,false,Elevator,true,true,Electronic Board,true
+Elevator;Car Frame;Connector,false,false,Car Frame,a2gDD000002qOBJYA2,false,Elevator,false,true,Connector,true
+Elevator;Car Frame;Oiler,true,true,Car Frame,a2gDD000002qOBKYA2,true,Elevator,false,true,Oiler,true
+Elevator;Car Frame;Buffer,true,true,Car Frame,a2gDD000002qOBLYA2,false,Elevator,false,true,Buffer,true
+Elevator;Car Frame;Others,true,true,Car Frame,a2gDD000002qOBMYA2,true,Elevator,true,true,Others,true
+Elevator;Speed Governor;Speed Governor,true,true,Speed Governor,a2gDD000002qOBNYA2,false,Elevator,true,true,Speed Governor,true
+Elevator;Speed Governor;Switch,true,true,Speed Governor,a2gDD000002qOBOYA2,false,Elevator,false,true,Switch,true
+Elevator;Speed Governor;Bearing,false,false,Speed Governor,a2gDD000002qOBPYA2,true,Elevator,false,true,Bearing,true
+Elevator;Speed Governor;Sheave,false,true,Speed Governor,a2gDD000002qOBQYA2,false,Elevator,false,true,Sheave,true
+Elevator;Speed Governor;Rope,false,true,Speed Governor,a2gDD000002qOBRYA2,false,Elevator,false,true,Rope,true
+Elevator;Speed Governor;Others,true,true,Speed Governor,a2gDD000002qOBSYA2,true,Elevator,true,true,Others,true
+Elevator;Counterweight;Counterweight,true,true,Counterweight,a2gDD000002qOBTYA2,false,Elevator,true,true,Counterweight,true
+Elevator;Counterweight;Sheave,true,true,Counterweight,a2gDD000002qOBUYA2,false,Elevator,false,true,Sheave,true
+Elevator;Counterweight;Bearing,false,false,Counterweight,a2gDD000002qOBVYA2,true,Elevator,false,true,Bearing,true
+Elevator;Counterweight;Oiler,true,true,Counterweight,a2gDD000002qOBWYA2,true,Elevator,false,true,Oiler,true
+Elevator;Counterweight;Guide Roller,true,true,Counterweight,a2gDD000002qOBXYA2,false,Elevator,true,true,Guide Roller,true
+Elevator;Counterweight;Roller,true,true,Counterweight,a2gDD000002qOBYYA2,true,Elevator,false,true,Roller,true
+Elevator;Counterweight;Guide Shoe,true,true,Counterweight,a2gDD000002qOBZYA2,false,Elevator,true,true,Guide Shoe,true
+Elevator;Counterweight;Gib,false,true,Counterweight,a2gDD000002qOBaYAM,true,Elevator,false,true,Gib,true
+Elevator;Counterweight;Others,true,true,Counterweight,a2gDD000002qOBbYAM,true,Elevator,true,true,Others,true
+Elevator;Car;Car,true,true,Car,a2gDD000002qOBcYAM,false,Elevator,true,false,Car,true
+Elevator;Car;Lamp / Spot,true,true,Car,a2gDD000002qOBdYAM,false,Elevator,false,true,Lamp / Spot,true
+Elevator;Car;Starter,false,false,Car,a2gDD000002qOBeYAM,false,Elevator,false,true,Starter,true
+Elevator;Car;Ballast,false,false,Car,a2gDD000002qOBfYAM,false,Elevator,false,true,Ballast,true
+Elevator;Car;Diffuser,false,true,Car,a2gDD000002qOBgYAM,false,Elevator,false,true,Diffuser,true
+Elevator;Car;Mirror,false,true,Car,a2gDD000002qOBhYAM,false,Elevator,false,true,Mirror,true
+Elevator;Car;Fan,false,false,Car,a2gDD000002qOBiYAM,false,Elevator,false,true,Fan,true
+Elevator;Car;Car Lining,false,false,Car,a2gDD000002qOBjYAM,false,Elevator,true,true,Car Lining,true
+Elevator;Car;Handrail,true,true,Car,a2gDD000002qOBkYAM,false,Elevator,true,true,Handrail,true
+Elevator;Car;Others,true,true,Car,a2gDD000002qOBlYAM,true,Elevator,true,true,Others,true
+Elevator;Car Fixture;Car Fixture,true,true,Car Fixture,a2gDD000002qOBmYAM,false,Elevator,true,true,Car Fixture,true
+Elevator;Car Fixture;Button,false,true,Car Fixture,a2gDD000002qOBnYAM,false,Elevator,true,true,Button,true
+Elevator;Car Fixture;Key Contact,true,true,Car Fixture,a2gDD000002qOBoYAM,false,Elevator,true,true,Key Contact,true
+Elevator;Car Fixture;Remote Station,true,true,Car Fixture,a2gDD000002qOBpYAM,false,Elevator,true,true,Remote Station,true
+Elevator;Car Fixture;Electronic Board,false,false,Car Fixture,a2gDD000002qOBqYAM,false,Elevator,false,true,Electronic Board,true
+Elevator;Car Fixture;Lamp,true,true,Car Fixture,a2gDD000002qOBrYAM,false,Elevator,true,true,Lamp,true
+Elevator;Car Fixture;LED Strip,false,false,Car Fixture,a2gDD000002qOBsYAM,false,Elevator,false,true,LED Strip,true
+Elevator;Car Fixture;Ventilator,false,true,Car Fixture,a2gDD000002qOBtYAM,false,Elevator,false,true,Ventilator,true
+Elevator;Car Fixture;Chicklet,false,true,Car Fixture,a2gDD000002qOBuYAM,false,Elevator,false,true,Chicklet,true
+Elevator;Car Fixture;Microphone,false,false,Car Fixture,a2gDD000002qOBvYAM,false,Elevator,false,true,Microphone,true
+Elevator;Car Fixture;Speaker,true,false,Car Fixture,a2gDD000002qOBwYAM,false,Elevator,true,true,Speaker,true
+Elevator;Car Fixture;Switch,true,true,Car Fixture,a2gDD000002qOBxYAM,false,Elevator,true,true,Switch,true
+Elevator;Car Fixture;Display,false,true,Car Fixture,a2gDD000002qOByYAM,false,Elevator,false,true,Display,true
+Elevator;Car Fixture;Indicator,true,true,Car Fixture,a2gDD000002qOBzYAM,false,Elevator,true,true,Indicator,true
+Elevator;Car Fixture;Connector,true,true,Car Fixture,a2gDD000002qOC0YAM,false,Elevator,true,true,Connector,true
+Elevator;Car Fixture;Others,true,true,Car Fixture,a2gDD000002qOC1YAM,true,Elevator,true,true,Others,true
+Elevator;Car Door;Car Door,true,true,Car Door,a2gDD000002qOC2YAM,true,Elevator,true,true,Car Door,true
+Elevator;Car Door;Panel,true,true,Car Door,a2gDD000002qOC3YAM,false,Elevator,true,true,Panel,true
+Elevator;Car Door;Contact,true,true,Car Door,a2gDD000002qOC4YAM,false,Elevator,false,true,Contact,true
+Elevator;Car Door;Shunt,true,true,Car Door,a2gDD000002qOC5YAM,false,Elevator,false,true,Shunt,true
+Elevator;Car Door;Pouille,true,true,Car Door,a2gDD000002qOC6YAM,false,Elevator,false,true,Pouille,true
+Escalator;Main Drive;Magnet,false,true,Main Drive,a2gDD000002qODxYAM,true,Escalator,false,true,Magnet,true
+Escalator;Main Drive;Switch,true,true,Main Drive,a2gDD000002qODyYAM,false,Escalator,false,true,Switch,true
+Escalator;Main Drive;Others,true,true,Main Drive,a2gDD000002qODzYAM,true,Escalator,true,true,Others,true
+Escalator;Tension Carriage;Tension Carriage,true,true,Tension Carriage,a2gDD000002qOE0YAM,true,Escalator,true,true,Tension Carriage,true
+Escalator;Tension Carriage;Bearing,true,false,Tension Carriage,a2gDD000002qOE1YAM,true,Escalator,false,true,Bearing,true
+Escalator;Tension Carriage;Track,true,true,Tension Carriage,a2gDD000002qOE2YAM,true,Escalator,false,true,Track,true
+Escalator;Tension Carriage;Switch,true,true,Tension Carriage,a2gDD000002qOE3YAM,false,Escalator,false,true,Switch,true
+Escalator;Tension Carriage;Others,true,true,Tension Carriage,a2gDD000002qOE4YAM,true,Escalator,true,true,Others,true
+Escalator;Step;Step,true,true,Step,a2gDD000002qOE5YAM,false,Escalator,true,true,Step,true
+Escalator;Step;Roller,true,true,Step,a2gDD000002qOE6YAM,true,Escalator,false,true,Roller,true
+Escalator;Step;Insert,true,true,Step,a2gDD000002qOE7YAM,false,Escalator,false,true,Insert,true
+Escalator;Machine;Machine,true,true,Machine,a2gDD000002qODSYA2,false,Escalator,true,true,Machine,true
+Escalator;Machine;Bearing,false,false,Machine,a2gDD000002qODTYA2,true,Escalator,false,true,Bearing,true
+Escalator;Machine;Sheave,false,true,Machine,a2gDD000002qODUYA2,true,Escalator,false,true,Sheave,true
+Escalator;Machine;Gasket / Seal,false,false,Machine,a2gDD000002qODVYA2,false,Escalator,false,true,Gasket / Seal,true
+Escalator;Machine;Worm Wheel,true,false,Machine,a2gDD000002qODWYA2,false,Escalator,false,true,Worm Wheel,true
+Escalator;Machine;Oil,false,false,Machine,a2gDD000002qODXYA2,false,Escalator,false,true,Oil,true
+Escalator;Machine;Encoder,true,true,Machine,a2gDD000002qODYYA2,false,Escalator,true,true,Encoder,true
+Escalator;Machine;Others,true,true,Machine,a2gDD000002qODZYA2,true,Escalator,true,true,Others,true
+Escalator;Controller;Controller,true,true,Controller,a2gDD000002qODaYAM,false,Escalator,true,true,Controller,true
+Escalator;Controller;Electronic Board,true,false,Controller,a2gDD000002qODbYAM,false,Escalator,true,true,Electronic Board,true
+Escalator;Controller;Cable,true,false,Controller,a2gDD000002qODcYAM,false,Escalator,false,true,Cable,true
+Escalator;Step;Others,true,true,Step,a2gDD000002qOE8YAM,true,Escalator,true,true,Others,true
+Escalator;Step Chain;Step Chain,false,true,Step Chain,a2gDD000002qOE9YAM,true,Escalator,true,true,Step Chain,true
+Escalator;Step Chain;Roller,false,true,Step Chain,a2gDD000002qOEAYA2,true,Escalator,false,true,Roller,true
+Escalator;Step Chain;Bushing,true,true,Step Chain,a2gDD000002qOEBYA2,true,Escalator,false,true,Bushing,true
+Escalator;Step Chain;Others,true,true,Step Chain,a2gDD000002qOECYA2,true,Escalator,true,true,Others,true
+Escalator;Handrail;Handrail,true,true,Handrail,a2gDD000002qOEDYA2,false,Escalator,true,true,Handrail,true
+Escalator;Handrail;Handrail Drive,true,true,Handrail,a2gDD000002qOEEYA2,false,Escalator,true,true,Handrail Drive,true
+Escalator;Handrail;Chain,true,true,Handrail,a2gDD000002qOEFYA2,true,Escalator,false,true,Chain,true
+Escalator;Handrail;Roller,true,true,Handrail,a2gDD000002qOEGYA2,false,Escalator,false,true,Roller,true
+Escalator;Handrail;Sprocket,true,true,Handrail,a2gDD000002qOEHYA2,false,Escalator,false,true,Sprocket,true
+Escalator;Handrail;Bearing,false,false,Handrail,a2gDD000002qOEIYA2,true,Escalator,false,true,Bearing,true
+Escalator;Handrail;Sheave,true,true,Handrail,a2gDD000002qOEJYA2,false,Escalator,false,true,Sheave,true
+Escalator;Handrail;Guard,true,true,Handrail,a2gDD000002qOEKYA2,false,Escalator,true,true,Guard,true
+Escalator;Handrail;Switch,true,true,Handrail,a2gDD000002qOELYA2,false,Escalator,false,true,Switch,true
+Escalator;Handrail;Others,true,true,Handrail,a2gDD000002qOEMYA2,true,Escalator,true,true,Others,true
+Escalator;Comb- / Floor Plate;Comp Plate,true,true,Comb- / Floor Plate,a2gDD000002qOENYA2,false,Escalator,true,true,Comp Plate,true
+Escalator;Comb- / Floor Plate;Floor Plate,true,true,Comb- / Floor Plate,a2gDD000002qOEOYA2,false,Escalator,true,true,Floor Plate,true
+Escalator;Comb- / Floor Plate;Comb,true,true,Comb- / Floor Plate,a2gDD000002qOEPYA2,false,Escalator,false,true,Comb,true
+Escalator;Comb- / Floor Plate;Guide,true,true,Comb- / Floor Plate,a2gDD000002qOEQYA2,false,Escalator,false,true,Guide,true
+Escalator;Comb- / Floor Plate;Switch,true,true,Comb- / Floor Plate,a2gDD000002qOERYA2,false,Escalator,false,true,Switch,true
+Escalator;Comb- / Floor Plate;Bumper,true,false,Comb- / Floor Plate,a2gDD000002qOESYA2,false,Escalator,false,true,Bumper,true
+Escalator;Comb- / Floor Plate;Others,true,true,Comb- / Floor Plate,a2gDD000002qOETYA2,true,Escalator,true,true,Others,true
+Escalator;Balustrade;Balustrade,false,true,Balustrade,a2gDD000002qOEUYA2,false,Escalator,true,false,Balustrade,true
+Escalator;Balustrade;Decking Profile,true,true,Balustrade,a2gDD000002qOEVYA2,false,Escalator,true,true,Decking Profile,true
+Escalator;Balustrade;Rubber Profile,true,false,Balustrade,a2gDD000002qOEWYA2,false,Escalator,false,true,Rubber Profile,true
+Escalator;Balustrade;Panel,true,true,Balustrade,a2gDD000002qOEXYA2,false,Escalator,false,true,Panel,true
+Escalator;Balustrade;Glass Panel,true,true,Balustrade,a2gDD000002qOEYYA2,false,Escalator,false,true,Glass Panel,true
+Escalator;Balustrade;Skirt Panel,true,true,Balustrade,a2gDD000002qOEZYA2,false,Escalator,true,true,Skirt Panel,true
+Escalator;Balustrade;Traffic Light,false,true,Balustrade,a2gDD000002qOEaYAM,false,Escalator,true,true,Traffic Light,true
+Escalator;Balustrade;Hand Rail Guides,true,true,Balustrade,a2gDD000002qOEbYAM,false,Escalator,true,true,Hand Rail Guides,true
+Escalator;Controller;Connector,false,false,Controller,a2gDD000002qODdYAM,false,Escalator,false,true,Connector,true
+Escalator;Controller;Fuse,false,false,Controller,a2gDD000002qODeYAM,false,Escalator,false,true,Fuse,true
+Escalator;Controller;Filter,false,true,Controller,a2gDD000002qODfYAM,false,Escalator,false,true,Filter,true
+Escalator;Controller;Relay,false,true,Controller,a2gDD000002qODgYAM,false,Escalator,false,true,Relay,true
+Escalator;Controller;Time Relay,true,false,Controller,a2gDD000002qODhYAM,false,Escalator,false,true,Time Relay,true
+Escalator;Controller;Contactor,true,true,Controller,a2gDD000002qODiYAM,false,Escalator,false,true,Contactor,true
+Escalator;Controller;Contact,true,true,Controller,a2gDD000002qODjYAM,false,Escalator,true,true,Contact,true
+Escalator;Controller;Rectifier,false,false,Controller,a2gDD000002qODkYAM,false,Escalator,false,true,Rectifier,true
+Escalator;Controller;Transformer,true,false,Controller,a2gDD000002qODlYAM,false,Escalator,false,true,Transformer,true
+Escalator;Controller;Battery,false,false,Controller,a2gDD000002qODmYAM,false,Escalator,false,true,Battery,true
+Escalator;Controller;Ventilator,false,true,Controller,a2gDD000002qODnYAM,false,Escalator,false,true,Ventilator,true
+Escalator;Controller;Remote Monitoring,true,false,Controller,a2gDD000002qODoYAM,false,Escalator,true,true,Remote Monitoring,true
+Escalator;Controller;Circuit Breaker,true,false,Controller,a2gDD000002qODpYAM,false,Escalator,false,true,Circuit Breaker,true
+Escalator;Controller;Others,true,true,Controller,a2gDD000002qODqYAM,true,Escalator,true,true,Others,true
+Escalator;Main Drive;Main Drive,true,true,Main Drive,a2gDD000002qODrYAM,true,Escalator,true,true,Main Drive,true
+Escalator;Main Drive;Bearing,true,false,Main Drive,a2gDD000002qODsYAM,true,Escalator,false,true,Bearing,true
+Escalator;Main Drive;Track,true,true,Main Drive,a2gDD000002qODtYAM,true,Escalator,false,true,Track,true
+Escalator;Main Drive;Chain,true,true,Main Drive,a2gDD000002qODuYAM,true,Escalator,false,true,Chain,true
+Escalator;Main Drive;Brake,true,true,Main Drive,a2gDD000002qODvYAM,false,Escalator,true,true,Brake,true
+Escalator;Main Drive;Brake Sheave,false,true,Main Drive,a2gDD000002qODwYAM,true,Escalator,false,true,Brake Sheave,true
+Escalator;Balustrade;Lamp,false,false,Balustrade,a2gDD000002qOEcYAM,false,Escalator,false,true,Lamp,true
+Escalator;Balustrade;LED  Lighting,false,false,Balustrade,a2gDD000002qOEdYAM,false,Escalator,true,true,LED  Lighting,true
+Escalator;Balustrade;Diffuser,true,true,Balustrade,a2gDD000002qOEeYAM,false,Escalator,false,true,Diffuser,true
+Escalator;Balustrade;Operating Panel,false,false,Balustrade,a2gDD000002qOEfYAM,false,Escalator,true,true,Operating Panel,true
+Escalator;Balustrade;Switch,true,true,Balustrade,a2gDD000002qOEgYAM,false,Escalator,false,true,Switch,true
+Escalator;Balustrade;Key Contact,true,true,Balustrade,a2gDD000002qOEhYAM,false,Escalator,true,true,Key Contact,true
+Escalator;Balustrade;Light Ray Device,true,true,Balustrade,a2gDD000002qOEiYAM,false,Escalator,false,true,Light Ray Device,true
+Escalator;Balustrade;Radar Sensor,true,true,Balustrade,a2gDD000002qOEjYAM,false,Escalator,false,true,Radar Sensor,true
+Escalator;Balustrade;Tag,false,false,Balustrade,a2gDD000002qOEkYAM,false,Escalator,false,true,Tag,true
+Escalator;Balustrade;Others,true,true,Balustrade,a2gDD000002qOElYAM,true,Escalator,true,true,Others,true
+Escalator;Truss;Truss,false,true,Truss,a2gDD000002qOEmYAM,false,Escalator,true,false,Truss,true
+Escalator;Truss;Cladding,false,true,Truss,a2gDD000002qOEnYAM,false,Escalator,true,false,Cladding,true
+Escalator;Truss;Others,true,true,Truss,a2gDD000002qOEoYAM,true,Escalator,true,true,Others,true
