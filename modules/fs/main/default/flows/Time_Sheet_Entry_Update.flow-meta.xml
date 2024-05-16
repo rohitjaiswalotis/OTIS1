@@ -894,15 +894,15 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Multiplier_Values__c</field>
+            <field>Multiplier_Type__c</field>
             <value>
-                <elementReference>multiplierfornewTSE</elementReference>
+                <elementReference>Multiplier_Types_TSE</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Multiplier__c</field>
+            <field>Multiplier_Values__c</field>
             <value>
-                <elementReference>Multiplier_Types_TSE</elementReference>
+                <elementReference>multiplierfornewTSE</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -997,7 +997,7 @@
         <queriedFields>Id</queriedFields>
         <queriedFields>StartTime</queriedFields>
         <queriedFields>EndTime</queriedFields>
-        <queriedFields>Multiplier__c</queriedFields>
+        <queriedFields>Multiplier_Type__c</queriedFields>
         <queriedFields>Multiplier_Values__c</queriedFields>
         <queriedFields>TimeSheetEntryNumber</queriedFields>
         <queriedFields>Service_Appointment__c</queriedFields>
@@ -1120,7 +1120,7 @@
         <queriedFields>EndTime</queriedFields>
         <queriedFields>Multiplier_Values__c</queriedFields>
         <queriedFields>Service_Appointment__c</queriedFields>
-        <queriedFields>Multiplier__c</queriedFields>
+        <queriedFields>Multiplier_Type__c</queriedFields>
         <queriedFields>CreatedDate</queriedFields>
     </recordLookups>
     <recordLookups>
@@ -1173,15 +1173,15 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Multiplier_Values__c</field>
+            <field>Multiplier_Type__c</field>
             <value>
-                <elementReference>UpdateTSEMultiplier</elementReference>
+                <elementReference>Multiplier_Type</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Multiplier__c</field>
+            <field>Multiplier_Values__c</field>
             <value>
-                <elementReference>Multiplier_Type</elementReference>
+                <elementReference>UpdateTSEMultiplier</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
