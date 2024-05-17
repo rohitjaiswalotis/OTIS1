@@ -1963,6 +1963,13 @@
                 <booleanValue>false</booleanValue>
             </value>
         </filters>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <elementReference>$Setup.OTISCustomSettings__c.Classic_CC_RecordType_ID__c</elementReference>
+            </value>
+        </filters>
         <inputAssignments>
             <field>RecordTypeId</field>
             <value>
