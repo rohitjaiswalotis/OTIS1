@@ -1120,7 +1120,7 @@
             <targetReference>Get_Work_Order</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
     <variables>
         <name>allExpenseEntry</name>
         <dataType>SObject</dataType>
