@@ -190,6 +190,14 @@
         <connector>
             <targetReference>Is_Route_Empty</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Unit__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
         <inputAssignments>
             <field>Unit__c</field>
             <value>
