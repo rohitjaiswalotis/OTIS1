@@ -4,7 +4,7 @@
     <decisions>
         <name>Check_Fixed_Issue</name>
         <label>Check Fixed Issue</label>
-        <locationX>3372</locationX>
+        <locationX>3438</locationX>
         <locationY>539</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -24,7 +24,7 @@
         </rules>
         <rules>
             <name>check_system_reason_and_SPV_checkbox</name>
-            <conditionLogic>(1 OR 5) AND 2 AND 3 AND 4</conditionLogic>
+            <conditionLogic>(1 OR 5) AND 2 AND 3 AND 4 AND 6</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.WorkOrder__r.FS_WorkOderType__c</leftValueReference>
                 <operator>EqualTo</operator>
@@ -60,32 +60,17 @@
                     <stringValue>Repair</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.Fixed_Issue__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>No</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Update_Records_WO</targetReference>
             </connector>
             <label>check system reason and SPV checkbox</label>
-        </rules>
-        <rules>
-            <name>Check_WO_type</name>
-            <conditionLogic>or</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.WorkOrder__r.FS_WorkOderType__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Open Order</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.WorkOrder__r.FS_WorkOderType__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Repair</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Copy_1_of_Update_Related_WO</targetReference>
-            </connector>
-            <label>Check WO type</label>
         </rules>
     </decisions>
     <decisions>
@@ -621,12 +606,38 @@
     <decisions>
         <name>Check_Work_Order_Type</name>
         <label>Check Work Order Type</label>
-        <locationX>2910</locationX>
+        <locationX>3042</locationX>
         <locationY>647</locationY>
-        <defaultConnector>
-            <targetReference>Update_Related_WO7</targetReference>
-        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Check_Open_Order_or_Repair_and_WC</name>
+            <conditionLogic>(1 OR 2) AND 3</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.FS_WorkOderType__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Open Order</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.FS_WorkOderType__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Repair</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.FS_Work_Completion__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Related_WO7</targetReference>
+            </connector>
+            <label>Check Open Order or Repair and WC</label>
+        </rules>
         <rules>
             <name>Open_Order</name>
             <conditionLogic>and</conditionLogic>
@@ -822,28 +833,9 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordUpdates>
-        <name>Copy_1_of_Update_Related_WO</name>
-        <label>Copy 1 of Update Related WO</label>
-        <locationX>3570</locationX>
-        <locationY>647</locationY>
-        <inputAssignments>
-            <field>Status</field>
-            <value>
-                <stringValue>Closed</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>SvcReqAssignedMechanic__c</field>
-            <value>
-                <elementReference>$Record.AssignedServiceResource__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record.WorkOrder__r</inputReference>
-    </recordUpdates>
-    <recordUpdates>
         <name>Open_order_WO_status_Cannot_Complete</name>
         <label>Open order WO status Cannot Complete</label>
-        <locationX>2778</locationX>
+        <locationX>3042</locationX>
         <locationY>755</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -856,7 +848,7 @@
     <recordUpdates>
         <name>Update_Records_WO</name>
         <label>Update Records WO</label>
-        <locationX>3306</locationX>
+        <locationX>3570</locationX>
         <locationY>647</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -953,7 +945,7 @@
     <recordUpdates>
         <name>Update_Related_WO7</name>
         <label>Update Related WO</label>
-        <locationX>3042</locationX>
+        <locationX>2778</locationX>
         <locationY>755</locationY>
         <inputAssignments>
             <field>Status</field>
