@@ -738,19 +738,12 @@
         <connector>
             <targetReference>get_expense_id</targetReference>
         </connector>
-        <filterLogic>1 AND 2</filterLogic>
+        <filterLogic>or</filterLogic>
         <filters>
             <field>WorkOrderId</field>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>Id</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>ServiceResource__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>serviceResourceIds</elementReference>
             </value>
         </filters>
         <object>Expense</object>
