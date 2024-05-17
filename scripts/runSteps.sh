@@ -803,7 +803,7 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
         
         
     # handle bash execution step: run all non-hidden top level files inside directory
-    elif [[ -d "$file" && "${file,,}" =~ ^.*/${STEP_INDEX_REGEX}-shell(-.*)?$ ]]; then
+    elif [[ -d "$file" && "${file,,}" =~ ^.*/${STEP_INDEX_REGEX}-(shell|bash)(-.*)?$ ]]; then
         
         echo "Step has been identified as shell execution."
         echo "Iterating over shell scripts available..."

@@ -53,7 +53,7 @@
 		},
 		
 		{
-			"query": "SELECT Id, Name, DurationType, DurationInMinutes, EstimatedDuration, ShouldAutoCreateSvcAppt, ServiceReportTemplateId FROM WorkType",
+			"query": "SELECT Id, Name, DurationType, DurationInMinutes, EstimatedDuration, ShouldAutoCreateSvcAppt, ServiceReportTemplateId, WoDocumentTemplate FROM WorkType",
 			"operation": "Upsert",
 			"externalId": "Name;DurationType;DurationInMinutes"
 		},
