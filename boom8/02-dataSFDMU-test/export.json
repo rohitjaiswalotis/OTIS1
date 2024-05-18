@@ -1,0 +1,27 @@
+{
+	
+	"allOrNone" : false,
+	
+	"createTargetCSVFiles": true,
+	
+	"objectSets": [
+		{
+			
+			"objects": [
+				
+				{
+					"query": "SELECT Id, FieldServiceMobileSettingsId, AppExtensionName, Type, LaunchValue, ScopedToObjectTypes, AppExtensionLabel, InstallationUrl FROM AppExtension",
+					"operation": "Upsert",
+					"externalId": "AppExtensionName;Type"
+				}
+				
+			],
+			
+			"importCSVFilesAsIs": true
+			
+		}
+		
+	]
+	
+}
+

@@ -1,0 +1,22 @@
+$$AppExtensionName$Type,AppExtensionLabel,AppExtensionName,FieldServiceMobileSettingsId,InstallationUrl,LaunchValue,ScopedToObjectTypes,Type
+Service_Report_Flow;Flow,Create Service Report,Service_Report_Flow,$SF_SR_VAR_MOBILE_SETTING_ID,,Create_SR,ServiceAppointment,Flow
+Accept or Reject SA;Flow,Accept or Reject SA,Accept or Reject SA,$SF_SR_VAR_MOBILE_SETTING_ID,,SA_Accept_Reject_FSL_Flow,ServiceAppointment,Flow
+Service Request WO Closeout;Flow,Service Request WO Closeout,Service Request WO Closeout,$SF_SR_VAR_MOBILE_SETTING_ID,,Closeout_SA,ServiceAppointment,Flow
+Update Unit Status;Flow,Update Unit Status,Update Unit Status,$SF_SR_VAR_MOBILE_SETTING_ID,,FSL_Mobile_Unit_Shutdown,Asset,Flow
+Select Language;Flow,Select Language,Select Language,$SF_SR_VAR_MOBILE_SETTING_ID,/flow/FS_Select_Service_Report_Language,FS_Select_Service_Report_Language,WorkOrder,Flow
+Change SA Status;Flow,Change SA Status,Change SA Status,$SF_SR_VAR_MOBILE_SETTING_ID,/flow/FSL_MobileAPP_Change_SA_Status,FSL_MobileAPP_Change_SA_Status,ServiceAppointment,Flow
+Add Images;Flow,Add Images,Add Images,$SF_SR_VAR_MOBILE_SETTING_ID,/flow/FSL_Add_Images_To_SA,FSL_Add_Images_To_SA,ServiceAppointment,Flow
+Unit Search Bar;Flow,Unit search bar,Unit Search Bar,$SF_SR_VAR_MOBILE_SETTING_ID,/flow/FSL_MobileAPP_Unit_search_bar,FSL_MobileAPP_Unit_search_bar,ServiceAppointment,Flow
+Pin/Unpin SA;Flow,Pin/Unpin Service Appointment,Pin/Unpin SA,$SF_SR_VAR_MOBILE_SETTING_ID,/flow/Change_Pinn_Service_Appointment,Change_Pinn_Service_Appointment,ServiceAppointment,Flow
+Declare Parts Missing;Flow,Declare Parts Missing,Declare Parts Missing,$SF_SR_VAR_MOBILE_SETTING_ID,/flow/Declare_Parts_Missing_WO,Declare_Parts_Missing_WO,WorkOrder,Flow
+FS_ChangeWOLIStatus;Flow,Complete Line Item Status,FS_ChangeWOLIStatus,$SF_SR_VAR_MOBILE_SETTING_ID,/flow/FS_ChangeWOLIStatus,FS_ChangeWOLIStatus,WorkOrder,Flow
+Update Schedule Time;Flow,Update Schedule Time,Update Schedule Time,$SF_SR_VAR_MOBILE_SETTING_ID,/flow/Updated_SA_Schedule_Time,Updated_SA_Schedule_Time,ServiceAppointment,Flow
+View Report;iOS,Open KPI Dashboards,View Report,$SF_SR_VAR_MOBILE_SETTING_ID,,salesforce1://v1/sObject/$SF_SR_VAR_KPI_DASHBOARDS_MECHANICS_ID/view,ServiceAppointment,iOS
+Add New Building Contact;Flow,Add New Building Contact,Add New Building Contact,$SF_SR_VAR_MOBILE_SETTING_ID,,New_Building_Contact_Information,Location,Flow
+Passenger Release;Flow,Passenger Release,Passenger Release,$SF_SR_VAR_MOBILE_SETTING_ID,,FSL_Passenger_Released_Flow,ServiceAppointment,Flow
+Update SA;Flow,Update SA,Update SA,$SF_SR_VAR_MOBILE_SETTING_ID,,Update_ETA,ServiceAppointment,Flow
+Unit Restart Time Form;Flow,Projected Restart Date,Unit Restart Time Form,$SF_SR_VAR_MOBILE_SETTING_ID,,Unit_Restart_Reason_FSL_Mobile_Flow,AssetDowntimePeriod,Flow
+Service Appointment Building Contact;Flow,Service Appointment Building Contact,Service Appointment Building Contact,$SF_SR_VAR_MOBILE_SETTING_ID,,Service_Appointment_Building_Contact,ServiceAppointment,Flow
+Create_WO_for_Repair_Detection;Flow,Create WO for Repair Detection,Create_WO_for_Repair_Detection,$SF_SR_VAR_MOBILE_SETTING_ID,/flow/Create_WO_for_Repair_Detection,Create_WO_for_Repair_Detection,"ServiceAppointment,WorkOrder,Asset",Flow
+WOLI Create;Flow,Additional Work,WOLI Create,$SF_SR_VAR_MOBILE_SETTING_ID,/flow/WOLI_Creation,WOLI_Creation,WorkOrder,Flow
+Add Image on WO;Flow,Add Image on WO,Add Image on WO,$SF_SR_VAR_MOBILE_SETTING_ID,/flow/Add_Image_on_WorkOrder,Add_Image_on_WorkOrder,WorkOrder,Flow
