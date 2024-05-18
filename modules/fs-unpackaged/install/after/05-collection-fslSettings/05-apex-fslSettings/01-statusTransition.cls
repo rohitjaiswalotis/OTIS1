@@ -16,7 +16,6 @@ FSL.GlobalAPIS.addStatusTransition('Dispatched', 'Accepted');
 FSL.GlobalAPIS.addStatusTransition('Dispatched', 'Rejected');
 FSL.GlobalAPIS.addStatusTransition('Accepted', 'Enroute');
 FSL.GlobalAPIS.addStatusTransition('Accepted', 'Canceled');
-FSL.GlobalAPIS.addStatusTransition('Onsite', 'Cannot Execute');
 FSL.GlobalAPIS.addStatusTransition('Onsite', 'Cannot Complete');
 FSL.GlobalAPIS.addStatusTransition('Dispatched', 'Onsite');
 FSL.GlobalAPIS.addStatusTransition('None', 'Canceled');

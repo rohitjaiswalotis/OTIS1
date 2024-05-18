@@ -57,12 +57,6 @@
         <groupingString>CannotComplete</groupingString>
     </standardValue>
     <standardValue>
-        <fullName>Cannot Execute</fullName>
-        <default>false</default>
-        <label>Cannot Execute</label>
-        <groupingString>CannotComplete</groupingString>
-    </standardValue>
-    <standardValue>
         <fullName>Completed</fullName>
         <default>false</default>
         <label>✅ Completed</label>
