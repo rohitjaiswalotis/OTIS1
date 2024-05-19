@@ -10,7 +10,7 @@
       "definitionFile": "config/core/shape.json",
       "dependencies": [
         {
-          "package": "FSL@248.0.79"
+          "package": "FSL@250.0.37"
         },
         {
           "package": "Salesforce Mobile Apps@1.21.0"
@@ -54,7 +54,7 @@
     }
   ],
   "packageAliases": {
-    "FSL@248.0.79": "04t3y000001IZnlAAG",
+    "FSL@250.0.37": "04t3y00000233gcAAA",
     "Salesforce Mobile Apps@1.21.0": "04t4V000001VUpTQAW",
     "Salesforce Maps@246.9": "04t4P000002fQreQAE",
     "Salesforce Field Service App@1.55": "04tHq000000lsw7IAA",
