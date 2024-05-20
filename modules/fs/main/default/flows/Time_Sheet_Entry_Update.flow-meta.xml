@@ -231,7 +231,7 @@
             <assignToReference>errorMessage1</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Start Time of the new TSE should be greater than the start time of last timesheet entry of the day</stringValue>
+                <stringValue>Start Time of the new TSE should be greater than the start time of last TSE of the day OR Start time of the new TSE should be Less than the start time of First TSE of the day</stringValue>
             </value>
         </assignmentItems>
         <connector>
@@ -248,7 +248,7 @@
             <assignToReference>ErrorMessage2</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Start time of the new TSE should be Less than the start time of First TSE of the day</stringValue>
+                <stringValue>Start Time of the new TSE should be greater than the start time of last TSE of the day OR Start time of the new TSE should be Less than the start time of First TSE of the day</stringValue>
             </value>
         </assignmentItems>
         <connector>
