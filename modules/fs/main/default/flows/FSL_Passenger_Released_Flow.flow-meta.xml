@@ -3,7 +3,7 @@
     <decisions>
         <name>Checking_WO_Priority</name>
         <label>Checking WO Priority</label>
-        <locationX>710</locationX>
+        <locationX>908</locationX>
         <locationY>566</locationY>
         <defaultConnector>
             <targetReference>Error_for_Not_S1</targetReference>
@@ -13,10 +13,10 @@
             <name>Priority_is_S1</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>WORecord.Priority</leftValueReference>
+                <leftValueReference>WORecord.FS_Priority__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>S1 - Emergency</stringValue>
+                    <stringValue>S1</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -49,10 +49,10 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>WORecord.Priority</leftValueReference>
+                <leftValueReference>WORecord.FS_Priority__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>S1 - Emergency</stringValue>
+                    <stringValue>S1</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -78,10 +78,10 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>WORecord.Priority</leftValueReference>
+                <leftValueReference>WORecord.FS_Priority__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>S1 - Emergency</stringValue>
+                    <stringValue>S1</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -91,9 +91,34 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Passenger_Released_By_Otis</name>
+        <label>Passenger Released By Otis</label>
+        <locationX>446</locationX>
+        <locationY>782</locationY>
+        <defaultConnector>
+            <targetReference>Passenger_Release_Data_By_Other</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Passenger Released By Others</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_1_of_Passenger_Released_By_Otis</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Released_by_Otis</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Passenger_Release_Data_By_Mech</targetReference>
+            </connector>
+            <label>Outcome 1 of Passenger Released By Otis</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Record_Type_Check</name>
         <label>Record Type Check</label>
-        <locationX>380</locationX>
+        <locationX>479</locationX>
         <locationY>458</locationY>
         <defaultConnector>
             <targetReference>Checking_WO_Priority</targetReference>
@@ -146,7 +171,7 @@
     <recordLookups>
         <name>get_Record_type</name>
         <label>get Record type</label>
-        <locationX>380</locationX>
+        <locationX>479</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -169,7 +194,7 @@
     <recordLookups>
         <name>Get_SA_Record</name>
         <label>Get SA Record</label>
-        <locationX>380</locationX>
+        <locationX>479</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -199,7 +224,7 @@
     <recordLookups>
         <name>Get_WO_Record</name>
         <label>Get WO Record</label>
-        <locationX>380</locationX>
+        <locationX>479</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -221,12 +246,13 @@
         <queriedFields>ConfirmedPassengerRelease__c</queriedFields>
         <queriedFields>SvcReqRescueDateTime__c</queriedFields>
         <queriedFields>RecordTypeId</queriedFields>
+        <queriedFields>FS_Priority__c</queriedFields>
     </recordLookups>
     <recordUpdates>
-        <name>Update_the_WO_Fields</name>
-        <label>Update the WO Fields</label>
-        <locationX>314</locationX>
-        <locationY>782</locationY>
+        <name>Update_the_WO_Field</name>
+        <label>Update the WO Field</label>
+        <locationX>578</locationX>
+        <locationY>998</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -238,7 +264,7 @@
         <inputAssignments>
             <field>ConfirmedPassengerRelease__c</field>
             <value>
-                <elementReference>Passenger_Rescue_Datetime</elementReference>
+                <elementReference>Passenger_Rescue_Datetime_2</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -250,7 +276,46 @@
         <inputAssignments>
             <field>SvcReqRescueDateTime__c</field>
             <value>
-                <elementReference>Passenger_Rescue_Datetime</elementReference>
+                <elementReference>Passenger_Rescue_Datetime_2</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>TrappedPassengerReleasedByOTIS__c</field>
+            <value>
+                <elementReference>Released_by_Otis</elementReference>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_the_WO_Fields</name>
+        <label>Update the WO Fields</label>
+        <locationX>314</locationX>
+        <locationY>998</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>SA_Record.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>ConfirmedPassengerRelease__c</field>
+            <value>
+                <elementReference>Passenger_Rescue_Datetime_1</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>PassengerOutreachNoLongerRequired__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SvcReqRescueDateTime__c</field>
+            <value>
+                <elementReference>Passenger_Rescue_Datetime_1</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -264,7 +329,7 @@
     <screens>
         <name>Error_for_Not_S1</name>
         <label>Error for Not S1</label>
-        <locationX>1106</locationX>
+        <locationX>1370</locationX>
         <locationY>674</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -296,7 +361,7 @@
     <screens>
         <name>Passenger_Release</name>
         <label>Passenger Release</label>
-        <locationX>842</locationX>
+        <locationX>1106</locationX>
         <locationY>674</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -312,13 +377,13 @@
     <screens>
         <name>Passenger_Release_Data</name>
         <label>Passenger Release Data</label>
-        <locationX>314</locationX>
+        <locationX>446</locationX>
         <locationY>674</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Update_the_WO_Fields</targetReference>
+            <targetReference>Passenger_Released_By_Otis</targetReference>
         </connector>
         <fields>
             <name>Released_by_Otis</name>
@@ -331,8 +396,22 @@
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Passenger_Release_Data_By_Mech</name>
+        <label>Passenger Release Data By Mech</label>
+        <locationX>314</locationX>
+        <locationY>890</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Update_the_WO_Fields</targetReference>
+        </connector>
         <fields>
-            <name>Passenger_Rescue_Datetime</name>
+            <name>Passenger_Rescue_Datetime_1</name>
             <dataType>DateTime</dataType>
             <defaultValue>
                 <elementReference>$Flow.CurrentDateTime</elementReference>
@@ -342,8 +421,32 @@
             <isRequired>true</isRequired>
             <validationRule>
                 <errorMessage>&lt;p&gt;Release time should not be more than 15 mins in past from current time&lt;/p&gt;</errorMessage>
-                <formulaExpression>{!Passenger_Rescue_Datetime}&gt;{!Time15minprior}</formulaExpression>
+                <formulaExpression>{!Passenger_Rescue_Datetime_1}&gt;{!Time15minprior}</formulaExpression>
             </validationRule>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Passenger_Release_Data_By_Other</name>
+        <label>Passenger Release Data By Other</label>
+        <locationX>578</locationX>
+        <locationY>890</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Update_the_WO_Field</targetReference>
+        </connector>
+        <fields>
+            <name>Passenger_Rescue_Datetime_2</name>
+            <dataType>DateTime</dataType>
+            <defaultValue>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </defaultValue>
+            <fieldText>Passenger Rescue Datetime</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -351,7 +454,7 @@
     <screens>
         <name>Passenger_Released</name>
         <label>Passenger Released</label>
-        <locationX>578</locationX>
+        <locationX>842</locationX>
         <locationY>674</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -365,7 +468,7 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>254</locationX>
+        <locationX>353</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_SA_Record</targetReference>
