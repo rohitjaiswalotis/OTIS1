@@ -53,6 +53,7 @@
             <label>Update Absence Record</label>
         </rules>
     </decisions>
+    <description>This FSL flow used to create or update Resource Absence on Service Resource</description>
     <dynamicChoiceSets>
         <name>AbsencePicklistRecords</name>
         <dataType>Picklist</dataType>
