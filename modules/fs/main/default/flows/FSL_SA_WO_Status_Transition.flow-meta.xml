@@ -996,6 +996,19 @@
         </inputAssignments>
         <inputReference>$Record.WorkOrder__r</inputReference>
     </recordUpdates>
+     <recordUpdates>
+        <name>Open_order_WO_status_Cannot_Complete</name>
+        <label>Open order WO status Cannot Complete</label>
+        <locationX>2778</locationX>
+        <locationY>755</locationY>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Cannot Complete</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.WorkOrder__r</inputReference>
+    </recordUpdates>
     <recordUpdates>
         <name>Update_Related_WO1</name>
         <label>Update Related WO</label>
