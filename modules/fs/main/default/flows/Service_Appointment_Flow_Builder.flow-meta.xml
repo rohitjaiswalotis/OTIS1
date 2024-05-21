@@ -2712,14 +2712,6 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>UnitOperationalStatusReason</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <objectType>Unit_Operational_Status_Reason_Mapping__mdt</objectType>
-    </variables>
-    <variables>
         <name>UpdatedSystemReason</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
