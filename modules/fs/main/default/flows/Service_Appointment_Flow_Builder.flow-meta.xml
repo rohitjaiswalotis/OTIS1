@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Custom_Notification_to_Mechanic</name>
         <label>Custom Notification to Mechanic</label>
-        <locationX>6562</locationX>
-        <locationY>924</locationY>
+        <locationX>1106</locationX>
+        <locationY>1896</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -45,8 +45,8 @@
     <assignments>
         <name>Assign_Recipient_Id</name>
         <label>Assign Recipient Id</label>
-        <locationX>6562</locationX>
-        <locationY>708</locationY>
+        <locationX>1106</locationX>
+        <locationY>1680</locationY>
         <assignmentItems>
             <assignToReference>MechanicId</assignToReference>
             <operator>Add</operator>
@@ -61,8 +61,8 @@
     <assignments>
         <name>Assign_SA_Completed_to_a_Variable</name>
         <label>Assign SA Completed to a Variable</label>
-        <locationX>3086</locationX>
-        <locationY>3972</locationY>
+        <locationX>4274</locationX>
+        <locationY>1980</locationY>
         <assignmentItems>
             <assignToReference>StorteCompletedSaWOIDs</assignToReference>
             <operator>Add</operator>
@@ -98,7 +98,7 @@
     <assignments>
         <name>Calculate_Actual_Duration</name>
         <label>Calculate Actual Duration</label>
-        <locationX>2338</locationX>
+        <locationX>2602</locationX>
         <locationY>924</locationY>
         <assignmentItems>
             <assignToReference>SumOfActualDuration</assignToReference>
@@ -114,8 +114,8 @@
     <assignments>
         <name>Copy_1_of_Assign_SA_to_a_Variable</name>
         <label>Copy 1 of Assign SA to a Variable</label>
-        <locationX>3130</locationX>
-        <locationY>3240</locationY>
+        <locationX>4318</locationX>
+        <locationY>1248</locationY>
         <assignmentItems>
             <assignToReference>storeSAids</assignToReference>
             <operator>Add</operator>
@@ -130,7 +130,7 @@
     <assignments>
         <name>Count_of_Pending_SA</name>
         <label>Count of Pending SA</label>
-        <locationX>2910</locationX>
+        <locationX>3174</locationX>
         <locationY>1032</locationY>
         <assignmentItems>
             <assignToReference>CountPendingSA</assignToReference>
@@ -146,7 +146,7 @@
     <assignments>
         <name>Update_Counter</name>
         <label>Update Counter</label>
-        <locationX>1590</locationX>
+        <locationX>1854</locationX>
         <locationY>1140</locationY>
         <assignmentItems>
             <assignToReference>AssignedServiceResourceCounter</assignToReference>
@@ -162,7 +162,7 @@
     <decisions>
         <name>Check_Count</name>
         <label>Check Count</label>
-        <locationX>2910</locationX>
+        <locationX>3174</locationX>
         <locationY>1140</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -184,7 +184,7 @@
     <decisions>
         <name>Check_Fixed_Issue</name>
         <label>Check Fixed Issue</label>
-        <locationX>2910</locationX>
+        <locationX>3174</locationX>
         <locationY>816</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -250,7 +250,7 @@
         <description>This decision will check whether  the related work Oder&apos;s record type is maintenance or not</description>
         <name>Check_For_Maintenance</name>
         <label>Check For Maintenance</label>
-        <locationX>7420</locationX>
+        <locationX>9092</locationX>
         <locationY>276</locationY>
         <defaultConnectorLabel>Not maintenance</defaultConnectorLabel>
         <rules>
@@ -273,9 +273,10 @@
         <description>This decision will check whether  the related work Oder&apos;s record type is maintenance or not</description>
         <name>Check_For_Maintenancee</name>
         <label>Check For Maintenance</label>
-        <locationX>4868</locationX>
+        <locationX>5990</locationX>
         <locationY>276</locationY>
         <defaultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>If_SA_Status_changed_to_Accepted</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Not maintenance</defaultConnectorLabel>
@@ -286,7 +287,7 @@
                 <leftValueReference>$Record.WorkOrder__r.RecordType.Id</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>$Setup.OTISCustomSettings__c.Work_Order_Maintenance_Record_Type__c</elementReference>
+                    <stringValue>{!$Setup.OTISCustomSettings__c.Work_Order_Maintenance_Record_Type__c}</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -324,11 +325,33 @@
             </connector>
             <label>Not for Maintenance</label>
         </rules>
+        <rules>
+            <name>Service_Request</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.RecordType.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Service Request</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Platform_Event_Creation_Decision</targetReference>
+            </connector>
+            <label>Service Request</label>
+        </rules>
     </decisions>
     <decisions>
         <name>Check_If_Resource_Present</name>
         <label>Check If Resource Present</label>
-        <locationX>4846</locationX>
+        <locationX>5726</locationX>
         <locationY>1464</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -350,7 +373,7 @@
     <decisions>
         <name>Check_If_Resource_Present2</name>
         <label>Check If Resource Present</label>
-        <locationX>4934</locationX>
+        <locationX>5814</locationX>
         <locationY>2364</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
@@ -372,7 +395,7 @@
     <decisions>
         <name>Check_With_Due_Date</name>
         <label>Check With Due Date</label>
-        <locationX>4934</locationX>
+        <locationX>5814</locationX>
         <locationY>708</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -437,7 +460,7 @@
     <decisions>
         <name>Condition_Check</name>
         <label>Condition Check</label>
-        <locationX>7222</locationX>
+        <locationX>8894</locationX>
         <locationY>384</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -494,8 +517,8 @@
     <decisions>
         <name>Copy_1_of_Check_if_WO_is_Missed_Visit</name>
         <label>Copy 1 of Check if WO is Missed Visit</label>
-        <locationX>3042</locationX>
-        <locationY>3540</locationY>
+        <locationX>4230</locationX>
+        <locationY>1548</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Copy_1_of_Yes</name>
@@ -516,8 +539,8 @@
     <decisions>
         <name>Copy_1_of_IF_WO_with_missed_Visit_is_there_in_pending_state</name>
         <label>Copy 1 of IF WO with missed Visit is there in pending state</label>
-        <locationX>2822</locationX>
-        <locationY>3648</locationY>
+        <locationX>4010</locationX>
+        <locationY>1656</locationY>
         <defaultConnector>
             <targetReference>Get_SA_Completedassociated_with_Unit</targetReference>
         </defaultConnector>
@@ -538,10 +561,9 @@
     <decisions>
         <name>Copy_1_of_Is_WO_Maintenance_type</name>
         <label>Copy 1 of Is WO Maintenance type</label>
-        <locationX>974</locationX>
+        <locationX>1040</locationX>
         <locationY>1248</locationY>
         <defaultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>If_SA_Status_changed_to_Accepted</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
@@ -564,7 +586,7 @@
     <decisions>
         <name>Current_Time_less_Than_DueDate</name>
         <label>Current Time less Than DueDate</label>
-        <locationX>4934</locationX>
+        <locationX>5814</locationX>
         <locationY>2040</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -626,7 +648,7 @@
     <decisions>
         <name>If_Get_records_returns_Blank_Collection</name>
         <label>If Get records returns Blank Collection</label>
-        <locationX>1502</locationX>
+        <locationX>1766</locationX>
         <locationY>1332</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -648,8 +670,8 @@
     <decisions>
         <name>If_SA_Status_changed_to_Accepted</name>
         <label>If SA Status changed to Accepted</label>
-        <locationX>6694</locationX>
-        <locationY>384</locationY>
+        <locationX>1238</locationX>
+        <locationY>1356</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>SA_status_changed_to_Accepted</name>
@@ -703,7 +725,7 @@
     <decisions>
         <name>Jeopardy_Check</name>
         <label>Jeopardy Check</label>
-        <locationX>4934</locationX>
+        <locationX>5814</locationX>
         <locationY>816</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -738,9 +760,31 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Null_Check</name>
+        <label>Null Check</label>
+        <locationX>7838</locationX>
+        <locationY>708</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Not_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_CustomMetaData</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>PE_When_SA_and_WO_Completed</targetReference>
+            </connector>
+            <label>Not Null</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>operations_on_assigned_resource</name>
         <label>operations on assigned resource</label>
-        <locationX>1172</locationX>
+        <locationX>1304</locationX>
         <locationY>816</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -818,9 +862,53 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Platform_Event_Creation_Decision</name>
+        <label>Platform Event Creation Decision</label>
+        <locationX>7838</locationX>
+        <locationY>384</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_1_of_Platform_Event_Creation_Decision</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Onsite</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>PE_When_SA_change_to_Onsite</targetReference>
+            </connector>
+            <label>If SA Status Change to Onsite</label>
+        </rules>
+        <rules>
+            <name>When_SA_Status_Change_to_Closure</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Unit_Records</targetReference>
+            </connector>
+            <label>When SA Status Change to Closure</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>SA_Decision</name>
         <label>SA Decision</label>
-        <locationX>3042</locationX>
+        <locationX>3482</locationX>
         <locationY>600</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -1038,7 +1126,7 @@
     <decisions>
         <name>TimeFrame_Extended_in_WO</name>
         <label>TimeFrame Extended in WO</label>
-        <locationX>4890</locationX>
+        <locationX>5770</locationX>
         <locationY>1032</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -1075,6 +1163,11 @@
     <description>This version of the flow will filter Related Work orders record type ( with Custom Settings)
 WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <environments>Default</environments>
+    <formulas>
+        <name>CurrentMechanicArrivalTime</name>
+        <dataType>DateTime</dataType>
+        <expression>NOW()</expression>
+    </formulas>
     <formulas>
         <name>CurrentTime</name>
         <dataType>DateTime</dataType>
@@ -1115,8 +1208,8 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <loops>
         <name>Copy_1_of_For_Each_SA</name>
         <label>Copy 1 of For Each SA</label>
-        <locationX>3042</locationX>
-        <locationY>3132</locationY>
+        <locationX>4230</locationX>
+        <locationY>1140</locationY>
         <collectionReference>Copy_1_of_Get_SA_associated_with_Unit</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1129,8 +1222,8 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <loops>
         <name>For_Each_Completed_SA</name>
         <label>For Each Completed SA</label>
-        <locationX>2998</locationX>
-        <locationY>3864</locationY>
+        <locationX>4186</locationX>
+        <locationY>1872</locationY>
         <collectionReference>Get_SA_Completedassociated_with_Unit</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1143,7 +1236,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <loops>
         <name>Loop_SA</name>
         <label>Loop SA</label>
-        <locationX>2250</locationX>
+        <locationX>2514</locationX>
         <locationY>816</locationY>
         <collectionReference>GetAllActualDurationFromSA</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -1157,7 +1250,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <loops>
         <name>Loop_Through_Record_Collection</name>
         <label>Loop Through Record Collection</label>
-        <locationX>1502</locationX>
+        <locationX>1766</locationX>
         <locationY>1032</locationY>
         <collectionReference>AssignedResourceRecordCollection</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -1210,10 +1303,80 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
         <object>AssignedResource</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
+    <recordCreates>
+        <name>PE_When_SA_and_WO_Completed</name>
+        <label>PE When SA and WO Completed</label>
+        <locationX>7706</locationX>
+        <locationY>816</locationY>
+        <inputAssignments>
+            <field>CallbackKey__c</field>
+            <value>
+                <elementReference>$Record.WorkOrder__r.SvcReqCallBackKey__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OperationalStatusReason__c</field>
+            <value>
+                <elementReference>TransformPlatformEventVariable</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>TimeZone__c</field>
+            <value>
+                <elementReference>$Record.AssignedServiceResource__r.TimeZone__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WorkOrderClosureDate__c</field>
+            <value>
+                <elementReference>$Record.WorkOrder__r.WorkOrderClosureDate__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WorkOrderStatus__c</field>
+            <value>
+                <elementReference>$Record.WorkOrder__r.Status</elementReference>
+            </value>
+        </inputAssignments>
+        <object>SF2WSOtisNoteEvent__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>PE_When_SA_change_to_Onsite</name>
+        <label>PE When SA change to Onsite</label>
+        <locationX>7442</locationX>
+        <locationY>492</locationY>
+        <inputAssignments>
+            <field>CallbackKey__c</field>
+            <value>
+                <elementReference>$Record.WorkOrder__r.SvcReqCallBackKey__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MechanicArrivalTime__c</field>
+            <value>
+                <elementReference>CurrentMechanicArrivalTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>TimeZone__c</field>
+            <value>
+                <elementReference>$Record.AssignedServiceResource__r.TimeZone__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WorkOrderStatus__c</field>
+            <value>
+                <elementReference>$Record.WorkOrder__r.Status</elementReference>
+            </value>
+        </inputAssignments>
+        <object>SF2WSOtisNoteEvent__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordDeletes>
         <name>DeleteRelatedAssignedResourceRecord</name>
         <label>Delete Related Assigned Resource Record</label>
-        <locationX>1370</locationX>
+        <locationX>1634</locationX>
         <locationY>1440</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1228,8 +1391,8 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordLookups>
         <name>Copy_1_of_Get_Related_WO</name>
         <label>Copy 1 of Get Related WO</label>
-        <locationX>3042</locationX>
-        <locationY>3432</locationY>
+        <locationX>4230</locationX>
+        <locationY>1440</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Copy_1_of_Check_if_WO_is_Missed_Visit</targetReference>
@@ -1256,8 +1419,8 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordLookups>
         <name>Copy_1_of_Get_SA_associated_with_Unit</name>
         <label>Copy 1 of Get SA associated with Unit</label>
-        <locationX>3042</locationX>
-        <locationY>3024</locationY>
+        <locationX>4230</locationX>
+        <locationY>1032</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Copy_1_of_For_Each_SA</targetReference>
@@ -1298,7 +1461,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordLookups>
         <name>Get_All_SA_Record_Associated_With_WO</name>
         <label>Get All SA Record Associated With WO</label>
-        <locationX>2250</locationX>
+        <locationX>2514</locationX>
         <locationY>708</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1320,7 +1483,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordLookups>
         <name>Get_Assigned_Resource_Record</name>
         <label>Get Assigned Resource Record</label>
-        <locationX>1172</locationX>
+        <locationX>1304</locationX>
         <locationY>708</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1339,9 +1502,32 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>Get_CustomMetaData</name>
+        <label>Get CustomMetaData</label>
+        <locationX>7838</locationX>
+        <locationY>600</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Null_Check</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Unit_Operational_Status_Reason_SF__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Unit__r.OperationalStatusReason__c</elementReference>
+            </value>
+        </filters>
+        <object>Unit_Operational_Status_Reason_Mapping__mdt</object>
+        <outputAssignments>
+            <assignToReference>TransformPlatformEventVariable</assignToReference>
+            <field>Transformed_Platform_Event_Output__c</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Days_with_SLA</name>
         <label>Get Days with  SLA</label>
-        <locationX>4846</locationX>
+        <locationX>5726</locationX>
         <locationY>1140</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1364,8 +1550,8 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordLookups>
         <name>Get_Notification_Type</name>
         <label>Get Notification Type</label>
-        <locationX>6562</locationX>
-        <locationY>816</locationY>
+        <locationX>1106</locationX>
+        <locationY>1788</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Custom_Notification_to_Mechanic</targetReference>
@@ -1385,7 +1571,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordLookups>
         <name>Get_Pending_SA</name>
         <label>Get Pending SA</label>
-        <locationX>2910</locationX>
+        <locationX>3174</locationX>
         <locationY>924</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1427,7 +1613,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordLookups>
         <name>Get_Related_Assigned_Resource_Record</name>
         <label>Get Related Assigned Resource Record</label>
-        <locationX>1502</locationX>
+        <locationX>1766</locationX>
         <locationY>924</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1456,8 +1642,8 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordLookups>
         <name>Get_SA_Completedassociated_with_Unit</name>
         <label>Get SA Completed associated with Unit</label>
-        <locationX>2998</locationX>
-        <locationY>3756</locationY>
+        <locationX>4186</locationX>
+        <locationY>1764</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>For_Each_Completed_SA</targetReference>
@@ -1484,8 +1670,8 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordLookups>
         <name>Get_Service_Resource</name>
         <label>Get Service Resource</label>
-        <locationX>6562</locationX>
-        <locationY>600</locationY>
+        <locationX>1106</locationX>
+        <locationY>1572</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Assign_Recipient_Id</targetReference>
@@ -1503,10 +1689,33 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>Get_Unit_Records</name>
+        <label>Get Unit Records</label>
+        <locationX>7838</locationX>
+        <locationY>492</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_CustomMetaData</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Unit__r.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Asset</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>OperationalStatusReason__c</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_User</name>
         <label>Get User</label>
-        <locationX>6562</locationX>
-        <locationY>492</locationY>
+        <locationX>1106</locationX>
+        <locationY>1464</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Service_Resource</targetReference>
@@ -1526,7 +1735,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordLookups>
         <name>Get_WO_Fixed_Issue</name>
         <label>Get WO Fixed Issue</label>
-        <locationX>2910</locationX>
+        <locationX>3174</locationX>
         <locationY>708</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1549,7 +1758,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordLookups>
         <name>GetRelatedAssignedResourceRecords</name>
         <label>Get Related Assigned Resource Records</label>
-        <locationX>974</locationX>
+        <locationX>1040</locationX>
         <locationY>924</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1570,9 +1779,10 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>Clear_GanttIcon_on_Completion</name>
         <label>Clear GanttIcon on Completion</label>
-        <locationX>2778</locationX>
+        <locationX>3042</locationX>
         <locationY>1464</locationY>
         <connector>
+            <isGoTo>true</isGoTo>
             <targetReference>Copy_1_of_Get_SA_associated_with_Unit</targetReference>
         </connector>
         <inputAssignments>
@@ -1583,8 +1793,8 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>ClearGanttIconOnCompletion</name>
         <label>Clear GanttIcon On Completion</label>
-        <locationX>3570</locationX>
-        <locationY>816</locationY>
+        <locationX>4230</locationX>
+        <locationY>924</locationY>
         <connector>
             <targetReference>Copy_1_of_Get_SA_associated_with_Unit</targetReference>
         </connector>
@@ -1596,7 +1806,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>Copy_1_of_Update_Mechanic_Name</name>
         <label>Copy 1 of Update Mechanic Name</label>
-        <locationX>974</locationX>
+        <locationX>1040</locationX>
         <locationY>1140</locationY>
         <connector>
             <targetReference>Copy_1_of_Is_WO_Maintenance_type</targetReference>
@@ -1612,8 +1822,8 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>Copy_1_of_Update_Unit_Missed_Visit_false</name>
         <label>Copy 1 of Update Unit Missed Visit false</label>
-        <locationX>2998</locationX>
-        <locationY>4380</locationY>
+        <locationX>4186</locationX>
+        <locationY>2388</locationY>
         <inputAssignments>
             <field>FS_MissedVisit__c</field>
             <value>
@@ -1638,7 +1848,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>Only_for_Fixed_issue_Yes</name>
         <label>Only for Fixed issue Yes</label>
-        <locationX>2250</locationX>
+        <locationX>2514</locationX>
         <locationY>1224</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1672,7 +1882,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>Udate_WO_Safety_Check</name>
         <label>Udate WO Safety Check</label>
-        <locationX>7090</locationX>
+        <locationX>8762</locationX>
         <locationY>492</locationY>
         <connector>
             <targetReference>Update_Gantt_Icon_on_SA</targetReference>
@@ -1694,7 +1904,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>Update_Gantt_Icon_on_SA</name>
         <label>Update Gantt Icon on SA</label>
-        <locationX>7090</locationX>
+        <locationX>8762</locationX>
         <locationY>600</locationY>
         <connector>
             <targetReference>SendCustomNotificationToMaintenanceSupervisor</targetReference>
@@ -1710,7 +1920,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>Update_Initial_Time_of_SA</name>
         <label>Update Initial Time of SA</label>
-        <locationX>3042</locationX>
+        <locationX>3482</locationX>
         <locationY>384</locationY>
         <connector>
             <targetReference>Update_SA_Priority_For_Gantt_Palette</targetReference>
@@ -1767,7 +1977,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>Update_Jeopardy1</name>
         <label>Update Jeopardy</label>
-        <locationX>4098</locationX>
+        <locationX>4978</locationX>
         <locationY>816</locationY>
         <filterLogic>or</filterLogic>
         <filters>
@@ -1795,7 +2005,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>Update_Jeopardy_True</name>
         <label>Update Jeopardy True</label>
-        <locationX>4890</locationX>
+        <locationX>5770</locationX>
         <locationY>924</locationY>
         <connector>
             <targetReference>TimeFrame_Extended_in_WO</targetReference>
@@ -1827,7 +2037,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>Update_Missed_Visit_in_Unit</name>
         <label>Update Missed Visit in Unit</label>
-        <locationX>4934</locationX>
+        <locationX>5814</locationX>
         <locationY>2256</locationY>
         <connector>
             <targetReference>Check_If_Resource_Present2</targetReference>
@@ -1851,7 +2061,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>Update_Missed_Visit_in_WO</name>
         <label>Update Missed Visit in WO</label>
-        <locationX>4934</locationX>
+        <locationX>5814</locationX>
         <locationY>2148</locationY>
         <connector>
             <targetReference>Update_Missed_Visit_in_Unit</targetReference>
@@ -1875,7 +2085,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>Update_New_Scheduled_Time</name>
         <label>Update New Scheduled Time</label>
-        <locationX>3834</locationX>
+        <locationX>4714</locationX>
         <locationY>708</locationY>
         <inputAssignments>
             <field>SchedEndTime</field>
@@ -1894,8 +2104,8 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>Update_Records_25</name>
         <label>Update Records 25</label>
-        <locationX>2998</locationX>
-        <locationY>4272</locationY>
+        <locationX>4186</locationX>
+        <locationY>2280</locationY>
         <connector>
             <targetReference>Copy_1_of_Update_Unit_Missed_Visit_false</targetReference>
         </connector>
@@ -1925,8 +2135,8 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>Update_RecordsWO</name>
         <label>Update Records WO</label>
-        <locationX>2998</locationX>
-        <locationY>4164</locationY>
+        <locationX>4186</locationX>
+        <locationY>2172</locationY>
         <connector>
             <targetReference>Update_Records_25</targetReference>
         </connector>
@@ -1935,7 +2145,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>Update_SA_DueDate</name>
         <label>Update SA DueDate</label>
-        <locationX>4846</locationX>
+        <locationX>5726</locationX>
         <locationY>1248</locationY>
         <connector>
             <targetReference>Update_WO_With_TimeFrame_Extended</targetReference>
@@ -1951,7 +2161,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>Update_SA_Priority_For_Gantt_Palette</name>
         <label>Update SA Priority For Gantt Palette</label>
-        <locationX>3042</locationX>
+        <locationX>3482</locationX>
         <locationY>492</locationY>
         <connector>
             <targetReference>SA_Decision</targetReference>
@@ -1967,7 +2177,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>Update_Total_Actual_Duration_On_WO</name>
         <label>Update Total Actual Duration On WO</label>
-        <locationX>2250</locationX>
+        <locationX>2514</locationX>
         <locationY>1116</locationY>
         <connector>
             <targetReference>Only_for_Fixed_issue_Yes</targetReference>
@@ -1991,7 +2201,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>Update_Wo</name>
         <label>Update Wo</label>
-        <locationX>2514</locationX>
+        <locationX>2778</locationX>
         <locationY>924</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -2010,7 +2220,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>Update_WO_With_TimeFrame_Extended</name>
         <label>Update WO With TimeFrame Extended</label>
-        <locationX>4846</locationX>
+        <locationX>5726</locationX>
         <locationY>1356</locationY>
         <connector>
             <targetReference>Check_If_Resource_Present</targetReference>
@@ -2026,7 +2236,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>UpdateAssignedResourceRecords</name>
         <label>Update Assigned Resource Records</label>
-        <locationX>974</locationX>
+        <locationX>1040</locationX>
         <locationY>1032</locationY>
         <connector>
             <targetReference>Copy_1_of_Update_Mechanic_Name</targetReference>
@@ -2050,8 +2260,8 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>updating_reason_on_WO</name>
         <label>Updating Reason On WO</label>
-        <locationX>3570</locationX>
-        <locationY>708</locationY>
+        <locationX>4230</locationX>
+        <locationY>816</locationY>
         <connector>
             <targetReference>ClearGanttIconOnCompletion</targetReference>
         </connector>
@@ -2078,7 +2288,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <recordUpdates>
         <name>Updating_Wo</name>
         <label>Updating Wo</label>
-        <locationX>2778</locationX>
+        <locationX>3042</locationX>
         <locationY>1356</locationY>
         <connector>
             <targetReference>Clear_GanttIcon_on_Completion</targetReference>
@@ -2104,7 +2314,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
         <inputReference>$Record.WorkOrder__r</inputReference>
     </recordUpdates>
     <start>
-        <locationX>6018</locationX>
+        <locationX>7415</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Check_For_Maintenancee</targetReference>
@@ -2128,7 +2338,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <subflows>
         <name>Copy_1_of_Notification_for_timeframe_Extented</name>
         <label>Copy 1 of Notification for timeframe Extented</label>
-        <locationX>4714</locationX>
+        <locationX>5594</locationX>
         <locationY>1572</locationY>
         <flowName>SendCustomNotification</flowName>
         <inputAssignments>
@@ -2202,7 +2412,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <subflows>
         <name>Get_New_System_reason</name>
         <label>Get New System reason</label>
-        <locationX>2778</locationX>
+        <locationX>3042</locationX>
         <locationY>1248</locationY>
         <connector>
             <targetReference>Updating_Wo</targetReference>
@@ -2228,7 +2438,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <subflows>
         <name>Notification_for_timeframe_Extented</name>
         <label>Notification for Missed Visit</label>
-        <locationX>4802</locationX>
+        <locationX>5682</locationX>
         <locationY>2472</locationY>
         <flowName>SendCustomNotification</flowName>
         <inputAssignments>
@@ -2302,7 +2512,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <subflows>
         <name>SendCustomNotificationToMaintenanceSupervisor</name>
         <label>SendCustomNotificationToMaintenanceSupervisor</label>
-        <locationX>7090</locationX>
+        <locationX>8762</locationX>
         <locationY>708</locationY>
         <flowName>SendCustomNotification</flowName>
         <inputAssignments>
@@ -2339,7 +2549,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
     <subflows>
         <name>System_Reason_Compare</name>
         <label>System Reason Compare</label>
-        <locationX>3570</locationX>
+        <locationX>4230</locationX>
         <locationY>708</locationY>
         <connector>
             <targetReference>updating_reason_on_WO</targetReference>
@@ -2493,6 +2703,21 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
         <value>
             <numberValue>0.0</numberValue>
         </value>
+    </variables>
+    <variables>
+        <name>TransformPlatformEventVariable</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>UnitOperationalStatusReason</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Unit_Operational_Status_Reason_Mapping__mdt</objectType>
     </variables>
     <variables>
         <name>UpdatedSystemReason</name>
