@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>59.0</apiVersion>
+    <assignments>
+        <name>Assign_Auto_Schedule</name>
+        <label>Assign Auto Schedule</label>
+        <locationX>50</locationX>
+        <locationY>1019</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.FSL__Auto_Schedule__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Check_Record_Type</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>Check_Record_Type</name>
         <label>Check Record Type</label>
@@ -27,12 +43,78 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Check_WO_AT</name>
+        <label>Check WO AT?</label>
+        <locationX>336</locationX>
+        <locationY>911</locationY>
+        <defaultConnector>
+            <targetReference>Check_WO_WT_Auto_Schedule</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>None</defaultConnectorLabel>
+        <rules>
+            <name>Auto</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.AssignmentType__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Auto</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Auto_Schedule</targetReference>
+            </connector>
+            <label>Auto</label>
+        </rules>
+        <rules>
+            <name>Manual</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.AssignmentType__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Manual</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_Record_Type</targetReference>
+            </connector>
+            <label>Manual</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_WO_WT_Auto_Schedule</name>
+        <label>Check WO WT Auto Schedule?</label>
+        <locationX>622</locationX>
+        <locationY>1019</locationY>
+        <defaultConnector>
+            <targetReference>Check_Record_Type</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Manual</defaultConnectorLabel>
+        <rules>
+            <name>AutoScheduleTrue</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.WorkType.FS_AutoSchedule__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <isGoTo>true</isGoTo>
+                <targetReference>Assign_Auto_Schedule</targetReference>
+            </connector>
+            <label>Auto</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Is_Route_Empty</name>
         <label>Is Route Empty</label>
         <locationX>182</locationX>
         <locationY>503</locationY>
         <defaultConnector>
-            <targetReference>Check_Record_Type</targetReference>
+            <targetReference>Profile_Check_and_SA_Created</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -51,8 +133,66 @@
             <label>yes</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Profile_Check_and_SA_Created</name>
+        <label>Profile Check and SA Created?</label>
+        <locationX>633</locationX>
+        <locationY>803</locationY>
+        <defaultConnector>
+            <targetReference>Check_Record_Type</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>SYS_and_FS_ADMIN</name>
+            <conditionLogic>1 AND (2 OR 3) AND (4 OR 5)</conditionLogic>
+            <conditions>
+                <leftValueReference>isCreatedSA</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>System Administrator</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Field Service Admin</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Maintanance</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.RecordType.DeveloperName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Service_Request</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_WO_AT</targetReference>
+            </connector>
+            <label>SYS and FS ADMIN</label>
+        </rules>
+    </decisions>
     <description>US#911837 Update SA record with WO flow</description>
     <environments>Default</environments>
+    <formulas>
+        <name>isCreatedSA</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNEW()</expression>
+    </formulas>
     <interviewLabel>Update SA Record with WorkOrder {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Update SA Record with WorkOrder</label>
     <processMetadataValues>
@@ -129,7 +269,7 @@
         <locationX>50</locationX>
         <locationY>611</locationY>
         <connector>
-            <targetReference>Check_Record_Type</targetReference>
+            <targetReference>Profile_Check_and_SA_Created</targetReference>
         </connector>
         <inputAssignments>
             <field>ServiceTerritoryId</field>

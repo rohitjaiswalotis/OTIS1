@@ -81,7 +81,7 @@
         <defaultConnectorLabel>WT Auto False</defaultConnectorLabel>
         <rules>
             <name>WT_True</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.WorkOrder__r.WorkType.FS_AutoSchedule__c</leftValueReference>
                 <operator>EqualTo</operator>
@@ -96,8 +96,15 @@
                     <stringValue>Field Service Admin</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>System Administrator</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
-                <targetReference>Update_SA_Auto_Schedule</targetReference>
+                <targetReference>Update_Related_WO123</targetReference>
             </connector>
             <label>WT Auto True</label>
         </rules>
@@ -113,7 +120,7 @@
         <defaultConnectorLabel>None</defaultConnectorLabel>
         <rules>
             <name>Auto_Assigned</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.WorkOrder__r.AssignmentType__c</leftValueReference>
                 <operator>EqualTo</operator>
@@ -128,14 +135,21 @@
                     <stringValue>Field Service Admin</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>System Administrator</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
-                <targetReference>Update_SA_Auto_Schedule</targetReference>
+                <targetReference>Update_Related_WO123</targetReference>
             </connector>
             <label>Auto Assigned</label>
         </rules>
         <rules>
             <name>Manual_Assigned</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.WorkOrder__r.AssignmentType__c</leftValueReference>
                 <operator>EqualTo</operator>
@@ -148,6 +162,13 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Field Service Admin</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>System Administrator</stringValue>
                 </rightValue>
             </conditions>
             <label>Manual Assigned</label>
@@ -417,7 +438,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Updating_WO_Of_SA_created</targetReference>
+                <targetReference>Copy_1_of_Check_if_the_WO_Should_be_auto_Assigned</targetReference>
             </connector>
             <label>SA None (created)</label>
         </rules>
@@ -608,6 +629,9 @@
         <label>Check Work Order Type</label>
         <locationX>3042</locationX>
         <locationY>647</locationY>
+        <defaultConnector>
+            <targetReference>Update_Related_WO7</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Check_Open_Order_or_Repair_and_WC</name>
@@ -724,6 +748,107 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Copy_1_of_Check_for_WT_Assignment</name>
+        <label>Copy 1 of Check for WT Assignment</label>
+        <locationX>4626</locationX>
+        <locationY>647</locationY>
+        <defaultConnectorLabel>WT Auto False</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_WT_Auto_True</name>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.WorkType.FS_AutoSchedule__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Field Service Admin</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>System Administrator</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Update_Related_WO</targetReference>
+            </connector>
+            <label>Copy 1 of WT Auto True</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Copy_1_of_Check_if_the_WO_Should_be_auto_Assigned</name>
+        <label>Copy 1 of Check if the WO Should be auto Assigned?</label>
+        <locationX>4362</locationX>
+        <locationY>539</locationY>
+        <defaultConnector>
+            <targetReference>Copy_1_of_Check_for_WT_Assignment</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>None</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_Auto_Assigned</name>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.AssignmentType__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Auto</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Field Service Admin</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>System Administrator</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Update_Related_WO</targetReference>
+            </connector>
+            <label>Copy 1 of Auto Assigned</label>
+        </rules>
+        <rules>
+            <name>Copy_1_of_Manual_Assigned</name>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.AssignmentType__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Manual</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Field Service Admin</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>System Administrator</stringValue>
+                </rightValue>
+            </conditions>
+            <label>Copy 1 of Manual Assigned</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Record_Type_Check</name>
         <label>Record Type Check</label>
         <locationX>4934</locationX>
@@ -833,14 +958,14 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordUpdates>
-        <name>Open_order_WO_status_Cannot_Complete</name>
-        <label>Open order WO status Cannot Complete</label>
+        <name>Copy_1_of_Update_Related_WO</name>
+        <label>Copy 1 of Update Related WO</label>
         <locationX>3042</locationX>
         <locationY>755</locationY>
         <inputAssignments>
             <field>Status</field>
             <value>
-                <stringValue>Cannot Complete</stringValue>
+                <stringValue>Assigned</stringValue>
             </value>
         </inputAssignments>
         <inputReference>$Record.WorkOrder__r</inputReference>
@@ -876,6 +1001,19 @@
         <label>Update Related WO</label>
         <locationX>1194</locationX>
         <locationY>539</locationY>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Assigned</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.WorkOrder__r</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Related_WO123</name>
+        <label>Update Related WO</label>
+        <locationX>578</locationX>
+        <locationY>1031</locationY>
         <inputAssignments>
             <field>Status</field>
             <value>
@@ -960,27 +1098,6 @@
             </value>
         </inputAssignments>
         <inputReference>$Record.WorkOrder__r</inputReference>
-    </recordUpdates>
-    <recordUpdates>
-        <name>Update_SA_Auto_Schedule</name>
-        <label>Update SA Auto Schedule</label>
-        <locationX>578</locationX>
-        <locationY>1031</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Id</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>FSL__Auto_Schedule__c</field>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
         <name>Updating_WO_Of_SA_Cancelled</name>
