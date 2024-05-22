@@ -124,10 +124,11 @@
     <formulas>
         <name>populatePriority</name>
         <dataType>String</dataType>
-        <expression>IF(ISPICKVAL({!$Record.Case.Priority},&apos;S1 - Emergency&apos;),&quot;S1&quot;,
+        <expression>IF(AND(ISPICKVAL({!$Record.Case.Priority},&apos;S1 - Emergency&apos;),(ISPICKVAL({!$Record.Priority},&apos;S3 - Normal&apos;)),IF({!$Record.FS_Priority__c}==&apos;S1&apos;,True,False)),&quot;S3&quot;,
+IF(ISPICKVAL({!$Record.Case.Priority},&apos;S1 - Emergency&apos;),&apos;S1&apos;,
 IF(ISPICKVAL({!$Record.Case.Priority},&apos;S2 - High&apos;),&quot;S2&quot;,
 IF(ISPICKVAL({!$Record.Case.Priority},&apos;S3 - Normal&apos;),&quot;S3&quot;,
-IF(ISPICKVAL({!$Record.Case.Priority},&apos;S4 - Low&apos;),&quot;S4&quot;,null))))</expression>
+IF(ISPICKVAL({!$Record.Case.Priority},&apos;S4 - Low&apos;),&quot;S4&quot;,null)))))</expression>
     </formulas>
     <formulas>
         <name>populatePriorityWithNoCase</name>
