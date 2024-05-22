@@ -4,8 +4,8 @@
     <assignments>
         <name>Add_TSE_Record_to_TSECollection</name>
         <label>Add TSE Record to TSECollection</label>
-        <locationX>1942</locationX>
-        <locationY>1271</locationY>
+        <locationX>2206</locationX>
+        <locationY>1487</locationY>
         <assignmentItems>
             <assignToReference>TSERecordCollection</assignToReference>
             <operator>Add</operator>
@@ -20,8 +20,8 @@
     <assignments>
         <name>Assign_Overlapped_Timesheet_Entry_Count</name>
         <label>Assign Overlapped Timesheet Entry Count</label>
-        <locationX>1590</locationX>
-        <locationY>647</locationY>
+        <locationX>1854</locationX>
+        <locationY>755</locationY>
         <assignmentItems>
             <assignToReference>OverlappedTSECount</assignToReference>
             <operator>AssignCount</operator>
@@ -36,8 +36,8 @@
     <assignments>
         <name>Copy_1_of_TimeSheet_Record_Assignment</name>
         <label>TimeSheet Record Assignment</label>
-        <locationX>1546</locationX>
-        <locationY>1079</locationY>
+        <locationX>1810</locationX>
+        <locationY>1187</locationY>
         <assignmentItems>
             <assignToReference>TimeSheetEntryRecord.Id</assignToReference>
             <operator>Assign</operator>
@@ -73,8 +73,8 @@
     <assignments>
         <name>Copy_3_of_TimeSheet_Record_Assignment</name>
         <label>TimeSheet Record Assignment</label>
-        <locationX>1810</locationX>
-        <locationY>1079</locationY>
+        <locationX>2074</locationX>
+        <locationY>1187</locationY>
         <assignmentItems>
             <assignToReference>TimeSheetEntryRecord.Id</assignToReference>
             <operator>Assign</operator>
@@ -110,8 +110,8 @@
     <assignments>
         <name>TimeSheet_Record_Assignment_1</name>
         <label>TimeSheet Record Assignment</label>
-        <locationX>2074</locationX>
-        <locationY>1079</locationY>
+        <locationX>2338</locationX>
+        <locationY>1187</locationY>
         <assignmentItems>
             <assignToReference>TimeSheetEntryRecord.Id</assignToReference>
             <operator>Assign</operator>
@@ -130,24 +130,11 @@
             <targetReference>Add_TSE_Record_to_TSECollection</targetReference>
         </connector>
     </assignments>
-    <assignments>
-        <name>Update_Time_Sheet_End_Time</name>
-        <label>Update Time Sheet End Time</label>
-        <locationX>578</locationX>
-        <locationY>755</locationY>
-        <assignmentItems>
-            <assignToReference>TimeSheetEntryRecord.EndTime</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Record.EndTime</elementReference>
-            </value>
-        </assignmentItems>
-    </assignments>
     <customErrors>
         <name>Display_Error</name>
         <label>Display Error</label>
-        <locationX>842</locationX>
-        <locationY>755</locationY>
+        <locationX>578</locationX>
+        <locationY>539</locationY>
         <customErrorMessages>
             <errorMessage>Only 15 minutes adjustment is allowed on End Time.</errorMessage>
             <isFieldError>false</isFieldError>
@@ -157,7 +144,7 @@
         <name>Error</name>
         <label>Error</label>
         <locationX>314</locationX>
-        <locationY>431</locationY>
+        <locationY>539</locationY>
         <customErrorMessages>
             <errorMessage>You Cannot Add Entries Outside Timesheet Dates.</errorMessage>
             <isFieldError>false</isFieldError>
@@ -166,8 +153,8 @@
     <customErrors>
         <name>Multiple_TSE_Error</name>
         <label>Multiple TSE Error</label>
-        <locationX>1722</locationX>
-        <locationY>863</locationY>
+        <locationX>2602</locationX>
+        <locationY>1187</locationY>
         <customErrorMessages>
             <errorMessage>You cannot adjust the time sheet entry as multiple time sheet entries are getting affected by your adjustment. Please make sure the change only impact predecessor and successor time sheet entry only</errorMessage>
             <isFieldError>false</isFieldError>
@@ -177,7 +164,7 @@
         <name>Not_Submitted_Approved_Error</name>
         <label>Not Submitted/Approved Error</label>
         <locationX>50</locationX>
-        <locationY>431</locationY>
+        <locationY>539</locationY>
         <customErrorMessages>
             <errorMessage>You cannot modify, Not Submitted or Approved Timesheet</errorMessage>
             <isFieldError>false</isFieldError>
@@ -186,8 +173,8 @@
     <decisions>
         <name>Check_Record_Is_New_or_Old</name>
         <label>Check Record Is New or Old</label>
-        <locationX>1788</locationX>
-        <locationY>431</locationY>
+        <locationX>2052</locationX>
+        <locationY>539</locationY>
         <defaultConnectorLabel>Default</defaultConnectorLabel>
         <rules>
             <name>If_Old_New_with_Start_EndTime_Change</name>
@@ -229,9 +216,10 @@
     <decisions>
         <name>Check_Record_Overlapping</name>
         <label>Check Record  Overlapping</label>
-        <locationX>1590</locationX>
-        <locationY>755</locationY>
+        <locationX>1854</locationX>
+        <locationY>863</locationY>
         <defaultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>Multiple_TSE_Error</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
@@ -254,10 +242,9 @@
     <decisions>
         <name>Check_StartTime_Overlapped</name>
         <label>Check StartTime Overlapped</label>
-        <locationX>1942</locationX>
-        <locationY>971</locationY>
+        <locationX>2206</locationX>
+        <locationY>1079</locationY>
         <defaultConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>Multiple_TSE_Error</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
@@ -345,8 +332,8 @@
     <decisions>
         <name>Check_Update_Record_Validation</name>
         <label>Check Update Record Validation</label>
-        <locationX>919</locationX>
-        <locationY>323</locationY>
+        <locationX>1051</locationX>
+        <locationY>431</locationY>
         <defaultConnector>
             <targetReference>Check_Record_Is_New_or_Old</targetReference>
         </defaultConnector>
@@ -401,28 +388,6 @@
                 <targetReference>Error</targetReference>
             </connector>
             <label>Refrain Time Frame</label>
-        </rules>
-        <rules>
-            <name>If_New_End_Time_is_less_than_Previous_End_time</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>EndTimeDifference</leftValueReference>
-                <operator>LessThanOrEqualTo</operator>
-                <rightValue>
-                    <elementReference>Get_OTIS_Company_Wide_Settings.Timesheet_Adjustment_Minutes__c</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Profile.Name</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Field Service Mechanic</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Update_Time_Sheet_End_Time</targetReference>
-            </connector>
-            <label>If New End Time is less than Previous End time</label>
         </rules>
         <rules>
             <name>If_New_End_Time_is_greater_than_Previous_End_time</name>
@@ -481,8 +446,8 @@
     <loops>
         <name>Overlapped_TSE_Loop</name>
         <label>Overlapped TSE Loop</label>
-        <locationX>1458</locationX>
-        <locationY>863</locationY>
+        <locationX>1722</locationX>
+        <locationY>971</locationY>
         <collectionReference>Get_Overlapped_TimeSheetEntry_Of_Today</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -514,8 +479,8 @@
     <recordLookups>
         <name>Get_OTIS_Company_Wide_Settings</name>
         <label>Get OTIS Company Wide Settings</label>
-        <locationX>1183</locationX>
-        <locationY>539</locationY>
+        <locationX>1051</locationX>
+        <locationY>323</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_Update_Record_Validation</targetReference>
@@ -525,7 +490,7 @@
             <field>Label</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Get_Service_Resource.Company__c</elementReference>
+                <elementReference>$Record.Service_Appointment__r.AssignedServiceResource__r.Company__c</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
@@ -535,8 +500,8 @@
     <recordLookups>
         <name>Get_Overlapped_TimeSheetEntry_Of_Today</name>
         <label>Get Overlapped TimeSheetEntry Of Today</label>
-        <locationX>1590</locationX>
-        <locationY>539</locationY>
+        <locationX>1854</locationX>
+        <locationY>647</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Assign_Overlapped_Timesheet_Entry_Count</targetReference>
@@ -609,60 +574,18 @@
         <object>TimeSheetEntry</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
-    <recordLookups>
-        <name>Get_Service_Appointment</name>
-        <label>Get Service Appointment</label>
-        <locationX>1183</locationX>
-        <locationY>323</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Get_Service_Resource</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Id</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>TimeSheetEntry</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>Get_Service_Resource</name>
-        <label>Get Service Resource</label>
-        <locationX>1183</locationX>
-        <locationY>431</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Get_OTIS_Company_Wide_Settings</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>Get_Service_Appointment.Service_Appointment__r.AssignedServiceResource__c</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>ServiceResource</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <recordUpdates>
         <name>Update_Overlapped_TSE</name>
         <label>Update Overlapped TSE</label>
-        <locationX>1458</locationX>
-        <locationY>1463</locationY>
+        <locationX>1722</locationX>
+        <locationY>1679</locationY>
         <inputReference>TSERecordCollection</inputReference>
     </recordUpdates>
     <start>
-        <locationX>793</locationX>
+        <locationX>925</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Service_Appointment</targetReference>
+            <targetReference>Get_OTIS_Company_Wide_Settings</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
