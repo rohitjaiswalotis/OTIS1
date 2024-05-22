@@ -372,7 +372,7 @@
             <targetReference>get_SA_record</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Inactive</status>
     <variables>
         <name>ActualDateTime</name>
         <dataType>DateTime</dataType>
