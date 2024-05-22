@@ -688,42 +688,6 @@
         </defaultConnector>
         <defaultConnectorLabel>No Issues Reported</defaultConnectorLabel>
         <rules>
-            <name>Downgrade_Cannot_Complete</name>
-            <conditionLogic>1 AND 3 AND (2 OR 4)</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.WorkOrder__r.TrappedPassengerReleasedByOTIS__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.WorkOrder__r.Reason__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Need New Visit On Site</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.WorkOrder__r.Priority</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>S3 - Normal</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.WorkOrder__r.Reason__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Need Supervisor Review and Action</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Update_WO_to_Cannot_Complete</targetReference>
-            </connector>
-            <label>Downgrade - Cannot Complete</label>
-        </rules>
-        <rules>
             <name>Fixed_Issue</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
