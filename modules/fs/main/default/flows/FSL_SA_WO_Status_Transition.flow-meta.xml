@@ -688,6 +688,42 @@
         </defaultConnector>
         <defaultConnectorLabel>No Issues Reported</defaultConnectorLabel>
         <rules>
+            <name>Downgrade_Cannot_Complete</name>
+            <conditionLogic>1 AND 3 AND (2 OR 4)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.TrappedPassengerReleasedByOTIS__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.Reason__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Need New Visit On Site</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.Priority</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>S3 - Normal</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.Reason__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Need Supervisor Review and Action</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_WO_to_Cannot_Complete</targetReference>
+            </connector>
+            <label>Downgrade-Cannot Complete</label>
+        </rules>
+        <rules>
             <name>Fixed_Issue</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
@@ -849,6 +885,79 @@
         </rules>
     </decisions>
     <decisions>
+        <name>NullCheck</name>
+        <label>NullCheck</label>
+        <locationX>8366</locationX>
+        <locationY>1079</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Not_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_CustomMetaData</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>PE_When_SA_and_WO_Closure</targetReference>
+            </connector>
+            <label>Not Null</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Platform_Event_Record</name>
+        <label>Platform Event Record</label>
+        <locationX>8564</locationX>
+        <locationY>755</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>SA_change_Completed_and_WO_change_Closed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Unit_Records</targetReference>
+            </connector>
+            <label>SA change Completed and WO change Closed</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Platform_Event_Record_Decision</name>
+        <label>Platform Event Record Decision</label>
+        <locationX>5990</locationX>
+        <locationY>647</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>SA_Change_to_Onsite</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Onsite</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>PE_When_SA_change_to_Onsite</targetReference>
+            </connector>
+            <label>SA Change to Onsite</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Record_Type_Check</name>
         <label>Record Type Check</label>
         <locationX>4934</locationX>
@@ -932,6 +1041,11 @@
     <description>Work Order Status changes when related Service Appointment status is changed by the Mechanic</description>
     <environments>Default</environments>
     <formulas>
+        <name>CurrentTimeArrival</name>
+        <dataType>DateTime</dataType>
+        <expression>NOW()</expression>
+    </formulas>
+    <formulas>
         <name>ISCreated</name>
         <dataType>Boolean</dataType>
         <expression>ISNEW()</expression>
@@ -957,15 +1071,144 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>PE_When_SA_and_WO_Closure</name>
+        <label>PE When SA and WO Closure</label>
+        <locationX>8234</locationX>
+        <locationY>1187</locationY>
+        <inputAssignments>
+            <field>CallbackKey__c</field>
+            <value>
+                <elementReference>$Record.WorkOrder__r.SvcReqCallBackKey__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OperationalStatusReason__c</field>
+            <value>
+                <elementReference>TransformPlatformEventOutput</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>TimeZone__c</field>
+            <value>
+                <elementReference>$Record.WorkOrder__r.TimeZone__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WorkOrderClosureDate__c</field>
+            <value>
+                <elementReference>$Record.WorkOrder__r.WorkOrderClosureDate__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WorkOrderStatus__c</field>
+            <value>
+                <elementReference>$Record.WorkOrder__r.Status</elementReference>
+            </value>
+        </inputAssignments>
+        <object>SF2WSOtisNoteEvent__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>PE_When_SA_change_to_Onsite</name>
+        <label>PE When SA change to Onsite</label>
+        <locationX>5858</locationX>
+        <locationY>755</locationY>
+        <inputAssignments>
+            <field>CallbackKey__c</field>
+            <value>
+                <elementReference>$Record.WorkOrder__r.SvcReqCallBackKey__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MechanicArrivalTime__c</field>
+            <value>
+                <elementReference>CurrentTimeArrival</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>TimeZone__c</field>
+            <value>
+                <elementReference>$Record.WorkOrder__r.TimeZone__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WorkOrderStatus__c</field>
+            <value>
+                <elementReference>$Record.WorkOrder__r.Status</elementReference>
+            </value>
+        </inputAssignments>
+        <object>SF2WSOtisNoteEvent__e</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <name>Get_CustomMetaData</name>
+        <label>Get CustomMetaData</label>
+        <locationX>8366</locationX>
+        <locationY>971</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>NullCheck</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Unit_Operational_Status_Reason_SF__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Unit__r.OperationalStatusReason__c</elementReference>
+            </value>
+        </filters>
+        <object>Unit_Operational_Status_Reason_Mapping__mdt</object>
+        <outputAssignments>
+            <assignToReference>TransformPlatformEventOutput</assignToReference>
+            <field>Transformed_Platform_Event_Output__c</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Unit_Records</name>
+        <label>Get Unit Records</label>
+        <locationX>8366</locationX>
+        <locationY>863</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_CustomMetaData</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Unit__r.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Asset</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>OperationalStatusReason__c</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordUpdates>
         <name>Copy_1_of_Update_Related_WO</name>
         <label>Copy 1 of Update Related WO</label>
-        <locationX>3042</locationX>
-        <locationY>755</locationY>
+        <locationX>4714</locationX>
+        <locationY>1031</locationY>
         <inputAssignments>
             <field>Status</field>
             <value>
                 <stringValue>Assigned</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.WorkOrder__r</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Open_order_WO_status_Cannot_Complete</name>
+        <label>Open order WO status Cannot Complete</label>
+        <locationX>2954</locationX>
+        <locationY>755</locationY>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Cannot Complete</stringValue>
             </value>
         </inputAssignments>
         <inputReference>$Record.WorkOrder__r</inputReference>
@@ -992,19 +1235,6 @@
             <field>Status</field>
             <value>
                 <stringValue>Unassigned</stringValue>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record.WorkOrder__r</inputReference>
-    </recordUpdates>
-     <recordUpdates>
-        <name>Open_order_WO_status_Cannot_Complete</name>
-        <label>Open order WO status Cannot Complete</label>
-        <locationX>2778</locationX>
-        <locationY>755</locationY>
-        <inputAssignments>
-            <field>Status</field>
-            <value>
-                <stringValue>Cannot Complete</stringValue>
             </value>
         </inputAssignments>
         <inputReference>$Record.WorkOrder__r</inputReference>
@@ -1113,6 +1343,27 @@
         <inputReference>$Record.WorkOrder__r</inputReference>
     </recordUpdates>
     <recordUpdates>
+        <name>Update_WO_to_Cannot_Complete</name>
+        <label>Update WO to Cannot Complete</label>
+        <locationX>7178</locationX>
+        <locationY>647</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Cannot Complete</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
         <name>Updating_WO_Of_SA_Cancelled</name>
         <label>Updating WO Of SA Cancelled</label>
         <locationX>5682</locationX>
@@ -1155,27 +1406,6 @@
         <object>WorkOrder</object>
     </recordUpdates>
     <recordUpdates>
-        <name>Updating_WO_Of_SA_created</name>
-        <label>Updating WO Of SA created</label>
-        <locationX>4626</locationX>
-        <locationY>539</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.ParentRecordId</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Status</field>
-            <value>
-                <stringValue>Unassigned</stringValue>
-            </value>
-        </inputAssignments>
-        <object>WorkOrder</object>
-    </recordUpdates>
-    <recordUpdates>
         <name>Updating_WO_Of_SA_In_EnRoute</name>
         <label>Updating WO Of SA In  EnRoute</label>
         <locationX>5154</locationX>
@@ -1201,6 +1431,9 @@
         <label>Updating WO Of SA In Onsite</label>
         <locationX>5418</locationX>
         <locationY>539</locationY>
+        <connector>
+            <targetReference>Platform_Event_Record_Decision</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -1243,6 +1476,9 @@
         <label>Updating WO Of SA With No Issues</label>
         <locationX>7266</locationX>
         <locationY>647</locationY>
+        <connector>
+            <targetReference>Platform_Event_Record</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -1361,4 +1597,11 @@
     </start>
     <status>Active</status>
     <triggerOrder>1</triggerOrder>
+    <variables>
+        <name>TransformPlatformEventOutput</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
 </Flow>
