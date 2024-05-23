@@ -324,28 +324,6 @@
             </connector>
             <label>Not for Maintenance</label>
         </rules>
-        <rules>
-            <name>Service_Request</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.WorkOrder__r.RecordType.Name</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Service Request</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Status</leftValueReference>
-                <operator>IsChanged</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Platform_Event_Creation_Decision</targetReference>
-            </connector>
-            <label>Service Request</label>
-        </rules>
     </decisions>
     <decisions>
         <name>Check_If_Resource_Present</name>
@@ -760,28 +738,6 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Null_Check</name>
-        <label>Null Check</label>
-        <locationX>6782</locationX>
-        <locationY>708</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Not_Null</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Get_CustomMetaData</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>PE_When_SA_and_WO_Completed</targetReference>
-            </connector>
-            <label>Not Null</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>operations_on_assigned_resource</name>
         <label>operations on assigned resource</label>
         <locationX>5484</locationX>
@@ -859,50 +815,6 @@
                 <targetReference>Get_Related_Assigned_Resource_Record</targetReference>
             </connector>
             <label>If Assigned Service Resource field cleared</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Platform_Event_Creation_Decision</name>
-        <label>Platform Event Creation Decision</label>
-        <locationX>6782</locationX>
-        <locationY>384</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Outcome_1_of_Platform_Event_Creation_Decision</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.Status</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Onsite</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>PE_When_SA_change_to_Onsite</targetReference>
-            </connector>
-            <label>If SA Status Change to Onsite</label>
-        </rules>
-        <rules>
-            <name>When_SA_Status_Change_to_Closure</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.Status</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Completed</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.WorkOrder__r.Status</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Closed</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Get_Unit_Records</targetReference>
-            </connector>
-            <label>When SA Status Change to Closure</label>
         </rules>
     </decisions>
     <decisions>
@@ -1303,76 +1215,6 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
         <object>AssignedResource</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
-    <recordCreates>
-        <name>PE_When_SA_and_WO_Completed</name>
-        <label>PE When SA and WO Completed</label>
-        <locationX>6650</locationX>
-        <locationY>816</locationY>
-        <inputAssignments>
-            <field>CallbackKey__c</field>
-            <value>
-                <elementReference>$Record.WorkOrder__r.SvcReqCallBackKey__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>OperationalStatusReason__c</field>
-            <value>
-                <elementReference>TransformPlatformEventVariable</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>TimeZone__c</field>
-            <value>
-                <elementReference>$Record.AssignedServiceResource__r.TimeZone__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>WorkOrderClosureDate__c</field>
-            <value>
-                <elementReference>$Record.WorkOrder__r.WorkOrderClosureDate__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>WorkOrderStatus__c</field>
-            <value>
-                <elementReference>$Record.WorkOrder__r.Status</elementReference>
-            </value>
-        </inputAssignments>
-        <object>SF2WSOtisNoteEvent__e</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordCreates>
-        <name>PE_When_SA_change_to_Onsite</name>
-        <label>PE When SA change to Onsite</label>
-        <locationX>6386</locationX>
-        <locationY>492</locationY>
-        <inputAssignments>
-            <field>CallbackKey__c</field>
-            <value>
-                <elementReference>$Record.WorkOrder__r.SvcReqCallBackKey__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>MechanicArrivalTime__c</field>
-            <value>
-                <elementReference>CurrentMechanicArrivalTime</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>TimeZone__c</field>
-            <value>
-                <elementReference>$Record.AssignedServiceResource__r.TimeZone__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>WorkOrderStatus__c</field>
-            <value>
-                <elementReference>$Record.WorkOrder__r.Status</elementReference>
-            </value>
-        </inputAssignments>
-        <object>SF2WSOtisNoteEvent__e</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
     <recordDeletes>
         <name>DeleteRelatedAssignedResourceRecord</name>
         <label>Delete Related Assigned Resource Record</label>
@@ -1500,29 +1342,6 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>AssignedResource</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>Get_CustomMetaData</name>
-        <label>Get CustomMetaData</label>
-        <locationX>6782</locationX>
-        <locationY>600</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Null_Check</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Unit_Operational_Status_Reason_SF__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Unit__r.OperationalStatusReason__c</elementReference>
-            </value>
-        </filters>
-        <object>Unit_Operational_Status_Reason_Mapping__mdt</object>
-        <outputAssignments>
-            <assignToReference>TransformPlatformEventVariable</assignToReference>
-            <field>Transformed_Platform_Event_Output__c</field>
-        </outputAssignments>
     </recordLookups>
     <recordLookups>
         <name>Get_Days_with_SLA</name>
@@ -1686,29 +1505,6 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C</description>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>ServiceResource</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>Get_Unit_Records</name>
-        <label>Get Unit Records</label>
-        <locationX>6782</locationX>
-        <locationY>492</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Get_CustomMetaData</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Unit__r.Id</elementReference>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Asset</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>OperationalStatusReason__c</queriedFields>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
