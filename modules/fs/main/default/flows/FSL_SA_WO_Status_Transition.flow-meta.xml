@@ -1155,27 +1155,6 @@
         <object>WorkOrder</object>
     </recordUpdates>
     <recordUpdates>
-        <name>Updating_WO_Of_SA_created</name>
-        <label>Updating WO Of SA created</label>
-        <locationX>4626</locationX>
-        <locationY>539</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.ParentRecordId</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Status</field>
-            <value>
-                <stringValue>Unassigned</stringValue>
-            </value>
-        </inputAssignments>
-        <object>WorkOrder</object>
-    </recordUpdates>
-    <recordUpdates>
         <name>Updating_WO_Of_SA_In_EnRoute</name>
         <label>Updating WO Of SA In  EnRoute</label>
         <locationX>5154</locationX>
