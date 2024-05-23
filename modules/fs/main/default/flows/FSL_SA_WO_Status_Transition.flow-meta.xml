@@ -4,7 +4,7 @@
     <decisions>
         <name>Check_Fixed_Issue</name>
         <label>Check Fixed Issue</label>
-        <locationX>3438</locationX>
+        <locationX>3372</locationX>
         <locationY>539</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -23,13 +23,35 @@
             <label>If Fixed Issue Yes</label>
         </rules>
         <rules>
-            <name>check_system_reason_and_SPV_checkbox</name>
-            <conditionLogic>(1 OR 5) AND 2 AND 3 AND 4 AND 6</conditionLogic>
+            <name>Check_Repair_Work_Type</name>
+            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.WorkOrder__r.FS_WorkOderType__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Open Order</stringValue>
+                    <stringValue>Repair</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.FS_Work_Completion__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_WO_Records</targetReference>
+            </connector>
+            <label>Check Repair Work Type</label>
+        </rules>
+        <rules>
+            <name>check_system_reason_and_SPV_checkbox</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.FS_WorkOderType__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Repair</stringValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -51,20 +73,6 @@
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.WorkOrder__r.FS_WorkOderType__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Repair</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.WorkOrder__r.Fixed_Issue__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>No</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -395,7 +403,7 @@
     <decisions>
         <name>Check_SA_Status_SR</name>
         <label>Check SA Status SR</label>
-        <locationX>5946</locationX>
+        <locationX>6782</locationX>
         <locationY>431</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -627,41 +635,12 @@
     <decisions>
         <name>Check_Work_Order_Type</name>
         <label>Check Work Order Type</label>
-        <locationX>3042</locationX>
+        <locationX>2910</locationX>
         <locationY>647</locationY>
         <defaultConnector>
             <targetReference>Update_Related_WO7</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Check_Open_Order_or_Repair_and_WC</name>
-            <conditionLogic>(1 OR 2) AND 3</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.WorkOrder__r.FS_WorkOderType__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Open Order</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.WorkOrder__r.FS_WorkOderType__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Repair</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.WorkOrder__r.FS_Work_Completion__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Update_Related_WO7</targetReference>
-            </connector>
-            <label>Check Open Order or Repair and WC</label>
-        </rules>
         <rules>
             <name>Open_Order</name>
             <conditionLogic>and</conditionLogic>
@@ -681,7 +660,7 @@
     <decisions>
         <name>Completed_Diff_Scenarios</name>
         <label>Completed Diff Scenarios</label>
-        <locationX>6870</locationX>
+        <locationX>8047</locationX>
         <locationY>539</locationY>
         <defaultConnector>
             <targetReference>Updating_WO_Of_SA_With_No_Issues</targetReference>
@@ -786,7 +765,7 @@
     <decisions>
         <name>Copy_1_of_Check_for_WT_Assignment</name>
         <label>Copy 1 of Check for WT Assignment</label>
-        <locationX>4626</locationX>
+        <locationX>5154</locationX>
         <locationY>647</locationY>
         <defaultConnectorLabel>WT Auto False</defaultConnectorLabel>
         <rules>
@@ -822,7 +801,7 @@
     <decisions>
         <name>Copy_1_of_Check_if_the_WO_Should_be_auto_Assigned</name>
         <label>Copy 1 of Check if the WO Should be auto Assigned?</label>
-        <locationX>4362</locationX>
+        <locationX>4890</locationX>
         <locationY>539</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_Check_for_WT_Assignment</targetReference>
@@ -887,7 +866,7 @@
     <decisions>
         <name>NullCheck</name>
         <label>NullCheck</label>
-        <locationX>8366</locationX>
+        <locationX>8542</locationX>
         <locationY>1079</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -909,7 +888,7 @@
     <decisions>
         <name>Platform_Event_Record</name>
         <label>Platform Event Record</label>
-        <locationX>8564</locationX>
+        <locationX>8740</locationX>
         <locationY>755</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -938,7 +917,7 @@
     <decisions>
         <name>Platform_Event_Record_Decision</name>
         <label>Platform Event Record Decision</label>
-        <locationX>5990</locationX>
+        <locationX>6166</locationX>
         <locationY>647</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -960,7 +939,7 @@
     <decisions>
         <name>Record_Type_Check</name>
         <label>Record Type Check</label>
-        <locationX>4934</locationX>
+        <locationX>5770</locationX>
         <locationY>323</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -997,7 +976,7 @@
     <decisions>
         <name>WO_Canceled</name>
         <label>WO Canceled</label>
-        <locationX>5814</locationX>
+        <locationX>6694</locationX>
         <locationY>539</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -1074,7 +1053,7 @@
     <recordCreates>
         <name>PE_When_SA_and_WO_Closure</name>
         <label>PE When SA and WO Closure</label>
-        <locationX>8234</locationX>
+        <locationX>8410</locationX>
         <locationY>1187</locationY>
         <inputAssignments>
             <field>CallbackKey__c</field>
@@ -1112,7 +1091,7 @@
     <recordCreates>
         <name>PE_When_SA_change_to_Onsite</name>
         <label>PE When SA change to Onsite</label>
-        <locationX>5858</locationX>
+        <locationX>6034</locationX>
         <locationY>755</locationY>
         <inputAssignments>
             <field>CallbackKey__c</field>
@@ -1144,7 +1123,7 @@
     <recordLookups>
         <name>Get_CustomMetaData</name>
         <label>Get CustomMetaData</label>
-        <locationX>8366</locationX>
+        <locationX>8542</locationX>
         <locationY>971</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1167,7 +1146,7 @@
     <recordLookups>
         <name>Get_Unit_Records</name>
         <label>Get Unit Records</label>
-        <locationX>8366</locationX>
+        <locationX>8542</locationX>
         <locationY>863</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1190,7 +1169,7 @@
     <recordUpdates>
         <name>Copy_1_of_Update_Related_WO</name>
         <label>Copy 1 of Update Related WO</label>
-        <locationX>4714</locationX>
+        <locationX>4890</locationX>
         <locationY>1031</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -1203,7 +1182,7 @@
     <recordUpdates>
         <name>Open_order_WO_status_Cannot_Complete</name>
         <label>Open order WO status Cannot Complete</label>
-        <locationX>2954</locationX>
+        <locationX>2778</locationX>
         <locationY>755</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -1326,8 +1305,33 @@
     <recordUpdates>
         <name>Update_Related_WO7</name>
         <label>Update Related WO</label>
-        <locationX>2778</locationX>
+        <locationX>3042</locationX>
         <locationY>755</locationY>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Closed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SvcReqAssignedMechanic__c</field>
+            <value>
+                <elementReference>$Record.AssignedServiceResource__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.WorkOrder__r</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_WO_Records</name>
+        <label>Update WO Records</label>
+        <locationX>3306</locationX>
+        <locationY>647</locationY>
+        <inputAssignments>
+            <field>FS_Mark_For_Supervisor_Review__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>Status</field>
             <value>
@@ -1345,7 +1349,7 @@
     <recordUpdates>
         <name>Update_WO_to_Cannot_Complete</name>
         <label>Update WO to Cannot Complete</label>
-        <locationX>7178</locationX>
+        <locationX>7354</locationX>
         <locationY>647</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1366,7 +1370,7 @@
     <recordUpdates>
         <name>Updating_WO_Of_SA_Cancelled</name>
         <label>Updating WO Of SA Cancelled</label>
-        <locationX>5682</locationX>
+        <locationX>6562</locationX>
         <locationY>647</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1387,7 +1391,7 @@
     <recordUpdates>
         <name>Updating_WO_Of_SA_Cannot_Complete</name>
         <label>Updating WO Of SA Cannot Complete</label>
-        <locationX>6210</locationX>
+        <locationX>7090</locationX>
         <locationY>539</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1408,7 +1412,7 @@
     <recordUpdates>
         <name>Updating_WO_Of_SA_In_EnRoute</name>
         <label>Updating WO Of SA In  EnRoute</label>
-        <locationX>5154</locationX>
+        <locationX>5770</locationX>
         <locationY>539</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1429,7 +1433,7 @@
     <recordUpdates>
         <name>Updating_WO_Of_SA_In_Onsite</name>
         <label>Updating WO Of SA In Onsite</label>
-        <locationX>5418</locationX>
+        <locationX>6166</locationX>
         <locationY>539</locationY>
         <connector>
             <targetReference>Platform_Event_Record_Decision</targetReference>
@@ -1453,7 +1457,7 @@
     <recordUpdates>
         <name>Updating_WO_Of_SA_In_Sch_EnR_Onsite_Disp</name>
         <label>Updating WO Of SA In Sch EnR Onsite Disp</label>
-        <locationX>4890</locationX>
+        <locationX>5506</locationX>
         <locationY>539</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1474,7 +1478,7 @@
     <recordUpdates>
         <name>Updating_WO_Of_SA_With_No_Issues</name>
         <label>Updating WO Of SA With No Issues</label>
-        <locationX>7266</locationX>
+        <locationX>8740</locationX>
         <locationY>647</locationY>
         <connector>
             <targetReference>Platform_Event_Record</targetReference>
@@ -1504,7 +1508,7 @@
     <recordUpdates>
         <name>Updating_WO_Of_SA_With_Shutdown_Unit</name>
         <label>Updating WO Of SA With Shutdown Unit</label>
-        <locationX>6738</locationX>
+        <locationX>7882</locationX>
         <locationY>647</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1525,7 +1529,7 @@
     <recordUpdates>
         <name>Updating_WO_Of_SA_With_WOLI_Or_SPV_Review</name>
         <label>Updating WO Of SA With WOLI Or SPV Review</label>
-        <locationX>7002</locationX>
+        <locationX>8146</locationX>
         <locationY>647</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1567,7 +1571,7 @@
     <recordUpdates>
         <name>WO_Of_SA_With_Issue</name>
         <label>WO Of SA With Issue</label>
-        <locationX>6474</locationX>
+        <locationX>7618</locationX>
         <locationY>647</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1586,7 +1590,7 @@
         <object>WorkOrder</object>
     </recordUpdates>
     <start>
-        <locationX>4808</locationX>
+        <locationX>5644</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Record_Type_Check</targetReference>
