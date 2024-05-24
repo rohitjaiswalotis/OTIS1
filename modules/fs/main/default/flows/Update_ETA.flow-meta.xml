@@ -56,11 +56,11 @@
         </connector>
     </assignments>
     <choices>
-        <name>CannotExecute</name>
-        <choiceText>Cannot Execute</choiceText>
+        <name>CannotComplete</name>
+        <choiceText>Cannot Complete</choiceText>
         <dataType>String</dataType>
         <value>
-            <stringValue>Cannot Execute</stringValue>
+            <elementReference>CannotComplete</elementReference>
         </value>
     </choices>
     <choices>
@@ -352,7 +352,7 @@
             <name>Status</name>
             <choiceReferences>enroute</choiceReferences>
             <choiceReferences>Onsite</choiceReferences>
-            <choiceReferences>CannotExecute</choiceReferences>
+            <choiceReferences>CannotComplete</choiceReferences>
             <dataType>String</dataType>
             <defaultValue>
                 <elementReference>status1</elementReference>
