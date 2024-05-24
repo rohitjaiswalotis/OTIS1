@@ -686,7 +686,7 @@
         <inputAssignments>
             <field>FS_System_Reason__c</field>
             <value>
-                <stringValue>2. ⏭️Next Action Required</stringValue>
+                <stringValue>Next Action Required</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
