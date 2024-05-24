@@ -345,13 +345,6 @@
                 <leftValueReference>Service_Appointment_Record.Status</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Cannot Execute</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Service_Appointment_Record.Status</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
                     <stringValue>Completed</stringValue>
                 </rightValue>
             </conditions>
@@ -850,7 +843,7 @@
             <fieldText>&lt;p&gt;&lt;strong&gt;New SA Creation is not allowed ,Please review Work Order or existing Service Appointment Status.&lt;/strong&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
-        <showFooter>false</showFooter>
+        <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <start>
