@@ -3,8 +3,8 @@
     <actionCalls>
         <name>ShiftCoverageConstructor</name>
         <label>ShiftCoverageConstructor</label>
-        <locationX>182</locationX>
-        <locationY>431</locationY>
+        <locationX>209</locationX>
+        <locationY>539</locationY>
         <actionName>ShiftCoverageConstructor</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -29,8 +29,8 @@
         <description>Back in Service Can&apos;t be in future</description>
         <name>Error</name>
         <label>Error</label>
-        <locationX>50</locationX>
-        <locationY>647</locationY>
+        <locationX>77</locationX>
+        <locationY>755</locationY>
         <customErrorMessages>
             <errorMessage>{!$Label.Unit_Back_in_service_Error}</errorMessage>
             <isFieldError>false</isFieldError>
@@ -39,8 +39,8 @@
     <decisions>
         <name>BackInServiceTimeChange</name>
         <label>BackInServiceTimeChange</label>
-        <locationX>512</locationX>
-        <locationY>323</locationY>
+        <locationX>539</locationX>
+        <locationY>431</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Back_in</name>
@@ -97,8 +97,8 @@
     <decisions>
         <name>BackinServiceTimeCheck_Flow</name>
         <label>BackinServiceTimeCheck Flow</label>
-        <locationX>182</locationX>
-        <locationY>539</locationY>
+        <locationX>209</locationX>
+        <locationY>647</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>is_past</name>
@@ -114,6 +114,28 @@
                 <targetReference>Error</targetReference>
             </connector>
             <label>is past</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Decision_IsBypassEnabled</name>
+        <label>Is Bypass Enabled?</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>BackInServiceTimeChange</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_BypassEnabled</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Setup.CS_KillSwitch__c.DisableFlows__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Yes</label>
         </rules>
     </decisions>
     <description>US958348: Back in service date time validation with respect to unit time and 
@@ -153,8 +175,8 @@ US 935186: Unit field status &quot;OTIS Installation Unit&quot;, Status Reason f
     <recordUpdates>
         <name>Update_unit_field_status_and_reason</name>
         <label>Update unit field status and reason</label>
-        <locationX>578</locationX>
-        <locationY>431</locationY>
+        <locationX>605</locationX>
+        <locationY>539</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>FS_Field_Status__c</field>
@@ -178,10 +200,10 @@ US 935186: Unit field status &quot;OTIS Installation Unit&quot;, Status Reason f
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>386</locationX>
+        <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>BackInServiceTimeChange</targetReference>
+            <targetReference>Decision_IsBypassEnabled</targetReference>
         </connector>
         <object>Asset</object>
         <recordTriggerType>Update</recordTriggerType>
