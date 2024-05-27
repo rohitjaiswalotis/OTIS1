@@ -3,8 +3,8 @@
     <actionCalls>
         <name>send_notification_to_supervisor</name>
         <label>send notification to supervisor</label>
-        <locationX>50</locationX>
-        <locationY>1079</locationY>
+        <locationX>242</locationX>
+        <locationY>1187</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -45,8 +45,8 @@
     <assignments>
         <name>Assigning_message_template_and_channel</name>
         <label>Assigning message template and channel</label>
-        <locationX>50</locationX>
-        <locationY>971</locationY>
+        <locationX>242</locationX>
+        <locationY>1079</locationY>
         <assignmentItems>
             <assignToReference>MessagingTemplate</assignToReference>
             <operator>Assign</operator>
@@ -66,10 +66,32 @@
         </connector>
     </assignments>
     <decisions>
+        <name>Decision_IsBypassEnabled</name>
+        <label>Is Bypass Enabled?</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>Updated_by_Mechanic</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_BypassEnabled</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Setup.CS_KillSwitch__c.DisableFlows__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Updated_by_Mechanic</name>
         <label>Updated by Mechanic?</label>
-        <locationX>182</locationX>
-        <locationY>323</locationY>
+        <locationX>374</locationX>
+        <locationY>431</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>yes</name>
@@ -128,8 +150,8 @@
     <recordLookups>
         <name>get_custom_notification_type</name>
         <label>get custom notification type</label>
-        <locationX>50</locationX>
-        <locationY>863</locationY>
+        <locationX>242</locationX>
+        <locationY>971</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Assigning_message_template_and_channel</targetReference>
@@ -149,8 +171,8 @@
     <recordLookups>
         <name>get_PCG</name>
         <label>get PCG</label>
-        <locationX>50</locationX>
-        <locationY>539</locationY>
+        <locationX>242</locationX>
+        <locationY>647</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>get_Shutdown_log_details</targetReference>
@@ -170,8 +192,8 @@
     <recordLookups>
         <name>get_Shutdown_log_details</name>
         <label>get Shutdown log details</label>
-        <locationX>50</locationX>
-        <locationY>647</locationY>
+        <locationX>242</locationX>
+        <locationY>755</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>get_Supervisor_details</targetReference>
@@ -193,8 +215,8 @@
     <recordLookups>
         <name>get_SR</name>
         <label>get SR</label>
-        <locationX>50</locationX>
-        <locationY>431</locationY>
+        <locationX>242</locationX>
+        <locationY>539</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>get_PCG</targetReference>
@@ -214,8 +236,8 @@
     <recordLookups>
         <name>get_Supervisor_details</name>
         <label>get Supervisor details</label>
-        <locationX>50</locationX>
-        <locationY>755</locationY>
+        <locationX>242</locationX>
+        <locationY>863</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>get_custom_notification_type</targetReference>
@@ -233,10 +255,10 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>56</locationX>
+        <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Updated_by_Mechanic</targetReference>
+            <targetReference>Decision_IsBypassEnabled</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>

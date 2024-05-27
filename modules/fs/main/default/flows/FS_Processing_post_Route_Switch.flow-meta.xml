@@ -4,8 +4,8 @@
     <assignments>
         <name>assign_AR_value</name>
         <label>assign AR value</label>
-        <locationX>270</locationX>
-        <locationY>2927</locationY>
+        <locationX>418</locationX>
+        <locationY>3035</locationY>
         <assignmentItems>
             <assignToReference>UpdateSAlist</assignToReference>
             <operator>Add</operator>
@@ -20,8 +20,8 @@
     <assignments>
         <name>assign_SAid</name>
         <label>assign SAid</label>
-        <locationX>688</locationX>
-        <locationY>1379</locationY>
+        <locationX>836</locationX>
+        <locationY>1487</locationY>
         <assignmentItems>
             <assignToReference>StoreAllSAids</assignToReference>
             <operator>Add</operator>
@@ -36,8 +36,8 @@
     <assignments>
         <name>Assign_wo_territory</name>
         <label>Assign wo territory</label>
-        <locationX>424</locationX>
-        <locationY>647</locationY>
+        <locationX>572</locationX>
+        <locationY>755</locationY>
         <assignmentItems>
             <assignToReference>For_Each_WO.ServiceTerritoryId</assignToReference>
             <operator>Assign</operator>
@@ -59,8 +59,8 @@
     <assignments>
         <name>AssignAR</name>
         <label>Assign AR</label>
-        <locationX>270</locationX>
-        <locationY>2819</locationY>
+        <locationX>418</locationX>
+        <locationY>2927</locationY>
         <assignmentItems>
             <assignToReference>For_each_SAs.AssignedServiceResource__c</assignToReference>
             <operator>Assign</operator>
@@ -82,8 +82,8 @@
     <assignments>
         <name>Store_Pinned_SA_ids</name>
         <label>Store Pinned SA ids</label>
-        <locationX>424</locationX>
-        <locationY>1379</locationY>
+        <locationX>572</locationX>
+        <locationY>1487</locationY>
         <assignmentItems>
             <assignToReference>storePinnedSAids</assignToReference>
             <operator>Add</operator>
@@ -98,8 +98,8 @@
     <assignments>
         <name>StoreWOiD_in_Text</name>
         <label>StoreWOiD in Text</label>
-        <locationX>424</locationX>
-        <locationY>539</locationY>
+        <locationX>572</locationX>
+        <locationY>647</locationY>
         <assignmentItems>
             <assignToReference>StoreAllWoIDs</assignToReference>
             <operator>Add</operator>
@@ -114,8 +114,8 @@
     <decisions>
         <name>Check_if_not_null</name>
         <label>Check if not null</label>
-        <locationX>182</locationX>
-        <locationY>1979</locationY>
+        <locationX>330</locationX>
+        <locationY>2087</locationY>
         <defaultConnector>
             <targetReference>Copy_2_of_update_SA</targetReference>
         </defaultConnector>
@@ -139,8 +139,8 @@
     <decisions>
         <name>check_if_SA_is_Pinned</name>
         <label>check if SA is Pinned</label>
-        <locationX>556</locationX>
-        <locationY>1271</locationY>
+        <locationX>704</locationX>
+        <locationY>1379</locationY>
         <defaultConnector>
             <targetReference>assign_SAid</targetReference>
         </defaultConnector>
@@ -162,10 +162,32 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Decision_IsBypassEnabled</name>
+        <label>Is Bypass Enabled?</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>Get_Records_Related_WO</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_BypassEnabled</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Setup.CS_KillSwitch__c.DisableFlows__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>if_Pinned_or_Unpinned</name>
         <label>if Pinned or Unpinned</label>
-        <locationX>336</locationX>
-        <locationY>1655</locationY>
+        <locationX>484</locationX>
+        <locationY>1763</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Pinned</name>
@@ -197,8 +219,8 @@
         <description>store SAid in text</description>
         <name>For_Each_SA</name>
         <label>For Each SA</label>
-        <locationX>336</locationX>
-        <locationY>1163</locationY>
+        <locationX>484</locationX>
+        <locationY>1271</locationY>
         <collectionReference>getsaId</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -211,8 +233,8 @@
     <loops>
         <name>For_each_SAs</name>
         <label>For each pinned SA</label>
-        <locationX>182</locationX>
-        <locationY>2711</locationY>
+        <locationX>330</locationX>
+        <locationY>2819</locationY>
         <collectionReference>get_sa</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -226,8 +248,8 @@
         <description>get SA.</description>
         <name>For_Each_WO</name>
         <label>For Each WO</label>
-        <locationX>336</locationX>
-        <locationY>431</locationY>
+        <locationX>484</locationX>
+        <locationY>539</locationY>
         <collectionReference>storeAllWO</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -259,8 +281,8 @@
     <recordDeletes>
         <name>Delete_Assigned_Resource</name>
         <label>Delete Assigned Resource</label>
-        <locationX>50</locationX>
-        <locationY>2087</locationY>
+        <locationX>198</locationX>
+        <locationY>2195</locationY>
         <connector>
             <targetReference>Copy_2_of_update_SA</targetReference>
         </connector>
@@ -269,8 +291,8 @@
     <recordLookups>
         <name>Copy_2_of_Get_Assigned_Resource</name>
         <label>Copy 2 of Get Assigned Resource</label>
-        <locationX>182</locationX>
-        <locationY>2387</locationY>
+        <locationX>330</locationX>
+        <locationY>2495</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Resources</targetReference>
@@ -290,8 +312,8 @@
     <recordLookups>
         <name>Get_Assigned_Resource</name>
         <label>Get Assigned Resource</label>
-        <locationX>182</locationX>
-        <locationY>1871</locationY>
+        <locationX>330</locationX>
+        <locationY>1979</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_if_not_null</targetReference>
@@ -311,8 +333,8 @@
     <recordLookups>
         <name>Get_Pinned_Service_Appointment</name>
         <label>Get Pinned Service Appointment</label>
-        <locationX>336</locationX>
-        <locationY>1055</locationY>
+        <locationX>484</locationX>
+        <locationY>1163</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>For_Each_SA</targetReference>
@@ -362,8 +384,8 @@
     <recordLookups>
         <name>Get_Records_Related_WO</name>
         <label>Get Records Related WO</label>
-        <locationX>336</locationX>
-        <locationY>323</locationY>
+        <locationX>484</locationX>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>For_Each_WO</targetReference>
@@ -419,8 +441,8 @@
     <recordLookups>
         <name>Get_Resources</name>
         <label>Get resources territory</label>
-        <locationX>182</locationX>
-        <locationY>2495</locationY>
+        <locationX>330</locationX>
+        <locationY>2603</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>get_sa</targetReference>
@@ -447,8 +469,8 @@
     <recordLookups>
         <name>get_sa</name>
         <label>get sa</label>
-        <locationX>182</locationX>
-        <locationY>2603</locationY>
+        <locationX>330</locationX>
+        <locationY>2711</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>For_each_SAs</targetReference>
@@ -475,8 +497,8 @@
     <recordLookups>
         <name>Get_Service_Appointment</name>
         <label>Get Service Appointment</label>
-        <locationX>336</locationX>
-        <locationY>947</locationY>
+        <locationX>484</locationX>
+        <locationY>1055</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Pinned_Service_Appointment</targetReference>
@@ -537,8 +559,8 @@
         <description>remove assigned resource lookup value</description>
         <name>Copy_2_of_update_SA</name>
         <label>Copy 2 of update SA</label>
-        <locationX>182</locationX>
-        <locationY>2279</locationY>
+        <locationX>330</locationX>
+        <locationY>2387</locationY>
         <connector>
             <targetReference>Copy_2_of_Get_Assigned_Resource</targetReference>
         </connector>
@@ -567,8 +589,8 @@
     <recordUpdates>
         <name>Update_Records_4</name>
         <label>Update Records  WO</label>
-        <locationX>336</locationX>
-        <locationY>839</locationY>
+        <locationX>484</locationX>
+        <locationY>947</locationY>
         <connector>
             <targetReference>Get_Service_Appointment</targetReference>
         </connector>
@@ -578,8 +600,8 @@
         <description>remove assigned resource lookup value</description>
         <name>update_SA</name>
         <label>update SA</label>
-        <locationX>182</locationX>
-        <locationY>1763</locationY>
+        <locationX>330</locationX>
+        <locationY>1871</locationY>
         <connector>
             <targetReference>Get_Assigned_Resource</targetReference>
         </connector>
@@ -605,15 +627,15 @@
     <recordUpdates>
         <name>Update_SA_With_new_Resource</name>
         <label>Update SA With new Resource</label>
-        <locationX>182</locationX>
-        <locationY>3119</locationY>
+        <locationX>330</locationX>
+        <locationY>3227</locationY>
         <inputReference>UpdateSAlist</inputReference>
     </recordUpdates>
     <start>
-        <locationX>210</locationX>
+        <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Records_Related_WO</targetReference>
+            <targetReference>Decision_IsBypassEnabled</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
