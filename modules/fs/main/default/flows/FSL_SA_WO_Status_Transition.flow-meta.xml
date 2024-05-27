@@ -1360,6 +1360,12 @@
             </value>
         </filters>
         <inputAssignments>
+            <field>FS_Priority__c</field>
+            <value>
+                <stringValue>S3</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Status</field>
             <value>
                 <stringValue>Cannot Complete</stringValue>
