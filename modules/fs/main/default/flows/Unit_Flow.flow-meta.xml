@@ -4,7 +4,7 @@
         <name>send_notification_to_mechanic</name>
         <label>send notification to mechanic</label>
         <locationX>4538</locationX>
-        <locationY>1187</locationY>
+        <locationY>1295</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <connector>
@@ -48,7 +48,7 @@
         <name>send_notification_to_supervisor</name>
         <label>send notification to supervisor</label>
         <locationX>4538</locationX>
-        <locationY>1487</locationY>
+        <locationY>1595</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -90,7 +90,7 @@
         <name>Assigning_message_template_and_channel</name>
         <label>Assigning message template and channel</label>
         <locationX>4670</locationX>
-        <locationY>971</locationY>
+        <locationY>1079</locationY>
         <assignmentItems>
             <assignToReference>MessagingTemplate</assignToReference>
             <operator>Assign</operator>
@@ -120,7 +120,7 @@
         <name>MP_Id_storage</name>
         <label>MP Id storage</label>
         <locationX>1546</locationX>
-        <locationY>755</locationY>
+        <locationY>863</locationY>
         <assignmentItems>
             <assignToReference>MPIds</assignToReference>
             <operator>Add</operator>
@@ -136,7 +136,7 @@
         <name>MP_value_Assignment</name>
         <label>MP value Assignment</label>
         <locationX>1546</locationX>
-        <locationY>1163</locationY>
+        <locationY>1271</locationY>
         <assignmentItems>
             <assignToReference>EndDateStoreSingleVar</assignToReference>
             <operator>Assign</operator>
@@ -173,7 +173,7 @@
         <name>MPIdStore</name>
         <label>MPIdStore</label>
         <locationX>1194</locationX>
-        <locationY>755</locationY>
+        <locationY>863</locationY>
         <assignmentItems>
             <assignToReference>MPIds</assignToReference>
             <operator>Add</operator>
@@ -189,7 +189,7 @@
         <name>Start_Date_Assignment</name>
         <label>Start Date Assignment</label>
         <locationX>1194</locationX>
-        <locationY>1271</locationY>
+        <locationY>1379</locationY>
         <assignmentItems>
             <assignToReference>EndDateStoreSingleVar</assignToReference>
             <operator>Assign</operator>
@@ -219,7 +219,7 @@
         <name>Check_Contract_Status</name>
         <label>Check Contract Status</label>
         <locationX>5198</locationX>
-        <locationY>647</locationY>
+        <locationY>755</locationY>
         <defaultConnector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
         </defaultConnector>
@@ -251,7 +251,7 @@
         <name>Check_Handover_is_set</name>
         <label>Check Handover is set</label>
         <locationX>182</locationX>
-        <locationY>947</locationY>
+        <locationY>1055</locationY>
         <defaultConnector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
         </defaultConnector>
@@ -290,7 +290,7 @@
         <name>Check_if_Changes_Done_in_Checkboxes</name>
         <label>Check if Changes Done in Checkboxes</label>
         <locationX>2844</locationX>
-        <locationY>1871</locationY>
+        <locationY>1979</locationY>
         <defaultConnector>
             <targetReference>Decision</targetReference>
         </defaultConnector>
@@ -357,7 +357,7 @@
         <name>Decision</name>
         <label>Decision</label>
         <locationX>2844</locationX>
-        <locationY>2171</locationY>
+        <locationY>2279</locationY>
         <defaultConnector>
             <targetReference>Unit_Suspension</targetReference>
         </defaultConnector>
@@ -379,10 +379,32 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Decision_IsBypassEnabled</name>
+        <label>Is Bypass Enabled?</label>
+        <locationX>1315</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>Get_Boomi_Integration_User</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_BypassEnabled</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Setup.CS_KillSwitch__c.DisableFlows__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Handover_date_Null_check</name>
         <label>Handover date Null check</label>
         <locationX>182</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <defaultConnector>
             <targetReference>Cancel_Future_WO_and_SA</targetReference>
         </defaultConnector>
@@ -407,7 +429,7 @@
         <name>Handover_Date_Nullcheck</name>
         <label>Handover Date Nullcheck</label>
         <locationX>1854</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <defaultConnector>
             <targetReference>Cancel_Related_WO_and_SA</targetReference>
         </defaultConnector>
@@ -439,7 +461,7 @@
         <name>Is_Route_Null</name>
         <label>Is Route Null</label>
         <locationX>2822</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <defaultConnector>
             <targetReference>Is_Running</targetReference>
         </defaultConnector>
@@ -464,7 +486,7 @@
         <name>Is_Running</name>
         <label>Is Running</label>
         <locationX>3218</locationX>
-        <locationY>647</locationY>
+        <locationY>755</locationY>
         <defaultConnector>
             <targetReference>Update_Records_19</targetReference>
         </defaultConnector>
@@ -505,7 +527,7 @@
         <name>Is_Running1</name>
         <label>Is Running</label>
         <locationX>2426</locationX>
-        <locationY>647</locationY>
+        <locationY>755</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Running</name>
@@ -542,7 +564,7 @@
         <name>IsChangedNewEqippment</name>
         <label>Decision</label>
         <locationX>2844</locationX>
-        <locationY>431</locationY>
+        <locationY>539</locationY>
         <defaultConnector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
         </defaultConnector>
@@ -893,7 +915,7 @@
         <name>Unit_Suspension</name>
         <label>Unit Suspension</label>
         <locationX>2844</locationX>
-        <locationY>2471</locationY>
+        <locationY>2579</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Suspend_Unit</name>
@@ -979,7 +1001,7 @@
         <name>Validate_Mechanic_emailid</name>
         <label>Validate Mechanic emailid</label>
         <locationX>4670</locationX>
-        <locationY>1079</locationY>
+        <locationY>1187</locationY>
         <defaultConnector>
             <targetReference>Validate_Supervisor_emailid</targetReference>
         </defaultConnector>
@@ -1004,7 +1026,7 @@
         <name>Validate_Supervisor_emailid</name>
         <label>Validate Supervisor emailid</label>
         <locationX>4670</locationX>
-        <locationY>1379</locationY>
+        <locationY>1487</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>check_if_Supervisor_email_is_present</name>
@@ -1044,7 +1066,7 @@
         <name>Loop_for_Maintenance_Plan</name>
         <label>Loop for Maintenance Plan</label>
         <locationX>1458</locationX>
-        <locationY>1055</locationY>
+        <locationY>1163</locationY>
         <collectionReference>Get_Req_MP</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1058,7 +1080,7 @@
         <name>Loop_Over_MPs</name>
         <label>Loop Over MPs</label>
         <locationX>1106</locationX>
-        <locationY>1163</locationY>
+        <locationY>1271</locationY>
         <collectionReference>Get_Maintenance_Plan</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1072,7 +1094,7 @@
         <name>LoopOver_MA_of_Unit</name>
         <label>LoopOver MA of Unit</label>
         <locationX>1458</locationX>
-        <locationY>647</locationY>
+        <locationY>755</locationY>
         <collectionReference>Get_Maintenance_Asset</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1086,7 +1108,7 @@
         <name>LoopOverMA</name>
         <label>LoopOverMA</label>
         <locationX>1106</locationX>
-        <locationY>647</locationY>
+        <locationY>755</locationY>
         <collectionReference>Get_Maintenance_Asset_Of_Unit</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1119,7 +1141,7 @@
         <name>Get_Boomi_Integration_User</name>
         <label>Get Boomi Integration User</label>
         <locationX>2844</locationX>
-        <locationY>323</locationY>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>IsChangedNewEqippment</targetReference>
@@ -1141,7 +1163,7 @@
         <name>Get_ContractUnitSummaryRecords</name>
         <label>Get_ContractUnitSummaryRecords</label>
         <locationX>5198</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_Contract_Status</targetReference>
@@ -1162,7 +1184,7 @@
         <name>get_custom_notification_type</name>
         <label>get_custom_notification_type</label>
         <locationX>4670</locationX>
-        <locationY>863</locationY>
+        <locationY>971</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Assigning_message_template_and_channel</targetReference>
@@ -1183,7 +1205,7 @@
         <name>Get_Maintenance_Asset</name>
         <label>Get Maintenance Asset</label>
         <locationX>1458</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>LoopOver_MA_of_Unit</targetReference>
@@ -1204,7 +1226,7 @@
         <name>Get_Maintenance_Asset_Of_Unit</name>
         <label>Get Maintenance Asset Of Unit</label>
         <locationX>1106</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>LoopOverMA</targetReference>
@@ -1225,7 +1247,7 @@
         <name>Get_Maintenance_Plan</name>
         <label>Get Maintenance Plan</label>
         <locationX>1106</locationX>
-        <locationY>1055</locationY>
+        <locationY>1163</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Loop_Over_MPs</targetReference>
@@ -1260,7 +1282,7 @@
         <name>Get_Mechanic</name>
         <label>Get Mechanic</label>
         <locationX>4670</locationX>
-        <locationY>755</locationY>
+        <locationY>863</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>get_custom_notification_type</targetReference>
@@ -1281,7 +1303,7 @@
         <name>Get_Req_MP</name>
         <label>Get Req MP</label>
         <locationX>1458</locationX>
-        <locationY>947</locationY>
+        <locationY>1055</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Loop_for_Maintenance_Plan</targetReference>
@@ -1309,7 +1331,7 @@
         <name>Get_Route</name>
         <label>Get Route</label>
         <locationX>4670</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>get_Service_Resource</targetReference>
@@ -1330,7 +1352,7 @@
         <name>get_Service_Resource</name>
         <label>get Service Resource</label>
         <locationX>4670</locationX>
-        <locationY>647</locationY>
+        <locationY>755</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Mechanic</targetReference>
@@ -1352,7 +1374,7 @@
         <name>Copy_1_of_Update_Unit</name>
         <label>Update Unit</label>
         <locationX>2162</locationX>
-        <locationY>755</locationY>
+        <locationY>863</locationY>
         <connector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
         </connector>
@@ -1375,7 +1397,7 @@
         <name>Copy_2_of_Update_Unit</name>
         <label>Update Unit</label>
         <locationX>3746</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <connector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
         </connector>
@@ -1398,7 +1420,7 @@
         <name>Copy_3_of_Update_Unit</name>
         <label>Update Unit</label>
         <locationX>1722</locationX>
-        <locationY>647</locationY>
+        <locationY>755</locationY>
         <connector>
             <targetReference>Cancel_Related_WO_and_SA</targetReference>
         </connector>
@@ -1420,7 +1442,7 @@
         <name>Process_Type_Update</name>
         <label>Process Type Update</label>
         <locationX>4010</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <connector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
         </connector>
@@ -1436,7 +1458,7 @@
         <name>Process_Type_Update1</name>
         <label>Process Type Update</label>
         <locationX>4274</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <connector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
         </connector>
@@ -1452,7 +1474,7 @@
         <name>StartDateLessthanCurrentDate</name>
         <label>StartDateLessthanCurrentDate</label>
         <locationX>1106</locationX>
-        <locationY>947</locationY>
+        <locationY>1055</locationY>
         <connector>
             <targetReference>Get_Maintenance_Plan</targetReference>
         </connector>
@@ -1490,7 +1512,7 @@
         <name>Suspend_The_Unit</name>
         <label>Suspend The Unit</label>
         <locationX>2580</locationX>
-        <locationY>2579</locationY>
+        <locationY>2687</locationY>
         <inputAssignments>
             <field>FS_Field_Status__c</field>
             <value>
@@ -1503,7 +1525,7 @@
         <name>Update</name>
         <label>Update</label>
         <locationX>2712</locationX>
-        <locationY>2279</locationY>
+        <locationY>2387</locationY>
         <connector>
             <targetReference>Unit_Suspension</targetReference>
         </connector>
@@ -1520,7 +1542,7 @@
         <name>Update_Field_Status</name>
         <label>Update Field Status</label>
         <locationX>2426</locationX>
-        <locationY>755</locationY>
+        <locationY>863</locationY>
         <connector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
         </connector>
@@ -1542,7 +1564,7 @@
         <name>Update_MP</name>
         <label>Update MP</label>
         <locationX>1458</locationX>
-        <locationY>1355</locationY>
+        <locationY>1463</locationY>
         <connector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
         </connector>
@@ -1552,7 +1574,7 @@
         <name>Update_MP_records</name>
         <label>Update MP records</label>
         <locationX>1106</locationX>
-        <locationY>1463</locationY>
+        <locationY>1571</locationY>
         <connector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
         </connector>
@@ -1562,7 +1584,7 @@
         <name>Update_Records_19</name>
         <label>Update Records 19</label>
         <locationX>3482</locationX>
-        <locationY>755</locationY>
+        <locationY>863</locationY>
         <inputAssignments>
             <field>FS_Field_Status__c</field>
             <value>
@@ -1576,7 +1598,7 @@
         <name>Update_Unit</name>
         <label>Update Unit</label>
         <locationX>754</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <connector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
         </connector>
@@ -1599,7 +1621,7 @@
         <name>Update_unit1</name>
         <label>Update unit</label>
         <locationX>490</locationX>
-        <locationY>539</locationY>
+        <locationY>647</locationY>
         <connector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
         </connector>
@@ -1616,7 +1638,7 @@
         <name>Update_Unit2</name>
         <label>Update Unit</label>
         <locationX>2954</locationX>
-        <locationY>755</locationY>
+        <locationY>863</locationY>
         <connector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
         </connector>
@@ -1638,7 +1660,7 @@
         <name>Update_Unit_one</name>
         <label>Update Unit</label>
         <locationX>50</locationX>
-        <locationY>1055</locationY>
+        <locationY>1163</locationY>
         <connector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
         </connector>
@@ -1660,7 +1682,7 @@
         <name>Update_Unit_Record</name>
         <label>Update Unit Record</label>
         <locationX>5066</locationX>
-        <locationY>755</locationY>
+        <locationY>863</locationY>
         <connector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
         </connector>
@@ -1682,7 +1704,7 @@
         <name>Update_Unit_Two</name>
         <label>Update Unit</label>
         <locationX>50</locationX>
-        <locationY>647</locationY>
+        <locationY>755</locationY>
         <connector>
             <targetReference>Cancel_Future_WO_and_SA</targetReference>
         </connector>
@@ -1704,7 +1726,7 @@
         <name>Update_WO</name>
         <label>Update WO</label>
         <locationX>2712</locationX>
-        <locationY>1979</locationY>
+        <locationY>2087</locationY>
         <connector>
             <targetReference>Decision</targetReference>
         </connector>
@@ -1746,7 +1768,7 @@
         <name>Valid_the_Suspended_Unit</name>
         <label>Valid the Suspended Unit</label>
         <locationX>2844</locationX>
-        <locationY>2579</locationY>
+        <locationY>2687</locationY>
         <inputAssignments>
             <field>FS_Field_Status__c</field>
             <value>
@@ -1756,10 +1778,10 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>2718</locationX>
+        <locationX>1189</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Boomi_Integration_User</targetReference>
+            <targetReference>Decision_IsBypassEnabled</targetReference>
         </connector>
         <object>Asset</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
@@ -1770,7 +1792,7 @@
         <name>Cancel_Future_WO_and_SA</name>
         <label>Cancel Future WO and SA</label>
         <locationX>182</locationX>
-        <locationY>839</locationY>
+        <locationY>947</locationY>
         <connector>
             <targetReference>Check_Handover_is_set</targetReference>
         </connector>
@@ -1786,7 +1808,7 @@
         <name>Cancel_Related_WO_and_SA</name>
         <label>Cancel Related WO and SA</label>
         <locationX>1854</locationX>
-        <locationY>839</locationY>
+        <locationY>947</locationY>
         <connector>
             <targetReference>Check_if_Changes_Done_in_Checkboxes</targetReference>
         </connector>
