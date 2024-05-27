@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Send_Email_to_All_Recipients</name>
         <label>Send Email to All Recipients</label>
-        <locationX>50</locationX>
-        <locationY>2255</locationY>
+        <locationX>407</locationX>
+        <locationY>2363</locationY>
         <actionName>emailSimple</actionName>
         <actionType>emailSimple</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -45,8 +45,8 @@
     <assignments>
         <name>Assign_Email_to_List</name>
         <label>Assign Email to List</label>
-        <locationX>270</locationX>
-        <locationY>1955</locationY>
+        <locationX>627</locationX>
+        <locationY>2063</locationY>
         <assignmentItems>
             <assignToReference>EmailList</assignToReference>
             <operator>Add</operator>
@@ -61,8 +61,8 @@
     <assignments>
         <name>Assign_Reciepient_Email</name>
         <label>Assign Reciepient Email</label>
-        <locationX>182</locationX>
-        <locationY>1331</locationY>
+        <locationX>539</locationX>
+        <locationY>1439</locationY>
         <assignmentItems>
             <assignToReference>EmailList</assignToReference>
             <operator>Add</operator>
@@ -77,8 +77,8 @@
     <assignments>
         <name>Assign_the_Public_Group_Id</name>
         <label>Assign the Public Group Id</label>
-        <locationX>270</locationX>
-        <locationY>863</locationY>
+        <locationX>627</locationX>
+        <locationY>971</locationY>
         <assignmentItems>
             <assignToReference>PublicGroupId</assignToReference>
             <operator>Add</operator>
@@ -93,8 +93,8 @@
     <assignments>
         <name>Assign_User_ID</name>
         <label>Assign User ID</label>
-        <locationX>270</locationX>
-        <locationY>1547</locationY>
+        <locationX>627</locationX>
+        <locationY>1655</locationY>
         <assignmentItems>
             <assignToReference>GroupMemberId</assignToReference>
             <operator>Add</operator>
@@ -109,8 +109,8 @@
     <decisions>
         <name>Check_Company_Wide_Setting</name>
         <label>Check Company Wide Setting</label>
-        <locationX>402</locationX>
-        <locationY>755</locationY>
+        <locationX>759</locationX>
+        <locationY>863</locationY>
         <defaultConnector>
             <targetReference>Loop_Company_Wide_Settings</targetReference>
         </defaultConnector>
@@ -134,8 +134,8 @@
     <decisions>
         <name>Condition_Check</name>
         <label>Condition Check</label>
-        <locationX>380</locationX>
-        <locationY>323</locationY>
+        <locationX>737</locationX>
+        <locationY>431</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Unit_Cancelled</name>
@@ -154,10 +154,32 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Decision_IsBypassEnabled</name>
+        <label>Is Bypass Enabled?</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>Condition_Check</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Outcome_BypassEnabled</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Setup.CS_KillSwitch__c.DisableFlows__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Null_Check_For_Email</name>
         <label>Null Check For Email</label>
-        <locationX>182</locationX>
-        <locationY>2147</locationY>
+        <locationX>539</locationX>
+        <locationY>2255</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Not_Null1</name>
@@ -178,8 +200,8 @@
     <decisions>
         <name>Null_Check_for_Unit_Company</name>
         <label>Null Check for Unit Company</label>
-        <locationX>556</locationX>
-        <locationY>647</locationY>
+        <locationX>913</locationX>
+        <locationY>755</locationY>
         <defaultConnectorLabel>Null</defaultConnectorLabel>
         <rules>
             <name>Not_Null</name>
@@ -208,8 +230,8 @@
     <loops>
         <name>Loop_Company_Wide_Settings</name>
         <label>Loop Company Wide Settings</label>
-        <locationX>182</locationX>
-        <locationY>539</locationY>
+        <locationX>539</locationX>
+        <locationY>647</locationY>
         <collectionReference>Get_Metadata_for_Commission_Team_Email</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -222,8 +244,8 @@
     <loops>
         <name>Loop_Public_Group_to_add_users</name>
         <label>Loop Public Group to add users</label>
-        <locationX>182</locationX>
-        <locationY>1439</locationY>
+        <locationX>539</locationX>
+        <locationY>1547</locationY>
         <collectionReference>Get_Group_Member_Record</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -236,8 +258,8 @@
     <loops>
         <name>Loop_Users_to_get_email</name>
         <label>Loop Users to get email</label>
-        <locationX>182</locationX>
-        <locationY>1847</locationY>
+        <locationX>539</locationX>
+        <locationY>1955</locationY>
         <collectionReference>Get_Users</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -269,8 +291,8 @@
     <recordLookups>
         <name>Get_Group_Member_Record</name>
         <label>Get Group Member Record</label>
-        <locationX>182</locationX>
-        <locationY>1223</locationY>
+        <locationX>539</locationX>
+        <locationY>1331</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Assign_Reciepient_Email</targetReference>
@@ -290,8 +312,8 @@
     <recordLookups>
         <name>Get_Metadata_for_Commission_Team_Email</name>
         <label>Get Metadata for Commission Team Email</label>
-        <locationX>182</locationX>
-        <locationY>431</locationY>
+        <locationX>539</locationX>
+        <locationY>539</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Loop_Company_Wide_Settings</targetReference>
@@ -303,8 +325,8 @@
     <recordLookups>
         <name>Get_Users</name>
         <label>Get Users</label>
-        <locationX>182</locationX>
-        <locationY>1739</locationY>
+        <locationX>539</locationX>
+        <locationY>1847</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Loop_Users_to_get_email</targetReference>
@@ -322,10 +344,10 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>
-        <locationX>254</locationX>
+        <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Condition_Check</targetReference>
+            <targetReference>Decision_IsBypassEnabled</targetReference>
         </connector>
         <object>Asset</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
