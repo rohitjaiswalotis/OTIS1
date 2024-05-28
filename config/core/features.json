@@ -60,6 +60,7 @@
 		},
 		
 		"accountSettings": {
+			"enableAccountHistoryTracking": true,
 			"enableRelateContactToMultipleAccounts": true
 		},
 		
