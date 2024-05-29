@@ -4,7 +4,7 @@
         <name>Fields_Assignments</name>
         <label>Fields Assignments</label>
         <locationX>578</locationX>
-        <locationY>1538</locationY>
+        <locationY>1646</locationY>
         <assignmentItems>
             <assignToReference>WorkOrderStatus</assignToReference>
             <operator>Assign</operator>
@@ -163,7 +163,7 @@
         <name>Check_Operation_Status_Reason_Value</name>
         <label>Check Operation Status Reason Value</label>
         <locationX>1370</locationX>
-        <locationY>1214</locationY>
+        <locationY>1322</locationY>
         <defaultConnector>
             <targetReference>SA_Closeout2_0</targetReference>
         </defaultConnector>
@@ -323,6 +323,14 @@
             </value>
         </filters>
         <object>Asset</object>
+        <outputAssignments>
+            <assignToReference>Unit_CustomerDesignation</assignToReference>
+            <field>CustomerDesignation__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>Unit_Name</assignToReference>
+            <field>Name</field>
+        </outputAssignments>
         <valueField>Id</valueField>
     </dynamicChoiceSets>
     <dynamicChoiceSets>
@@ -375,7 +383,7 @@
         <name>Create_UnitShutDown_Log</name>
         <label>Create UnitShutDown Log</label>
         <locationX>578</locationX>
-        <locationY>2078</locationY>
+        <locationY>2186</locationY>
         <faultConnector>
             <targetReference>ErrorScreen</targetReference>
         </faultConnector>
@@ -418,13 +426,36 @@
         <object>AssetDowntimePeriod</object>
     </recordCreates>
     <recordLookups>
+        <name>Get_Case_Record</name>
+        <label>Get Case Record</label>
+        <locationX>1370</locationX>
+        <locationY>998</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Service_Resource</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>WorkOrderRecord.CaseId</elementReference>
+            </value>
+        </filters>
+        <object>Case</object>
+        <outputReference>CaseRecord</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Type</queriedFields>
+        <queriedFields>Priority</queriedFields>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Current_Unit_Record</name>
         <label>Get Current Unit Record</label>
         <locationX>1370</locationX>
         <locationY>890</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Service_Resource</targetReference>
+            <targetReference>Get_Case_Record</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -438,6 +469,8 @@
         <outputReference>Unit_Record</outputReference>
         <queriedFields>Id</queriedFields>
         <queriedFields>LocationId</queriedFields>
+        <queriedFields>CustomerDesignation__c</queriedFields>
+        <queriedFields>Name</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>Get_SA_Record</name>
@@ -471,7 +504,7 @@
         <name>Get_Service_Resource</name>
         <label>Get Service Resource</label>
         <locationX>1370</locationX>
-        <locationY>998</locationY>
+        <locationY>1106</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>SA_Closeout1</targetReference>
@@ -494,7 +527,7 @@
         <name>Get_UnitShutdownLog_Record_0</name>
         <label>Get UnitShutdownLog Record</label>
         <locationX>2162</locationX>
-        <locationY>1538</locationY>
+        <locationY>1646</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_WorkPerformedCode_0</targetReference>
@@ -588,12 +621,13 @@
         <queriedFields>AssetId</queriedFields>
         <queriedFields>ConfirmedPassengerRelease__c</queriedFields>
         <queriedFields>Priority</queriedFields>
+        <queriedFields>CaseId</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>Get_WorkPerformedCode</name>
         <label>Get WorkPerformedCode</label>
         <locationX>578</locationX>
-        <locationY>1646</locationY>
+        <locationY>1754</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Update_SA</targetReference>
@@ -618,7 +652,7 @@
         <name>Get_WorkPerformedCode_0</name>
         <label>Get WorkPerformedCode</label>
         <locationX>2162</locationX>
-        <locationY>1646</locationY>
+        <locationY>1754</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Update_SA_0</targetReference>
@@ -643,7 +677,7 @@
         <name>Update_Related_Work_Order</name>
         <label>Update Related Work Order</label>
         <locationX>578</locationX>
-        <locationY>1862</locationY>
+        <locationY>1970</locationY>
         <connector>
             <targetReference>Update_Unit</targetReference>
         </connector>
@@ -678,6 +712,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>{!CaseRecord.Type} - {!Unit_CustomerDesignation} - {!Unit_Name} - {!CaseRecord.Priority}</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>SvcReqCloseoutNoteByMechanic__c</field>
             <value>
                 <elementReference>Service_Request_Closeout_Notes</elementReference>
@@ -707,7 +747,7 @@
         <name>Update_Related_Work_Order_0</name>
         <label>Update Related Work Order</label>
         <locationX>2162</locationX>
-        <locationY>1862</locationY>
+        <locationY>1970</locationY>
         <connector>
             <targetReference>Update_Unit_0</targetReference>
         </connector>
@@ -742,6 +782,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>{!CaseRecord.Type} - {!Unit_CustomerDesignation} - {!Unit_Name} - {!CaseRecord.Priority}</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>SvcReqCloseoutNoteByMechanic__c</field>
             <value>
                 <elementReference>Service_Request_Closeout_Notes_0</elementReference>
@@ -771,7 +817,7 @@
         <name>Update_SA</name>
         <label>Update SA</label>
         <locationX>578</locationX>
-        <locationY>1754</locationY>
+        <locationY>1862</locationY>
         <connector>
             <targetReference>Update_Related_Work_Order</targetReference>
         </connector>
@@ -800,6 +846,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>{!CaseRecord.Type} - {!Unit_CustomerDesignation} - {!Unit_Name} - {!CaseRecord.Priority}</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Travel_Time__c</field>
             <value>
                 <elementReference>Travel_Time_Minutes</elementReference>
@@ -817,7 +869,7 @@
         <name>Update_SA_0</name>
         <label>Update SA</label>
         <locationX>2162</locationX>
-        <locationY>1754</locationY>
+        <locationY>1862</locationY>
         <connector>
             <targetReference>Update_Related_Work_Order_0</targetReference>
         </connector>
@@ -846,6 +898,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>{!CaseRecord.Type} - {!Unit_CustomerDesignation} - {!Unit_Name} - {!CaseRecord.Priority}</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Travel_Time__c</field>
             <value>
                 <elementReference>Copy_1_of_Travel_Time_Minutes</elementReference>
@@ -863,7 +921,7 @@
         <name>Update_Unit</name>
         <label>Update Unit</label>
         <locationX>578</locationX>
-        <locationY>1970</locationY>
+        <locationY>2078</locationY>
         <connector>
             <targetReference>Create_UnitShutDown_Log</targetReference>
         </connector>
@@ -897,7 +955,7 @@
         <name>Update_Unit_0</name>
         <label>Update Unit</label>
         <locationX>2162</locationX>
-        <locationY>1970</locationY>
+        <locationY>2078</locationY>
         <connector>
             <targetReference>Update_UnitShutdownLog</targetReference>
         </connector>
@@ -931,7 +989,7 @@
         <name>Update_UnitShutdownLog</name>
         <label>Update UnitShutdownLog</label>
         <locationX>2162</locationX>
-        <locationY>2078</locationY>
+        <locationY>2186</locationY>
         <faultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>ErrorScreen</targetReference>
@@ -968,7 +1026,7 @@
         <name>Add_Time</name>
         <label>Add Time</label>
         <locationX>578</locationX>
-        <locationY>1430</locationY>
+        <locationY>1538</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1014,7 +1072,7 @@
         <name>Add_Time_1</name>
         <label>Add Time</label>
         <locationX>2162</locationX>
-        <locationY>1430</locationY>
+        <locationY>1538</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1060,7 +1118,7 @@
         <name>ErrorScreen</name>
         <label>ErrorScreen</label>
         <locationX>842</locationX>
-        <locationY>2186</locationY>
+        <locationY>2294</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1076,7 +1134,7 @@
         <name>SA_Closeout1</name>
         <label>Service Request WO Closeout</label>
         <locationX>1370</locationX>
-        <locationY>1106</locationY>
+        <locationY>1214</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1150,7 +1208,7 @@
         <name>SA_Closeout2</name>
         <label>Service Request WO Closeout</label>
         <locationX>578</locationX>
-        <locationY>1322</locationY>
+        <locationY>1430</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1222,7 +1280,7 @@
         <name>SA_Closeout2_0</name>
         <label>Service Request WO Closeout</label>
         <locationX>2162</locationX>
-        <locationY>1322</locationY>
+        <locationY>1430</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1335,6 +1393,14 @@
     </start>
     <status>Active</status>
     <variables>
+        <name>CaseRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Case</objectType>
+    </variables>
+    <variables>
         <name>ErrorMessageVar</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -1376,6 +1442,20 @@
     </variables>
     <variables>
         <name>ServiceResourceId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Unit_CustomerDesignation</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Unit_Name</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
