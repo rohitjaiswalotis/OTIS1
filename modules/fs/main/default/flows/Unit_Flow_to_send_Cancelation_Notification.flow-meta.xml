@@ -147,6 +147,13 @@
                     <stringValue>Cancelled</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.Branch__r.FSLEnabled__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Get_Metadata_for_Commission_Team_Email</targetReference>
             </connector>
