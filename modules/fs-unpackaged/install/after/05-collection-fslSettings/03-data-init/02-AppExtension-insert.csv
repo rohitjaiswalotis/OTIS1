@@ -21,3 +21,4 @@
 "$SF_SR_VAR_MOBILE_SETTING_ID","Add Image on WO","Flow","Add_Image_on_WorkOrder","WorkOrder","Add Image on WO","/flow/Add_Image_on_WorkOrder"
 "$SF_SR_VAR_MOBILE_SETTING_ID","WOLI Create","Flow","WOLI_Creation","WorkOrder","Additional Work","/flow/WOLI_Creation"
 "$SF_SR_VAR_MOBILE_SETTING_ID","Time Sheet Entry Update","Flow","Time_Sheet_Entry_Update","ServiceAppointment","Update Time Sheet Entry",
+"$SF_SR_VAR_MOBILE_SETTING_ID","Add Expenses","Flow","Expense_Submission_Flow","WorkOrder","Add Expenses",
