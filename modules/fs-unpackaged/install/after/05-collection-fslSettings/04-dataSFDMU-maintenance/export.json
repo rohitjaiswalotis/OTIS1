@@ -86,6 +86,12 @@
 			"query": "SELECT Product_Type__c, Component__c, Sub_Component__c, Adjust__c, Clean__c, Lubricate__c, Repair__c, Replace__c, Verify__c FROM WOLI_Setting__c",
 			"operation": "Upsert",
 			"externalId": "Product_Type__c;Component__c;Sub_Component__c"
+		},
+		
+		{
+			"query": "SELECT Id, Name, Category__c, Department__c, Description__c FROM NintyNineCodeMappings__c",
+			"operation": "Upsert",
+			"externalId": "Name"
 		}
 		
 	]

@@ -22,3 +22,4 @@
 "$SF_SR_VAR_MOBILE_SETTING_ID","WOLI Create","Flow","WOLI_Creation","WorkOrder","Additional Work","/flow/WOLI_Creation"
 "$SF_SR_VAR_MOBILE_SETTING_ID","Time Sheet Entry Update","Flow","Time_Sheet_Entry_Update","ServiceAppointment","Update Time Sheet Entry",
 "$SF_SR_VAR_MOBILE_SETTING_ID","Add Expenses","Flow","Expense_Submission_Flow","WorkOrder","Add Expenses",
+"$SF_SR_VAR_MOBILE_SETTING_ID","Create/Update the Resource Absence","Flow","Associate_Non_Productive_Codes_with_Activity","ServiceResource","Create/Update the Resource Absence","/flow/Associate_Non_Productive_Codes_with_Activity"
