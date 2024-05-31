@@ -9,16 +9,11 @@ private class FS_WorkOrderTriggerHandlerTest {
             UTIL_TestDataFactory.OTIS_INTEGRATION_USER_EMAIL_POSTFIX
         );
 
-        List<CS_TriggerSettings__c> csTriggerSettings = UTIL_TestDataFactory.createTriggerSettings(
+        insert UTIL_TestDataFactory.createTriggerSettings(
             new List<String>{'WorkOrder'}
         );
-        insert csTriggerSettings;
-    }
 
-    @IsTest
-    static void shouldWorkOrderBeInsertedSuccessfully() {
-
-        Boolean hasException = false;
+        insert new Otis_Settings__c(Schedule_Job_User__c = UserInfo.getUserId());
 
         Branch__c branchToInsert = UTIL_TestDataFactory.createBranch(null, null, null);
         branchToInsert.FSLEnabled__c = false;
@@ -29,9 +24,26 @@ private class FS_WorkOrderTriggerHandlerTest {
 
         Case caseToInsert = UTIL_TestDataFactory.createCase(null, null);
         insert caseToInsert;
+    }
 
-        WorkOrder workOrderToInsert = UTIL_TestDataFactory.createWorkOrder(null, null, assetToInsert);
-        workOrderToInsert.CaseId = caseToInsert.Id;
+    @IsTest
+    static void shouldWorkOrderBeInsertedSuccessfully() {
+
+        Boolean hasException = false;
+
+        Asset testAsset = [SELECT LocationId FROM Asset];
+        Case testCase = [SELECT Id FROM Case];
+
+        Id recordTypeId = RecordTypeUtilities.getRecordTypeInfo(
+            WorkOrder.SObjectType,
+            UTIL_Constants.WORK_ORDER_CLASSIC_RECORD_TYPE
+        ).getRecordTypeId();
+
+        WorkOrder workOrderToInsert = UTIL_TestDataFactory.createWorkOrder(
+            null, null, null, testAsset.Id, null, null, null, recordTypeId
+        );
+        workOrderToInsert.LocationId = testAsset.LocationId;
+        workOrderToInsert.CaseId = testCase.Id;
 
         System.runAs(
             UTIL_TestDataFactory.getUserByEmailPostfix(UTIL_TestDataFactory.OTIS_INTEGRATION_USER_EMAIL_POSTFIX)
@@ -48,7 +60,47 @@ private class FS_WorkOrderTriggerHandlerTest {
         Assert.areEqual(
             false,
             hasException,
-            'Work Order record should be successfully inserted.'
+            'Work Order record should be successfully inserted. Trigger should not process "Classic_CC" work orders.'
+        );
+    }
+
+    @IsTest
+    static void shouldWorkOrderBeUpdatedSuccessfully() {
+
+        Boolean hasException = false;
+
+        Asset testAsset = [SELECT LocationId FROM Asset];
+        Case testCase = [SELECT Id FROM Case];
+
+        Id recordTypeId = RecordTypeUtilities.getRecordTypeInfo(
+            WorkOrder.SObjectType,
+            UTIL_Constants.WORK_ORDER_CLASSIC_RECORD_TYPE
+        ).getRecordTypeId();
+
+        WorkOrder workOrderToInsert = UTIL_TestDataFactory.createWorkOrder(
+            null, null, null, testAsset.Id, null, null, null, recordTypeId
+        );
+        workOrderToInsert.LocationId = testAsset.LocationId;
+        workOrderToInsert.CaseId = testCase.Id;
+
+        insert workOrderToInsert;
+
+        System.runAs(
+            UTIL_TestDataFactory.getUserByEmailPostfix(UTIL_TestDataFactory.OTIS_INTEGRATION_USER_EMAIL_POSTFIX)
+        ) {
+            Test.startTest();
+                try {
+                    update workOrderToInsert;
+                } catch (Exception e) {
+                    hasException = true;
+                }
+            Test.stopTest();
+        }
+
+        Assert.areEqual(
+            false,
+            hasException,
+            'Work Order record should be successfully updated. Trigger should not process "Classic_CC" work orders.'
         );
     }
 }
