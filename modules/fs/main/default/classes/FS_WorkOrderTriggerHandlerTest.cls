@@ -4,10 +4,41 @@ private class FS_WorkOrderTriggerHandlerTest {
     @TestSetup
     static void setupData() {
 
-        insert UTIL_TestDataFactory.createUser(
+        User integrationUser = UTIL_TestDataFactory.createUser(
             UTIL_Constants.OTIS_SYSTEM_INTEGRATION_PROFILE,
             UTIL_TestDataFactory.OTIS_INTEGRATION_USER_EMAIL_POSTFIX
         );
+		
+		insert integrationUser;
+		
+		
+		System.runAs(new User(Id = UserInfo.getUserId())) {
+			
+			Database.insert( 
+				new PermissionSetAssignment(
+					AssigneeId = integrationUser.Id,
+					PermissionSetGroupId = [ 
+						SELECT Id 
+						FROM PermissionSetGroup 
+						WHERE DeveloperName IN ( 'OtisSystemIntegration_Persona' ) 
+					]?.Id
+				),
+				false
+			);
+			
+			Database.insert( 
+				new PermissionSetAssignment(
+					AssigneeId = integrationUser.Id,
+					PermissionSetGroupId = [ 
+						SELECT Id 
+						FROM PermissionSetGroup 
+						WHERE DeveloperName IN ( 'FS_OtisSystemIntegration_Persona' ) 
+					]?.Id
+				)
+			);
+			
+		}
+
 
         insert UTIL_TestDataFactory.createTriggerSettings(
             new List<String>{'WorkOrder'}
