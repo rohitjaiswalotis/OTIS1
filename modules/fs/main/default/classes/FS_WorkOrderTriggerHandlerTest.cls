@@ -3,7 +3,8 @@ private class FS_WorkOrderTriggerHandlerTest {
 
     @TestSetup
     static void setupData() {
-
+		
+		// create integration user
         User integrationUser = UTIL_TestDataFactory.createUser(
             UTIL_Constants.OTIS_SYSTEM_INTEGRATION_PROFILE,
             UTIL_TestDataFactory.OTIS_INTEGRATION_USER_EMAIL_POSTFIX
@@ -12,29 +13,15 @@ private class FS_WorkOrderTriggerHandlerTest {
 		insert integrationUser;
 		
 		
+		// assign required permission set groups (using runAs for current user to avoid mixed dml error)
 		System.runAs(new User(Id = UserInfo.getUserId())) {
 			
-			Database.insert( 
-				new PermissionSetAssignment(
-					AssigneeId = integrationUser.Id,
-					PermissionSetGroupId = [ 
-						SELECT Id 
-						FROM PermissionSetGroup 
-						WHERE DeveloperName IN ( 'OtisSystemIntegration_Persona' ) 
-					]?.Id
-				),
-				false
-			);
-			
-			Database.insert( 
-				new PermissionSetAssignment(
-					AssigneeId = integrationUser.Id,
-					PermissionSetGroupId = [ 
-						SELECT Id 
-						FROM PermissionSetGroup 
-						WHERE DeveloperName IN ( 'FS_OtisSystemIntegration_Persona' ) 
-					]?.Id
-				)
+			UTIL_TestDataFactory.assignPermissionSetGroups(
+				integrationUser.Id,
+				new Set<String> {
+					'OtisSystemIntegration_Persona',
+					'FS_OtisSystemIntegration_Persona'
+				}
 			);
 			
 		}
@@ -56,6 +43,7 @@ private class FS_WorkOrderTriggerHandlerTest {
         Case caseToInsert = UTIL_TestDataFactory.createCase(null, null);
         insert caseToInsert;
     }
+
 
     @IsTest
     static void shouldWorkOrderBeInsertedSuccessfully() {
@@ -79,24 +67,29 @@ private class FS_WorkOrderTriggerHandlerTest {
         System.runAs(
             UTIL_TestDataFactory.getUserByEmailPostfix(UTIL_TestDataFactory.OTIS_INTEGRATION_USER_EMAIL_POSTFIX)
         ) {
+			
             Test.startTest();
-                //try {
+				
+                try {
                     insert workOrderToInsert;
-                //} catch (Exception e) {
-                //    hasException = true;
-                //}
+                } catch (Exception e) {
+                    hasException = true;
+                }
+				
             Test.stopTest();
+			
         }
 		
-		/*
+		
         Assert.areEqual(
             false,
             hasException,
             'Work Order record should be successfully inserted. Trigger should not process "Classic_CC" work orders.'
         );
-		*/
+		
 		
     }
+
 
     @IsTest
     static void shouldWorkOrderBeUpdatedSuccessfully() {
@@ -122,22 +115,26 @@ private class FS_WorkOrderTriggerHandlerTest {
         System.runAs(
             UTIL_TestDataFactory.getUserByEmailPostfix(UTIL_TestDataFactory.OTIS_INTEGRATION_USER_EMAIL_POSTFIX)
         ) {
+			
             Test.startTest();
-                //try {
+				
+                try {
                     update workOrderToInsert;
-                //} catch (Exception e) {
-                //    hasException = true;
-                //}
+                } catch (Exception e) {
+                    hasException = true;
+                }
+				
             Test.stopTest();
+			
         }
 		
-		/*
+		
         Assert.areEqual(
             false,
             hasException,
             'Work Order record should be successfully updated. Trigger should not process "Classic_CC" work orders.'
         );
-		*/
 		
     }
+	
 }
