@@ -49,19 +49,22 @@ private class FS_WorkOrderTriggerHandlerTest {
             UTIL_TestDataFactory.getUserByEmailPostfix(UTIL_TestDataFactory.OTIS_INTEGRATION_USER_EMAIL_POSTFIX)
         ) {
             Test.startTest();
-                try {
+                //try {
                     insert workOrderToInsert;
-                } catch (Exception e) {
-                    hasException = true;
-                }
+                //} catch (Exception e) {
+                //    hasException = true;
+                //}
             Test.stopTest();
         }
-
+		
+		/*
         Assert.areEqual(
             false,
             hasException,
             'Work Order record should be successfully inserted. Trigger should not process "Classic_CC" work orders.'
         );
+		*/
+		
     }
 
     @IsTest
@@ -89,18 +92,21 @@ private class FS_WorkOrderTriggerHandlerTest {
             UTIL_TestDataFactory.getUserByEmailPostfix(UTIL_TestDataFactory.OTIS_INTEGRATION_USER_EMAIL_POSTFIX)
         ) {
             Test.startTest();
-                try {
+                //try {
                     update workOrderToInsert;
-                } catch (Exception e) {
-                    hasException = true;
-                }
+                //} catch (Exception e) {
+                //    hasException = true;
+                //}
             Test.stopTest();
         }
-
+		
+		/*
         Assert.areEqual(
             false,
             hasException,
             'Work Order record should be successfully updated. Trigger should not process "Classic_CC" work orders.'
         );
+		*/
+		
     }
 }
