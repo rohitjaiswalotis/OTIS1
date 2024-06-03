@@ -3,8 +3,8 @@
     <assignments>
         <name>assign_Variables</name>
         <label>assign Variables</label>
-        <locationX>380</locationX>
-        <locationY>674</locationY>
+        <locationX>50</locationX>
+        <locationY>782</locationY>
         <assignmentItems>
             <assignToReference>Receipt_Required_Variable</assignToReference>
             <operator>Assign</operator>
@@ -19,8 +19,8 @@
     <assignments>
         <name>Assignment_2</name>
         <label>Assignment 2</label>
-        <locationX>380</locationX>
-        <locationY>1082</locationY>
+        <locationX>50</locationX>
+        <locationY>1190</locationY>
         <assignmentItems>
             <assignToReference>Receipt_Required_Variable</assignToReference>
             <operator>Assign</operator>
@@ -49,8 +49,8 @@
     <assignments>
         <name>Assignment_4</name>
         <label>Assignment 4</label>
-        <locationX>380</locationX>
-        <locationY>1490</locationY>
+        <locationX>50</locationX>
+        <locationY>1598</locationY>
         <assignmentItems>
             <assignToReference>ReasonAssignVar</assignToReference>
             <operator>Assign</operator>
@@ -59,14 +59,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Validate_Mileage</targetReference>
+            <targetReference>get_Expense_Record</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Copy_2_of_Assignment_2</name>
         <label>Copy 2 of Assignment 2</label>
-        <locationX>644</locationX>
-        <locationY>1082</locationY>
+        <locationX>314</locationX>
+        <locationY>1190</locationY>
         <assignmentItems>
             <assignToReference>Receipt_Required_Variable</assignToReference>
             <operator>Assign</operator>
@@ -95,8 +95,8 @@
     <decisions>
         <name>check_Expense_Type</name>
         <label>check Expense Type</label>
-        <locationX>512</locationX>
-        <locationY>866</locationY>
+        <locationX>182</locationX>
+        <locationY>974</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_Expension_Submission1</targetReference>
         </defaultConnector>
@@ -120,8 +120,8 @@
     <decisions>
         <name>check_expense_type_with_Company_Expense_data</name>
         <label>check expense type with Company Expense data</label>
-        <locationX>512</locationX>
-        <locationY>566</locationY>
+        <locationX>182</locationX>
+        <locationY>674</locationY>
         <defaultConnector>
             <targetReference>check_Expense_Type</targetReference>
         </defaultConnector>
@@ -145,7 +145,7 @@
     <decisions>
         <name>check_if_Expense_report_exist</name>
         <label>check if Expense report exist</label>
-        <locationX>974</locationX>
+        <locationX>182</locationX>
         <locationY>2522</locationY>
         <defaultConnector>
             <targetReference>expense_report</targetReference>
@@ -170,10 +170,10 @@
     <decisions>
         <name>check_receipt_Required_and_receipt_not_present</name>
         <label>check receipt Required and receipt not present</label>
-        <locationX>512</locationX>
-        <locationY>1274</locationY>
+        <locationX>182</locationX>
+        <locationY>1382</locationY>
         <defaultConnector>
-            <targetReference>Validate_Mileage</targetReference>
+            <targetReference>get_Expense_Record</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -202,7 +202,7 @@
     <decisions>
         <name>Upload_File_or_not</name>
         <label>Upload File or not</label>
-        <locationX>974</locationX>
+        <locationX>182</locationX>
         <locationY>2222</locationY>
         <defaultConnector>
             <targetReference>check_if_Expense_report_exist</targetReference>
@@ -231,104 +231,8 @@
             <label>Upload ?</label>
         </rules>
     </decisions>
-    <decisions>
-        <name>Validate_Mileage</name>
-        <label>Validate_Mileage</label>
-        <locationX>512</locationX>
-        <locationY>1682</locationY>
-        <defaultConnector>
-            <targetReference>get_Expense_Record</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>amount_1000_and_category_Mileage</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Expense_Category1</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Mileage</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Amount</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>1000.0</numberValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Validate_Mileage1</targetReference>
-            </connector>
-            <label>amount &gt; 1000 and category - Mileage</label>
-        </rules>
-        <rules>
-            <name>PerDiem_cannot_be_0</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Amount</leftValueReference>
-                <operator>LessThanOrEqualTo</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>perDiemOvernightChecks</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>per_Diem_Can_not_be</targetReference>
-            </connector>
-            <label>PerDiem_cannot_be_0</label>
-        </rules>
-        <rules>
-            <name>Validate_Unit_Price</name>
-            <conditionLogic>(1 OR 2 OR 3 OR 4 )AND 5</conditionLogic>
-            <conditions>
-                <leftValueReference>Expense_Category1</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Zone</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Expense_Category1</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Per Diem</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Expense_Category1</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Cartage</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Expense_Category1</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Other</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Amount</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>1000.0</numberValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Validate_Unit_Price1</targetReference>
-            </connector>
-            <label>Validate_Unit_Price</label>
-        </rules>
-    </decisions>
-    <description>#923203 and #915081 this flow is used to create Expense and upload images under Expenses</description>
+    <description>#923203 and #915081 this flow is used to create Expense and upload images under Expenses.
+998249 :- Modified For This US . Dynamic Validation Implemented instead  of Hard Code .</description>
     <dynamicChoiceSets>
         <name>ExpenseCategory</name>
         <dataType>Picklist</dataType>
@@ -370,7 +274,7 @@
     <recordCreates>
         <name>Copy_1_of_Expense_report_entity</name>
         <label>Copy 1 of Expense report entity</label>
-        <locationX>1106</locationX>
+        <locationX>314</locationX>
         <locationY>2738</locationY>
         <inputAssignments>
             <field>ExpenseId</field>
@@ -389,7 +293,7 @@
     <recordCreates>
         <name>Create_Expense_Data</name>
         <label>Create Expense Data</label>
-        <locationX>974</locationX>
+        <locationX>182</locationX>
         <locationY>2114</locationY>
         <assignRecordIdToReference>expenseRecordId</assignRecordIdToReference>
         <connector>
@@ -490,7 +394,7 @@
     <recordCreates>
         <name>expense_report</name>
         <label>expense report</label>
-        <locationX>1106</locationX>
+        <locationX>314</locationX>
         <locationY>2630</locationY>
         <assignRecordIdToReference>ExpenseReportId</assignRecordIdToReference>
         <connector>
@@ -519,7 +423,7 @@
     <recordCreates>
         <name>Expense_report_entity</name>
         <label>Expense report entity</label>
-        <locationX>842</locationX>
+        <locationX>50</locationX>
         <locationY>2630</locationY>
         <inputAssignments>
             <field>ExpenseId</field>
@@ -538,11 +442,11 @@
     <recordLookups>
         <name>company_Expense_Data</name>
         <label>company Expense Data</label>
-        <locationX>512</locationX>
+        <locationX>182</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Expense_Submission</targetReference>
+            <targetReference>Get_Otis_Expense_Settings</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -576,7 +480,7 @@
     <recordLookups>
         <name>Expense_Reports</name>
         <label>Expense Report</label>
-        <locationX>974</locationX>
+        <locationX>182</locationX>
         <locationY>2006</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -607,7 +511,7 @@
     <recordLookups>
         <name>get_Expense_Record</name>
         <label>get Expense Record</label>
-        <locationX>974</locationX>
+        <locationX>182</locationX>
         <locationY>1790</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -630,7 +534,7 @@
     <recordLookups>
         <name>get_Expense_Report_Entries</name>
         <label>get Expense Report Entries</label>
-        <locationX>974</locationX>
+        <locationX>182</locationX>
         <locationY>1898</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -650,9 +554,48 @@
         <queriedFields>ExpenseReportId</queriedFields>
     </recordLookups>
     <recordLookups>
+        <name>Get_Otis_Expense_Settings</name>
+        <label>Get Otis Expense Settings</label>
+        <locationX>182</locationX>
+        <locationY>458</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Expense_Submission</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Company__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>OTIS NAA</stringValue>
+            </value>
+        </filters>
+        <object>OTIS_Expense_Setting__c</object>
+        <outputAssignments>
+            <assignToReference>testCartage</assignToReference>
+            <field>Cartage__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>TestMilege</assignToReference>
+            <field>Mileage__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>testOthers</assignToReference>
+            <field>Other__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>testPerDiem</assignToReference>
+            <field>Per_Diem__c</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>testZone</assignToReference>
+            <field>Zone__c</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
         <name>get_Service_Resource</name>
         <label>get Service Resource</label>
-        <locationX>512</locationX>
+        <locationX>182</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -683,7 +626,7 @@
     <recordLookups>
         <name>Get_Work_Order</name>
         <label>Get Work Order</label>
-        <locationX>512</locationX>
+        <locationX>182</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -707,8 +650,8 @@
     <screens>
         <name>Copy_1_of_Expension_Submission1</name>
         <label>Copy 1 of Expension Submission1</label>
-        <locationX>644</locationX>
-        <locationY>974</locationY>
+        <locationX>314</locationX>
+        <locationY>1082</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -723,7 +666,7 @@
             </defaultValue>
             <fieldText>Receipt Required</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -734,7 +677,7 @@
             </defaultValue>
             <fieldText>Receipt Not Present</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -743,8 +686,8 @@
     <screens>
         <name>Expense_Submission</name>
         <label>Expense Submission</label>
-        <locationX>512</locationX>
-        <locationY>458</locationY>
+        <locationX>182</locationX>
+        <locationY>566</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -824,9 +767,22 @@
             <dataType>Currency</dataType>
             <fieldText>Amount</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
+            <isRequired>false</isRequired>
             <scale>0</scale>
+            <validationRule>
+                <errorMessage>&lt;p&gt;Enter The Correct Value for : {!Expense_Category1}&lt;/p&gt;</errorMessage>
+                <formulaExpression>OR(
+AND(({!Expense_Category1} = &apos;Mileage&apos;),Value(Text({!Amount})) &lt;= Value({!TestMilege})) 
+,
+AND(({!Expense_Category1} = &apos;Zone&apos;),Value(Text({!Amount})) &lt;= Value({!testZone}))
+,
+AND(({!Expense_Category1} = &apos;Per Diem&apos;),Value(Text({!Amount})) &lt;= Value({!testPerDiem}))
+,
+AND(({!Expense_Category1} = &apos;Cartage&apos;),Value(Text({!Amount})) &lt;= Value({!testCartage}))
+,
+AND(({!Expense_Category1} = &apos;Other&apos;),Value(Text({!Amount})) &lt;= Value({!testOthers}))
+)</formulaExpression>
+            </validationRule>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -834,8 +790,8 @@
     <screens>
         <name>Expense_Submission_Flow_3</name>
         <label>Expense Submission Flow 3</label>
-        <locationX>380</locationX>
-        <locationY>1382</locationY>
+        <locationX>50</locationX>
+        <locationY>1490</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -856,8 +812,8 @@
     <screens>
         <name>Expension_Submission1</name>
         <label>Expension Submission1</label>
-        <locationX>380</locationX>
-        <locationY>974</locationY>
+        <locationX>50</locationX>
+        <locationY>1082</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -894,24 +850,8 @@
             </defaultValue>
             <fieldText>Receipt Not Present</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
-    <screens>
-        <name>per_Diem_Can_not_be</name>
-        <label>per Diem Can not be 0</label>
-        <locationX>314</locationX>
-        <locationY>1790</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <fields>
-            <name>Per_Diem_Validation</name>
-            <fieldText>&lt;p&gt;{!validation2}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -919,7 +859,7 @@
     <screens>
         <name>Upload_Image</name>
         <label>Upload Image</label>
-        <locationX>842</locationX>
+        <locationX>50</locationX>
         <locationY>2330</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -949,40 +889,8 @@
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
-    <screens>
-        <name>Validate_Mileage1</name>
-        <label>Validate_Mileage</label>
-        <locationX>50</locationX>
-        <locationY>1790</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <fields>
-            <name>Validate_milage</name>
-            <fieldText>&lt;p&gt;{!validation1}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
-    <screens>
-        <name>Validate_Unit_Price1</name>
-        <label>Validate_Unit_Price</label>
-        <locationX>578</locationX>
-        <locationY>1790</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <fields>
-            <name>Copy_1_of_Copy_1_of_Validate_milage</name>
-            <fieldText>&lt;p&gt;{!Validation3}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
     <start>
-        <locationX>386</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_Work_Order</targetReference>
@@ -1260,6 +1168,13 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>recordIdLoop</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -1320,6 +1235,41 @@
     </variables>
     <variables>
         <name>statusOfTheReport</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>testCartage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>TestMilege</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>testOthers</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>testPerDiem</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>testZone</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
