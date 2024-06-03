@@ -1029,6 +1029,11 @@
         <expression>NOW()</expression>
     </formulas>
     <formulas>
+        <name>FormattedDateTime</name>
+        <dataType>String</dataType>
+        <expression>LEFT(TEXT(DATETIMEVALUE(NOW())), 10) &amp; &quot;T&quot; &amp;MID(TEXT(DATETIMEVALUE(NOW())),12,8) &amp; &quot;Z&quot;</expression>
+    </formulas>
+    <formulas>
         <name>ISCreated</name>
         <dataType>Boolean</dataType>
         <expression>ISNEW()</expression>
@@ -1106,7 +1111,7 @@
         <inputAssignments>
             <field>MechanicArrivalTime__c</field>
             <value>
-                <elementReference>CurrentTimeArrival</elementReference>
+                <elementReference>FormattedDateTime</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
