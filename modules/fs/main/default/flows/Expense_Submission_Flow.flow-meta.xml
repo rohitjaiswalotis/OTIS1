@@ -1241,14 +1241,6 @@ AND(({!Expense_Category1} = &apos;Other&apos;),Value(Text({!Amount})) &lt;= Valu
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>TestAmount</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <objectType>OTIS_Expense_Setting__c</objectType>
-    </variables>
-    <variables>
         <name>testCartage</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -1275,16 +1267,6 @@ AND(({!Expense_Category1} = &apos;Other&apos;),Value(Text({!Amount})) &lt;= Valu
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>testtestamount</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <value>
-            <elementReference>TestMilege</elementReference>
-        </value>
     </variables>
     <variables>
         <name>testZone</name>
