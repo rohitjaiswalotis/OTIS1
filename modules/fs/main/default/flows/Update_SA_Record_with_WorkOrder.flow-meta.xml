@@ -5,7 +5,7 @@
         <name>Assign_Auto_Schedule</name>
         <label>Assign Auto Schedule</label>
         <locationX>50</locationX>
-        <locationY>1019</locationY>
+        <locationY>1361</locationY>
         <assignmentItems>
             <assignToReference>$Record.FSL__Auto_Schedule__c</assignToReference>
             <operator>Assign</operator>
@@ -20,12 +20,34 @@
     <decisions>
         <name>Check_Record_Type</name>
         <label>Check Record Type</label>
-        <locationX>182</locationX>
-        <locationY>803</locationY>
+        <locationX>358</locationX>
+        <locationY>1553</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_Update_SA_fields_from_Unit_Fields</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Due_Date_For_Maintenance</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$Setup.OTISCustomSettings__c.Work_Order_Maintenance_Record_Type__c</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.SiteArrivalDateTime__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_SA_Dute_date</targetReference>
+            </connector>
+            <label>Due Date For Maintenance</label>
+        </rules>
         <rules>
             <name>Maintenance</name>
             <conditionLogic>and</conditionLogic>
@@ -33,7 +55,7 @@
                 <leftValueReference>$Record.WorkOrder__r.RecordTypeId</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>$Setup.OTISCustomSettings__c.Work_Order_Maintenance_Record_Type__c</elementReference>
+                    <stringValue>{!$Setup.OTISCustomSettings__c.Work_Order_Maintenance_Record_Type__c}</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -45,7 +67,7 @@
     <decisions>
         <name>Check_WO_AT</name>
         <label>Check WO AT?</label>
-        <locationX>336</locationX>
+        <locationX>50</locationX>
         <locationY>911</locationY>
         <defaultConnector>
             <targetReference>Check_WO_WT_Auto_Schedule</targetReference>
@@ -77,6 +99,7 @@
                 </rightValue>
             </conditions>
             <connector>
+                <isGoTo>true</isGoTo>
                 <targetReference>Check_Record_Type</targetReference>
             </connector>
             <label>Manual</label>
@@ -85,9 +108,10 @@
     <decisions>
         <name>Check_WO_WT_Auto_Schedule</name>
         <label>Check WO WT Auto Schedule?</label>
-        <locationX>622</locationX>
+        <locationX>314</locationX>
         <locationY>1019</locationY>
         <defaultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>Check_Record_Type</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Manual</defaultConnectorLabel>
@@ -102,7 +126,6 @@
                 </rightValue>
             </conditions>
             <connector>
-                <isGoTo>true</isGoTo>
                 <targetReference>Assign_Auto_Schedule</targetReference>
             </connector>
             <label>Auto</label>
@@ -111,7 +134,7 @@
     <decisions>
         <name>Is_Route_Empty</name>
         <label>Is Route Empty</label>
-        <locationX>182</locationX>
+        <locationX>358</locationX>
         <locationY>503</locationY>
         <defaultConnector>
             <targetReference>Profile_Check_and_SA_Created</targetReference>
@@ -136,7 +159,7 @@
     <decisions>
         <name>Profile_Check_and_SA_Created</name>
         <label>Profile Check and SA Created?</label>
-        <locationX>633</locationX>
+        <locationX>358</locationX>
         <locationY>803</locationY>
         <defaultConnector>
             <targetReference>Check_Record_Type</targetReference>
@@ -217,8 +240,8 @@
     <recordUpdates>
         <name>Copy_1_of_Update_SA_fields_from_Unit_Fields</name>
         <label>Copy 1 of Update SA fields from Unit Fields</label>
-        <locationX>314</locationX>
-        <locationY>911</locationY>
+        <locationX>578</locationX>
+        <locationY>1661</locationY>
         <inputAssignments>
             <field>BuildingId__c</field>
             <value>
@@ -266,7 +289,7 @@
     <recordUpdates>
         <name>Update_Route_On_SA</name>
         <label>Update Route On SA</label>
-        <locationX>50</locationX>
+        <locationX>226</locationX>
         <locationY>611</locationY>
         <connector>
             <targetReference>Profile_Check_and_SA_Created</targetReference>
@@ -280,10 +303,26 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
+        <name>Update_SA_Dute_date</name>
+        <label>Update SA Dute date</label>
+        <locationX>138</locationX>
+        <locationY>1661</locationY>
+        <connector>
+            <targetReference>Update_SA_fields_from_Unit_Fields</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>DueDate</field>
+            <value>
+                <elementReference>$Record.WorkOrder__r.SiteArrivalDateTime__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>Update_SA_fields_from_Unit_Fields</name>
         <label>Update SA fields from Unit Fields</label>
-        <locationX>50</locationX>
-        <locationY>911</locationY>
+        <locationX>358</locationX>
+        <locationY>1961</locationY>
         <inputAssignments>
             <field>BuildingId__c</field>
             <value>
@@ -325,7 +364,7 @@
     <recordUpdates>
         <name>Update_Unit_on_SA</name>
         <label>Update Unit on SA</label>
-        <locationX>182</locationX>
+        <locationX>358</locationX>
         <locationY>395</locationY>
         <connector>
             <targetReference>Is_Route_Empty</targetReference>
@@ -349,7 +388,7 @@
     <recordUpdates>
         <name>Update_WO_field_on_SA</name>
         <label>Update WO field on SA</label>
-        <locationX>182</locationX>
+        <locationX>358</locationX>
         <locationY>287</locationY>
         <connector>
             <targetReference>Update_Unit_on_SA</targetReference>
@@ -378,7 +417,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>56</locationX>
+        <locationX>232</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Update_WO_field_on_SA</targetReference>
