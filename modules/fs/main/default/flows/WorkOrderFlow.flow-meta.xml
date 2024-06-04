@@ -48,6 +48,29 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Assignment</name>
+        <label>Assignment</label>
+        <locationX>8014</locationX>
+        <locationY>1271</locationY>
+        <assignmentItems>
+            <assignToReference>Loop_SAs.DueDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.SiteArrivalDateTime__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>StoreSAduedate</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_SAs</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_SAs</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Count_OF_Pending_SA</name>
         <label>Count OF Pending SA</label>
         <locationX>974</locationX>
@@ -1207,6 +1230,21 @@
             </connector>
             <label>Gantt Priority</label>
         </rules>
+        <rules>
+            <name>Check_Site_Arrival_Time</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.SiteArrivalDateTime__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_SAs</targetReference>
+            </connector>
+            <label>Check Site Arrival Time</label>
+        </rules>
     </decisions>
     <description>WO Flow with Record Type Filter ( With Custom Settings )</description>
     <environments>Default</environments>
@@ -1255,6 +1293,20 @@
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>SA_Creation_after_Part_Delivery</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Loop_SAs</name>
+        <label>Loop SA</label>
+        <locationX>7926</locationX>
+        <locationY>1163</locationY>
+        <collectionReference>Get_SAs</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Assignment</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Update_SA_Due_date</targetReference>
         </noMoreValuesConnector>
     </loops>
     <loops>
@@ -1489,6 +1541,7 @@
         <locationX>3306</locationX>
         <locationY>1379</locationY>
         <connector>
+            <isGoTo>true</isGoTo>
             <targetReference>SA_Scheduling_Automation</targetReference>
         </connector>
         <inputAssignments>
@@ -1947,6 +2000,48 @@
         <object>ServiceAppointment</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <recordLookups>
+        <name>Get_SAs</name>
+        <label>Get SA</label>
+        <locationX>7926</locationX>
+        <locationY>1055</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_SAs</targetReference>
+        </connector>
+        <filterLogic>1 AND (2 OR 3 OR 4)</filterLogic>
+        <filters>
+            <field>ParentRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Scheduled</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Dispatched</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>None</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ServiceAppointment</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordUpdates>
         <name>Case_related_WO</name>
         <label>Case related WO</label>
@@ -2180,6 +2275,7 @@
         <locationX>5462</locationX>
         <locationY>1163</locationY>
         <connector>
+            <isGoTo>true</isGoTo>
             <targetReference>SA_Scheduling_Automation</targetReference>
         </connector>
         <inputAssignments>
@@ -2303,6 +2399,13 @@
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_SA_Due_date</name>
+        <label>Update SA Due date</label>
+        <locationX>7926</locationX>
+        <locationY>1463</locationY>
+        <inputReference>StoreSAduedate</inputReference>
     </recordUpdates>
     <recordUpdates>
         <name>Update_Supervisor_Review_and_Reason</name>
@@ -2669,6 +2772,14 @@
         <value>
             <booleanValue>false</booleanValue>
         </value>
+    </variables>
+    <variables>
+        <name>StoreSAduedate</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
     </variables>
     <variables>
         <name>UpdatedSystemReason</name>
