@@ -41,6 +41,9 @@ steps:
 
 
 - bash: |
+        echo "Installing sfdmu plugin if no originally installed version is available ..."
+        (sf plugins | grep -i "sfdmu") || (echo "y" | sf plugins install sfdmu@$(sfdmuVersion))
+        
         echo "Installing sfpowerkit plugin if no originally installed version is available ..."
         (sf plugins | grep -i "sfpowerkit") || (echo "y" | sf plugins install sfpowerkit@$(sfPowerkitVersion))
   
