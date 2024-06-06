@@ -324,6 +324,9 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
     sfApexAfterEachScriptName="afterEach.cls"
     
     sfTargetOrg=""
+	
+	stepRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS
+	stepRetryDelay=$STEP_RETRY_DELAY
     
     
     if [[ -f "${stepProperties}" ]]; then
@@ -341,11 +344,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
         
         sfTargetOrg=$(getProperty $stepProperties "sf.targetOrg" "$sfTargetOrg")
 		
-		stepRetryAttempts=$(getProperty $stepProperties "retry.attempts")
-		stepRetryDelay=$(getProperty $stepProperties "retry.delay")
-		
-		stepRetryAttempts=${stepRetryAttempts:-$STEP_MAX_RETRY_ATTEMPTS}
-		stepRetryDelay=${stepRetryDelay:-$STEP_RETRY_DELAY}
+		stepRetryAttempts=$(getProperty $stepProperties "retry.attempts" "$stepRetryAttempts")
+		stepRetryDelay=$(getProperty $stepProperties "retry.delay" "$stepRetryDelay")
 		
         
         # handle 'exit'
@@ -716,6 +716,7 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 		# backup current error switcher value and disable exit on error
 		[ -o errexit ] && apexStep_backup_errexit='set -e' || apexStep_backup_errexit='set +e'; set +e
         
+		
         for apexFile in ${file}/*; do
             
             if [[ -f "$apexFile" && "${apexFile}" =~ ^.*/[^/.][^/]*$ && "${apexFile}" != "${beforeEachApexFile}" && "${apexFile}" != "${afterEachApexFile}" ]]; then
