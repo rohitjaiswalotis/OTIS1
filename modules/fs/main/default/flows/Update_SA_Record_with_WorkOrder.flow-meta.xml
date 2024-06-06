@@ -27,7 +27,7 @@
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>Maintenance</name>
+             <name>Due_Date_For_Maintenance</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.WorkOrder__r.RecordTypeId</leftValueReference>
