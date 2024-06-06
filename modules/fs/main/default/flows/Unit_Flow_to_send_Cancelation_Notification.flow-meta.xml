@@ -3,15 +3,18 @@
     <actionCalls>
         <name>Send_Email_to_All_Recipients</name>
         <label>Send Email to All Recipients</label>
-        <locationX>407</locationX>
-        <locationY>2363</locationY>
+        <locationX>495</locationX>
+        <locationY>2663</locationY>
         <actionName>emailSimple</actionName>
         <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>loop_on_Email_List</targetReference>
+        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
-            <name>emailAddressesArray</name>
+            <name>emailAddresses</name>
             <value>
-                <elementReference>EmailList</elementReference>
+                <elementReference>loop_on_Email_List</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -46,7 +49,7 @@
         <name>Assign_Email_to_List</name>
         <label>Assign Email to List</label>
         <locationX>627</locationX>
-        <locationY>2063</locationY>
+        <locationY>2255</locationY>
         <assignmentItems>
             <assignToReference>EmailList</assignToReference>
             <operator>Add</operator>
@@ -61,8 +64,8 @@
     <assignments>
         <name>Assign_Reciepient_Email</name>
         <label>Assign Reciepient Email</label>
-        <locationX>539</locationX>
-        <locationY>1439</locationY>
+        <locationX>407</locationX>
+        <locationY>1547</locationY>
         <assignmentItems>
             <assignToReference>EmailList</assignToReference>
             <operator>Add</operator>
@@ -94,7 +97,7 @@
         <name>Assign_User_ID</name>
         <label>Assign User ID</label>
         <locationX>627</locationX>
-        <locationY>1655</locationY>
+        <locationY>1847</locationY>
         <assignmentItems>
             <assignToReference>GroupMemberId</assignToReference>
             <operator>Add</operator>
@@ -186,7 +189,7 @@
         <name>Null_Check_For_Email</name>
         <label>Null Check For Email</label>
         <locationX>539</locationX>
-        <locationY>2255</locationY>
+        <locationY>2447</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Not_Null1</name>
@@ -199,7 +202,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Send_Email_to_All_Recipients</targetReference>
+                <targetReference>loop_on_Email_List</targetReference>
             </connector>
             <label>Not Null</label>
         </rules>
@@ -222,6 +225,31 @@
             </conditions>
             <connector>
                 <targetReference>Check_Company_Wide_Setting</targetReference>
+            </connector>
+            <label>Not Null</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Null_Check_on_Branch_Manager_Email</name>
+        <label>Null Check on Branch Manager Email</label>
+        <locationX>539</locationX>
+        <locationY>1439</locationY>
+        <defaultConnector>
+            <targetReference>Loop_Public_Group_to_add_users</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Not_Null_BM</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Branch__r.BranchManager__r.PrimaryEmail__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Reciepient_Email</targetReference>
             </connector>
             <label>Not Null</label>
         </rules>
@@ -249,10 +277,21 @@
         </noMoreValuesConnector>
     </loops>
     <loops>
+        <name>loop_on_Email_List</name>
+        <label>loop on Email List</label>
+        <locationX>407</locationX>
+        <locationY>2555</locationY>
+        <collectionReference>EmailList</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Send_Email_to_All_Recipients</targetReference>
+        </nextValueConnector>
+    </loops>
+    <loops>
         <name>Loop_Public_Group_to_add_users</name>
         <label>Loop Public Group to add users</label>
         <locationX>539</locationX>
-        <locationY>1547</locationY>
+        <locationY>1739</locationY>
         <collectionReference>Get_Group_Member_Record</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -266,7 +305,7 @@
         <name>Loop_Users_to_get_email</name>
         <label>Loop Users to get email</label>
         <locationX>539</locationX>
-        <locationY>1955</locationY>
+        <locationY>2147</locationY>
         <collectionReference>Get_Users</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -302,7 +341,7 @@
         <locationY>1331</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Assign_Reciepient_Email</targetReference>
+            <targetReference>Null_Check_on_Branch_Manager_Email</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -333,7 +372,7 @@
         <name>Get_Users</name>
         <label>Get Users</label>
         <locationX>539</locationX>
-        <locationY>1847</locationY>
+        <locationY>2039</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Loop_Users_to_get_email</targetReference>
@@ -381,7 +420,25 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>MailCounter</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
         <name>PublicGroupId</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>SingleEmail</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
