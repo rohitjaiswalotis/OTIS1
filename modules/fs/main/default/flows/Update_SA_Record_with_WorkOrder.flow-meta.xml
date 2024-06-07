@@ -442,7 +442,7 @@
         <locationX>232</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Update_WO_field_on_SA</targetReference>
+            <targetReference>Record_Type_Null_Check</targetReference>
         </connector>
         <object>ServiceAppointment</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
