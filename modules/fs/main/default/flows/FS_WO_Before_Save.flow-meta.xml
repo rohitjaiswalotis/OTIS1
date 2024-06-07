@@ -108,14 +108,6 @@
         <connector>
             <targetReference>Is_Bypass_Enabled</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>RecordTypeId</field>
-            <operator>IsNull</operator>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </filters>
         <object>WorkOrder</object>
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
