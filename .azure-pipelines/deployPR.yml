@@ -12,6 +12,15 @@ pr: none
 
 parameters:
 
+- name: deploymentMode
+  displayName: Deployment Mode
+  type: string
+  default: auto
+  values:
+  - auto
+  - install
+  - upgrade
+
 - name: shouldNotifySubscribers
   displayName: Notify Subscribers?
   type: boolean
@@ -24,9 +33,6 @@ variables:
 
 - name: OrgAliasDevFS
   value: devFS
-
-- name: deploymentActionType
-  value: upgrade
 
 
 stages:
@@ -165,8 +171,29 @@ stages:
                         echo "Reconciling profiles..."                        
                         bash $(reconcileProfilesUtil) -d "$(packageBaseDir)/main/default/profiles" -a "$(OrgAliasDevFS)" -o "$(packageBaseDir)/main/default/profiles" -p "$(profilesToReconcile)"
                         
-                        echo "Running pre-$(deploymentActionType) steps..."
-                        bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$(deploymentActionType)/before" -a "$(OrgAliasDevFS)" -w "$(pwd)"
+                        
+                        echo "Evaluating deployment mode..."
+                        
+                        if [[ "${{ parameters.deploymentMode }}" =~ ^auto$ ]] ; then
+                          
+                          QUERY_FS_META_MARKER_RESPONSE=$(sf data query --target-org targetOrg -q "$(fsMetaDetectionQuery)" --json);
+                          echo $QUERY_FS_META_MARKER_RESPONSE | jq .
+                          
+                          FS_MARKER_META_COUNT=$(echo "$QUERY_FS_META_MARKER_RESPONSE" | jq -r ".result.records | length");
+                          
+                          if [[ $FS_MARKER_META_COUNT -gt 0 ]]; then
+                            deploymentActionType="upgrade";
+                          else
+                            deploymentActionType="install";
+                          fi
+                          
+                        fi
+                        
+                        echo "Going with ${deploymentActionType} deployment mode..."
+                        
+                        
+                        echo "Running pre-${deploymentActionType} steps..."
+                        bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/${deploymentActionType}/before" -a "$(OrgAliasDevFS)" -w "$(pwd)"
                         
                         # disable exit on error
                         set +e
@@ -235,8 +262,8 @@ stages:
                         # enable exit on error
                         set -e
                         
-                        echo "Running post-$(deploymentActionType) steps..."
-                        bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$(deploymentActionType)/after" -a "$(OrgAliasDevFS)" -w "$(pwd)"
+                        echo "Running post-${deploymentActionType} steps..."
+                        bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/${deploymentActionType}/after" -a "$(OrgAliasDevFS)" -w "$(pwd)"
                         
                   displayName: 'Full Deploy to devFS'
                   
