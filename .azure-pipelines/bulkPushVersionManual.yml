@@ -1,0 +1,162 @@
+name: 'Push Field Service Package Version into Set of Orgs'
+
+
+trigger: none
+
+pr: none
+
+
+parameters:
+
+- name: localizationDomain
+  displayName: Localization Domain
+  type: string
+
+- name: versionToPushOrgAuthFiles
+  displayName: Auth Files for Orgs to upgrade (comma-separated)
+  type: string
+
+- name: versionToPushExpression
+  displayName: Package version expression to upgrade to
+  type: string
+  default: "none"   # e.g. "X.* (Beta ?)"
+
+- name: versionBranch
+  displayName: Branch for version to upgrade
+  type: string
+  default: "none"   # e.g. 'dev'
+
+- name: versionWhereCondition
+  displayName: Where Condition for version to upgrade
+  type: string
+  default: "none"   # e.g. "Branch IN ('dev')"
+
+- name: shouldInstallThirdParties
+  displayName: Install Third Parties?
+  type: boolean
+  default: true
+
+- name: autoInstallDependencies
+  displayName: Auto Install Dependencies?
+  type: boolean
+  default: false
+
+- name: installOnlyDependencies
+  displayName: Install Only Dependencies?
+  type: boolean
+  default: false
+
+- name: installationMode
+  displayName: Installation Mode
+  type: string
+  default: auto
+  values:
+  - auto
+  - install
+  - upgrade
+  - upgrade-meta
+
+- name: compileScope
+  displayName: Package Apex Compilation Scope
+  type: string
+  default: all
+  values:
+  - all
+  - package
+
+- name: upgradeType
+  displayName: Package Upgrade Type
+  type: string
+  default: Mixed
+  values:
+  - Mixed
+  - DeprecateOnly
+  - Delete
+
+- name: actionPhase
+  displayName: Action Phase
+  type: string
+  default: both
+  values:
+  - both
+  - before
+  - after
+  - none
+
+- name: shouldRunAqaTests
+  displayName: Run AQA Tests?
+  type: boolean
+  default: false
+
+- name: shouldRunTestsBefore
+  displayName: Run Tests (Before)?
+  type: boolean
+  default: true
+
+- name: runTestsBeforeAsConcurrent
+  displayName: Concurrent Tests (Before)?
+  type: boolean
+  default: true
+
+- name: shouldRunTestsAfter
+  displayName: Run Tests (After)?
+  type: boolean
+  default: true
+
+- name: runTestsAfterAsConcurrent
+  displayName: Concurrent Tests (After)?
+  type: boolean
+  default: true
+
+
+variables:
+
+- template: templates/variables.yml
+
+
+stages:
+
+  - template: templates/bulkPushVersion.yml
+    
+    parameters:
+      
+      localizationDomain: ${{ parameters.localizationDomain }}
+      
+      versionToPushOrgAuthFiles: ${{ parameters.versionToPushOrgAuthFiles }}
+      
+      ${{ if ne(parameters.versionToPushExpression, 'none') }}:
+        
+        versionToPushExpression: ${{ parameters.versionToPushExpression }}
+        
+        ${{ if eq(parameters.versionWhereCondition, 'none') }}:
+          
+          ${{ if ne(parameters.versionBranch, 'none') }}:
+            versionWhereCondition: "Branch IN ('${{ parameters.versionBranch }}')"
+          
+        ${{ else }}:
+          
+          ${{ if eq(parameters.versionBranch, 'none') }}:
+            versionWhereCondition: ${{ parameters.versionWhereCondition }}
+          
+          ${{ else }}:
+            versionWhereCondition: "(${{ parameters.versionWhereCondition }}) AND Branch IN ('${{ parameters.versionBranch }}')"
+        
+      
+      autoInstallDependencies: ${{ parameters.autoInstallDependencies }}
+      installOnlyDependencies: ${{ parameters.installOnlyDependencies }}
+      shouldInstallThirdParties: ${{ parameters.shouldInstallThirdParties }}
+      
+      installationMode: ${{ parameters.installationMode }}
+      compileScope: ${{ parameters.compileScope }}
+      upgradeType: ${{ parameters.upgradeType }}
+      actionPhase: ${{ parameters.actionPhase }}
+      
+      shouldRunTestsBefore: ${{ parameters.shouldRunTestsBefore }}
+      runTestsBeforeAsConcurrent: ${{ parameters.runTestsBeforeAsConcurrent }}
+      
+      shouldRunTestsAfter: ${{ parameters.shouldRunTestsAfter }}
+      runTestsAfterAsConcurrent: ${{ parameters.runTestsAfterAsConcurrent }}
+      
+      shouldRunAqaTests: ${{ parameters.shouldRunAqaTests }}
+
+

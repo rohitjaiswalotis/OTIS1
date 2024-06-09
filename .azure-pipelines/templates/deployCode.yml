@@ -52,6 +52,11 @@ parameters:
   - after
   - none
 
+- name: scriptParams
+  displayName: Script Params (json)
+  type: string
+  default: none
+
 - name: enableDebugMode
   displayName: Debug Mode?
   type: boolean
@@ -111,6 +116,7 @@ steps:
         # enable "debug" mode
         if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
           set -x
+          export DEBUG_MODE=1
         fi
         
         
@@ -130,7 +136,7 @@ steps:
           
           DX_STATUS_CODE=$(sf sfpowerkit:auth:login -a targetOrg -u "${TARGET_ORG_USERNAME,,}" -p "${TARGET_ORG_PASSWORD}" -r "${TARGET_ORG_URL}" --json | jq .status);
           
-          # early exit - error when autorizing to target org by creds
+          # early exit - error when authorizing to target org by creds
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
             echo "Error when logging in to target org by creds as user '$TARGET_ORG_USERNAME'!"
             exit 1;
@@ -144,7 +150,7 @@ steps:
           DX_AUTH_RESPONSE=$(sf org login sfdx-url -f "$TARGET_ORG_AUTH_FILE" -a targetOrg --json);
           DX_STATUS_CODE=$(echo "$DX_AUTH_RESPONSE" | jq .status);
           
-          # early exit - error when autorizing to target org by auth url
+          # early exit - error when authorizing to target org by auth url
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
             echo "Error when logging in to target org by auth url!"
             echo "$DX_AUTH_RESPONSE" | jq .
@@ -164,7 +170,7 @@ steps:
           DX_STATUS_CODE=$(sf org login access-token -a targetOrg --instance-url="$TARGET_ORG_URL" --json --no-prompt | jq .status);
           unset SF_ACCESS_TOKEN SFDX_ACCESS_TOKEN
           
-          # early exit - error when autorizing to target org by creds
+          # early exit - error when authorizing to target org by creds
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
             echo "Error when logging in to target org by token!"
             exit 1;
@@ -230,11 +236,32 @@ steps:
           
         else
           
+          # transforming script params (if provided)
+          if [[ '${{parameters.scriptParams}}' =~ ^none$ ]] ; then
+            
+            echo "No script params passed."
+            
+            SCRIPT_PARAMS_FILE="none"
+            
+          else
+            
+            echo "Transforming provided script params..."
+            echo '${{parameters.scriptParams}}'
+            
+            SCRIPT_PARAMS_FILE=$(mktemp)
+            echo '${{parameters.scriptParams}}' | jq -r '. | to_entries | .[] | .key + "=" + (.value | @sh)' > $SCRIPT_PARAMS_FILE
+            
+            echo "Generated script params properties file: "
+            cat $SCRIPT_PARAMS_FILE
+            
+          fi
+          
+          
           if [[ "${{ parameters.actionPhase }}" =~ ^before$ || "${{ parameters.actionPhase }}" =~ ^both$ ]] ; then
             
             echo "Running pre-$DEPLOYMENT_ACTION_TYPE steps..."
             
-            bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$DEPLOYMENT_ACTION_TYPE/before" -a "targetOrg" -w "$(pwd)"
+            bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$DEPLOYMENT_ACTION_TYPE/before" -a "targetOrg" -w "$(pwd)" -c "$SCRIPT_PARAMS_FILE"
             
           else
             
@@ -246,7 +273,7 @@ steps:
           # COMMENTED FOR NOW: pre-destruct: run destructive operation before deploy
           #sf force source deploy -u "targetOrg" --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --predestructivechanges="destruct/destructiveChangesPre.xml" -w 1000 --verbose
           
-          # actuall deployment
+          # actual deployment
           sf force source deploy --sourcepath="$(packageBaseDir)" -u "targetOrg" --ignorewarnings -w 1000 --verbose
           
           # COMMENTED FOR NOW: post-destruct: run destructive operation after deploy
@@ -257,7 +284,7 @@ steps:
             
             echo "Running post-$DEPLOYMENT_ACTION_TYPE steps..."
             
-            bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$DEPLOYMENT_ACTION_TYPE/after" -a "targetOrg" -w "$(pwd)"
+            bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$DEPLOYMENT_ACTION_TYPE/after" -a "targetOrg" -w "$(pwd)" -c "$SCRIPT_PARAMS_FILE"
             
           else
             

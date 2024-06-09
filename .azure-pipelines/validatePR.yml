@@ -34,38 +34,19 @@ stages:
               fetchDepth: 0
               persistCredentials: true
               
-            - script: |
-                  wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F$(pmdVersion)/pmd-bin-$(pmdVersion).zip
-                  unzip pmd-bin-$(pmdVersion).zip -d pmd && cd pmd && cp -a pmd-bin-$(pmdVersion)/* . && rm -rf pmd-bin-$(pmdVersion)/
-              displayName: 'PMD Downloading'
+            - template: templates/scanPMD.yml
+              parameters:
+                pathToScan: $(packageBaseDir)
               
-            - task: Ant@1
-              inputs:
-                buildFile: 'pmd/build.xml'
-                options: 
-                targets: 'init pmd pmd-html-artifact pmd-html-publish'
-                publishJUnitResults: false
-                testResultsFiles: 'pmd/junit.xml'
-                javaHomeOption: 'JDKVersion'
-              displayName: 'PMD Analysis'
-              
-            - task: PublishPipelineArtifact@1
-              inputs:
-                targetPath: '$(System.DefaultWorkingDirectory)/pmd/pmd-report-artifact-$(Build.BuildId).html'
-                artifact: 'pmd-report'
-                publishLocation: 'pipeline'
-              displayName: 'Publish HTML report to artifacts'
-              
-            - task: publishhtmlreport@1
-              inputs:
-                htmlType: 'genericHTML'
-                htmlPath: '$(System.DefaultWorkingDirectory)/pmd/pmd-report-publish-$(Build.BuildId).html'
-              displayName: 'Publish HTML report to pipeline'
-
+      
     - stage: Testing
+      
       displayName: 'Unit testing'
+      
       lockBehavior: runLatest
+      
       jobs:
+          
           - job : UnitTests
             
             displayName: 'Unit testing'     
@@ -77,23 +58,14 @@ stages:
             
             steps:
                 
-                - checkout: self
-                  fetchDepth: 0
-                  persistCredentials: true
-
-                - task: Cache@2
-                  inputs: 
-                    key: 'npm | "$(Agent.OS)" | package.json'
-                    restoreKeys: |
-                      npm | "$(Agent.OS)"
-                    path: $(npm_config_cache)
-                  displayName: Cache sfdx npm installation
-                  
-                - task: Npm@1
-                  inputs:
-                    command: 'custom'
-                    customCommand: 'install @salesforce/cli@$(sfdxVersion) --global --loglevel verbose'
-                  displayName: sfdx npm installation
+                - template: templates/init.yml
+                
+                - template: templates/scanCode.yml
+                  parameters:
+                    pathToScan: $(packageBaseDir)
+                    reportFormat: 'html'
+                    continueOnError: true
+                    active: $(enableCodeScan)
                   
                 - task: DownloadSEcureFile@1
                   name: fsPoolAuthFile
@@ -102,16 +74,10 @@ stages:
                   displayName: 'Copy fsPool secure file'
                   
                 - task: DownloadSEcureFile@1
-                  name: fsEMEAPoolAuthFile
+                  name: fsMasterPoolAuthFile
                   inputs:
-                    secureFile: fsEMEAPool
-                  displayName: 'Copy fsEMEAPool secure file'
-                  
-                - task: DownloadSEcureFile@1
-                  name: fsNAAPoolAuthFile
-                  inputs:
-                    secureFile: fsNAAPool
-                  displayName: 'Copy fsNAAPool secure file'
+                    secureFile: fsMasterPool
+                  displayName: 'Copy fsMasterPool secure file'
                   
                 - script: |
                       
@@ -124,11 +90,8 @@ stages:
                       
                       if [[ "$(Build.Reason)" =~ ^PullRequest$ ]]; then
                         
-                        if [[ "$(System.PullRequest.TargetBranchName)" =~ ^dev-naa$ ]]; then
-                          fsPoolFilePath="$(fsNAAPoolAuthFile.secureFilePath)";
-                          
-                        elif [[ "$(System.PullRequest.TargetBranchName)" =~ ^dev-emea$ ]]; then
-                          fsPoolFilePath="$(fsEMEAPoolAuthFile.secureFilePath)";
+                        if [[ "$(System.PullRequest.TargetBranchName)" =~ ^master$ ]]; then
+                          fsPoolFilePath="$(fsMasterPoolAuthFile.secureFilePath)";
                           
                         fi
                         
@@ -160,14 +123,80 @@ stages:
                       validationOrgAuthFile=$(mktemp)
                       echo -n "$validationOrgAuthUrl" >> $validationOrgAuthFile
                       
+                      # set variable to pass validation org alias to next steps
+                      echo "##vso[task.setvariable variable=validationOrgAlias]${validationOrgAlias}"
+                      
+                      # set variable to pass validation org auth file to next steps
+                      echo "##vso[task.setvariable variable=validationOrgAuthFile]${validationOrgAuthFile}"
+                      
+                  displayName: Select Validation Org from Pool
+                  
+                - template: templates/installThirdParties.yml
+                  parameters:
+                    targetOrgAuthFilePath: $(validationOrgAuthFile)
+                    continueOnError: true
+                  
+                - script: |
+                      
+                      validationOrgAuthFile=$(validationOrgAuthFile)
+                      validationOrgAlias=$(validationOrgAlias)
+                      
                       # authorize to validation org
-                      sf org login sfdx-url -f "$validationOrgAuthFile" -a "$validationOrgAlias"
+                      DX_AUTH_RESPONSE=$(sf org login sfdx-url -f "$validationOrgAuthFile" -a "$validationOrgAlias" --json);
+                      DX_STATUS_CODE=$(echo "$DX_AUTH_RESPONSE" | jq .status);
+                      
+                      # early exit - error when authorizing to target org by auth url
+                      if [[ "$DX_STATUS_CODE" != "0" ]]; then
+                        echo "Error when logging into $validationOrgAlias org by auth url!"
+                        echo "$DX_AUTH_RESPONSE" | jq .
+                        exit 1;
+                      fi
+                      
+                      TARGET_ORG_USERNAME=$(echo "$DX_AUTH_RESPONSE" | jq -r .result.username);
+                      
+                      echo "Successfully logged into $validationOrgAlias org by auth url as user '${TARGET_ORG_USERNAME:-unknown}'"
                       
                       rm -f $validationOrgAuthFile
                       
                       echo "List of already installed packages in $validationOrgAlias org: "
                       sf package installed list --target-org="$validationOrgAlias"
                       
+                      # set variable to pass username to next steps
+                      echo "##vso[task.setvariable variable=TARGET_ORG_USERNAME]$TARGET_ORG_USERNAME"
+                      
+                  displayName: 'Authenticate to Validation Org'
+                  
+                  
+                - template: templates/scanFlows.yml
+                  parameters:
+                    pathToScan: $(packageBaseDir)
+                    continueOnError: true
+                    
+                  
+                # evaluate test level: skip tests if requested
+                - script: |
+                      
+                      TARGET_PR_TITLE=$(az repos pr show --id="$(System.PullRequest.PullRequestId)" | jq -r ".title // empty");
+                      echo "Target PR title: $TARGET_PR_TITLE"
+                      
+                      if [[ "${TARGET_PR_TITLE^^}" =~ .*\[SKIP\ TESTS\].* ]]; then
+                        TARGET_ORG_TEST_LEVEL="NoTestRun"
+                      fi
+                      
+                      TARGET_ORG_TEST_LEVEL=${TARGET_ORG_TEST_LEVEL:-RunLocalTests}
+                      
+                      # set variable to pass test level to next steps
+                      echo "##vso[task.setvariable variable=TARGET_ORG_TEST_LEVEL]$TARGET_ORG_TEST_LEVEL"
+                      
+                  displayName: Evaluate test level
+                  
+                  env:
+                    AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+                  
+                  
+                - script: |
+                      
+                      validationOrgAlias=$(validationOrgAlias)
                       
                       set -e
                       
@@ -178,9 +207,9 @@ stages:
                       
                       bash $(stepsRunnerUtil) -d "$(rulesValidationScript)" -w "$(pwd)"
                       
-                      sf force source deploy -p $(packageBaseDir) -u "$validationOrgAlias" --checkonly --testlevel RunLocalTests --junit --verbose --coverageformatters cobertura -w 1000
+                      sf force source deploy -p $(packageBaseDir) -u "$validationOrgAlias" --checkonly --testlevel "${TARGET_ORG_TEST_LEVEL}" --junit --verbose --coverageformatters cobertura -w 1000
                       
-                  displayName: Validation on pool org
+                  displayName: Validate Changes against Org
                   
                   
                 - task: PublishTestResults@2
@@ -189,17 +218,20 @@ stages:
                     testResultsFiles: '**/junit/junit.xml'
                   displayName: 'Publish Test Results'
                   continueOnError: true
+                  condition: not(eq(variables['TARGET_ORG_TEST_LEVEL'], 'NoTestRun'))
                   
                 - task: UseDotNet@2
-                  displayName: 'Code Coverage Report'
+                  displayName: 'Use .NET Core sdk 7.0.x'
                   inputs:
                     packageType: 'sdk'
-                    version: '3.1.x'
+                    version: 7.0.x
+                  condition: not(eq(variables['TARGET_ORG_TEST_LEVEL'], 'NoTestRun'))
                     
-                - task: PublishCodeCoverageResults@1
+                - task: PublishCodeCoverageResults@2
                   inputs:
-                    codeCoverageTool: 'Cobertura'
                     summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage/cobertura.xml'
                   displayName: 'Publish Coverage Results'
                   continueOnError: true
-    
+                  condition: not(eq(variables['TARGET_ORG_TEST_LEVEL'], 'NoTestRun'))
+
+

@@ -15,6 +15,36 @@
         <groupingString>InProgress</groupingString>
     </standardValue>
     <standardValue>
+        <fullName>In Progress</fullName>
+        <default>false</default>
+        <label>In Progress</label>
+        <groupingString>InProgress</groupingString>
+    </standardValue>
+    <standardValue>
+        <fullName>Canceled</fullName>
+        <default>false</default>
+        <label>Canceled</label>
+        <groupingString>Canceled</groupingString>
+    </standardValue>
+    <standardValue>
+        <fullName>Cannot Complete</fullName>
+        <default>false</default>
+        <label>Cannot Complete</label>
+        <groupingString>CannotComplete</groupingString>
+    </standardValue>
+    <standardValue>
+        <fullName>On Hold</fullName>
+        <default>false</default>
+        <label>On Hold</label>
+        <groupingString>CannotComplete</groupingString>
+    </standardValue>
+    <standardValue>
+        <fullName>Closed</fullName>
+        <default>false</default>
+        <label>Closed</label>
+        <groupingString>Closed</groupingString>
+    </standardValue>
+    <standardValue>
         <fullName>Accepted</fullName>
         <default>false</default>
         <label>Accepted</label>
@@ -31,12 +61,6 @@
         <default>false</default>
         <label>Completed - Shutdown</label>
         <groupingString>Completed</groupingString>
-    </standardValue>
-    <standardValue>
-        <fullName>Closed</fullName>
-        <default>false</default>
-        <label>Closed</label>
-        <groupingString>Closed</groupingString>
     </standardValue>
     <standardValue>
         <fullName>Canceled by Otis</fullName>

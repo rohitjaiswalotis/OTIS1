@@ -18,7 +18,7 @@ parameters:
   default: none
 
 - name: localizationDomain
-  displayName: Localization Domain (e.g. NAA, Japan, EMEA)
+  displayName: Localization Domain (e.g. NAA, EMEA, Japan)
   type: string
   default: Global
 
@@ -30,11 +30,16 @@ parameters:
   displayName: Install Third Parties?
   type: boolean
   default: false
-  
-- name: fslPackageVersionId
-  displayName: FSL Package Version Id
-  type: string
-  default: "default"
+
+- name: autoInstallDependencies
+  displayName: Auto Install Dependencies?
+  type: boolean
+  default: false
+
+- name: installOnlyDependencies
+  displayName: Install Only Dependencies?
+  type: boolean
+  default: false
 
 - name: installationMode
   displayName: Installation Mode
@@ -77,20 +82,30 @@ parameters:
   type: boolean
   default: false
 
-- name: shouldRunTestsBefore
-  displayName: Run Tests Before?
+- name: shouldRunAqaTests
+  displayName: Run AQA Tests?
   type: boolean
   default: false
+
+- name: shouldRunTestsBefore
+  displayName: Run Tests (Before)?
+  type: boolean
+  default: false
+
+- name: runTestsBeforeAsConcurrent
+  displayName: Concurrent Tests (Before)?
+  type: boolean
+  default: true
 
 - name: shouldRunTestsAfter
-  displayName: Run Tests After?
+  displayName: Run Tests (After)?
   type: boolean
   default: false
 
-- name: concurrentTestsExecution
-  displayName: Parallel Tests Mode?
+- name: runTestsAfterAsConcurrent
+  displayName: Concurrent Tests (After)?
   type: boolean
-  default: false
+  default: true
 
 - name: shouldGenerateTestsReport
   displayName: Generate Tests Report?
@@ -139,7 +154,7 @@ stages:
                 - template: templates/runTests.yml
                   parameters:
                     targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
-                    concurrentExecution: ${{ parameters.concurrentTestsExecution }}
+                    concurrentExecution: ${{ parameters.runTestsBeforeAsConcurrent }}
                     continueOnError: true
                     enableDebugMode: ${{ parameters.enableDebugMode }}
                     
@@ -155,11 +170,9 @@ stages:
               
               - ${{ if eq(parameters.shouldInstallThirdParties, true) }}:
                 
-                - template: templates/installThirdParty.yml
+                - template: templates/installThirdParties.yml
                   parameters:
                     targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
-                    versionId: ${{ parameters.fslPackageVersionId }}
-                    packageAlias: FSL
                     continueOnError: true
                     enableDebugMode: ${{ parameters.enableDebugMode }}
                   
@@ -169,6 +182,8 @@ stages:
                   versionId: ${{ parameters.versionId }}
                   localizationDomain: ${{ parameters.localizationDomain }}
                   targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
+                  autoInstallDependencies: ${{ parameters.autoInstallDependencies }}
+                  installOnlyDependencies: ${{ parameters.installOnlyDependencies }}
                   installationMode: ${{ parameters.installationMode }}
                   compileScope: ${{ parameters.compileScope }}
                   upgradeType: ${{ parameters.upgradeType }}
@@ -183,13 +198,20 @@ stages:
                     targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
                     enableDebugMode: ${{ parameters.enableDebugMode }}
                     
+                  
+              - ${{ if eq(parameters.shouldRunAqaTests, true) }}:
+                
+                - template: templates/runAQA.yml
+                  parameters:
+                    targetOrgAuthVariableGroup: ${{ split(targetOrgAuthFileName, '_')[1] }}
+                  
                 
               - ${{ if eq(parameters.shouldRunTestsAfter, true) }}:
                 
                 - template: templates/runTests.yml
                   parameters:
                     targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
-                    concurrentExecution: ${{ parameters.concurrentTestsExecution }}
+                    concurrentExecution: ${{ parameters.runTestsAfterAsConcurrent }}
                     continueOnError: true
                     enableDebugMode: ${{ parameters.enableDebugMode }}
                     

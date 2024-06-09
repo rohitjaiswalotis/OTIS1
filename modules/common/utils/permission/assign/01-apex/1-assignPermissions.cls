@@ -12,8 +12,8 @@ Map<String, String> profileNameToPermSetGroup =
 		'Field Service Admin'				=>		'FS_FieldServiceAdmin_Persona',
 		'Field Service Mechanic'			=>		'FS_FieldServiceMechanic_Persona',
 		'Field Service Supervisor'			=>		'FS_FieldServiceSupervisor_Persona',
-		'FS Office Admin'					=>		'FS_FSLOptimization_Persona',
-		'FSL Optimization'					=>		'FS_FSOfficeAdmin_Persona',
+		'FS Office Admin'					=>		'FS_FSOfficeAdmin_Persona',
+		'FSL Optimization'					=>		'FS_FSLOptimization_Persona',
 		'Mechanic User'						=>		'FS_MechanicUser_Persona',
 		'Otis System Integration'			=>		'FS_OtisSystemIntegration_Persona',
 		'Read Only_V2'						=>		'FS_ReadOnlyV2_Persona',
@@ -117,10 +117,7 @@ if (psa.isEmpty()) {
 	return;
 }
 
-// actually create permission set group assignments (suppressing failures if any)
-Database.insert(
-	psa, 
-	false
-);
+// actually create permission set group assignments
+insert psa;
 
 

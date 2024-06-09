@@ -1,5 +1,5 @@
 /**
-* Package install handler class
+* Core package install handler class.
 */
 global without sharing class FS_CoreInstallHandlerImpl implements CoreInstallHandler {
 	

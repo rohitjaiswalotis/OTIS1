@@ -18,9 +18,9 @@
 
     <target name="pmd" depends="init">
         <pmd>
-            <ruleset>rulesets/apex/bestpractices.xml,rulesets/apex/codestyle.xml,rulesets/apex/design.xml,rulesets/apex/errorprone.xml,rulesets/apex/multithreading.xml,rulesets/apex/performance.xml,rulesets/apex/security.xml,../scripts/pmd/CustomApexRuleset.xml</ruleset>
+            <ruleset>${basedir}/rulesets/apex/bestpractices.xml,${basedir}/rulesets/apex/codestyle.xml,${basedir}/rulesets/apex/design.xml,${basedir}/rulesets/apex/errorprone.xml,${basedir}/rulesets/apex/multithreading.xml,${basedir}/rulesets/apex/performance.xml,${basedir}/rulesets/apex/security.xml,${basedir}/../scripts/pmd/CustomApexRuleset.xml</ruleset>
             <formatter type="xml" toFile="output.xml" toConsole="true"/>
-            <fileset dir="../modules/fs">
+            <fileset dir="${basedir}/../${pathToScan}">
             </fileset>
             <relativizePathsWith>
                 <pathelement location="${env.SYSTEM_DEFAULTWORKINGDIRECTORY}"/>

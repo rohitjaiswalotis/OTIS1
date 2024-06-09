@@ -3,4 +3,5 @@
     <description>FS Field Service Admin Permission Set Group</description>
     <label>FS Field Service Admin Persona</label>
     <permissionSets>FS_FieldServiceAdmin_Permissions</permissionSets>
+    <permissionSets>Activate_Contracts_Permission</permissionSets>
 </PermissionSetGroup>

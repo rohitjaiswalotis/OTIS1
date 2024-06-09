@@ -11,6 +11,16 @@ parameters:
   - config/messaging/shape.json
   - config/messaging/features.json
 
+- name: configFeatures
+  displayName: Additional features to be included on top of scratch org config file
+  type: string
+  default: "[]"
+
+- name: configSettings
+  displayName: Additional settings to be included on top of scratch org config file
+  type: string
+  default: "{}"
+
 - name: durationInDays
   displayName: Number of Days for Scratch Org to expire after
   type: number
@@ -41,13 +51,14 @@ steps:
         # enable "debug" mode
         if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
           set -x
+          export DEBUG_MODE=1
         fi
         
         echo "Authorizing to dev hub..."
         
         DX_STATUS_CODE=$(sf org login jwt --client-id $(devHubClientId) --jwt-key-file $(devHubPrivateKey.secureFilePath) --username $(devHubUsername) -r $(devHubUrl) -a devHub --json | jq .status);
         
-        # early exit - error when autorizing to dev hub
+        # early exit - error when authorizing to dev hub
         if [[ "$DX_STATUS_CODE" != "0" ]]; then
           echo "Cannot log in to dev hub as '$(devHubUsername)'"
           exit 1
@@ -55,13 +66,34 @@ steps:
         
         echo "Successfully authorized to dev hub as '$(devHubUsername)'"
         
+        
+        echo "Generating Scratch Org Config..."
+        
+        SCRATCH_ORG_CONFIG_JSON_CONTENT=$(cat "${{ parameters.configFile }}");
+        SCRATCH_ORG_CONFIG_FILE=$(mktemp --suffix=".json");
+        
+        # inject requested features
+        SCRATCH_ORG_CONFIG_JSON_CONTENT=$(echo "$SCRATCH_ORG_CONFIG_JSON_CONTENT" | jq --argjson requestedFeatures '${{ parameters.configFeatures }}' '.features = ((.features + $requestedFeatures) | unique)')
+        
+        # inject requested settings
+        SCRATCH_ORG_CONFIG_JSON_CONTENT=$(echo "$SCRATCH_ORG_CONFIG_JSON_CONTENT" | jq --argjson requestedSettings '${{ parameters.configSettings }}' '.settings *= $requestedSettings')
+        
+        
+        # dump transformed scratch org config into file
+        echo "$SCRATCH_ORG_CONFIG_JSON_CONTENT" > $SCRATCH_ORG_CONFIG_FILE
+        
+        echo "Final scratch org config with runtime info injected: "
+        cat $SCRATCH_ORG_CONFIG_FILE
+        
+        
         echo "Creating Scratch Org..."
         
         # try to create scratch org (job id is used as an alias)
-        ORG_CREATION_RESPONSE=$(sf org create scratch -f "${{ parameters.configFile }}" -v "devHub" --duration-days=${{ parameters.durationInDays }} -w 60 -a targetOrg --json);
+        ORG_CREATION_RESPONSE=$(sf org create scratch -f "$SCRATCH_ORG_CONFIG_FILE" -v "devHub" --duration-days=${{ parameters.durationInDays }} -w 60 -a targetOrg --json);
         echo "$ORG_CREATION_RESPONSE" | jq .
         
         ORG_CREATION_STATUS_CODE=$(echo "$ORG_CREATION_RESPONSE" | jq .status);
+        rm -rf $SCRATCH_ORG_CONFIG_FILE
         
         # early exit - error when creating scratch org
         if [[ "$ORG_CREATION_STATUS_CODE" != "0" ]]; then

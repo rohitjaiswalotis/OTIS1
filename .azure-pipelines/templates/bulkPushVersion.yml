@@ -14,19 +14,87 @@ parameters:
 - name: versionToPushExpression
   displayName: Package version expression to upgrade to
   type: string
+  default: none
 
 - name: versionWhereCondition
   displayName: Where Condition for version to upgrade
   type: string
   default: none
 
+- name: shouldInstallThirdParties
+  displayName: Install Third Parties?
+  type: boolean
+  default: true
+
+- name: autoInstallDependencies
+  displayName: Auto Install Dependencies?
+  type: boolean
+  default: false
+
+- name: installOnlyDependencies
+  displayName: Install Only Dependencies?
+  type: boolean
+  default: false
+
+- name: installationMode
+  displayName: Installation Mode
+  type: string
+  default: auto
+  values:
+  - auto
+  - install
+  - upgrade
+  - upgrade-meta
+
+- name: compileScope
+  displayName: Package Apex Compilation Scope
+  type: string
+  default: all
+  values:
+  - all
+  - package
+
+- name: upgradeType
+  displayName: Package Upgrade Type
+  type: string
+  default: Mixed
+  values:
+  - Mixed
+  - DeprecateOnly
+  - Delete
+
+- name: actionPhase
+  displayName: Action Phase
+  type: string
+  default: both
+  values:
+  - both
+  - before
+  - after
+  - none
+
+- name: shouldRunAqaTests
+  displayName: Run AQA Tests?
+  type: boolean
+  default: false
+
 - name: shouldRunTestsBefore
-  displayName: Run Tests Before?
+  displayName: Run Tests (Before)?
+  type: boolean
+  default: true
+
+- name: runTestsBeforeAsConcurrent
+  displayName: Concurrent Tests (Before)?
   type: boolean
   default: true
 
 - name: shouldRunTestsAfter
-  displayName: Run Tests After?
+  displayName: Run Tests (After)?
+  type: boolean
+  default: true
+
+- name: runTestsAfterAsConcurrent
+  displayName: Concurrent Tests (After)?
   type: boolean
   default: true
 
@@ -63,7 +131,7 @@ stages:
                     
                     DX_STATUS_CODE=$(sf org login jwt --client-id $(devHubClientId) --jwt-key-file $(devHubPrivateKey.secureFilePath) --username $(devHubUsername) -r $(devHubUrl) -a devHub --json | jq .status);
                     
-                    # early exit - error when autorizing to dev hub
+                    # early exit - error when authorizing to dev hub
                     if [[ "$DX_STATUS_CODE" != "0" ]]; then
                       echo "Cannot log in to dev hub as '$(devHubUsername)'"
                       exit 1
@@ -103,6 +171,7 @@ stages:
                     echo "##vso[task.setvariable variable=FS_PACKAGE_VERSION_ID]${FS_PACKAGE_VERSION_ID}"
                     
               displayName: 'Evaluate Version by Expression'
+              condition: ${{ ne(lower(parameters.versionToPushExpression), 'none') }}
             
             
             - ${{ each targetOrgAuthFileName in split(parameters.versionToPushOrgAuthFiles, ',')}}:
@@ -118,29 +187,43 @@ stages:
                 - template: runTests.yml
                   parameters:
                     targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
-                    concurrentExecution: true
+                    concurrentExecution: ${{ parameters.runTestsBeforeAsConcurrent }}
                     continueOnError: true
                 
               
-              - template: installThirdParty.yml
-                parameters:
-                  targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
-                  packageAlias: FSL
-                  continueOnError: true
+              - ${{ if eq(parameters.shouldInstallThirdParties, true) }}:
                 
-              
+                - template: installThirdParties.yml
+                  parameters:
+                    targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
+                    continueOnError: true
+                  
+                
               - template: installVersion.yml
                 parameters:
                   localizationDomain: ${{ parameters.localizationDomain }}
                   targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
+                  autoInstallDependencies: ${{ parameters.autoInstallDependencies }}
+                  installOnlyDependencies: ${{ parameters.installOnlyDependencies }}
+                  installationMode: ${{ parameters.installationMode }}
+                  compileScope: ${{ parameters.compileScope }}
+                  upgradeType: ${{ parameters.upgradeType }}
+                  actionPhase: ${{ parameters.actionPhase }}
+                  
                 
-              
+              - ${{ if eq(parameters.shouldRunAqaTests, true) }}:
+                
+                - template: runAQA.yml
+                  parameters:
+                    targetOrgAuthVariableGroup: ${{ split(targetOrgAuthFileName, '_')[1] }}
+                  
+                
               - ${{ if eq(parameters.shouldRunTestsAfter, true) }}:
                 
                 - template: runTests.yml
                   parameters:
                     targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
-                    concurrentExecution: true
+                    concurrentExecution: ${{ parameters.runTestsAfterAsConcurrent }}
                     continueOnError: true
 
 

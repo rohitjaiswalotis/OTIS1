@@ -1,5 +1,5 @@
 /**
-* Test class for interface to implementation resolver. 
+* Test class for Core package install handler.
 */
 @IsTest
 public inherited sharing class FS_CoreInstallHandlerImplTest {

@@ -19,4 +19,10 @@
         <label>Closed - Not Completed</label>
         <closed>false</closed>
     </standardValue>
+    <standardValue>
+        <fullName>SPR to review</fullName>
+        <default>false</default>
+        <label>SPR to review</label>
+        <closed>false</closed>
+    </standardValue>
 </StandardValueSet>

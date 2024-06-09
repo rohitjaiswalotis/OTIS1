@@ -5,10 +5,27 @@ trigger:
   include:
     - dev
     - dev-jpn
-    - dev-naa
-    - dev-emea
+    - master
     
 pr: none
+
+
+parameters:
+
+- name: deploymentMode
+  displayName: Deployment Mode
+  type: string
+  default: auto
+  values:
+  - auto
+  - install
+  - upgrade
+
+- name: shouldNotifySubscribers
+  displayName: Notify Subscribers?
+  type: boolean
+  default: true
+
 
 variables:
 
@@ -16,9 +33,6 @@ variables:
 
 - name: OrgAliasDevFS
   value: devFS
-
-- name: deploymentActionType
-  value: upgrade
 
 
 stages:
@@ -42,83 +56,105 @@ stages:
               fetchDepth: 0
               persistCredentials: true
               
-            - script: |
-                  wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F$(pmdVersion)/pmd-bin-$(pmdVersion).zip
-                  unzip pmd-bin-$(pmdVersion).zip -d pmd && cd pmd && cp -a pmd-bin-$(pmdVersion)/* . && rm -rf pmd-bin-$(pmdVersion)/
-              displayName: 'PMD Downloading'
+            - template: templates/scanPMD.yml
+              parameters:
+                pathToScan: $(packageBaseDir)
               
-            - task: Ant@1
-              inputs:
-                buildFile: 'pmd/build.xml'
-                options: 
-                targets: 'init pmd pmd-html-artifact pmd-html-publish'
-                publishJUnitResults: false
-                testResultsFiles: 'pmd/junit.xml'
-                javaHomeOption: 'JDKVersion'
-              displayName: 'PMD Analysis'
-              
-            - task: PublishPipelineArtifact@1
-              inputs:
-                targetPath: '$(System.DefaultWorkingDirectory)/pmd/pmd-report-artifact-$(Build.BuildId).html'
-                artifact: 'pmd-report'
-                publishLocation: 'pipeline'
-              displayName: 'Publish HTML report to artifacts'
-              
-            - task: publishhtmlreport@1
-              inputs:
-                htmlType: 'genericHTML'
-                htmlPath: '$(System.DefaultWorkingDirectory)/pmd/pmd-report-publish-$(Build.BuildId).html'
-              displayName: 'Publish HTML report to pipeline'
-
+      
     - stage: Deploy
-      condition: succeeded()
+      
+      condition: and(succeeded(), not(contains(variables['Build.SourceVersionMessage'], '[SKIP CI]')))
+      
       dependsOn: 
       - ValidatePMD
+      
       displayName: Deploying
+      
       jobs:
+          
           - deployment: release_devFS
+            
             environment: devFS
+            
             displayName: 'Release to devFS'
-            timeoutInMinutes: 0    
+            
+            timeoutInMinutes: 0
+            
             pool:
                 vmImage: 'ubuntu-latest'
+                
             strategy:
              runOnce:
                deploy:
                 
                 steps:
                 
-                - checkout: self
-                  fetchDepth: 0
-                  persistCredentials: true
-
-                - task: Npm@1
-                  inputs:
-                    command: 'custom'
-                    customCommand: 'install @salesforce/cli@$(sfdxVersion) --global --loglevel verbose'
-                  displayName: sfdx npm installation
+                - template: templates/init.yml
+                  parameters:
+                    useCache: false
                   
                 - task: DownloadSEcureFile@1
                   name: authFile
                   inputs:
-                    ${{ if eq(variables['Build.SourceBranchName'], 'dev-jpn') }}:
-                      secureFile: authFile_devFSJpn
-                    ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-emea') }}:
-                      secureFile: authFile_devFSEMEA
-                    ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-naa') }}:
-                      secureFile: authFile_devFSNAA
+                    ${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
+                      secureFile: authFile_masterFS
                     ${{ else }}:
                       secureFile: authFile_devFS
                   displayName: 'Copy authorization file for devFS'
                   
+                  
+                - template: templates/installThirdParties.yml
+                  parameters:
+                    targetOrgAuthFilePath: $(authFile.secureFilePath)
+                    continueOnError: true
+                    
+                  
                 - script: |
                         
-                        sf org login sfdx-url -f $(authFile.secureFilePath) -a $(OrgAliasDevFS)
+                        DX_AUTH_RESPONSE=$(sf org login sfdx-url -f "$(authFile.secureFilePath)" -a "$(OrgAliasDevFS)" --json);
+                        DX_STATUS_CODE=$(echo "$DX_AUTH_RESPONSE" | jq .status);
+                        
+                        # early exit - error when authorizing to target org by auth url
+                        if [[ "$DX_STATUS_CODE" != "0" ]]; then
+                          echo "Error when logging into $(OrgAliasDevFS) org by auth url!"
+                          echo "$DX_AUTH_RESPONSE" | jq .
+                          exit 1;
+                        fi
+                        
+                        TARGET_ORG_USERNAME=$(echo "$DX_AUTH_RESPONSE" | jq -r .result.username);
+                        
+                        echo "Successfully logged into $(OrgAliasDevFS) org by auth url as user '${TARGET_ORG_USERNAME:-unknown}'"
                         
                         echo "List of already installed packages in $(OrgAliasDevFS) org: "
                         sf package installed list --target-org="$(OrgAliasDevFS)"
                         
+                        # set variable to pass username to next steps
+                        echo "##vso[task.setvariable variable=TARGET_ORG_USERNAME]$TARGET_ORG_USERNAME"
+                        
                   displayName: 'Authenticate to devFS'
+                  
+                  
+                - template: templates/scanFlows.yml
+                  parameters:
+                    pathToScan: $(packageBaseDir)
+                    continueOnError: true
+                    
+                  
+                # evaluate test level: skip tests if requested
+                - ${{ if contains(variables['Build.SourceVersionMessage'], '[SKIP TESTS]') }}:
+                  
+                  - script: |
+                        
+                        # set variable to skip tests execution
+                        echo "##vso[task.setvariable variable=TARGET_ORG_TEST_LEVEL]NoTestRun"
+                        
+                - ${{ else }}:
+                  
+                  - script: |
+                        
+                        # set variable to skip tests execution
+                        echo "##vso[task.setvariable variable=TARGET_ORG_TEST_LEVEL]${TARGET_ORG_TEST_LEVEL:-RunLocalTests}"
+                    
                   
                 - bash: |
                         
@@ -126,12 +162,8 @@ stages:
                         set -e
                         
                         # set localization domain (if provided) to be available inside steps runner
-                        if [[ "$(Build.SourceBranchName)" =~ ^dev-naa$ ]] ; then
-                          export SF_SR_VAR_GLOBAL_LOCALIZATION_DOMAIN="NAA";
-                        elif [[ "$(Build.SourceBranchName)" =~ ^dev-jpn$ ]] ; then
+                        if [[ "$(Build.SourceBranchName)" =~ ^dev-jpn$ ]] ; then
                           export SF_SR_VAR_GLOBAL_LOCALIZATION_DOMAIN="Japan";
-                        elif [[ "$(Build.SourceBranchName)" =~ ^dev-emea$ ]] ; then
-                          export SF_SR_VAR_GLOBAL_LOCALIZATION_DOMAIN="EMEA";
                         else
                           export SF_SR_VAR_GLOBAL_LOCALIZATION_DOMAIN="Global";
                         fi
@@ -139,20 +171,99 @@ stages:
                         echo "Reconciling profiles..."                        
                         bash $(reconcileProfilesUtil) -d "$(packageBaseDir)/main/default/profiles" -a "$(OrgAliasDevFS)" -o "$(packageBaseDir)/main/default/profiles" -p "$(profilesToReconcile)"
                         
-                        echo "Running pre-$(deploymentActionType) steps..."
-                        bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$(deploymentActionType)/before" -a "$(OrgAliasDevFS)" -w "$(pwd)"
                         
-                        echo "Running destructive operation before deploy into $(OrgAliasDevFS)..."
-                        sf force source deploy -u $(OrgAliasDevFS) --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --predestructivechanges="destruct/destructiveChangesPre.xml" -w 1000 --verbose
+                        echo "Evaluating deployment mode..."
                         
-                        echo "Actually deploying artifacts into $(OrgAliasDevFS)..."
-                        sf force source deploy --sourcepath="$(packageBaseDir)" -u $(OrgAliasDevFS) --testlevel RunLocalTests --junit --coverageformatters cobertura --ignorewarnings -w 1000 --verbose
+                        if [[ "${{ parameters.deploymentMode }}" =~ ^auto$ ]] ; then
+                          
+                          QUERY_FS_META_MARKER_RESPONSE=$(sf data query --target-org targetOrg -q "$(fsMetaDetectionQuery)" --json);
+                          echo $QUERY_FS_META_MARKER_RESPONSE | jq .
+                          
+                          FS_MARKER_META_COUNT=$(echo "$QUERY_FS_META_MARKER_RESPONSE" | jq -r ".result.records | length");
+                          
+                          if [[ $FS_MARKER_META_COUNT -gt 0 ]]; then
+                            deploymentActionType="upgrade";
+                          else
+                            deploymentActionType="install";
+                          fi
+                          
+                        fi
                         
-                        echo "Running destructive operation after deploy into $(OrgAliasDevFS)..."
-                        sf force source deploy -u $(OrgAliasDevFS) --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --postdestructivechanges="destruct/destructiveChangesPost.xml" -w 1000 --verbose
+                        echo "Going with ${deploymentActionType} deployment mode..."
                         
-                        echo "Running post-$(deploymentActionType) steps..."
-                        bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$(deploymentActionType)/after" -a "$(OrgAliasDevFS)" -w "$(pwd)"
+                        
+                        echo "Running pre-${deploymentActionType} steps..."
+                        bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/${deploymentActionType}/before" -a "$(OrgAliasDevFS)" -w "$(pwd)"
+                        
+                        # disable exit on error
+                        set +e
+                        
+                        DEPLOYMENT_LOG_FILE=$(mktemp)
+                        
+                        deployMaxRetryAttempts=$(deployRetryNumber);
+                        deployRetryDelay=$(deployRetryTimeout);
+                        deployRetryCounter=0;
+                        
+                        while true; do 
+                          
+                          DX_DEPLOY_STATUS_CODE=0;
+                          
+                          if [[ "$DX_DEPLOY_STATUS_CODE" == "0" ]]; then
+                            echo "Running destructive operation before deploy into $(OrgAliasDevFS)..."
+                            sf force source deploy -u $(OrgAliasDevFS) --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --predestructivechanges="destruct/destructiveChangesPre.xml" -w 1000 --verbose 2>&1 | tee $DEPLOYMENT_LOG_FILE; DX_DEPLOY_STATUS_CODE=${PIPESTATUS[0]};
+                          fi
+                          
+                          if [[ "$DX_DEPLOY_STATUS_CODE" == "0" ]]; then
+                            echo "Actually deploying artifacts into $(OrgAliasDevFS)..."
+                            sf force source deploy --sourcepath="$(packageBaseDir)" -u $(OrgAliasDevFS) --testlevel "$TARGET_ORG_TEST_LEVEL" --junit --coverageformatters cobertura --ignorewarnings -w 1000 --verbose 2>&1 | tee $DEPLOYMENT_LOG_FILE; DX_DEPLOY_STATUS_CODE=${PIPESTATUS[0]};
+                          fi
+                          
+                          if [[ "$DX_DEPLOY_STATUS_CODE" == "0" ]]; then
+                            echo "Running destructive operation after deploy into $(OrgAliasDevFS)..."
+                            sf force source deploy -u $(OrgAliasDevFS) --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --postdestructivechanges="destruct/destructiveChangesPost.xml" -w 1000 --verbose 2>&1 | tee $DEPLOYMENT_LOG_FILE; DX_DEPLOY_STATUS_CODE=${PIPESTATUS[0]};
+                          fi
+                          
+                          # successful deployment - exit from retry loop
+                          if [[ "$DX_DEPLOY_STATUS_CODE" == "0" ]]; then
+                            break;
+                          fi
+                          
+                          cat $DEPLOYMENT_LOG_FILE | grep -i -E -e "$(deployRetryErrorRegex)" -q; DX_DEPLOY_ERROR_TEMPORARY=$?;
+                          
+                          # permanent error - exit from retry loop
+                          if [[ "$DX_DEPLOY_ERROR_TEMPORARY" != "0" ]]; then
+                            break;
+                          fi
+                          
+                          # retry if not run out of attempts
+                          if [[ $deployRetryCounter -lt $deployMaxRetryAttempts ]]; then
+                            
+                            deployRetryCounter=$(( $deployRetryCounter + 1 ));
+                            echo "Retrying deployment after temporarily failure in ${deployRetryDelay} seconds (attempt ${deployRetryCounter}/${deployMaxRetryAttempts})..."
+                            sleep $deployRetryDelay;
+                            
+                          else
+                            
+                            echo "ERROR: Run out of retry attempts (max=${deployMaxRetryAttempts})"
+                            break;
+                            
+                          fi
+                          
+                        done
+                        
+                        # early exit - deployment error
+                        if [[ "$DX_DEPLOY_STATUS_CODE" != "0" ]]; then
+                          
+                          echo "Error when deploying '$(fsPackageName)' codebase into $(OrgAliasDevFS) org as user '$TARGET_ORG_USERNAME'!"
+                          exit 1;
+                          
+                        fi
+                        
+                        # enable exit on error
+                        set -e
+                        
+                        echo "Running post-${deploymentActionType} steps..."
+                        bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/${deploymentActionType}/after" -a "$(OrgAliasDevFS)" -w "$(pwd)"
                         
                   displayName: 'Full Deploy to devFS'
                   
@@ -163,17 +274,39 @@ stages:
                     testResultsFiles: '**/junit/junit.xml'
                   displayName: 'Publish Test Results'
                   continueOnError: true
+                  condition: not(eq(variables['TARGET_ORG_TEST_LEVEL'], 'NoTestRun'))
                   
                 - task: UseDotNet@2
-                  displayName: 'Code Coverage Report'
+                  displayName: 'Use .NET Core sdk 7.0.x'
                   inputs:
                     packageType: 'sdk'
-                    version: '3.1.x'
+                    version: 7.0.x
+                  condition: not(eq(variables['TARGET_ORG_TEST_LEVEL'], 'NoTestRun'))
                     
-                - task: PublishCodeCoverageResults@1
+                - task: PublishCodeCoverageResults@2
                   inputs:
-                    codeCoverageTool: 'Cobertura'
                     summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage/cobertura.xml'
                   displayName: 'Publish Coverage Results'
                   continueOnError: true
-
+                  condition: not(eq(variables['TARGET_ORG_TEST_LEVEL'], 'NoTestRun'))
+                  
+                  
+                - bash: |
+                        
+                        curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - PR deployment [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `$(OrgAliasDevFS)` org by $(Build.RequestedFor)!"}' $(notifErrorUrls)
+                        
+                  displayName: 'Send Notification re Failed Deployment'
+                  condition: failed()
+                  
+                - ${{ if and( eq(parameters.shouldNotifySubscribers, true), not( contains(variables['Build.SourceVersionMessage'], '[SKIP PACKAGE]') ) ) }}:
+                  
+                  - template: templates/notifySubscribers.yml
+                    parameters:
+                      ${{ if eq(variables['Build.SourceBranchName'], 'dev-jpn') }}:
+                        subscribers: $(subs_deployPR_FsJpn)
+                      ${{ elseif eq(variables['Build.SourceBranchName'], 'dev') }}:
+                        subscribers: $(subs_deployPR_FsDev)
+                      ${{ elseif eq(variables['Build.SourceBranchName'], 'master') }}:
+                        subscribers: $(subs_deployPR_FsRelease)
+                      active: $(enableSubsDeployPR)
+                  

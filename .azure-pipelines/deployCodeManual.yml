@@ -13,7 +13,7 @@ variables:
 parameters:
 
 - name: localizationDomain
-  displayName: Localization Domain (e.g. NAA, Japan, EMEA)
+  displayName: Localization Domain (e.g. NAA, EMEA, Japan)
   type: string
   default: Global
 
@@ -57,6 +57,16 @@ parameters:
   - config/messaging/shape.json
   - config/messaging/features.json
 
+- name: scratchOrgConfigFeatures
+  displayName: Additional features to be included on top of scratch org config file
+  type: string
+  default: "[]"
+
+- name: scratchOrgConfigSettings
+  displayName: Additional settings to be included on top of scratch org config file
+  type: string
+  default: "{}"
+
 - name: scratchOrgDurationInDays
   displayName: Number of Days for Scratch Org to expire after
   type: number
@@ -76,11 +86,6 @@ parameters:
   displayName: Install Third Parties?
   type: boolean
   default: false
-
-- name: fslPackageVersionId
-  displayName: FSL Package Version Id
-  type: string
-  default: "default"
 
 - name: deploymentMode
   displayName: Deployment Mode
@@ -103,25 +108,35 @@ parameters:
   - after
   - none
 
+- name: scriptParams
+  displayName: Script Params (json)
+  type: string
+  default: none
+
 - name: shouldDataBeLoaded
   displayName: Load Data?
   type: boolean
   default: false
 
 - name: shouldRunTestsBefore
-  displayName: Run Tests Before?
+  displayName: Run Tests (Before)?
   type: boolean
   default: false
+
+- name: runTestsBeforeAsConcurrent
+  displayName: Concurrent Tests (Before)?
+  type: boolean
+  default: true
 
 - name: shouldRunTestsAfter
-  displayName: Run Tests After?
+  displayName: Run Tests (After)?
   type: boolean
   default: false
 
-- name: concurrentTestsExecution
-  displayName: Parallel Tests Mode?
+- name: runTestsAfterAsConcurrent
+  displayName: Concurrent Tests (After)?
   type: boolean
-  default: false
+  default: true
 
 - name: shouldGenerateTestsReport
   displayName: Generate Tests Report?
@@ -171,6 +186,8 @@ stages:
               - template: templates/createScratchOrg.yml
                 parameters:
                   configFile: ${{ parameters.scratchOrgConfigFile }}
+                  configFeatures: ${{ parameters.scratchOrgConfigFeatures }}
+                  configSettings: ${{ parameters.scratchOrgConfigSettings }}
                   durationInDays: ${{ parameters.scratchOrgDurationInDays }}
                   enableDebugMode: ${{ parameters.enableDebugMode }}
                 
@@ -188,7 +205,7 @@ stages:
                     targetOrgToken: ${{ parameters.targetOrgToken }}
                   ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
                     targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
-                  concurrentExecution: ${{ parameters.concurrentTestsExecution }}
+                  concurrentExecution: ${{ parameters.runTestsBeforeAsConcurrent }}
                   continueOnError: true
                   enableDebugMode: ${{ parameters.enableDebugMode }}
                 
@@ -212,7 +229,7 @@ stages:
               
             - ${{ if eq(parameters.shouldInstallThirdParties, true) }}:
               
-              - template: templates/installThirdParty.yml
+              - template: templates/installThirdParties.yml
                 parameters:
                   ${{ if contains(parameters.targetOrgUsername, '@') }}:
                     targetOrgUrl: ${{ parameters.targetOrgUrl }}
@@ -223,12 +240,10 @@ stages:
                     targetOrgToken: ${{ parameters.targetOrgToken }}
                   ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
                     targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
-                  versionId: ${{ parameters.fslPackageVersionId }}
-                  packageAlias: FSL
                   continueOnError: true
                   enableDebugMode: ${{ parameters.enableDebugMode }}
-                  
-            
+                
+              
             - template: templates/deployCode.yml
               parameters:
                 localizationDomain: ${{ parameters.localizationDomain }}
@@ -243,6 +258,7 @@ stages:
                   targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
                 deploymentMode: ${{ parameters.deploymentMode }}
                 actionPhase: ${{ parameters.actionPhase }}
+                scriptParams: ${{ parameters.scriptParams }}
                 enableDebugMode: ${{ parameters.enableDebugMode }}
                 
                 
@@ -275,7 +291,7 @@ stages:
                     targetOrgToken: ${{ parameters.targetOrgToken }}
                   ${{ if not( eq(parameters.targetOrgAuthFileName, 'none') ) }}:
                     targetOrgAuthFilePath: $(targetOrgAuthFile.secureFilePath)
-                  concurrentExecution: ${{ parameters.concurrentTestsExecution }}
+                  concurrentExecution: ${{ parameters.runTestsAfterAsConcurrent }}
                   continueOnError: false
                   enableDebugMode: ${{ parameters.enableDebugMode }}
                 

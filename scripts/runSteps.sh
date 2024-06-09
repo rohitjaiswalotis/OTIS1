@@ -8,13 +8,18 @@ set -e
 
 JSFORCE_RUNNER_VERSION="${JSFORCERUNNERVERSION:-latest}";
 POSTMAN_RUNNER_VERSION="${POSTMANRUNNERVERSION:-latest}";
+SFDMU_PLUGIN_VERSION="${SFDMUVERSION:-latest}";
 
-SF_API_VERSION="${SFAPIVERSION:-59.0}";
+SF_API_VERSION="${SFAPIVERSION:-60.0}";
 
 STEP_INDEX_REGEX="[0-9][0-9a-zA-Z_#@:.]*";
 
-STEP_MAX_RETRY_ATTEMPTS=2;
-STEP_RETRY_DELAY=10;
+STEP_MAX_RETRY_ATTEMPTS=${SCRIPTSTEPMAXRETRYATTEMPTS:-2};
+STEP_RETRY_DELAY=${SCRIPTSTEPRETRYDELAY:-10};
+
+DEBUG_MODE=${DEBUG_MODE:-0}
+
+STEPS_RUNNER_UTIL=$0;
 
 
 ########################## FUNCTIONS (BEGIN)
@@ -222,6 +227,12 @@ while getopts ":d:a:w:u:p:r:n:o:x:e:t:l:c:h" opt; do
 done
 
 
+if [[ ! -d "${PARAM_STEPS_DIR}" ]]; then
+    echo "WARNING: Steps directory '${PARAM_STEPS_DIR}' does not exist!"
+    exit 0;
+fi
+
+
 # setting defaults
 PARAM_STEP_TO_RUN="${PARAM_STEP_TO_RUN:-*}"
 PARAM_SCRIPT_SANDBOX_DIR="${PARAM_SCRIPT_SANDBOX_DIR:-$(mktemp -d)}"
@@ -252,7 +263,7 @@ fi
 
 if [[ ${PARAM_SCRIPT_PARAMS_FILE:+1} && ! "${PARAM_SCRIPT_PARAMS_FILE,,}" =~ ^none$ && -f "$PARAM_SCRIPT_PARAMS_FILE" ]]; then
     
-    # define scrip params properties (if any) as variables
+    # define script params properties (if any) as variables
     echo "Defining script params properties variables..."
     defineVarsFromProps "$PARAM_SCRIPT_PARAMS_FILE"
     
@@ -283,6 +294,17 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
         continue;
     fi
     
+    # parse step type and check if it is not disabled
+    if [[ "${file,,}" =~ ^.*/${STEP_INDEX_REGEX}-([^-]+)(-.*)?$ ]]; then 
+        STEP_TYPE="${BASH_REMATCH[1]}";
+        echo "Current step type: $STEP_TYPE";
+        if [[ ${PARAM_DISABLED_STEP_TYPES:+1} && ",${PARAM_DISABLED_STEP_TYPES^^}," =~ .*\,${STEP_TYPE^^}\,.* ]]; then
+            echo "Skipped current step since '${STEP_TYPE}' type is disabled."
+            continue;
+        fi
+    fi
+    
+    
     echo "Current step structure:"
     ls -la $file
     
@@ -302,6 +324,9 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
     sfApexAfterEachScriptName="afterEach.cls"
     
     sfTargetOrg=""
+	
+	stepRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS
+	stepRetryDelay=$STEP_RETRY_DELAY
     
     
     if [[ -f "${stepProperties}" ]]; then
@@ -318,6 +343,10 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
         sfApexAfterEachScriptName=$(getProperty $stepProperties "sf.apex.afterEach" "$sfApexAfterEachScriptName")
         
         sfTargetOrg=$(getProperty $stepProperties "sf.targetOrg" "$sfTargetOrg")
+		
+		stepRetryAttempts=$(getProperty $stepProperties "retry.attempts" "$stepRetryAttempts")
+		stepRetryDelay=$(getProperty $stepProperties "retry.delay" "$stepRetryDelay")
+		
         
         # handle 'exit'
         if [[ ${stepExit:+1} ]]; then
@@ -354,8 +383,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 		
 		echo "Running step init script (bash)..."
 		
-		bashStepInitMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-		bashStepInitRetryDelay=$STEP_RETRY_DELAY;
+		bashStepInitMaxRetryAttempts=$stepRetryAttempts;
+		bashStepInitRetryDelay=$stepRetryDelay;
 		bashStepInitResultCode=0;
 		bashStepInitRetryCounter=0;
 		
@@ -408,8 +437,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 		
 		echo "Running step init script (groovy)..."
 		
-		groovyStepInitMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-		groovyStepInitRetryDelay=$STEP_RETRY_DELAY;
+		groovyStepInitMaxRetryAttempts=$stepRetryAttempts;
+		groovyStepInitRetryDelay=$stepRetryDelay;
 		groovyStepInitResultCode=0;
 		groovyStepInitRetryCounter=0;
 		
@@ -456,7 +485,20 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 		
 	fi
 	
-    
+	
+    # handle collection of nested steps
+	if [[ -d "$file" && "${file,,}" =~ ^.*/${STEP_INDEX_REGEX}-(collection|cookbook|script|recipes|steps)(-[^/]*)?$ ]]; then
+		
+		echo "Step has been identified as collection of nested steps: $file"
+		
+		bash $STEPS_RUNNER_UTIL "$@" -d "$file" -o "$file" -w "$PARAM_WORKING_DIR"
+		
+		echo "Finished processing collection of nested steps."
+		continue;
+		
+	fi
+	
+	
     # replace dynamic variables (if any) inside artifacts files
     resolveDynamicEnvVarsInFiles "${file}"
     
@@ -477,8 +519,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
     # grab org auth info: access token and instance url
     if [[ ${PARAM_ORG_ALIAS:+1} ]]; then
         
-		orgAuthInfoMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-		orgAuthInfoRetryDelay=$STEP_RETRY_DELAY;
+		orgAuthInfoMaxRetryAttempts=$stepRetryAttempts;
+		orgAuthInfoRetryDelay=$stepRetryDelay;
 		orgAuthInfoRetryCounter=0;
 		
 		# backup current error switcher value and disable exit on error
@@ -532,8 +574,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
     # grab optinal org2 auth info: access token and instance url
     if [[ ${PARAM_ORG2_ALIAS:+1} ]]; then
         
-		org2AuthInfoMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-		org2AuthInfoRetryDelay=$STEP_RETRY_DELAY;
+		org2AuthInfoMaxRetryAttempts=$stepRetryAttempts;
+		org2AuthInfoRetryDelay=$stepRetryDelay;
 		org2AuthInfoRetryCounter=0;
 		
 		# backup current error switcher value and disable exit on error
@@ -589,12 +631,12 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
     
     
     # handle metadata deployment step (classic vs source)
-    if [[ ${sfTargetOrgAlias:+1} && -d "$file" && "${file,,}" =~ ^.*/${STEP_INDEX_REGEX}-meta(-.*)?$ ]]; then
+    if [[ ${sfTargetOrgAlias:+1} && -d "$file" && "${file,,}" =~ ^.*/${STEP_INDEX_REGEX}-meta(data)?(-.*)?$ ]]; then
         
         echo "Step has been identified as metadata deployment."
         
-		metaStepMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-		metaStepRetryDelay=$STEP_RETRY_DELAY;
+		metaStepMaxRetryAttempts=$stepRetryAttempts;
+		metaStepRetryDelay=$stepRetryDelay;
 		metaStepResultCode=0;
 		metaStepRetryCounter=0;
 		
@@ -602,11 +644,11 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 		[ -o errexit ] && metaStep_backup_errexit='set -e' || metaStep_backup_errexit='set +e'; set +e
 		
 		
-		while true; do 		
+		while true; do 	
 			
 			if [[ -f "${file}/package.xml" ]]; then
 				echo "Deploying metadata in classic/old format (package.xml has been detected inside folder)..."
-				sf force mdapi deploy --deploydir="$file" --target-org="$sfTargetOrgAlias" --ignorewarnings --api-version="$SF_API_VERSION" -w 1000 --verbose; metaStepResultCode=$?;
+				sf force mdapi deploy --deploydir="$file" --target-org="$sfTargetOrgAlias" --ignorewarnings --purgeondelete --api-version="$SF_API_VERSION" -w 1000 --verbose; metaStepResultCode=$?;
 			else
 				echo "Deploying metadata in source format..."
 				sf force source deploy --sourcepath="$file" --target-org="$sfTargetOrgAlias" --ignorewarnings --api-version="$SF_API_VERSION" -w 1000 --verbose; metaStepResultCode=$?;
@@ -674,14 +716,17 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 		# backup current error switcher value and disable exit on error
 		[ -o errexit ] && apexStep_backup_errexit='set -e' || apexStep_backup_errexit='set +e'; set +e
         
+		
         for apexFile in ${file}/*; do
             
             if [[ -f "$apexFile" && "${apexFile}" =~ ^.*/[^/.][^/]*$ && "${apexFile}" != "${beforeEachApexFile}" && "${apexFile}" != "${afterEachApexFile}" ]]; then
                 
-				apexStepMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-				apexStepRetryDelay=$STEP_RETRY_DELAY;
+				apexStepMaxRetryAttempts=$stepRetryAttempts;
+				apexStepRetryDelay=$stepRetryDelay;
 				apexStepResultCode=0;
 				apexStepRetryCounter=0;
+				
+				apexFileName="$(basename -- "$apexFile")";
 				
 				while true; do 
 					
@@ -690,6 +735,17 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 					
 					# success
 					if [[ $apexStepResultCode -eq 0 ]]; then
+						
+						# grab return values from execution logs (if any)
+						echo "$APEX_EXEC_RESPONSE" | 
+							jq -r ".result.logs // empty" | 
+							grep '|USER_DEBUG|' | 
+							grep -i 'ApexScriptReturnValue:' | 
+							grep -oi "\{.*\}" | 
+							jq -r '. | to_entries | .[] | .key + "=" + (.value | @sh)' >> ${stepReturnProperties}
+						
+						echo "Apex script '$apexFileName' has been successfully executed."
+						
 						break;
 						
 					# apex exec fail
@@ -701,12 +757,15 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 						if [[ "${APEX_EXEC_EXCEPTION_MESSAGE,,}" =~ ^apexscriptreturnvalueexception:.*$ ]]; then
 							
 							echo "$APEX_EXEC_EXCEPTION_MESSAGE" | grep -oi "\{.*\}" | jq -r '. | to_entries | .[] | .key + "=" + (.value | @sh)' >> ${stepReturnProperties}
+							
+							echo "Apex script '$apexFileName' has been successfully executed."
+							
 							break;
 							
 						# actual exception
 						else
 							
-							echo "ERROR: Apex script execution failure - ${apexFile}!"
+							echo "ERROR: Apex script '$apexFileName' execution failure!"
 							echo "$APEX_EXEC_RESPONSE" | jq .
 							
 							# ignore failure
@@ -719,7 +778,7 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 							if [[ $apexStepRetryCounter -lt $apexStepMaxRetryAttempts ]]; then
 								
 								apexStepRetryCounter=$(( $apexStepRetryCounter + 1 ));
-								echo "Retrying apex script execution ($apexFile) after failure in ${apexStepRetryDelay} seconds (attempt ${apexStepRetryCounter}/${apexStepMaxRetryAttempts})..."
+								echo "Retrying apex script execution ($apexFileName) after failure in ${apexStepRetryDelay} seconds (attempt ${apexStepRetryCounter}/${apexStepMaxRetryAttempts})..."
 								sleep $apexStepRetryDelay;
 								
 							# run out of retry attempts: exit with error code
@@ -745,7 +804,7 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
         
         
     # handle bash execution step: run all non-hidden top level files inside directory
-    elif [[ -d "$file" && "${file,,}" =~ ^.*/${STEP_INDEX_REGEX}-shell(-.*)?$ ]]; then
+    elif [[ -d "$file" && "${file,,}" =~ ^.*/${STEP_INDEX_REGEX}-(shell|bash)(-.*)?$ ]]; then
         
         echo "Step has been identified as shell execution."
         echo "Iterating over shell scripts available..."
@@ -757,8 +816,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
             
             if [[ -f "$bashFile" && "${bashFile}" =~ ^.*/[^/.][^/]*$ ]]; then 
 				
-				bashStepMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-				bashStepRetryDelay=$STEP_RETRY_DELAY;
+				bashStepMaxRetryAttempts=$stepRetryAttempts;
+				bashStepRetryDelay=$stepRetryDelay;
 				bashStepResultCode=0;
 				bashStepRetryCounter=0;
 				
@@ -812,7 +871,7 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
         
         
     # handle node execution step: run all non-hidden top level js files inside directory
-    elif [[ -d "$file" && "${file,,}" =~ ^.*/${STEP_INDEX_REGEX}-node(-.*)?$ ]]; then
+    elif [[ -d "$file" && "${file,,}" =~ ^.*/${STEP_INDEX_REGEX}-(node|puppeteer)(-.*)?$ ]]; then
         
         echo "Step has been identified as nodejs execution."
         
@@ -831,8 +890,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 			
             if [[ -f "$jsFile" && "${jsFile}" =~ ^[^.].*$ ]]; then 
 				
-				nodeStepMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-				nodeStepRetryDelay=$STEP_RETRY_DELAY;
+				nodeStepMaxRetryAttempts=$stepRetryAttempts;
+				nodeStepRetryDelay=$stepRetryDelay;
 				nodeStepResultCode=0;
 				nodeStepRetryCounter=0;
 				
@@ -907,8 +966,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 			
             if [[ -f "$jsFile" && "${jsFile}" =~ ^[^.].*$ ]]; then 
 				
-				jsforceStepMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-				jsforceStepRetryDelay=$STEP_RETRY_DELAY;
+				jsforceStepMaxRetryAttempts=$stepRetryAttempts;
+				jsforceStepRetryDelay=$stepRetryDelay;
 				jsforceStepResultCode=0;
 				jsforceStepRetryCounter=0;
 				
@@ -983,8 +1042,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 			
             if [[ -f "$pyFile" && "${pyFile}" =~ ^[^.].*$ ]]; then 
 				
-				pythonStepMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-				pythonStepRetryDelay=$STEP_RETRY_DELAY;
+				pythonStepMaxRetryAttempts=$stepRetryAttempts;
+				pythonStepRetryDelay=$stepRetryDelay;
 				pythonStepResultCode=0;
 				pythonStepRetryCounter=0;
 				
@@ -1103,8 +1162,15 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 		#npx playwright install --force chrome --with-deps
 		npx playwright install
 		
+		# evaluate debug mode
+		if [[ $DEBUG_MODE -ge 1 ]]; then
+			PLAYWRIGHT_DEBUG_MODE="pw:api"
+		else
+			PLAYWRIGHT_DEBUG_MODE=""
+		fi
+	    
 		# run all tests
-		CI=true PLAYWRIGHT_ORG_ALIAS="$PARAM_ORG_ALIAS" PLAYWRIGHT_ACCESS_TOKEN="$sfAccessToken" PLAYWRIGHT_INSTANCE_URL="$sfInstanceUrl" PLAYWRIGHT_ORG2_ALIAS="$PARAM_ORG2_ALIAS" PLAYWRIGHT_ACCESS_TOKEN2="$sfAccessToken2" PLAYWRIGHT_INSTANCE_URL2="$sfInstanceUrl2" PLAYWRIGHT_WORKING_DIR="$PARAM_WORKING_DIR" npx playwright test
+		DEBUG=$PLAYWRIGHT_DEBUG_MODE CI=true PLAYWRIGHT_ORG_ALIAS="$PARAM_ORG_ALIAS" PLAYWRIGHT_ACCESS_TOKEN="$sfAccessToken" PLAYWRIGHT_INSTANCE_URL="$sfInstanceUrl" PLAYWRIGHT_ORG2_ALIAS="$PARAM_ORG2_ALIAS" PLAYWRIGHT_ACCESS_TOKEN2="$sfAccessToken2" PLAYWRIGHT_INSTANCE_URL2="$sfInstanceUrl2" PLAYWRIGHT_WORKING_DIR="$PARAM_WORKING_DIR" npx playwright test
         
         popd
         
@@ -1132,8 +1198,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
                     continue;
                 fi
 				
-				dataStepMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-				dataStepRetryDelay=$STEP_RETRY_DELAY;
+				dataStepMaxRetryAttempts=$stepRetryAttempts;
+				dataStepRetryDelay=$stepRetryDelay;
 				dataStepResultCode=0;
 				dataStepRetryCounter=0;
 				
@@ -1185,6 +1251,108 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 		# restore 'exit on error' flag state
 		eval "$dataStep_backup_errexit"
         
+		
+	# handle data SFDMU execution step: expected content of the directory to be in format acceptable by SFDMU pugin, i.e. with export.json file and bunch of csvs inside
+    elif [[ ${sfTargetOrgAlias:+1} && -d "$file" && "${file,,}" =~ ^.*/${STEP_INDEX_REGEX}-datasfdmu(-.*)?$ ]]; then
+		
+		echo "Step has been identified as SFDMU data ingestion."
+		
+		pushd $file
+		
+		echo "Installing sfdmu plugin if no originally installed version is available ..."
+		(sf plugins | grep -i "sfdmu") || (echo "y" | sf plugins install sfdmu@$SFDMU_PLUGIN_VERSION)
+		
+		dataStepMaxRetryAttempts=1;
+		dataStepRetryDelay=30;
+		dataStepResultCode=0;
+		dataStepRetryCounter=0;
+		
+		# backup current error switcher value and disable exit on error
+		[ -o errexit ] && dataStep_backup_errexit='set -e' || dataStep_backup_errexit='set +e'; set +e
+		
+		
+		while true; do 	
+			
+			sf sfdmu:run --sourceusername="csvfile" --targetusername="$sfTargetOrgAlias" --apiversion="$SF_API_VERSION" --noprompt --canmodify --logfullquery --verbose; dataStepResultCode=$?;
+			
+			
+			# print warning/error files (if any)
+			if [[ -s "CSVIssuesReport.csv" ]]; then
+				echo "Detected CSVIssuesReport.csv file:"
+				cat CSVIssuesReport.csv
+			fi
+			
+			if [[ -s "MissingParentRecordsReport.csv" ]]; then
+				echo "Detected MissingParentRecordsReport.csv file:"
+				cat MissingParentRecordsReport.csv
+			fi
+			
+			
+			# success
+			if [[ $dataStepResultCode -eq 0 ]]; then
+				break;
+				
+			# failure
+			else
+				
+				echo "ERROR: Data SFDMU load failure!"
+				
+				# ignore failure
+				if [[ "${stepFailureIgnore,,}" =~ ^true$ ]]; then
+					echo "Failure has been ignored."
+					break;
+				fi
+				
+				
+				# print result records
+				#if [[ -d "target" && $DEBUG_MODE -ge 1 ]]; then
+				if [[ -d "target" ]]; then
+					find ./target -type f -name "*.csv" | xargs tail -n +1
+				fi
+		
+				# print logs in debug mode
+				if [[ -d "logs" && $DEBUG_MODE -ge 1 ]]; then
+					cat logs/*.log
+				fi
+				
+				
+				# retry if not run out of attempts
+				if [[ $dataStepRetryCounter -lt $dataStepMaxRetryAttempts ]]; then
+					
+					dataStepRetryCounter=$(( $dataStepRetryCounter + 1 ));
+					echo "Retrying data SFDMU load after failure in ${dataStepRetryDelay} seconds (attempt ${dataStepRetryCounter}/${dataStepMaxRetryAttempts})..."
+					sleep $dataStepRetryDelay;
+					
+				# run out of retry attempts: exit with error code
+				else
+					
+					echo "ERROR: Run out of retry attempts (max=${dataStepMaxRetryAttempts})"
+					exit $dataStepResultCode;
+					
+				fi
+				
+			fi
+			
+		done
+		
+		
+		# print result records
+		#if [[ -d "target" && $DEBUG_MODE -ge 1 ]]; then
+		if [[ -d "target" ]]; then
+			find ./target -type f -name "*.csv" | xargs tail -n +1
+		fi
+		
+		# print logs in debug mode
+		if [[ -d "logs" && $DEBUG_MODE -ge 1 ]]; then
+			cat logs/*.log
+		fi
+		
+		
+		# restore 'exit on error' flag state
+		eval "$dataStep_backup_errexit"
+		
+		popd
+		
         
     # handle groovy execution step: run all non-hidden top level groovy files inside directory
     elif [[ -d "$file" && "${file,,}" =~ ^.*/${STEP_INDEX_REGEX}-groovy(-.*)?$ ]]; then
@@ -1204,8 +1372,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 			
             if [[ -f "$groovyFile" && "${groovyFile}" =~ ^[^.].*$ ]]; then 
 				
-				groovyStepMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-				groovyStepRetryDelay=$STEP_RETRY_DELAY;
+				groovyStepMaxRetryAttempts=$stepRetryAttempts;
+				groovyStepRetryDelay=$stepRetryDelay;
 				groovyStepResultCode=0;
 				groovyStepRetryCounter=0;
 				
@@ -1277,8 +1445,8 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 			
             if [[ -f "$antFile" && "${antFile}" =~ ^[^.].*$ ]]; then 
 				
-				antStepMaxRetryAttempts=$STEP_MAX_RETRY_ATTEMPTS;
-				antStepRetryDelay=$STEP_RETRY_DELAY;
+				antStepMaxRetryAttempts=$stepRetryAttempts;
+				antStepRetryDelay=$stepRetryDelay;
 				antStepResultCode=0;
 				antStepRetryCounter=0;
 				
@@ -1378,7 +1546,7 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
     
     
     # define variables from return file produced by step processing (if any)
-    if [[ -f "$stepReturnProperties" ]]; then
+    if [[ -s "$stepReturnProperties" ]]; then
         echo "Defining variables from return file..."
         defineVarsFromProps "$stepReturnProperties"
     fi

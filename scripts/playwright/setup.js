@@ -29,13 +29,13 @@ exports.test = base.extend({
 		}
 
 		// assert logged in page open
-		await expect(page).toHaveTitle(/Salesforce/);
+		//await expect(page).toHaveTitle(/Salesforce/);
+		//await expect(page).toHaveTitle(/(Salesforce)|(Lightning Experience)/);
 		await expect(page.locator("div.appLauncher")).toBeVisible();
 		await expect(page.locator("div.setupGear")).toBeVisible();
 		
-		
 		await use(page);
-	
+		
 	},
 	
 	

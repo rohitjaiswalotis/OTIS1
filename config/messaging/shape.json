@@ -56,10 +56,12 @@
 		"fieldServiceSettings": { 
 			"fieldServiceOrgPref": true,
 			"enableWorkOrders": true,
-			"serviceAppointmentsDueDateOffsetOrgValue": 7
+			"serviceAppointmentsDueDateOffsetOrgValue": 7,
+			"enableDocumentBuilder": true
 		},
 		
 		"accountSettings": {
+			"enableAccountHistoryTracking": true,
 			"enableRelateContactToMultipleAccounts": true
 		},
 		

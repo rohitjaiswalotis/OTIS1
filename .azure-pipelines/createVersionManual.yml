@@ -17,6 +17,21 @@ parameters:
   type: string
   default: default
 
+- name: versionName
+  displayName: Package version name
+  type: string
+  default: none
+
+- name: versionNumber
+  displayName: Package version number
+  type: string
+  default: none
+
+- name: versionDescription
+  displayName: Package version description
+  type: string
+  default: none
+
 - name: skipValidation
   displayName: Skip validation for package?
   type: boolean
@@ -73,8 +88,14 @@ stages:
             
             - template: templates/createVersion.yml
               parameters:
-                envProfile: ${{ parameters.envProfile }}
+                ${{ if and(eq(parameters.envProfile, 'default'), eq(variables['Build.SourceBranchName'], 'master')) }}:
+                  envProfile: 'release'
+                ${{ else }}:
+                  envProfile: ${{ parameters.envProfile }}
                 skipValidation: ${{ parameters.skipValidation }}
+                versionName: ${{ parameters.versionName }}
+                versionNumber: ${{ parameters.versionNumber }}
+                versionDescription: ${{ parameters.versionDescription }}
                 ${{ if not( eq(parameters.branchMarker, 'none') ) }}:
                   branchMarker: ${{ parameters.branchMarker }}
                 createTag: ${{ parameters.createTag }}

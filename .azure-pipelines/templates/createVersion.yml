@@ -6,6 +6,21 @@ parameters:
   type: string
   default: default
 
+- name: versionName
+  displayName: Package version name
+  type: string
+  default: none
+
+- name: versionNumber
+  displayName: Package version number
+  type: string
+  default: none
+
+- name: versionDescription
+  displayName: Package version description
+  type: string
+  default: none
+
 - name: skipValidation
   displayName: Skip validation for package?
   type: boolean
@@ -22,7 +37,7 @@ parameters:
   default: true
 
 - name: numberOfRetries
-  displayName: Number of Retries?
+  displayName: Number of Retries
   type: number
   default: 0
 
@@ -50,7 +65,42 @@ steps:
         # enable "debug" mode
         if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
           set -x
+          export DEBUG_MODE=1
         fi
+        
+        
+        # include common utils
+        chmod +x $(commonUtils)
+        source $(commonUtils)
+        
+        # include config props
+        chmod +x $(configProps)
+        source $(configProps)
+        
+        
+        # define notification icons
+        if [[ ${BUILD_REASON,,} =~ ^schedule$ ]] ; then
+          NOTIFICATION_ICON="&#x1F4E6; &#x231A;"
+        elif [[ ${BUILD_REASON,,} =~ ^manual$ ]] ; then
+          NOTIFICATION_ICON="&#x1F4E6; &#x270B;"
+        else
+          NOTIFICATION_ICON="&#x1F4E6;"
+        fi
+        
+        
+        FS_PACKAGE_LATEST_VERSION_ON_BRANCH_TAG_NAME="$(Build.SourceBranchName)-latestPackageVersion"
+        FS_PACKAGE_PREV_VERSION_ON_BRANCH_TAG_NAME="$(Build.SourceBranchName)-prevPackageVersion"
+        FS_PACKAGE_LATEST_VALID_VERSION_ON_BRANCH_TAG_NAME="$(Build.SourceBranchName)-latestPackageVersionValid"
+        FS_PACKAGE_PREV_VALID_VERSION_ON_BRANCH_TAG_NAME="$(Build.SourceBranchName)-prevPackageVersionValid"
+        
+        # eavaluate base tag for commmit messages diff (depending on validation mode)
+        if [[ "${{ parameters.skipValidation }}" =~ ^[Tt]rue$ ]] ; then
+          FS_PACKAGE_COMMIT_MESSAGES_BASE_TAG_NAME="$FS_PACKAGE_LATEST_VERSION_ON_BRANCH_TAG_NAME";
+        else
+          FS_PACKAGE_COMMIT_MESSAGES_BASE_TAG_NAME="$FS_PACKAGE_LATEST_VALID_VERSION_ON_BRANCH_TAG_NAME";
+        fi
+        
+        FS_PACKAGE_MERGED_COMMMIT_MESSAGES=$(git log -100 --merges --date-order --pretty="format:%ai (%an) %s" ${FS_PACKAGE_COMMIT_MESSAGES_BASE_TAG_NAME}..HEAD || true);
         
         
         echo "Applying transformation to project config..."
@@ -79,10 +129,70 @@ steps:
         cat $PROJECT_CONFIG_FILE
         
         
+        if [[ ! -f "$PROJECT_CONFIG_FILE" ]]; then
+          echo "Cannot find project config file '$PROJECT_CONFIG_FILE'"
+          exit 1
+        fi
+        
+        
+        echo "Parsing project config file '$PROJECT_CONFIG_FILE'..."
+        
+        DX_PACKAGE_CONFIG=$(cat $PROJECT_CONFIG_FILE | jq -c ".packageDirectories[] | select(.package == \"$(fsPackageName)\")");
+        
+        
+        if [[ ! ${DX_PACKAGE_CONFIG:+1} ]]; then 
+          echo "Cannot find package '$(fsPackageName)' in project config file '$PROJECT_CONFIG_FILE'"
+          exit 1
+        fi
+        
+        
+        # parse package version name from project config (if not provided)
+        if [[ "${{parameters.versionName}}" =~ ^none$ ]] ; then
+          PACKAGE_VERSION_NAME=$(echo $DX_PACKAGE_CONFIG | jq -r '.versionName // empty');
+          echo "Parsed package version name from config: $PACKAGE_VERSION_NAME"
+        else
+          PACKAGE_VERSION_NAME="${{parameters.versionName}}"
+        fi
+        
+        # parse package version number from project config (if not provided)
+        if [[ "${{parameters.versionNumber}}" =~ ^none$ ]] ; then
+          PACKAGE_VERSION_NUMBER=$(echo $DX_PACKAGE_CONFIG | jq -r '.versionNumber // empty');
+          echo "Parsed package version number from config: $PACKAGE_VERSION_NUMBER"
+        else
+          PACKAGE_VERSION_NUMBER="${{parameters.versionNumber}}"
+        fi
+        
+        # parse package version description from project config (if not provided)
+        if [[ "${{parameters.versionDescription}}" =~ ^none$ ]] ; then
+          PACKAGE_VERSION_DESCRIPTION=$(echo $DX_PACKAGE_CONFIG | jq -r '.versionDescription // empty');
+          echo "Parsed package version description from config: $PACKAGE_VERSION_DESCRIPTION"
+        else
+          PACKAGE_VERSION_DESCRIPTION="${{parameters.versionDescription}}"
+        fi
+        
+        
         echo "Applying transformation to source code..."
         
         TESTS_METADATA_DIR="$(packageBaseDir)-tests-meta/main"
-        bash $(stepsRunnerUtil) -d "$TESTS_METADATA_DIR" -o "$TESTS_METADATA_DIR"
+        bash $(stepsRunnerUtil) -d "$TESTS_METADATA_DIR" -o "$TESTS_METADATA_DIR"; DX_STATUS_CODE=$?;
+        
+        if [[ "$DX_STATUS_CODE" == "0" ]]; then
+          
+          PACKAGE_BEFORE_DIR="$(packageBaseDir)-unpackaged/package/before"
+          
+          if [[ -d "${PACKAGE_BEFORE_DIR}" ]]; then
+            bash $(stepsRunnerUtil) -d "$PACKAGE_BEFORE_DIR" -w "$(pwd)"; DX_STATUS_CODE=$?;
+          else
+            echo "WARNING: No '$PACKAGE_BEFORE_DIR' detected to run before package version creation"
+          fi
+          
+        fi
+        
+        # early exit - error when applying transformation to source code
+        if [[ "$DX_STATUS_CODE" != "0" ]]; then
+          echo "Error when applying transformation to source code!"
+          exit 1
+        fi
         
         
         set -e
@@ -95,7 +205,7 @@ steps:
         
         DX_STATUS_CODE=$(sf org login jwt --client-id $(devHubClientId) --jwt-key-file $(devHubPrivateKey.secureFilePath) --username $(devHubUsername) -r $(devHubUrl) -a devHub --json | jq .status);
         
-        # early exit - error when autorizing to dev hub
+        # early exit - error when authorizing to dev hub
         if [[ "$DX_STATUS_CODE" != "0" ]]; then
           echo "Cannot log in to dev hub as '$(devHubUsername)'"
           exit 1
@@ -121,7 +231,7 @@ steps:
         fi
         
         
-        DX_PACKAGE_VERSION_CREATE_RESPONSE=$(sf package version create $PACKAGE_VALIDATION_MODE --package "$(fsPackageName)" -x --wait 600 -v devHub --branch="$PACKAGE_BRANCH_MARKER" --tag="$(Build.SourceVersion)" --verbose --json -r);
+        DX_PACKAGE_VERSION_CREATE_RESPONSE=$(sf package version create $PACKAGE_VALIDATION_MODE --package "$(fsPackageName)" --version-name="$PACKAGE_VERSION_NAME" --version-number="$PACKAGE_VERSION_NUMBER" --version-description="$PACKAGE_VERSION_DESCRIPTION" -x --wait 600 -v devHub --branch="$PACKAGE_BRANCH_MARKER" --tag="$(Build.SourceVersion)" --verbose --json -r);
         
         echo "$DX_PACKAGE_VERSION_CREATE_RESPONSE" | jq .
         
@@ -143,8 +253,21 @@ steps:
         
         # early exit: error on package version creation
         if [[ "$DX_STATUS_CODE" != "0" ]]; then
+          
           echo "Error when creating '$(fsPackageName)' package version!"
+          
+          DX_ERROR_MESSAGE=$(echo "$DX_PACKAGE_VERSION_CREATE_RESPONSE" | jq -r ".message // empty");
+          
+          if [[ ${DX_ERROR_MESSAGE:+1} ]] ; then
+            echo "$DX_ERROR_MESSAGE"
+          fi
+          
+          DX_ERROR_MESSAGE_ESCAPED=$(escapeJson "$DX_ERROR_MESSAGE");
+          
+          curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; '"$NOTIFICATION_ICON"' **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version creation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)! <pre>'"${DX_ERROR_MESSAGE_ESCAPED:-unknown error}"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifErrorUrls)
+          
           exit 1
+          
         fi
         
         
@@ -166,6 +289,25 @@ steps:
         echo "$FS_PACKAGE_VERSION_DETAILS" | jq .
         
         FS_PACKAGE_VERSION_NUMBER=$(echo "$FS_PACKAGE_VERSION_DETAILS" | jq -r '.result.Version // empty')
+        
+        
+        PACKAGE_AFTER_DIR="$(packageBaseDir)-unpackaged/package/after"
+        
+        if [[ -d "${PACKAGE_AFTER_DIR}" ]]; then
+          
+          bash $(stepsRunnerUtil) -d "$PACKAGE_AFTER_DIR" -w "$(pwd)"; DX_STATUS_CODE=$?;
+          
+          # early exit - error when executing after upload actions
+          if [[ "$DX_STATUS_CODE" != "0" ]]; then
+            echo "Error when executing after upload actions!"
+            exit 1
+          fi
+          
+        else
+          
+          echo "WARNING: No '$PACKAGE_AFTER_DIR' detected to run after package version creation!"
+          
+        fi
         
         
         # optionally create tag in repo with the following format: v{major}.{minor}.{build}.{patch}-{valid|skip}-{04txxxxxxxxxxxxxxx}-{branchName}
@@ -197,10 +339,28 @@ steps:
             echo "WARNING: Error when updating package version '$FS_PACKAGE_VERSION_NUMBER' ($FS_PACKAGE_VERSION_ID) with just created tag '$FS_PACKAGE_VERSION_TAG_NAME'!"
           fi
           
+          
           # create extra tag to track latest snapshot of the package version for current branch
-          FS_PACKAGE_LATEST_VERSION_ON_BRANCH_TAG_NAME="$(Build.SourceBranchName)-latestPackageVersion"
+          
+          # first copy latest tag into prev (suppressing errors if prev doesn't exit for first time run)
+          git push -f origin "$FS_PACKAGE_LATEST_VERSION_ON_BRANCH_TAG_NAME":refs/tags/"$FS_PACKAGE_PREV_VERSION_ON_BRANCH_TAG_NAME" || true
+          
+          # then re-create latest tag with current commit and version
           git tag -fa "$FS_PACKAGE_LATEST_VERSION_ON_BRANCH_TAG_NAME" -m "Tag Ref: $FS_PACKAGE_VERSION_TAG_NAME"
           git push -f origin "tags/$FS_PACKAGE_LATEST_VERSION_ON_BRANCH_TAG_NAME"
+          
+          
+          # create extra tag to track latest snapshot of the package version that passed validation for current branch
+          if [[ ! "${{ parameters.skipValidation }}" =~ ^[Tt]rue$ ]] ; then
+            
+            # first copy latest tag into prev (suppressing errors if prev doesn't exit for first time run)
+            git push -f origin "$FS_PACKAGE_LATEST_VALID_VERSION_ON_BRANCH_TAG_NAME":refs/tags/"$FS_PACKAGE_PREV_VALID_VERSION_ON_BRANCH_TAG_NAME" || true
+            
+            # then re-create latest tag with current commit and version
+            git tag -fa "$FS_PACKAGE_LATEST_VALID_VERSION_ON_BRANCH_TAG_NAME" -m "Tag Ref: $FS_PACKAGE_VERSION_TAG_NAME"
+            git push -f origin "tags/$FS_PACKAGE_LATEST_VALID_VERSION_ON_BRANCH_TAG_NAME"
+            
+          fi
           
         fi
         
@@ -217,7 +377,11 @@ steps:
         sfAccessToken=$(echo "$sfOrgDetails" | jq -r '.result.accessToken // empty');
         sfInstanceUrl=$(echo "$sfOrgDetails" | jq -r '.result.instanceUrl // empty');
         
-        npx -p sf-package-inspector@$(packageInspectorVersion) sf-package-inspect --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --command="list-deps" --versionId="$FS_PACKAGE_VERSION_ID" --apiVersion="$(sfApiVersion)"
+        FS_PACKAGE_VERSION_DEPENDENCIES=$(npx -p sf-package-inspector@$(packageInspectorVersion) sf-package-inspect --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --command="list-deps" --versionId="$FS_PACKAGE_VERSION_ID" --apiVersion="$(sfApiVersion)" || echo "unknown")
+        echo "$FS_PACKAGE_VERSION_DEPENDENCIES"
+        
+        # send success notif re package version creation
+        curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; '"$NOTIFICATION_ICON"' **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version creation `'"$FS_PACKAGE_VERSION_NUMBER"'` [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)!\n\n**Version Details:**<pre>'"$(escapeJson "${FS_PACKAGE_VERSION_DETAILS// /&nbsp;}")"'<\/pre> **Version Dependencies:**<pre>'"$(escapeJson "${FS_PACKAGE_VERSION_DEPENDENCIES// /&nbsp;}")"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifSuccessUrls)
         
         
   displayName: 'Create Field Service package version'

@@ -1,0 +1,115 @@
+
+parameters:
+
+- name: pathToScan
+  displayName: Directory with source code to scan
+  type: string
+  default: none
+
+- name: projectDir
+  displayName: Project root directory
+  type: string
+  default: "."
+
+- name: failureThreshold
+  displayName: Thresold failure level
+  type: string
+  default: none
+  values:
+  - none
+  - 1
+  - 2
+  - 3
+
+- name: reportFormat
+  displayName: Report Format
+  type: string
+  default: html
+  values:
+  - csv
+  - html
+  - json
+  - junit
+  - table
+  - xml
+
+- name: reportFileName
+  displayName: Report File Name
+  type: string
+  default: CodeAnalyzerScanResults_$(Build.BuildId)
+
+- name: active
+  displayName: Is Active?
+  type: string
+  default: true
+
+- name: continueOnError
+  displayName: Continue on Error?
+  type: boolean
+  default: false
+
+- name: enableDebugMode
+  displayName: Debug Mode?
+  type: boolean
+  default: false
+
+
+steps:
+
+- bash: |
+        
+        # disable exit on error
+        set +e
+        
+        # enable "debug" mode
+        if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
+          set -x
+          export DEBUG_SCAN_OPTION="--verbose --verbose-violations"
+        else
+          export DEBUG_SCAN_OPTION=""
+        fi
+        
+        
+        CODE_SCAN_ENABLED="${{ parameters.active }}";
+        CODE_SCAN_ENABLED="${CODE_SCAN_ENABLED,,}"
+        
+        # set variable to pass to next steps
+        echo "##vso[task.setvariable variable=CODE_SCAN_ENABLED]$CODE_SCAN_ENABLED"
+        
+        if [[ ! "${CODE_SCAN_ENABLED}" =~ ^true$ ]] ; then
+          echo "WARNING: Early Exit - Code Scan is disabled in current context!";
+          exit 0;
+        fi
+        
+        
+        # evaluate failure threshold option
+        if [[ "${{ parameters.failureThreshold }}" =~ ^none$ ]] ; then
+          FAILURE_THRESHOLD_SCAN_OPTION=""
+        else
+          FAILURE_THRESHOLD_SCAN_OPTION="--severity-threshold=${{parameters.failureThreshold}}"
+        fi
+        
+        
+        # install plugin
+        (sf plugins | grep -i "@salesforce/sfdx-scanner") || (echo "y" | sf plugins install @salesforce/sfdx-scanner@$(sfdxScannerVersion))
+        
+        # actually scan code and grab results into file
+        sf scanner run --projectdir="${{parameters.projectDir}}" --target="${{parameters.pathToScan}}" --format="${{parameters.reportFormat}}" --outfile="${{parameters.reportFileName}}.${{parameters.reportFormat}}" $FAILURE_THRESHOLD_SCAN_OPTION --normalize-severity $DEBUG_SCAN_OPTION; SCAN_RESULT_STATUS_CODE=$?;
+        
+        
+        exit $SCAN_RESULT_STATUS_CODE
+        
+  displayName: 'Scan with Code Analyzer'
+  continueOnError: ${{ parameters.continueOnError }}
+  timeoutInMinutes: 30
+
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(System.DefaultWorkingDirectory)/${{parameters.reportFileName}}.${{parameters.reportFormat}}'
+    artifact: '${{parameters.reportFileName}}.${{parameters.reportFormat}}'
+    publishLocation: 'pipeline'
+  displayName: 'Publish Code Analyzer Scanner Report as artifact'
+  condition: eq(variables['CODE_SCAN_ENABLED'], 'true')
+
+

@@ -1,0 +1,89 @@
+<project 
+	basedir="."
+	default="execute" 
+>
+	
+	<target name="execute">
+		
+		<echo message="Parsing incoming parameters directly inside ant target:" />
+		
+		<echo message="orgAlias: ${orgAlias}" />
+		<echo message="accessToken: ${accessToken}" />
+		<echo message="instanceUrl: ${instanceUrl}" />
+		<echo message="apiVersion: ${apiVersion}" />
+		
+		<echo message="orgAlias2: ${orgAlias2}" />
+		<echo message="accessToken2: ${accessToken2}" />
+		<echo message="instanceUrl2: ${instanceUrl2}" />
+		<echo message="apiVersion2: ${apiVersion2}" />
+		
+		<echo message="workingDir: ${workingDir}" />
+		
+		
+		<echo message="Running javascript snippet:" />
+		
+		<script language="javascript">
+			
+			<![CDATA[
+				
+				print("Parsing incoming parameters inside embedded javascript snippet:");
+				
+				print("orgAlias: " + project.getProperty('orgAlias'));
+				print("accessToken: " + project.getProperty('accessToken'));
+				print("instanceUrl: " + project.getProperty('instanceUrl'));
+				print("apiVersion: " + project.getProperty('apiVersion'));
+				
+				print("orgAlias2: " + project.getProperty('orgAlias2'));
+				print("accessToken2: " + project.getProperty('accessToken2'));
+				print("instanceUrl2: " + project.getProperty('instanceUrl2'));
+				print("apiVersion2: " + project.getProperty('apiVersion2'));
+				
+				print("workingDir: " + project.getProperty('workingDir'));
+				
+			]]>
+			
+		</script>
+		
+		
+		<echo message="Running groovy snippet:" />
+		
+		<taskdef name="groovy" classname="org.codehaus.groovy.ant.Groovy" classpath="${workingDir}/lib/groovy-all.jar"/>
+		
+		<groovy>
+			
+			<![CDATA[
+				
+				println "Parsing incoming parameters inside embedded groovy snippet:"
+				
+				println "orgAlias: ${project.properties['orgAlias']}"
+				println "accessToken: ${project.properties['accessToken']}"
+				println "instanceUrl: ${project.properties['instanceUrl']}"
+				println "apiVersion: ${project.properties['apiVersion']}"
+				
+				println "orgAlias2: ${project.properties['orgAlias2']}"
+				println "accessToken2: ${project.properties['accessToken2']}"
+				println "instanceUrl2: ${project.properties['instanceUrl2']}"
+				println "apiVersion2: ${project.properties['apiVersion2']}"
+				
+				println "workingDir: ${project.properties['workingDir']}"
+				
+			]]>
+			
+		</groovy>
+		
+	</target>
+	
+	
+	<!-- example re how to generate single jar file with all groovy jars in Windows system -->
+	<target name="generateAllGroovyJar">
+		
+		<property name="groovy.lib" value="c:/Program Files/groovy-4.0.12/lib" />
+		
+		<jar jarfile="groovy-all.jar">
+			<zipgroupfileset dir="${groovy.lib}" includes="*.jar" />
+		</jar>
+		
+	</target>
+	
+	
+</project>

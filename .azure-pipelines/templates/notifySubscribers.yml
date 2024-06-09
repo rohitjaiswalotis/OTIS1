@@ -5,6 +5,11 @@ parameters:
   displayName: JSON-array with subscribers, i.e. pipelines to be triggered
   type: string
 
+- name: active
+  displayName: Is Active?
+  type: string
+  default: true
+
 - name: enableDebugMode
   displayName: Debug Mode?
   type: boolean
@@ -21,8 +26,23 @@ steps:
         
         # enable "debug" mode
         if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
-          set -x
+            set -x
+            export DEBUG_MODE=1
         fi
+        
+        
+        # include common utils
+        chmod +x $(commonUtils)
+        source $(commonUtils)
+        
+        
+        SUBSCRIBERS_NOTIFICATION_ENABLED="${{ parameters.active }}";
+        
+        if [[ ! "${SUBSCRIBERS_NOTIFICATION_ENABLED,,}" =~ ^true$ ]] ; then
+            echo "WARNING: Early Exit - Subscription is disabled in current context!";
+            exit 0;
+        fi
+        
         
         SUBSCRIBERS_POOL='${{ parameters.subscribers }}';
         
@@ -73,6 +93,27 @@ steps:
                 continue;
             fi
             
+            
+            # check if subscriber should be notified based on condition to evaluate, e.g. '[[ ${BUILD_REASON,,} =~ ^schedule$ ]] && echo 1 || echo 0'
+            
+            SUBSCRIBER_CONDITION_EXPRESSION=$(echo $SUBSCRIBER_TO_NOTIFY | jq -r '.condition // empty')
+            
+            if [[ ${SUBSCRIBER_CONDITION_EXPRESSION:+1} ]]; then
+                
+                echo "Found subscriber condition to evaluate: ${SUBSCRIBER_CONDITION_EXPRESSION}"
+                
+                SUBSCRIBER_CONDITION_SHOULD_BE_EXECUTED="$(eval $SUBSCRIBER_CONDITION_EXPRESSION)";
+                
+                if [[ ${SUBSCRIBER_CONDITION_SHOULD_BE_EXECUTED:+1} && ( $SUBSCRIBER_CONDITION_SHOULD_BE_EXECUTED -eq 1 || ${SUBSCRIBER_CONDITION_SHOULD_BE_EXECUTED,,} =~ ^true$ ) ]]; then
+                    echo "Going to trigger current subscriber with pipeline '$SUBSCRIBER_PIPELINE_NAME' due to condition expression being evaluated as: ${SUBSCRIBER_CONDITION_SHOULD_BE_EXECUTED}"
+                else
+                    echo "Skipping current subscriber with pipeline '$SUBSCRIBER_PIPELINE_NAME' due to condition expression being evaluated as: ${SUBSCRIBER_CONDITION_SHOULD_BE_EXECUTED}!"
+                    continue;
+                fi
+                
+            fi
+            
+            
             # split pipeline name to separate folder
             subscriberPipelineFolder="$(echo $SUBSCRIBER_PIPELINE_NAME | cut -d "/" -f1)";
             subscriberPipelineName="$(echo $SUBSCRIBER_PIPELINE_NAME | cut -d "/" -f2)";
@@ -94,11 +135,15 @@ steps:
             fi
             
             
+            SUBSCRIBER_PIPELINE_TRIGGER_ERROR_FILE=$(mktemp);
+            
             # trigger subscriber pipeline (suppressing errors)
             set +e
-            SUBSCRIBER_PIPELINE_TRIGGER_RESPONSE=$(eval "az pipelines run --branch=\"$SUBSCRIBER_PIPELINE_BRANCH\" --name=\"$subscriberPipelineName\" $SUBSCRIBER_PIPELINE_FOLDER_PATH $SUBSCRIBER_PIPELINE_PARAMETERS_ARG"); SUBSCRIBER_PIPELINE_TRIGGER_CODE=$?;
+            SUBSCRIBER_PIPELINE_TRIGGER_RESPONSE=$(eval "az pipelines run --branch=\"$SUBSCRIBER_PIPELINE_BRANCH\" --name=\"$subscriberPipelineName\" $SUBSCRIBER_PIPELINE_FOLDER_PATH $SUBSCRIBER_PIPELINE_PARAMETERS_ARG 2> $SUBSCRIBER_PIPELINE_TRIGGER_ERROR_FILE"); SUBSCRIBER_PIPELINE_TRIGGER_CODE=$?;
             set -e
-            echo $SUBSCRIBER_PIPELINE_TRIGGER_RESPONSE
+            
+            echo "$SUBSCRIBER_PIPELINE_TRIGGER_RESPONSE"
+            
             
             # grab pipeline run id from response
             SUBSCRIBER_PIPELINE_RUN_ID=$(echo $SUBSCRIBER_PIPELINE_TRIGGER_RESPONSE | jq -r ".id");
@@ -106,9 +151,22 @@ steps:
             
             # generate web link to triggered subscriber pipeline from pieces
             if [[ ${SUBSCRIBER_PIPELINE_RUN_ID:+1} && $SUBSCRIBER_PIPELINE_TRIGGER_CODE -eq 0 ]]; then
+                
+                echo "Successfully triggered pipeline '$SUBSCRIBER_PIPELINE_NAME' on branch '$SUBSCRIBER_PIPELINE_BRANCH' with params [$SUBSCRIBER_PIPELINE_PARAMETERS] to notify subscriber."
                 echo "Subscriber Notify Pipeline Web Url ($SUBSCRIBER_PIPELINE_NAME): $(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$SUBSCRIBER_PIPELINE_RUN_ID"
+                
             else
-                echo "WARNING: Cannot trigger pipeline '$SUBSCRIBER_PIPELINE_NAME' to notify subscriber."
+                
+                SUBSCRIBER_PIPELINE_TRIGGER_ERROR="$(cat $SUBSCRIBER_PIPELINE_TRIGGER_ERROR_FILE)"
+                SUBSCRIBER_PIPELINE_TRIGGER_ERROR_DETAILS="${SUBSCRIBER_PIPELINE_TRIGGER_ERROR:-${SUBSCRIBER_PIPELINE_TRIGGER_RESPONSE:-unknown}}"
+                
+                echo "WARNING: Cannot trigger pipeline '$SUBSCRIBER_PIPELINE_NAME' on branch '$SUBSCRIBER_PIPELINE_BRANCH' with params [$SUBSCRIBER_PIPELINE_PARAMETERS] to notify subscriber."
+                echo "$SUBSCRIBER_PIPELINE_TRIGGER_ERROR_DETAILS"
+                
+                set +e
+                curl -H 'Content-Type: application/json' -d '{"text": "&#x2757; &#x1F4DE; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - cannot trigger pipeline **'"$SUBSCRIBER_PIPELINE_NAME"'** on branch `'$SUBSCRIBER_PIPELINE_BRANCH'` with params `'"$(escapeJson "$SUBSCRIBER_PIPELINE_PARAMETERS")"'` to notify [subscriber]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)! <pre>'"$(escapeJson "$SUBSCRIBER_PIPELINE_TRIGGER_ERROR_DETAILS")"'<\/pre>"}' $(notifErrorUrls)
+                set -e
+                
             fi
             
         done

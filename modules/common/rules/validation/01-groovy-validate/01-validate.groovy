@@ -20,6 +20,7 @@ import com.toolset.validator.CustomLabelValidator;
 import com.toolset.validator.EmailTemplateValidator;
 import com.toolset.validator.ReportValidator;
 import com.toolset.validator.DashboardValidator;
+import com.toolset.validator.ApiVersionValidator;
 
 
 def env = System.getenv();
@@ -78,6 +79,9 @@ def packageDir = new File(options.workingDir, defaultPackage.path);
 def scopeName = projectConfig?.customScope?.name;
 def scopeExclusions = projectConfig.customScope.exclusions;
 
+def minApi = projectConfig.customScope.minApi;
+def maxApi = projectConfig.customScope.maxApi;
+
 // define validators chain
 List<Validator> validators = [
 	new ApexClassValidator(packageDir, scopeName, scopeExclusions?.classes),
@@ -93,7 +97,8 @@ List<Validator> validators = [
 	//new EmailTemplateValidator(packageDir, scopeName, scopeExclusions?.emails),
 	new ReportValidator(packageDir, scopeName, scopeExclusions?.reports),
 	new DashboardValidator(packageDir, scopeName, scopeExclusions?.reports),
-	new CustomLabelValidator(packageDir, scopeName, scopeExclusions?.labels)
+	new CustomLabelValidator(packageDir, scopeName, scopeExclusions?.labels),
+	new ApiVersionValidator(packageDir, minApi, maxApi)
 ];
 
 

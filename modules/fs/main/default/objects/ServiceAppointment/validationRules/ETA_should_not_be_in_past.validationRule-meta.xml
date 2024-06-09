@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ETA_should_not_be_in_past</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISCHANGED(Initial_ETA__c), Initial_ETA__c &lt; NOW(), CASESAFEID(WorkOrder__r.RecordTypeId) == $Setup.OTISCustomSettings__c.Work_Order_Service_Request_Record_Type__c)</errorConditionFormula>
+    <errorMessage>Initial ETA date/time should not be in past.</errorMessage>
+</ValidationRule>

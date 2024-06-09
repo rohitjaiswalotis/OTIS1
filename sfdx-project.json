@@ -4,18 +4,27 @@
       "path": "modules/fs",
       "default": true,
       "package": "OTIS Field Service",
-      "versionName": "OTIS Field Service",
+      "versionName": "QA ($CONF_PROP_GIT_BRANCH) $CONF_PROP_UTC_DATETIME",
       "versionDescription": "OTIS Field Service",
-      "versionNumber": "1.0.0.NEXT",
+      "versionNumber": "1.1.0.NEXT",
       "definitionFile": "config/core/shape.json",
       "dependencies": [
         {
-          "package": "FSL@246.0.75"
+          "package": "FSL@250.0.37"
+        },
+        {
+          "package": "Salesforce Mobile Apps@1.21.0"
         },
         {
           "package": "OTIS Global CC Core",
-          "versionNumber": "1.8.0.LATEST",
+          "versionNumber": "1.9.0.LATEST",
           "branch": "dev"
+        },
+        {
+          "package": "Salesforce Maps@246.9"
+        },
+        {
+          "package": "Salesforce Field Service App@1.55"
         }
       ],
       "unpackagedMetadata": {
@@ -24,7 +33,8 @@
       "seedMetadata": {
         "path": "modules/fs-seed-meta"
       },
-      "includeProfileUserLicenses": true
+      "includeProfileUserLicenses": true,
+      "scopeProfiles": true
     },
     {
       "path": "modules/fs-tests-meta",
@@ -44,16 +54,21 @@
     }
   ],
   "packageAliases": {
-    "FSL@246.0.75": "04t3y000001SkXdAAK",
+    "FSL@250.0.37": "04t3y00000233gcAAA",
+    "Salesforce Mobile Apps@1.21.0": "04t4V000001VUpTQAW",
+    "Salesforce Maps@246.9": "04t4P000002fQreQAE",
+    "Salesforce Field Service App@1.55": "04tHq000000lsw7IAA",
     "OTIS Global CC Core": "0HoDn000000TNCsKAO",
     "OTIS Field Service": "0HoDn000000TNHeKAO"
   },
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "59.0",
+  "sourceApiVersion": "60.0",
   "customScope": {
     "name": "",
     "name_commented": "FS",
+    "minApi": "49.0",
+    "maxApi": "60.0",
     "exclusions": {
       "classes": [],
       "objects": [],

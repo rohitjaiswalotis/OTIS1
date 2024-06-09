@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <assignments>
+        <name>Update_Reason_and_SA_on_WO</name>
+        <label>Update Reason and SA on WO</label>
+        <locationX>176</locationX>
+        <locationY>242</locationY>
+        <assignmentItems>
+            <assignToReference>WORecord.Reason__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Parts Needed</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>WORecord.Status</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Cannot Complete</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Declare_Missing_Parts</targetReference>
+        </connector>
+    </assignments>
+    <dynamicChoiceSets>
+        <name>FixedIssuePicklist</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>Fixed_Issue__c</picklistField>
+        <picklistObject>WorkOrder</picklistObject>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <name>UnitStatusPicklist</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>UnitStatusOnSiteDeparture__c</picklistField>
+        <picklistObject>WorkOrder</picklistObject>
+    </dynamicChoiceSets>
+    <environments>Default</environments>
+    <interviewLabel>Declare Parts Missing {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Declare Parts Missing</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>FieldServiceMobile</processType>
+    <recordLookups>
+        <name>Get_Present_WO</name>
+        <label>Get Present WO</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Update_Reason_and_SA_on_WO</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrder</object>
+        <outputReference>WORecord</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Reason__c</queriedFields>
+        <queriedFields>Status</queriedFields>
+        <queriedFields>Comments__c</queriedFields>
+        <queriedFields>Fixed_Issue__c</queriedFields>
+        <queriedFields>Urgent__c</queriedFields>
+    </recordLookups>
+    <recordUpdates>
+        <name>UpdateRecordsOnWO</name>
+        <label>Update Records on Wo</label>
+        <locationX>176</locationX>
+        <locationY>458</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Comments__c</field>
+            <value>
+                <elementReference>CommentsWO</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>FS_Mark_For_Supervisor_Review__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Fixed_Issue__c</field>
+            <value>
+                <elementReference>Fixed_Issue</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Reason__c</field>
+            <value>
+                <stringValue>Parts Needed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Cannot Complete</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>UnitStatusOnSiteDeparture__c</field>
+            <value>
+                <elementReference>Unit_Status_On_Site_Departure</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Urgent__c</field>
+            <value>
+                <elementReference>Urgent</elementReference>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <screens>
+        <name>Declare_Missing_Parts</name>
+        <label>Declare Missing Parts</label>
+        <locationX>176</locationX>
+        <locationY>350</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>UpdateRecordsOnWO</targetReference>
+        </connector>
+        <fields>
+            <name>ReasonAndStatus</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Reason&lt;/strong&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt; : {!WORecord.Reason__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Status&lt;/strong&gt;&lt;span style=&quot;font-size: 16px;&quot;&gt;    :  {!WORecord.Status}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Urgent</name>
+            <dataType>Boolean</dataType>
+            <fieldText>Urgent</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Fixed_Issue</name>
+            <choiceReferences>FixedIssuePicklist</choiceReferences>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>WORecord.Fixed_Issue__c</elementReference>
+            </defaultValue>
+            <fieldText>Fixed Issue</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Unit_Status_On_Site_Departure</name>
+            <choiceReferences>UnitStatusPicklist</choiceReferences>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>WORecord.UnitStatusOnSiteDeparture__c</elementReference>
+            </defaultValue>
+            <fieldText>Unit Status On Site Departure</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>CommentsWO</name>
+            <fieldText>Field Service Notes</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Present_WO</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>Id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>WORecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrder</objectType>
+    </variables>
+</Flow>

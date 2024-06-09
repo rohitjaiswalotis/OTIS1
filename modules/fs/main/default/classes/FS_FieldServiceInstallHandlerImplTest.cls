@@ -1,5 +1,5 @@
 /**
-* Test class for interface to implementation resolver. 
+* Test class for Field Service package install handler.
 */
 @IsTest
 public inherited sharing class FS_FieldServiceInstallHandlerImplTest {
@@ -8,7 +8,7 @@ public inherited sharing class FS_FieldServiceInstallHandlerImplTest {
 	@isTest
 	static void basic() {
 		
-		FS_FieldServiceInstallHandler installHandler = new FS_FieldServiceInstallHandlerTestImpl();
+		FS_FieldServiceInstallHandler installHandler = new FS_FieldServiceInstallHandlerImpl();
 		
 		Map<String, Object> context = new Map<String, Object>();
 		
@@ -24,32 +24,6 @@ public inherited sharing class FS_FieldServiceInstallHandlerImplTest {
 			installHandler.afterUpgrade(context);
 			
 		Test.stopTest();
-		
-	}
-	
-	
-	public class FS_FieldServiceInstallHandlerTestImpl implements FS_FieldServiceInstallHandler {
-		
-		
-		public void beforeInstall(Map<String, Object> context) {
-			
-		}
-		
-		
-		public void afterInstall(Map<String, Object> context) {
-			
-		}
-		
-		
-		public void beforeUpgrade(Map<String, Object> context) {
-			
-		}
-		
-		
-		public void afterUpgrade(Map<String, Object> context) {
-			
-		}
-		
 		
 	}
 	

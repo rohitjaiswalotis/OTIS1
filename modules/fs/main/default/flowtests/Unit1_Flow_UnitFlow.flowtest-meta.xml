@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowTest xmlns="http://soap.sforce.com/2006/04/metadata">
+    <flowApiName>Unit_Flow</flowApiName>
+    <label>UnitFlow</label>
+    <testPoints>
+        <elementApiName>Start</elementApiName>
+        <parameters>
+            <leftValueReference>$Record</leftValueReference>
+            <type>InputTriggeringRecordInitial</type>
+            <value>
+                <sobjectValue>{&quot;AccountId&quot;:&quot;001DO00000FAOjjYAH&quot;,&quot;AverageUptimePerDay&quot;:24,&quot;Branch__c&quot;:&quot;a0uDO000000LCSLYA4&quot;,&quot;City&quot;:&quot;Alampur (P)&quot;,&quot;ContractLineItem__c&quot;:&quot;a12DO000000MoytYAC&quot;,&quot;Contract__c&quot;:&quot;800DO0000005P5UYAU&quot;,&quot;Country&quot;:&quot;IN&quot;,&quot;CustomerDesignation__c&quot;:&quot;#3 ESC Spl Ins&quot;,&quot;DateTimeLastUpdated__c&quot;:&quot;2023-02-22T21:44:00.000Z&quot;,&quot;ElevatorPhoneNumber__c&quot;:&quot;800 233 6847&quot;,&quot;Elite__c&quot;:&quot;Yes&quot;,&quot;FS_CancellationAlert__c&quot;:false,&quot;FS_CriticalUnit__c&quot;:false,&quot;FS_CurrentServiceContract__c&quot;:&quot;810DO000000GmgbYAC&quot;,&quot;FS_Effective_Date__c&quot;:&quot;2024-03-01&quot;,&quot;FS_HighFrequencyUnit__c&quot;:false,&quot;FS_LowUsage__c&quot;:false,&quot;FS_MissedVisit__c&quot;:false,&quot;FS_ProductionUnitMaintenance__c&quot;:false,&quot;FS_RebelUnit__c&quot;:true,&quot;FS_UnitCompany__c&quot;:&quot;OTIS Switzerland&quot;,&quot;FS_UnitProductClassification__c&quot;:&quot;Elevator&quot;,&quot;GBO_Name__c&quot;:&quot;Salesforce GBO&quot;,&quot;IsCompetitorProduct&quot;:false,&quot;IsInternal&quot;:false,&quot;LineShared__c&quot;:false,&quot;LocationId&quot;:&quot;131DO000002ymFFYAY&quot;,&quot;ManualAssignmentOverride__c&quot;:true,&quot;NISMISContractNumber__c&quot;:&quot;00000120&quot;,&quot;Name&quot;:&quot;C111111&quot;,&quot;OperationalStatusReason__c&quot;:&quot;Awaiting Customer Proposal Signature&quot;,&quot;OperationalStatus__c&quot;:&quot;In Service&quot;,&quot;OwnerId&quot;:&quot;005DO000001GND6YAO&quot;,&quot;PermanentSpecialInstructions__c&quot;:&quot;This elv must always be Manually Assigned&quot;,&quot;PhonePrefix__c&quot;:&quot;8&quot;,&quot;PostalCode&quot;:&quot;509152&quot;,&quot;ProductFamily__c&quot;:&quot;Passenger Elevator&quot;,&quot;REMType__c&quot;:&quot;Not Installed&quot;,&quot;RMDManufacturer__c&quot;:&quot;OTIS&quot;,&quot;RathSmartViewURL__c&quot;:&quot;https://urldefense.com/v3/__https:/www.rathsmartview.com/rescueservices/5b7f585ec6684c66b9c8cbf5ee43f89c2022984d2f1d400683cc0f8515183aac__;%21%21MvWE%21XIFFIL81mgnUlijIFeVMKMyGEI4JGlG8XYxdweuv9GbxNC8qe0Pu1F3PZT0zX1CGkg$&quot;,&quot;Requires_Signature__c&quot;:false,&quot;RouteName__c&quot;:&quot;0HhDO000000ZO9M0AW&quot;,&quot;SerialNumber&quot;:&quot;C111111&quot;,&quot;SpecialInstructionsExpirationDate__c&quot;:&quot;2023-10-30&quot;,&quot;State&quot;:&quot;TS&quot;,&quot;Status&quot;:&quot;Active&quot;,&quot;Street&quot;:&quot;alampur&quot;,&quot;TemporarySpecialInstructions__c&quot;:&quot;This is Special for SI testing&quot;,&quot;UpdatedByIntegration__c&quot;:true}</sobjectValue>
+            </value>
+        </parameters>
+        <parameters>
+            <leftValueReference>$Record</leftValueReference>
+            <type>InputTriggeringRecordUpdated</type>
+            <value>
+                <sobjectValue>{&quot;AccountId&quot;:&quot;001DO00000FAOjjYAH&quot;,&quot;AverageUptimePerDay&quot;:24,&quot;City&quot;:&quot;Kolkata&quot;,&quot;FS_CancellationAlert__c&quot;:false,&quot;FS_CriticalUnit__c&quot;:false,&quot;FS_HighFrequencyUnit__c&quot;:false,&quot;FS_LowUsage__c&quot;:false,&quot;FS_MissedVisit__c&quot;:false,&quot;FS_ProductionUnitMaintenance__c&quot;:false,&quot;FS_RebelUnit__c&quot;:false,&quot;IsCompetitorProduct&quot;:false,&quot;IsInternal&quot;:false,&quot;LineShared__c&quot;:false,&quot;ManualAssignmentOverride__c&quot;:false,&quot;Name&quot;:&quot;12345&quot;,&quot;OperationalStatusReason__c&quot;:&quot;In Service&quot;,&quot;OwnerId&quot;:&quot;005DO000001XLDvYAO&quot;,&quot;REMType__c&quot;:&quot;Not Installed&quot;,&quot;RMDManufacturer__c&quot;:&quot;OTIS&quot;,&quot;Requires_Signature__c&quot;:false,&quot;UpdatedByIntegration__c&quot;:true}</sobjectValue>
+            </value>
+        </parameters>
+    </testPoints>
+    <testPoints>
+        <assertions>
+            <conditions>
+                <leftValueReference>Update_WO</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+        </assertions>
+        <elementApiName>Finish</elementApiName>
+    </testPoints>
+</FlowTest>

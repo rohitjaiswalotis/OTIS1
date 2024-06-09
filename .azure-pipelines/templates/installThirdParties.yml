@@ -1,0 +1,94 @@
+
+parameters:
+
+- name: targetOrgUrl
+  displayName: Target Org Url
+  type: string
+  default: https://test.salesforce.com
+
+- name: targetOrgUsername
+  displayName: Target Org Username
+  type: string
+  default: none
+
+- name: targetOrgPassword
+  displayName: Target Org Password
+  type: string
+  default: none
+
+- name: targetOrgToken
+  displayName: Target Org Token
+  type: string
+  default: none
+
+- name: targetOrgAuthFilePath
+  displayName: Target Org Auth File Path
+  type: string
+  default: none
+
+- name: continueOnError
+  displayName: Continue on Error?
+  type: boolean
+  default: false
+
+- name: enableDebugMode
+  displayName: Debug Mode?
+  type: boolean
+  default: false
+
+
+steps:
+
+# install FSL
+
+- template: installThirdParty.yml
+  parameters:
+    packageAlias: FSL
+    ${{ if contains(parameters.targetOrgUsername, '@') }}:
+      targetOrgUrl: ${{ parameters.targetOrgUrl }}
+      targetOrgUsername: ${{ parameters.targetOrgUsername }}
+      targetOrgPassword: ${{ parameters.targetOrgPassword }}
+    ${{ if not( eq(parameters.targetOrgToken, 'none') ) }}:
+      targetOrgUrl: ${{ parameters.targetOrgUrl }}
+      targetOrgToken: ${{ parameters.targetOrgToken }}
+    ${{ if not( eq(parameters.targetOrgAuthFilePath, 'none') ) }}:
+      targetOrgAuthFilePath: ${{ parameters.targetOrgAuthFilePath }}
+    continueOnError: ${{ parameters.continueOnError }}
+    enableDebugMode: ${{ parameters.enableDebugMode }}
+
+
+# install Salesforce Maps
+
+- template: installThirdParty.yml
+  parameters:
+    packageAlias: Salesforce Maps
+    ${{ if contains(parameters.targetOrgUsername, '@') }}:
+      targetOrgUrl: ${{ parameters.targetOrgUrl }}
+      targetOrgUsername: ${{ parameters.targetOrgUsername }}
+      targetOrgPassword: ${{ parameters.targetOrgPassword }}
+    ${{ if not( eq(parameters.targetOrgToken, 'none') ) }}:
+      targetOrgUrl: ${{ parameters.targetOrgUrl }}
+      targetOrgToken: ${{ parameters.targetOrgToken }}
+    ${{ if not( eq(parameters.targetOrgAuthFilePath, 'none') ) }}:
+      targetOrgAuthFilePath: ${{ parameters.targetOrgAuthFilePath }}
+    continueOnError: ${{ parameters.continueOnError }}
+    enableDebugMode: ${{ parameters.enableDebugMode }}
+
+
+# install Salesforce Field Service App
+
+- template: installThirdParty.yml
+  parameters:
+    packageAlias: Salesforce Field Service App
+    ${{ if contains(parameters.targetOrgUsername, '@') }}:
+      targetOrgUrl: ${{ parameters.targetOrgUrl }}
+      targetOrgUsername: ${{ parameters.targetOrgUsername }}
+      targetOrgPassword: ${{ parameters.targetOrgPassword }}
+    ${{ if not( eq(parameters.targetOrgToken, 'none') ) }}:
+      targetOrgUrl: ${{ parameters.targetOrgUrl }}
+      targetOrgToken: ${{ parameters.targetOrgToken }}
+    ${{ if not( eq(parameters.targetOrgAuthFilePath, 'none') ) }}:
+      targetOrgAuthFilePath: ${{ parameters.targetOrgAuthFilePath }}
+    continueOnError: ${{ parameters.continueOnError }}
+    enableDebugMode: ${{ parameters.enableDebugMode }}
+

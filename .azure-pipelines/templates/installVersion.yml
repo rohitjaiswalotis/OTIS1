@@ -36,6 +36,16 @@ parameters:
   type: string
   default: none
 
+- name: autoInstallDependencies
+  displayName: Auto Install Dependencies?
+  type: boolean
+  default: false
+
+- name: installOnlyDependencies
+  displayName: Install Only Dependencies?
+  type: boolean
+  default: false
+
 - name: installationMode
   displayName: Installation Mode
   type: string
@@ -72,10 +82,10 @@ parameters:
   - after
   - none
 
-- name: autoInstallDependencies
-  displayName: Auto Install Dependencies?
-  type: boolean
-  default: false
+- name: scriptParams
+  displayName: Script Params (json)
+  type: string
+  default: none
 
 - name: enableDebugMode
   displayName: Debug Mode?
@@ -179,7 +189,13 @@ steps:
         # enable "debug" mode
         if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
           set -x
+          export DEBUG_MODE=1
         fi
+        
+        
+        # include common utils
+        chmod +x $(commonUtils)
+        source $(commonUtils)
         
         
         # set localization domain (if provided) to be available inside steps runner
@@ -198,7 +214,7 @@ steps:
           
           DX_STATUS_CODE=$(sf sfpowerkit:auth:login -a targetOrg -u "${TARGET_ORG_USERNAME,,}" -p "${TARGET_ORG_PASSWORD}" -r "${TARGET_ORG_URL}" --json | jq .status);
           
-          # early exit - error when autorizing to target org by creds
+          # early exit - error when authorizing to target org by creds
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
             echo "Error when logging in to target org by creds as user '$TARGET_ORG_USERNAME'!"
             exit 1;
@@ -212,7 +228,7 @@ steps:
           DX_AUTH_RESPONSE=$(sf org login sfdx-url -f "$TARGET_ORG_AUTH_FILE" -a targetOrg --json);
           DX_STATUS_CODE=$(echo "$DX_AUTH_RESPONSE" | jq .status);
           
-          # early exit - error when autorizing to target org by auth url
+          # early exit - error when authorizing to target org by auth url
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
             echo "Error when logging in to target org by auth url!"
             echo "$DX_AUTH_RESPONSE" | jq .
@@ -221,7 +237,7 @@ steps:
           
           TARGET_ORG_USERNAME=$(echo "$DX_AUTH_RESPONSE" | jq -r .result.username);
           
-          echo "Successfully logged into target org by auth url as user '$TARGET_ORG_USERNAME'"
+          echo "Successfully logged into target org by auth url as user '${TARGET_ORG_USERNAME:-unknown}'"
           
           TARGET_ORG_AUTH_FILE_NAME="${TARGET_ORG_AUTH_FILE##*/}"
           TARGET_ORG_AUTH_FILE_NAME="${TARGET_ORG_AUTH_FILE_NAME%%.*}"
@@ -235,15 +251,31 @@ steps:
           DX_STATUS_CODE=$(sf org login access-token -a targetOrg --instance-url="$TARGET_ORG_URL" --json --no-prompt | jq .status);
           unset SF_ACCESS_TOKEN SFDX_ACCESS_TOKEN
           
-          # early exit - error when autorizing to target org by creds
+          # early exit - error when authorizing to target org by token
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
             echo "Error when logging in to target org by token!"
             exit 1;
           fi
           
-          echo "Successfully logged into target org by token."
+          TARGET_ORG_USERNAME=$(echo "$DX_AUTH_RESPONSE" | jq -r '.result.username // empty');
+          
+          echo "Successfully logged into target org by token as user '${TARGET_ORG_USERNAME:-unknown}'"
           
         fi
+        
+        
+        # read version details by id to get version number
+        FS_PACKAGE_VERSION_INFO=$(sf data query --use-tooling-api --target-org="targetOrg" -q "SELECT Id, Name, MajorVersion, MinorVersion, PatchVersion, BuildNumber, SubscriberPackageId, ReleaseState, IsBeta FROM SubscriberPackageVersion WHERE Id='$FS_PACKAGE_VERSION_ID'" --json | jq -r ".result.records[0] // empty");
+        
+        echo "Reading package version details by '$FS_PACKAGE_VERSION_ID' id to get version number..."
+        
+        FS_PACKAGE_VERSION_MAJOR=$(echo $FS_PACKAGE_VERSION_INFO | jq -r ".MajorVersion // empty" || true);
+        FS_PACKAGE_VERSION_MINOR=$(echo $FS_PACKAGE_VERSION_INFO | jq -r ".MinorVersion // empty" || true);
+        FS_PACKAGE_VERSION_PATCH=$(echo $FS_PACKAGE_VERSION_INFO | jq -r ".PatchVersion // empty" || true);
+        FS_PACKAGE_VERSION_BUILD=$(echo $FS_PACKAGE_VERSION_INFO | jq -r ".BuildNumber // empty" || true);
+        FS_PACKAGE_VERSION_NUMBER="${FS_PACKAGE_VERSION_MAJOR}.${FS_PACKAGE_VERSION_MINOR}.${FS_PACKAGE_VERSION_PATCH}.${FS_PACKAGE_VERSION_BUILD}"
+        
+        echo "Parsed package version number: $FS_PACKAGE_VERSION_NUMBER"
         
         
         # get packages installed into target org
@@ -263,47 +295,69 @@ steps:
         
         # check by name if package is already present in target org
         FS_PACKAGE_ORIGINAL_VERSION_DETAILS=$(echo "$DX_LIST_INSTALLED_PACKAGES_RESPONSE" | jq -c ".result[] | select( ( .SubscriberPackageName | test(\"^$(fsPackageName)\$\";\"i\") ) ) ");
+        FS_PACKAGE_ORIGINAL_VERSION_ID=$(echo "$FS_PACKAGE_ORIGINAL_VERSION_DETAILS" | jq -r ".SubscriberPackageVersionId // empty");
         
-        # early exit if package version with exact same id has already been installed
+        # early exit if version validation is enabled and package version with exact same id has already been installed
         if [[ "$(enableVersionComparison)" =~ ^[Tt]rue$ && ${FS_PACKAGE_ORIGINAL_VERSION_DETAILS:+1} ]]; then
           
-          FS_PACKAGE_ORIGINAL_VERSION_ID=$(echo "$FS_PACKAGE_ORIGINAL_VERSION_DETAILS" | jq -r ".SubscriberPackageVersionId");
-          
           if [[ "${FS_PACKAGE_ORIGINAL_VERSION_ID::15}" == "${FS_PACKAGE_VERSION_ID::15}" ]]; then
-            echo "'$(fsPackageName)' package version ($FS_PACKAGE_VERSION_ID) is already installed into target org, so nothing to do here!"
+            echo "'$(fsPackageName)' package version $FS_PACKAGE_VERSION_NUMBER ($FS_PACKAGE_VERSION_ID) is already installed into target org, so nothing to do here!"
             exit 0;
           fi
           
         fi
         
         
+        echo "Authorizing to dev hub..."
+        
+        DX_STATUS_CODE=$(sf org login jwt --client-id $(devHubClientId) --jwt-key-file $(devHubPrivateKey.secureFilePath) --username $(devHubUsername) -r $(devHubUrl) -a devHub --json | jq .status);
+        
+        # early exit - error when authorizing to dev hub
+        if [[ "$DX_STATUS_CODE" != "0" ]]; then
+          echo "Cannot log in to dev hub as '$(devHubUsername)'"
+          exit 1
+        fi
+        
+        echo "Successfully authorized to dev hub as '$(devHubUsername)'"
+        
+        
+        if [[ ${FS_PACKAGE_ORIGINAL_VERSION_ID:+1} ]]; then
+          
+          # grab tag name from dev hub for package version already installed in target org
+          FS_PACKAGE_ORIGINAL_VERSION_TAG=$(sf data query --use-tooling-api --target-org "devHub" -q "SELECT Id, SubscriberPackageVersionId, Tag FROM Package2Version WHERE SubscriberPackageVersionId='$FS_PACKAGE_ORIGINAL_VERSION_ID'" --json | jq -r ".result.records[0].Tag // empty" || true);
+          
+          if [[ ${FS_PACKAGE_ORIGINAL_VERSION_TAG:+1} ]]; then
+            
+            FS_PACKAGE_MERGED_COMMMIT_MESSAGES=$(git log -100 --merges --date-order --pretty="format:%ai (%an) %s" ${FS_PACKAGE_ORIGINAL_VERSION_TAG}..HEAD || true);
+            
+          fi
+          
+        fi
+        
+        
         # auto install dependencies if requested
-        if [[ "${{ parameters.autoInstallDependencies }}" =~ ^[Tt]rue$ ]] ; then
+        if [[ "${{ parameters.autoInstallDependencies }}" =~ ^[Tt]rue$ || "${{ parameters.installOnlyDependencies }}" =~ ^[Tt]rue$ ]] ; then
           
           # include client utils
           chmod +x $(clientUtils)
           source $(clientUtils)
           
-          echo "Authorizing to dev hub..."
-          
-          DX_STATUS_CODE=$(sf org login jwt --client-id $(devHubClientId) --jwt-key-file $(devHubPrivateKey.secureFilePath) --username $(devHubUsername) -r $(devHubUrl) -a devHub --json | jq .status);
-          
-          # early exit - error when autorizing to dev hub
-          if [[ "$DX_STATUS_CODE" != "0" ]]; then
-            echo "Cannot log in to dev hub as '$(devHubUsername)'"
-            exit 1
+          # evaluate script params (if any)
+          if [[ '${{parameters.scriptParams}}' =~ ^none$ ]] ; then
+            scriptParams="none";
+          else
+            scriptParams=$(escapeJson '${{parameters.scriptParams}}')
           fi
           
-          echo "Successfully authorized to dev hub as '$(devHubUsername)'"
-          
-          echo "Installing dependencies for package $(fsPackageName) ($FS_PACKAGE_VERSION_ID) into target org as '$TARGET_ORG_USERNAME' user..."
+          echo "Installing dependencies for package $(fsPackageName) $FS_PACKAGE_VERSION_NUMBER ($FS_PACKAGE_VERSION_ID) into target org as '$TARGET_ORG_USERNAME' user..."
           CURRENT_DIR_CHECKPOINT="$(pwd)";
-          installPackageDependencies "$FS_PACKAGE_VERSION_ID" "{ \"devHubAlias\":\"devHub\", \"orgAlias\":\"targetOrg\", \"username\":\"${TARGET_ORG_USERNAME:-none}\", \"password\":\"${TARGET_ORG_PASSWORD:-none}\", \"url\":\"${TARGET_ORG_URL:-none}\", \"authFile\":\"${TARGET_ORG_AUTH_FILE_NAME:-none}\", \"token\":\"${TARGET_ORG_TOKEN:-none}\" }" "{ \"organization\":\"$(System.TeamFoundationCollectionUri)\", \"project\": \"$(System.TeamProject)\", \"projectId\": \"$(System.TeamProjectId)\", \"localizationDomain\":\"${{parameters.localizationDomain}}\", \"debugMode\":\"${OPTION_DEBUG_MODE:-false}\", \"betaDiff\":true, \"versionComparison\":$(enableVersionComparison) }" 2>&1; DX_STATUS_CODE=$?;
+          installPackageDependencies "$FS_PACKAGE_VERSION_ID" "{ \"devHubAlias\":\"devHub\", \"orgAlias\":\"targetOrg\", \"username\":\"${TARGET_ORG_USERNAME:-none}\", \"password\":\"${TARGET_ORG_PASSWORD:-none}\", \"url\":\"${TARGET_ORG_URL:-none}\", \"authFile\":\"${TARGET_ORG_AUTH_FILE_NAME:-none}\", \"token\":\"${TARGET_ORG_TOKEN:-none}\" }" "{ \"organization\":\"$(System.TeamFoundationCollectionUri)\", \"project\": \"$(System.TeamProject)\", \"projectId\": \"$(System.TeamProjectId)\", \"localizationDomain\":\"${{parameters.localizationDomain}}\", \"installationMode\":\"${{parameters.installationMode}}\", \"compileScope\":\"${{parameters.compileScope}}\", \"upgradeType\":\"${{parameters.upgradeType}}\", \"actionPhase\":\"${{parameters.actionPhase}}\", \"scriptParams\":\"${scriptParams:-none}\", \"debugMode\":\"${OPTION_DEBUG_MODE:-false}\", \"betaDiff\":true, \"versionComparison\":$(enableVersionComparison) }" 2>&1; DX_STATUS_CODE=$?;
           cd "$CURRENT_DIR_CHECKPOINT"
           
-          # early exit - error when grabbing installed packages from target org
+          # early exit - error when installing dependencies for package into target org
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
-            echo "ERROR: Cannot install dependencies for package $(fsPackageName) ($FS_PACKAGE_VERSION_ID) into target org as '$TARGET_ORG_USERNAME' user!"
+            echo "ERROR: Cannot install dependencies for $(fsPackageName) package $FS_PACKAGE_VERSION_NUMBER ($FS_PACKAGE_VERSION_ID) into target org as '$TARGET_ORG_USERNAME' user!"
+            curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') dependencies installation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifErrorUrls)
             exit 1
           fi
           
@@ -321,21 +375,21 @@ steps:
             # grab already installed version number
             FS_PACKAGE_ORIGINAL_VERSION_NUMBER=$(echo "$FS_PACKAGE_ORIGINAL_VERSION_DETAILS" | jq -r ".SubscriberPackageVersionNumber");
             
-            echo "Upgrading '$(fsPackageName)' package version ($FS_PACKAGE_VERSION_ID) on top of '$FS_PACKAGE_ORIGINAL_VERSION_NUMBER'..."
+            echo "Upgrading '$(fsPackageName)' package version $FS_PACKAGE_VERSION_NUMBER ($FS_PACKAGE_VERSION_ID) on top of '$FS_PACKAGE_ORIGINAL_VERSION_NUMBER'..."
             
           else
             
             echo "No Field Service metadata present in target org. Going with install flow..."
             
             PACKAGE_ACTION_TYPE="install";
-            echo "Installing '$(fsPackageName)' package version ($FS_PACKAGE_VERSION_ID)..."
+            echo "Installing '$(fsPackageName)' package version $FS_PACKAGE_VERSION_NUMBER ($FS_PACKAGE_VERSION_ID)..."
             
           fi
           
         elif [[ "${{ parameters.installationMode }}" =~ ^install$ ]] ; then
           
           PACKAGE_ACTION_TYPE="install";
-        
+          
         elif [[ "${{ parameters.installationMode }}" =~ ^upgrade$ ]] ; then
           
           PACKAGE_ACTION_TYPE="upgrade";
@@ -348,17 +402,39 @@ steps:
         fi
         
         
+        # transforming script params (if provided)
+        if [[ '${{parameters.scriptParams}}' =~ ^none$ ]] ; then
+          
+          echo "No script params passed."
+          
+          SCRIPT_PARAMS_FILE="none"
+          
+        else
+          
+          echo "Transforming provided script params..."
+          echo '${{parameters.scriptParams}}'
+          
+          SCRIPT_PARAMS_FILE=$(mktemp)
+          echo '${{parameters.scriptParams}}' | jq -r '. | to_entries | .[] | .key + "=" + (.value | @sh)' > $SCRIPT_PARAMS_FILE
+          
+          echo "Generated script params properties file: "
+          cat $SCRIPT_PARAMS_FILE
+          
+        fi
+        
+        
         if [[ "${{ parameters.actionPhase }}" =~ ^before$ || "${{ parameters.actionPhase }}" =~ ^both$ ]] ; then
           
           echo "Running pre-$PACKAGE_ACTION_TYPE steps..."
           
-          # enable exit on error
-          set -e
+          bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$PACKAGE_ACTION_TYPE/before" -a "targetOrg" -w "$(pwd)" -c "$SCRIPT_PARAMS_FILE"; DX_STATUS_CODE=$?;
           
-          bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$PACKAGE_ACTION_TYPE/before" -a "targetOrg" -w "$(pwd)"
-          
-          # disable exit on error
-          set +e
+          # early exit - error when executing before install scripts against target org
+          if [[ "$DX_STATUS_CODE" != "0" ]]; then
+            echo "ERROR: Cannot execute before install scripts for $(fsPackageName) package $FS_PACKAGE_VERSION_NUMBER ($FS_PACKAGE_VERSION_ID) against target org as '$TARGET_ORG_USERNAME' user!"
+            curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') before install scripts [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) against `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifErrorUrls)
+            exit 1
+          fi
           
         else
           
@@ -367,18 +443,85 @@ steps:
         fi
         
         
-        # actuall installation
-        echo "Actually installing '$(fsPackageName)' package version ($FS_PACKAGE_VERSION_ID)..."
+        # early exit - only dependencies installation have been requested
+        if [[ "${{ parameters.installOnlyDependencies }}" =~ ^[Tt]rue$ ]] ; then
+          
+          # get packages installed into target org
+          echo "Fetching packages available in target org after Field Service package dependencies install/upgrade..."
+          
+          DX_LIST_INSTALLED_PACKAGES_RESPONSE=$(sf package installed list --target-org="targetOrg");
+          echo "$DX_LIST_INSTALLED_PACKAGES_RESPONSE"
+          
+          curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - dependencies for package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Installed Packages:**<pre style=\"font-size:10px\">'"$(escapeJson "$DX_LIST_INSTALLED_PACKAGES_RESPONSE")"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifSuccessUrls)
+          
+          echo "Early exit after successfully installing dependencies, since no package version installation has been requested."
+          
+          exit 0;
+          
+        fi
         
-        DX_INSTALL_RESPONSE=$(sf package install --target-org="targetOrg" -p "$FS_PACKAGE_VERSION_ID" --upgrade-type="${{ parameters.upgradeType }}" --apex-compile="${{ parameters.compileScope }}" -r --publish-wait=60 -w 1000 --json);
-        echo "$DX_INSTALL_RESPONSE" | jq .
         
-        DX_INSTALL_STATUS_CODE=$(echo "$DX_INSTALL_RESPONSE" | jq .status);
+        # actual installation
+        echo "Actually installing '$(fsPackageName)' package version $FS_PACKAGE_VERSION_NUMBER ($FS_PACKAGE_VERSION_ID)..."
+        
+        packageInstallMaxRetryAttempts=$(packageRetryNumber);
+        packageInstallRetryDelay=$(packageRetryTimeout);
+        packageInstallRetryCounter=0;
+        
+        while true; do 
+          
+          DX_INSTALL_RESPONSE=$(sf package install --target-org="targetOrg" -p "$FS_PACKAGE_VERSION_ID" --upgrade-type="${{ parameters.upgradeType }}" --apex-compile="${{ parameters.compileScope }}" -r --publish-wait=60 -w 1000 --json);
+          echo "$DX_INSTALL_RESPONSE" | jq .
+          
+          DX_INSTALL_STATUS_CODE=$(echo "$DX_INSTALL_RESPONSE" | jq .status);
+          
+          # successful install - exit from retry loop
+          if [[ "$DX_INSTALL_STATUS_CODE" == "0" ]]; then
+            break;
+          fi
+          
+          DX_INSTALL_ERROR_MESSAGE=$(echo "$DX_INSTALL_RESPONSE" | jq -r ".message // empty");
+          echo "$DX_INSTALL_ERROR_MESSAGE"
+          
+          echo $DX_INSTALL_ERROR_MESSAGE | grep -i -E -e "$(packageRetryErrorRegex)" -q; DX_INSTALL_ERROR_TEMPORARY=$?;
+          
+          # permanent error - exit from retry loop
+          if [[ "$DX_INSTALL_ERROR_TEMPORARY" != "0" ]]; then
+            break;
+          fi
+          
+          # retry if not run out of attempts
+          if [[ $packageInstallRetryCounter -lt $packageInstallMaxRetryAttempts ]]; then
+            
+            packageInstallRetryCounter=$(( $packageInstallRetryCounter + 1 ));
+            echo "Retrying package install after temporarily failure in ${packageInstallRetryDelay} seconds (attempt ${packageInstallRetryCounter}/${packageInstallMaxRetryAttempts})..."
+            sleep $packageInstallRetryDelay;
+            
+          else
+            
+            echo "ERROR: Run out of retry attempts (max=${packageInstallMaxRetryAttempts})"
+            break;
+            
+          fi
+          
+        done
+        
         
         # early exit - package installation error
         if [[ "$DX_INSTALL_STATUS_CODE" != "0" ]]; then
-          echo "Error when installing '$(fsPackageName)' package version ($FS_PACKAGE_VERSION_ID) into target org as user '$TARGET_ORG_USERNAME'!"
+          
+          echo "Error when installing '$(fsPackageName)' package version $FS_PACKAGE_VERSION_NUMBER ($FS_PACKAGE_VERSION_ID) into target org as user '$TARGET_ORG_USERNAME'!"
+          
+          if [[ ${DX_INSTALL_ERROR_MESSAGE:+1} ]] ; then
+            echo "$DX_INSTALL_ERROR_MESSAGE"
+          fi
+          
+          DX_INSTALL_ERROR_MESSAGE_ESCAPED=$(escapeJson "$DX_INSTALL_ERROR_MESSAGE");
+          
+          curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)! <pre>'"${DX_INSTALL_ERROR_MESSAGE_ESCAPED:-unknown error}"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifErrorUrls)
+          
           exit 1;
+          
         fi
         
         
@@ -386,13 +529,14 @@ steps:
           
           echo "Running post-$PACKAGE_ACTION_TYPE steps..."
           
-          # enable exit on error
-          set -e
+          bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$PACKAGE_ACTION_TYPE/after" -a "targetOrg" -w "$(pwd)" -c "$SCRIPT_PARAMS_FILE"; DX_STATUS_CODE=$?;
           
-          bash $(stepsRunnerUtil) -d "$(packageBaseDir)-unpackaged/$PACKAGE_ACTION_TYPE/after" -a "targetOrg" -w "$(pwd)"
-          
-          # disable exit on error
-          set +e
+          # early exit - error when executing after install scripts against target org
+          if [[ "$DX_STATUS_CODE" != "0" ]]; then
+            echo "ERROR: Cannot execute after install scripts for $(fsPackageName) package $FS_PACKAGE_VERSION_NUMBER ($FS_PACKAGE_VERSION_ID) against target org as '$TARGET_ORG_USERNAME' user!"
+            curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') after install scripts [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) against `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifErrorUrls)
+            exit 1
+          fi
           
         else
           
@@ -403,7 +547,10 @@ steps:
         
         # get packages installed into target org again
         echo "Fetching packages available in target org after Field Service package install/upgrade..."
-        sf package installed list --target-org="targetOrg"
+        
+        DX_LIST_INSTALLED_PACKAGES_RESPONSE=$(sf package installed list --target-org="targetOrg");
+        echo "$DX_LIST_INSTALLED_PACKAGES_RESPONSE"
+        
         
         echo "Printing dependencies of currently installed/upgraded Field Service package..."
         
@@ -412,7 +559,12 @@ steps:
         sfAccessToken=$(echo "$sfOrgDetails" | jq -r '.result.accessToken // empty');
         sfInstanceUrl=$(echo "$sfOrgDetails" | jq -r '.result.instanceUrl // empty');
         
-        npx -p sf-package-inspector@$(packageInspectorVersion) sf-package-inspect --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --command="list-deps" --versionId="$FS_PACKAGE_VERSION_ID" --apiVersion="$(sfApiVersion)"
+        FS_PACKAGE_VERSION_DEPENDENCIES=$(npx -p sf-package-inspector@$(packageInspectorVersion) sf-package-inspect --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --command="list-deps" --versionId="$FS_PACKAGE_VERSION_ID" --apiVersion="$(sfApiVersion)" || echo "unknown")
+        echo "$FS_PACKAGE_VERSION_DEPENDENCIES"
+        
+        
+        # send success notif re package version install
+        curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Installed Packages:**<pre style=\"font-size:10px\">'"$(escapeJson "$DX_LIST_INSTALLED_PACKAGES_RESPONSE")"'<\/pre> **Version Dependencies:**<pre>'"$(escapeJson "${FS_PACKAGE_VERSION_DEPENDENCIES// /&nbsp;}")"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifSuccessUrls)
         
         
   displayName: 'Install/Upgrade Field Service Package into Target Org'

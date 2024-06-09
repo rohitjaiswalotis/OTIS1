@@ -85,9 +85,10 @@ steps:
         # enable "debug" mode
         if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
           set -x
+          export DEBUG_MODE=1
         fi
         
-        sf plugins install sfdmu
+        (sf plugins | grep -i "sfdmu") || (echo "y" | sf plugins install sfdmu@$(sfdmuVersion))
         
         # check if target org creds provided
         if [[ ${TARGET_ORG_USERNAME:+1} && ${TARGET_ORG_PASSWORD:+1} ]] ; then
@@ -99,7 +100,7 @@ steps:
           
           DX_STATUS_CODE=$(sf sfpowerkit:auth:login -a targetOrg -u "${TARGET_ORG_USERNAME,,}" -p "${TARGET_ORG_PASSWORD}" -r "${TARGET_ORG_URL}" --json | jq .status);
           
-          # early exit - error when autorizing to target org
+          # early exit - error when authorizing to target org
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
             echo "Error when logging in to target org as user '$TARGET_ORG_USERNAME'!"
             exit 1;
@@ -113,7 +114,7 @@ steps:
           DX_AUTH_RESPONSE=$(sf org login sfdx-url -f "$TARGET_ORG_AUTH_FILE" -a targetOrg --json);
           DX_STATUS_CODE=$(echo "$DX_AUTH_RESPONSE" | jq .status);
           
-          # early exit - error when autorizing to target org by auth url
+          # early exit - error when authorizing to target org by auth url
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
             echo "Error when logging in to target org by auth url!"
             exit 1;
@@ -129,12 +130,14 @@ steps:
           # log in to target org by token
           
           export SF_ACCESS_TOKEN="${TARGET_ORG_TOKEN}" SFDX_ACCESS_TOKEN="${TARGET_ORG_TOKEN}"
-          DX_STATUS_CODE=$(sf org login access-token -a targetOrg --instance-url="$TARGET_ORG_URL" --json --no-prompt | jq .status);
+          DX_AUTH_RESPONSE=$(sf org login access-token -a targetOrg --instance-url="$TARGET_ORG_URL" --json --no-prompt);
+          DX_STATUS_CODE=$(echo "$DX_AUTH_RESPONSE" | jq .status);
           unset SF_ACCESS_TOKEN SFDX_ACCESS_TOKEN
           
-          # early exit - error when autorizing to target org by creds
+          # early exit - error when authorizing to target org by creds
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
             echo "Error when logging in to target org by token!"
+            echo "$DX_AUTH_RESPONSE" | jq .
             exit 1;
           fi
           
@@ -146,7 +149,7 @@ steps:
         # enable exit on error
         set -e
         
-        npm run import-test-data targetOrg --loglevel verbose
+        npm run import-sample-data targetOrg --loglevel verbose
         
         # disable exit on error
         set +e
