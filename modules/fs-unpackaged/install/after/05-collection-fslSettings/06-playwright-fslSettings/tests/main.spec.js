@@ -301,6 +301,16 @@ test('Optimization -> Logic', async ({ basePage, baseUrl }) => {
 		]
 	);
 	
+	const INDAY_OPTIMIZATION_PINNED_STATUSES = new utils.CaseInsensitiveSet(
+		[ 
+			"Enroute", 
+			"Onsite",
+			"Canceled",
+			"Cannot Complete",
+			"Completed"
+		]
+	);
+	
 	const RESOURCE_OPTIMIZATION_PINNED_STATUSES = new utils.CaseInsensitiveSet(
 		[ 
 			"Enroute", 
@@ -330,40 +340,128 @@ test('Optimization -> Logic', async ({ basePage, baseUrl }) => {
 	// 'Global Optimization' section
 	{
 		
-		await utils.setCheckboxesInGroup(
-			frame,
-			frame.locator("optimization-logic")
-				.locator("#pinned-status-container")
-				.and(
-					frame.locator(":below(:text('Global Optimization'))")
-				)
-				.and(
-					frame.locator(":above(:text('In-Day and Resource Schedule Optimization'))")
-				)
-			,
-			{
-				labelsToCheck: GLOBAL_OPTIMIZATION_PINNED_STATUSES 
-			}
+		const globalOptimizationSection = (
+			frame
+			.locator("optimization-logic")
+			.locator(".guarded-optimization-container")
+			.filter({ 
+				has: frame.locator(".optimization-title").filter({
+					hasText: "Global Optimization"
+				})
+			})
 		);
+		
+		await globalOptimizationSection.waitFor();
+		
+		
+		const multiselectComponentContainer = globalOptimizationSection.locator(".multiselect-component-container");
+		
+		// clear all selected options first
+		await multiselectComponentContainer.waitFor();
+		const selectedOptionsLocator = multiselectComponentContainer.locator(".multiselect-pillars-container .multiselect-pillar");
+		
+		for (const selectedOptionLocator of await selectedOptionsLocator.all()) {
+			if (await selectedOptionLocator.isVisible()) {
+				await selectedOptionLocator.click();
+			}
+		}
+		
+		// open drop down to select statuses
+		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
+		
+		// select statuses
+		for (const statusToPin of GLOBAL_OPTIMIZATION_PINNED_STATUSES) {
+			await multiselectComponentContainer.locator("ul li").filter({ hasText: statusToPin }).dispatchEvent("click");
+		}
+		
+		// close drop down to select statuses
+		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
 		
 	}
 	
 	
-	// 'In-Day and Resource Schedule Optimization' section
+	// 'In-Day Optimization' section
 	{
 		
-		await utils.setCheckboxesInGroup(
-			frame,
-			frame.locator("optimization-logic")
-				.locator("#pinned-status-container")
-				.and(
-					frame.locator(":below(:text('In-Day and Resource Schedule Optimization'))")
-				)
-			,
-			{
-				labelsToCheck: RESOURCE_OPTIMIZATION_PINNED_STATUSES 
-			}
+		const inDayOptimizationSection = (
+			frame
+			.locator("optimization-logic")
+			.locator(".guarded-optimization-container")
+			.filter({ 
+				has: frame.locator(".optimization-title").filter({
+					hasText: "In-Day Optimization"
+				})
+			})
 		);
+		
+		await inDayOptimizationSection.waitFor();
+		
+		
+		const multiselectComponentContainer = inDayOptimizationSection.locator(".multiselect-component-container");
+		
+		// clear all selected options first
+		await multiselectComponentContainer.waitFor();
+		const selectedOptionsLocator = multiselectComponentContainer.locator(".multiselect-pillars-container .multiselect-pillar");
+		
+		for (const selectedOptionLocator of await selectedOptionsLocator.all()) {
+			if (await selectedOptionLocator.isVisible()) {
+				await selectedOptionLocator.click();
+			}
+		}
+		
+		// open drop down to select status
+		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
+		
+		// select statuses
+		for (const statusToPin of INDAY_OPTIMIZATION_PINNED_STATUSES) {
+			await multiselectComponentContainer.locator("ul li").filter({ hasText: statusToPin }).dispatchEvent("click");
+		}
+		
+		// close drop down to select statuses
+		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
+		
+	}
+	
+	
+	// 'Resource Schedule Optimization' section
+	{
+		
+		const resourceScheduleOptimizationSection = (
+			frame
+			.locator("optimization-logic")
+			.locator(".guarded-optimization-container")
+			.filter({ 
+				has: frame.locator(".optimization-title").filter({
+					hasText: "Resource Schedule Optimization"
+				})
+			})
+		);
+		
+		await resourceScheduleOptimizationSection.waitFor();
+		
+		
+		const multiselectComponentContainer = resourceScheduleOptimizationSection.locator(".multiselect-component-container");
+		
+		// clear all selected options first
+		await multiselectComponentContainer.waitFor();
+		const selectedOptionsLocator = multiselectComponentContainer.locator(".multiselect-pillars-container .multiselect-pillar");
+		
+		for (const selectedOptionLocator of await selectedOptionsLocator.all()) {
+			if (await selectedOptionLocator.isVisible()) {
+				await selectedOptionLocator.click();
+			}
+		}
+		
+		// open drop down to select status
+		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
+		
+		// select statuses
+		for (const statusToPin of RESOURCE_OPTIMIZATION_PINNED_STATUSES) {
+			await multiselectComponentContainer.locator("ul li").filter({ hasText: statusToPin }).dispatchEvent("click");
+		}
+		
+		// close drop down to select statuses
+		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
 		
 	}
 	
