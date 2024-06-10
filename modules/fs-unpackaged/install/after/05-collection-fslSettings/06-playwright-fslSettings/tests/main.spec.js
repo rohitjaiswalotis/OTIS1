@@ -864,7 +864,8 @@ test('Setup -> Field Service Mobile App Builder -> Create/Edit and Publish', asy
 	
 	const selectPageType = async (root, name) => {
 		
-		await root.getByLabel("Page Type", { exact: true }).dispatchEvent("click");
+		//await root.getByLabel("Page Type", { exact: true }).dispatchEvent("click");
+		await root.getByRole("combobox", { name: "Page Type" }).dispatchEvent("click");
 		await utils.clickByText(root.getByRole("listbox"), name);
 		
 	}
@@ -885,7 +886,8 @@ test('Setup -> Field Service Mobile App Builder -> Create/Edit and Publish', asy
 	
 	const selectFieldServicePage = async (root, name) => {
 		
-		await root.getByLabel("Field Service Page", { exact: true }).dispatchEvent("click");
+		//await root.getByLabel("Field Service Page", { exact: true }).dispatchEvent("click");
+		await root.getByRole("combobox", { name: "Field Service Page" }).dispatchEvent("click");
 		await utils.clickByText(root.getByRole("listbox"), name);
 		
 	}
