@@ -164,15 +164,42 @@ test('Scheduling -> General Logic', async ({ basePage, baseUrl }) => {
 	await utils.uncheckBooleanSetting(frame, "Respect secondary STM operating hours");
 	
 	
-	await utils.setCheckboxesInGroup(
-		frame,
-		frame.locator("scheduling-logic")
-			.locator("#pinned-status-container")
-		,
-		{
-			labelsToCheck: GENERAL_LOGIC_PINNED_STATUSES 
+	// 'Scheduling Logic' section
+	{
+		
+		const globalOptimizationSection = (
+			frame
+			.locator("scheduling-logic")
+			.locator(".guarded-optimization-container")
+		);
+		
+		await globalOptimizationSection.waitFor();
+		
+		
+		const multiselectComponentContainer = globalOptimizationSection.locator(".multiselect-component-container");
+		
+		// clear all selected options first
+		await multiselectComponentContainer.waitFor();
+		const selectedOptionsLocator = multiselectComponentContainer.locator(".multiselect-pillars-container .multiselect-pillar");
+		
+		for (const selectedOptionLocator of await selectedOptionsLocator.all()) {
+			if (await selectedOptionLocator.isVisible()) {
+				await selectedOptionLocator.click();
+			}
 		}
-	);
+		
+		// open drop down to select statuses
+		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
+		
+		// select statuses
+		for (const statusToPin of GENERAL_LOGIC_PINNED_STATUSES) {
+			await multiselectComponentContainer.locator("ul li").filter({ hasText: statusToPin }).dispatchEvent("click");
+		}
+		
+		// close drop down to select statuses
+		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
+		
+	}
 	
 	
 	await utils.selectPicklistSettingByLabel(frame, "Work Order Priority Field", "None");
