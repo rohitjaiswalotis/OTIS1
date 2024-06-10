@@ -11,6 +11,11 @@
         <dataType>String</dataType>
     </choices>
     <choices>
+        <name>Eight</name>
+        <choiceText>8</choiceText>
+        <dataType>String</dataType>
+    </choices>
+    <choices>
         <name>Fifteen</name>
         <choiceText>15</choiceText>
         <dataType>String</dataType>
@@ -28,6 +33,11 @@
     <choices>
         <name>four</name>
         <choiceText>4</choiceText>
+        <dataType>String</dataType>
+    </choices>
+    <choices>
+        <name>Nine</name>
+        <choiceText>9</choiceText>
         <dataType>String</dataType>
     </choices>
     <choices>
@@ -63,6 +73,11 @@
     <choices>
         <name>SafetyFixes</name>
         <choiceText>Safety Fixes</choiceText>
+        <dataType>String</dataType>
+    </choices>
+    <choices>
+        <name>Seven</name>
+        <choiceText>7</choiceText>
         <dataType>String</dataType>
     </choices>
     <choices>
@@ -153,12 +168,6 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Material_Cost__c</field>
-            <value>
-                <elementReference>Material_Costt</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>Minutes__c</field>
             <value>
                 <elementReference>Minutes</elementReference>
@@ -226,7 +235,6 @@
             <dataType>String</dataType>
             <fieldText>Is Task Chargeable ?</fieldText>
             <fieldType>RadioButtons</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -237,7 +245,6 @@
             <dataType>String</dataType>
             <fieldText>Action Performed</fieldText>
             <fieldType>RadioButtons</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -247,7 +254,6 @@
             <dataType>String</dataType>
             <fieldText>Reason To Perform</fieldText>
             <fieldType>RadioButtons</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -257,7 +263,6 @@
             <dataType>String</dataType>
             <fieldText>Type Of Labour</fieldText>
             <fieldType>RadioButtons</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -269,10 +274,13 @@
             <choiceReferences>four</choiceReferences>
             <choiceReferences>Five</choiceReferences>
             <choiceReferences>six</choiceReferences>
+            <choiceReferences>Seven</choiceReferences>
+            <choiceReferences>Eight</choiceReferences>
+            <choiceReferences>Nine</choiceReferences>
             <dataType>String</dataType>
+            <defaultSelectedChoiceReference>Zero</defaultSelectedChoiceReference>
             <fieldText>Hours</fieldText>
             <fieldType>RadioButtons</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -282,9 +290,9 @@
             <choiceReferences>thirtee</choiceReferences>
             <choiceReferences>Fortyfive</choiceReferences>
             <dataType>String</dataType>
+            <defaultSelectedChoiceReference>Zero</defaultSelectedChoiceReference>
             <fieldText>Minutes</fieldText>
             <fieldType>RadioButtons</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -292,17 +300,7 @@
             <dataType>Currency</dataType>
             <fieldText>Purchase Cost</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
-            <scale>0</scale>
-        </fields>
-        <fields>
-            <name>Material_Costt</name>
-            <dataType>Currency</dataType>
-            <fieldText>Material Cost</fieldText>
-            <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>false</isRequired>
             <scale>0</scale>
         </fields>
         <fields>
@@ -310,7 +308,6 @@
             <dataType>String</dataType>
             <fieldText>Part Id</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
         </fields>
         <fields>
@@ -318,7 +315,6 @@
             <dataType>String</dataType>
             <fieldText>Context</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
         </fields>
         <nextOrFinishButtonLabel>Save</nextOrFinishButtonLabel>
