@@ -11,6 +11,11 @@
         <dataType>String</dataType>
     </choices>
     <choices>
+        <name>Eight</name>
+        <choiceText>8</choiceText>
+        <dataType>String</dataType>
+    </choices>
+    <choices>
         <name>Fifteen</name>
         <choiceText>15</choiceText>
         <dataType>String</dataType>
@@ -28,6 +33,11 @@
     <choices>
         <name>four</name>
         <choiceText>4</choiceText>
+        <dataType>String</dataType>
+    </choices>
+    <choices>
+        <name>Nine</name>
+        <choiceText>9</choiceText>
         <dataType>String</dataType>
     </choices>
     <choices>
@@ -63,6 +73,11 @@
     <choices>
         <name>SafetyFixes</name>
         <choiceText>Safety Fixes</choiceText>
+        <dataType>String</dataType>
+    </choices>
+    <choices>
+        <name>Seven</name>
+        <choiceText>7</choiceText>
         <dataType>String</dataType>
     </choices>
     <choices>
@@ -150,12 +165,6 @@
             <field>Is_Task_Chargeable__c</field>
             <value>
                 <elementReference>Is_Task_Chargeable</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Material_Cost__c</field>
-            <value>
-                <elementReference>Material_Costt</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -269,7 +278,11 @@
             <choiceReferences>four</choiceReferences>
             <choiceReferences>Five</choiceReferences>
             <choiceReferences>six</choiceReferences>
+            <choiceReferences>Seven</choiceReferences>
+            <choiceReferences>Eight</choiceReferences>
+            <choiceReferences>Nine</choiceReferences>
             <dataType>String</dataType>
+            <defaultSelectedChoiceReference>Zero</defaultSelectedChoiceReference>
             <fieldText>Hours</fieldText>
             <fieldType>RadioButtons</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -282,6 +295,7 @@
             <choiceReferences>thirtee</choiceReferences>
             <choiceReferences>Fortyfive</choiceReferences>
             <dataType>String</dataType>
+            <defaultSelectedChoiceReference>Zero</defaultSelectedChoiceReference>
             <fieldText>Minutes</fieldText>
             <fieldType>RadioButtons</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -294,15 +308,6 @@
             <fieldType>InputField</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
-            <scale>0</scale>
-        </fields>
-        <fields>
-            <name>Material_Costt</name>
-            <dataType>Currency</dataType>
-            <fieldText>Material Cost</fieldText>
-            <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>false</isRequired>
             <scale>0</scale>
         </fields>
         <fields>
