@@ -607,7 +607,7 @@ test('Optimization -> Scheduled Jobs', async ({ basePage, baseUrl }) => {
 		
 		await utils.fillSetting(frame, "Time Horizon in days", 30);
 		
-		await utils.selectPicklistSettingByLabel(frame, "Filter by criteria", "None");
+		await utils.selectPicklistSettingByLabel(frame, "Appointment Optimization Criteria", "Include all types");
 		await utils.selectPicklistSettingByLabel(frame, "Scheduling Policy", "Customer First");
 		
 		await utils.fillSetting(frame, "Email recipient user name", '');
