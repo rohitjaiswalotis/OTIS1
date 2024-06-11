@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <assignments>
+        <name>assign_record_id</name>
+        <label>assign record id</label>
+        <locationX>622</locationX>
+        <locationY>242</locationY>
+        <assignmentItems>
+            <assignToReference>Id</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Work_Order</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>assign_Variables</name>
         <label>assign Variables</label>
-        <locationX>50</locationX>
-        <locationY>782</locationY>
+        <locationX>402</locationX>
+        <locationY>2048</locationY>
         <assignmentItems>
             <assignToReference>Receipt_Required_Variable</assignToReference>
             <operator>Assign</operator>
@@ -19,8 +35,8 @@
     <assignments>
         <name>Assignment_2</name>
         <label>Assignment 2</label>
-        <locationX>50</locationX>
-        <locationY>1190</locationY>
+        <locationX>402</locationX>
+        <locationY>2456</locationY>
         <assignmentItems>
             <assignToReference>Receipt_Required_Variable</assignToReference>
             <operator>Assign</operator>
@@ -49,8 +65,8 @@
     <assignments>
         <name>Assignment_4</name>
         <label>Assignment 4</label>
-        <locationX>50</locationX>
-        <locationY>1598</locationY>
+        <locationX>402</locationX>
+        <locationY>2864</locationY>
         <assignmentItems>
             <assignToReference>ReasonAssignVar</assignToReference>
             <operator>Assign</operator>
@@ -65,8 +81,8 @@
     <assignments>
         <name>Copy_2_of_Assignment_2</name>
         <label>Copy 2 of Assignment 2</label>
-        <locationX>314</locationX>
-        <locationY>1190</locationY>
+        <locationX>666</locationX>
+        <locationY>2456</locationY>
         <assignmentItems>
             <assignToReference>Receipt_Required_Variable</assignToReference>
             <operator>Assign</operator>
@@ -92,11 +108,35 @@
             <targetReference>check_receipt_Required_and_receipt_not_present</targetReference>
         </connector>
     </assignments>
+    <choices>
+        <name>Helper</name>
+        <choiceText>Helper</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Helper</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Self</name>
+        <choiceText>Self</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Self</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Technician</name>
+        <choiceText>Technician</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Technician</stringValue>
+        </value>
+    </choices>
     <decisions>
         <name>check_Expense_Type</name>
         <label>check Expense Type</label>
-        <locationX>182</locationX>
-        <locationY>974</locationY>
+        <locationX>534</locationX>
+        <locationY>2240</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_Expension_Submission1</targetReference>
         </defaultConnector>
@@ -120,8 +160,8 @@
     <decisions>
         <name>check_expense_type_with_Company_Expense_data</name>
         <label>check expense type with Company Expense data</label>
-        <locationX>182</locationX>
-        <locationY>674</locationY>
+        <locationX>534</locationX>
+        <locationY>1940</locationY>
         <defaultConnector>
             <targetReference>check_Expense_Type</targetReference>
         </defaultConnector>
@@ -143,10 +183,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Check_for_Mobile_or_Desktop</name>
+        <label>Check for Mobile or Desktop</label>
+        <locationX>534</locationX>
+        <locationY>134</locationY>
+        <defaultConnector>
+            <targetReference>assign_record_id</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Mobile</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Work_Order</targetReference>
+            </connector>
+            <label>Mobile</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>check_if_Expense_report_exist</name>
         <label>check if Expense report exist</label>
-        <locationX>182</locationX>
-        <locationY>2522</locationY>
+        <locationX>534</locationX>
+        <locationY>3788</locationY>
         <defaultConnector>
             <targetReference>expense_report</targetReference>
         </defaultConnector>
@@ -170,8 +235,8 @@
     <decisions>
         <name>check_receipt_Required_and_receipt_not_present</name>
         <label>check receipt Required and receipt not present</label>
-        <locationX>182</locationX>
-        <locationY>1382</locationY>
+        <locationX>534</locationX>
+        <locationY>2648</locationY>
         <defaultConnector>
             <targetReference>get_Expense_Record</targetReference>
         </defaultConnector>
@@ -200,10 +265,180 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Helper_Or_Technician</name>
+        <label>Helper Or Technician?</label>
+        <locationX>688</locationX>
+        <locationY>1448</locationY>
+        <defaultConnector>
+            <targetReference>check_expense_type_with_Company_Expense_data</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Technician</defaultConnectorLabel>
+        <rules>
+            <name>HelperDescision</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Helper</leftValueReference>
+                <operator>WasSelected</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Search_Helper_Screen</targetReference>
+            </connector>
+            <label>Helper</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Self_or_Helper_or_Technician</name>
+        <label>Self or Helper or Technician?</label>
+        <locationX>534</locationX>
+        <locationY>1340</locationY>
+        <defaultConnector>
+            <targetReference>Helper_Or_Technician</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Technician or Helper</defaultConnectorLabel>
+        <rules>
+            <name>SelfChoice</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Self</leftValueReference>
+                <operator>WasSelected</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>check_expense_type_with_Company_Expense_data</targetReference>
+            </connector>
+            <label>Self</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Threshold_Check</name>
+        <label>Threshold Check</label>
+        <locationX>534</locationX>
+        <locationY>974</locationY>
+        <defaultConnector>
+            <targetReference>ErrorScreen</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Mileage_Threshold_Check</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Expense_Category1</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Mileage</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Amount</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>mileageValue</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Choose_Mileage_Type</targetReference>
+            </connector>
+            <label>Mileage Threshold Check</label>
+        </rules>
+        <rules>
+            <name>Zone_Threshold_Check</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Expense_Category1</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Zone</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Amount</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>zoneValue</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Self_or_Helper_or_Technician</targetReference>
+            </connector>
+            <label>Zone Threshold Check</label>
+        </rules>
+        <rules>
+            <name>Cartage_Threshold_check</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Expense_Category1</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cartage</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Amount</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>cartageValue</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Self_or_Helper_or_Technician</targetReference>
+            </connector>
+            <label>Cartage Threshold check</label>
+        </rules>
+        <rules>
+            <name>Per_Diem_Threshold_Check</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Expense_Category1</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Per Diem</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Amount</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>perDiemValue</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Self_or_Helper_or_Technician</targetReference>
+            </connector>
+            <label>Per Diem Threshold check</label>
+        </rules>
+        <rules>
+            <name>Other_Threshold_Check</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Expense_Category1</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Other</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Amount</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>otherValue</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Self_or_Helper_or_Technician</targetReference>
+            </connector>
+            <label>Other Threshold Check</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Upload_File_or_not</name>
         <label>Upload File or not</label>
-        <locationX>182</locationX>
-        <locationY>2222</locationY>
+        <locationX>534</locationX>
+        <locationY>3488</locationY>
         <defaultConnector>
             <targetReference>check_if_Expense_report_exist</targetReference>
         </defaultConnector>
@@ -231,8 +466,6 @@
             <label>Upload ?</label>
         </rules>
     </decisions>
-    <description>#923203 and #915081 this flow is used to create Expense and upload images under Expenses.
-998249 :- Modified For This US . Dynamic Validation Implemented instead  of Hard Code .</description>
     <dynamicChoiceSets>
         <name>ExpenseCategory</name>
         <dataType>Picklist</dataType>
@@ -248,6 +481,67 @@
         <object xsi:nil="true"/>
         <picklistField>ExpenseType</picklistField>
         <picklistObject>Expense</picklistObject>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <name>helperCollChoiceSet</name>
+        <dataType>String</dataType>
+        <displayField>Name</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>Contains</operator>
+            <value>
+                <elementReference>Search_Helper</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>FS_IsHelper__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>ServiceResource</object>
+        <outputAssignments>
+            <assignToReference>serviceResourceIds</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <valueField>Name</valueField>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <name>HelperResChoice</name>
+        <collectionReference>ServiceResourceRecords</collectionReference>
+        <dataType>String</dataType>
+        <displayField>Name</displayField>
+        <object>ServiceResource</object>
+        <valueField>Id</valueField>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <name>HelperServiceResource</name>
+        <dataType>String</dataType>
+        <displayField>Name</displayField>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>FS_IsHelper__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>true</elementReference>
+            </value>
+        </filters>
+        <object>ServiceResource</object>
+        <outputAssignments>
+            <assignToReference>SRid.Id</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <valueField>Name</valueField>
+    </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <name>mileageType</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>MileageType__c</picklistField>
+        <picklistObject>OTIS_Expense_Setting__c</picklistObject>
     </dynamicChoiceSets>
     <environments>Default</environments>
     <interviewLabel>Expense Submission Flow {!$Flow.CurrentDateTime}</interviewLabel>
@@ -274,8 +568,8 @@
     <recordCreates>
         <name>Copy_1_of_Expense_report_entity</name>
         <label>Copy 1 of Expense report entity</label>
-        <locationX>314</locationX>
-        <locationY>2738</locationY>
+        <locationX>666</locationX>
+        <locationY>4004</locationY>
         <inputAssignments>
             <field>ExpenseId</field>
             <value>
@@ -293,8 +587,8 @@
     <recordCreates>
         <name>Create_Expense_Data</name>
         <label>Create Expense Data</label>
-        <locationX>182</locationX>
-        <locationY>2114</locationY>
+        <locationX>534</locationX>
+        <locationY>3380</locationY>
         <assignRecordIdToReference>expenseRecordId</assignRecordIdToReference>
         <connector>
             <targetReference>Upload_File_or_not</targetReference>
@@ -315,6 +609,12 @@
             <field>Description</field>
             <value>
                 <elementReference>Description</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Distance_per_Miles__c</field>
+            <value>
+                <elementReference>Distance_in_Miles</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -394,8 +694,8 @@
     <recordCreates>
         <name>expense_report</name>
         <label>expense report</label>
-        <locationX>314</locationX>
-        <locationY>2630</locationY>
+        <locationX>666</locationX>
+        <locationY>3896</locationY>
         <assignRecordIdToReference>ExpenseReportId</assignRecordIdToReference>
         <connector>
             <targetReference>Copy_1_of_Expense_report_entity</targetReference>
@@ -423,8 +723,8 @@
     <recordCreates>
         <name>Expense_report_entity</name>
         <label>Expense report entity</label>
-        <locationX>50</locationX>
-        <locationY>2630</locationY>
+        <locationX>402</locationX>
+        <locationY>3896</locationY>
         <inputAssignments>
             <field>ExpenseId</field>
             <value>
@@ -442,8 +742,8 @@
     <recordLookups>
         <name>company_Expense_Data</name>
         <label>company Expense Data</label>
-        <locationX>182</locationX>
-        <locationY>350</locationY>
+        <locationX>534</locationX>
+        <locationY>650</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Otis_Expense_Settings</targetReference>
@@ -480,8 +780,8 @@
     <recordLookups>
         <name>Expense_Reports</name>
         <label>Expense Report</label>
-        <locationX>182</locationX>
-        <locationY>2006</locationY>
+        <locationX>534</locationX>
+        <locationY>3272</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Create_Expense_Data</targetReference>
@@ -511,8 +811,8 @@
     <recordLookups>
         <name>get_Expense_Record</name>
         <label>get Expense Record</label>
-        <locationX>182</locationX>
-        <locationY>1790</locationY>
+        <locationX>534</locationX>
+        <locationY>3056</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>get_Expense_Report_Entries</targetReference>
@@ -534,8 +834,8 @@
     <recordLookups>
         <name>get_Expense_Report_Entries</name>
         <label>get Expense Report Entries</label>
-        <locationX>182</locationX>
-        <locationY>1898</locationY>
+        <locationX>534</locationX>
+        <locationY>3164</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Expense_Reports</targetReference>
@@ -556,8 +856,8 @@
     <recordLookups>
         <name>Get_Otis_Expense_Settings</name>
         <label>Get Otis Expense Settings</label>
-        <locationX>182</locationX>
-        <locationY>458</locationY>
+        <locationX>534</locationX>
+        <locationY>758</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Expense_Submission</targetReference>
@@ -567,36 +867,36 @@
             <field>Company__c</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>OTIS NAA</stringValue>
+                <elementReference>company</elementReference>
             </value>
         </filters>
         <object>OTIS_Expense_Setting__c</object>
         <outputAssignments>
-            <assignToReference>testCartage</assignToReference>
-            <field>Cartage__c</field>
+            <assignToReference>cartageValue</assignToReference>
+            <field>FS_Cartage__c</field>
         </outputAssignments>
         <outputAssignments>
-            <assignToReference>TestMilege</assignToReference>
-            <field>Mileage__c</field>
+            <assignToReference>mileageValue</assignToReference>
+            <field>FS_Mileage__c</field>
         </outputAssignments>
         <outputAssignments>
-            <assignToReference>testOthers</assignToReference>
-            <field>Other__c</field>
+            <assignToReference>otherValue</assignToReference>
+            <field>FS_Other__c</field>
         </outputAssignments>
         <outputAssignments>
-            <assignToReference>testPerDiem</assignToReference>
-            <field>Per_Diem__c</field>
+            <assignToReference>perDiemValue</assignToReference>
+            <field>FS_Per_Diem__c</field>
         </outputAssignments>
         <outputAssignments>
-            <assignToReference>testZone</assignToReference>
-            <field>Zone__c</field>
+            <assignToReference>zoneValue</assignToReference>
+            <field>FS_Zone__c</field>
         </outputAssignments>
     </recordLookups>
     <recordLookups>
         <name>get_Service_Resource</name>
         <label>get Service Resource</label>
-        <locationX>182</locationX>
-        <locationY>242</locationY>
+        <locationX>534</locationX>
+        <locationY>542</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>company_Expense_Data</targetReference>
@@ -626,8 +926,8 @@
     <recordLookups>
         <name>Get_Work_Order</name>
         <label>Get Work Order</label>
-        <locationX>182</locationX>
-        <locationY>134</locationY>
+        <locationX>534</locationX>
+        <locationY>434</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>get_Service_Resource</targetReference>
@@ -646,12 +946,66 @@
         <queriedFields>WorkOrderNumber</queriedFields>
         <queriedFields>AccountId</queriedFields>
         <queriedFields>SvcReqAssignedMechanic__c</queriedFields>
+        <queriedFields>ServiceTerritoryId</queriedFields>
     </recordLookups>
+    <screens>
+        <name>Choose_Helper_Resource</name>
+        <label>Choose Helper Resource</label>
+        <locationX>556</locationX>
+        <locationY>1664</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>check_expense_type_with_Company_Expense_data</targetReference>
+        </connector>
+        <fields>
+            <name>Select_Helper_Resource</name>
+            <choiceReferences>helperCollChoiceSet</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Select Helper Resource</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Choose_Mileage_Type</name>
+        <label>Choose Mileage Type</label>
+        <locationX>50</locationX>
+        <locationY>1082</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Self_or_Helper_or_Technician</targetReference>
+        </connector>
+        <fields>
+            <name>Choose_Mileage_Type_1</name>
+            <choiceReferences>mileageType</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Choose Mileage Type</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Distance_in_Miles</name>
+            <dataType>Number</dataType>
+            <fieldText>Distance (in Miles):</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+            <scale>0</scale>
+        </fields>
+        <nextOrFinishButtonLabel>Next</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
     <screens>
         <name>Copy_1_of_Expension_Submission1</name>
         <label>Copy 1 of Expension Submission1</label>
-        <locationX>314</locationX>
-        <locationY>1082</locationY>
+        <locationX>666</locationX>
+        <locationY>2348</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -666,7 +1020,6 @@
             </defaultValue>
             <fieldText>Receipt Required</fieldText>
             <fieldType>InputField</fieldType>
-             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -677,37 +1030,74 @@
             </defaultValue>
             <fieldText>Receipt Not Present</fieldText>
             <fieldType>InputField</fieldType>
-             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <screens>
+        <name>ErrorScreen</name>
+        <label>ErrorScreen</label>
+        <locationX>1018</locationX>
+        <locationY>1082</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Expense_Submission</targetReference>
+        </connector>
+        <fields>
+            <name>Error1</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Resubmit the correct information.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Enter the proper value for the Amount as follows:&lt;/p&gt;&lt;p&gt;If the &lt;strong&gt;Expense type &lt;/strong&gt;is &lt;strong&gt;Mileage&lt;/strong&gt;, then &lt;strong&gt;Amount &lt;/strong&gt;value &amp;lt;= &lt;strong&gt;{!mileageValue}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;If the &lt;/span&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Expense type &lt;/strong&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;is &lt;/span&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Zone&lt;/strong&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;, then &lt;/span&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Amount &lt;/strong&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;value &amp;lt;=&lt;/span&gt;&lt;span style=&quot;color: rgb(2, 2, 2);&quot;&gt; &lt;/span&gt;&lt;strong style=&quot;color: rgb(2, 2, 2);&quot;&gt;{!zoneValue}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;If the &lt;/span&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Expense type &lt;/strong&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;is &lt;/span&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Per Diem&lt;/strong&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;, then &lt;/span&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Amount &lt;/strong&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;value &amp;lt;=&lt;/span&gt;&lt;span style=&quot;color: rgb(2, 2, 2);&quot;&gt; &lt;/span&gt;&lt;strong style=&quot;color: rgb(2, 2, 2);&quot;&gt;{!perDiemValue}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;If the &lt;/span&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Expense type &lt;/strong&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;is &lt;/span&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Cartage&lt;/strong&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;, then &lt;/span&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Amount &lt;/strong&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;value &amp;lt;= &lt;/span&gt;&lt;strong style=&quot;color: rgb(2, 2, 2);&quot;&gt;{!cartageValue}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;If the &lt;/span&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Expense type &lt;/strong&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;is &lt;/span&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Other&lt;/strong&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;, then &lt;/span&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Amount &lt;/strong&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;value &amp;lt;= &lt;/span&gt;&lt;strong style=&quot;color: rgb(2, 2, 2);&quot;&gt;{!otherValue}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <nextOrFinishButtonLabel>Resubmit</nextOrFinishButtonLabel>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Expense_Submission</name>
         <label>Expense Submission</label>
-        <locationX>182</locationX>
-        <locationY>566</locationY>
+        <locationX>534</locationX>
+        <locationY>866</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>check_expense_type_with_Company_Expense_data</targetReference>
+            <targetReference>Threshold_Check</targetReference>
         </connector>
+        <fields>
+            <name>SelectSHT</name>
+            <choiceReferences>Self</choiceReferences>
+            <choiceReferences>Technician</choiceReferences>
+            <choiceReferences>Helper</choiceReferences>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>SelectSHT</elementReference>
+            </defaultValue>
+            <fieldText>Creating Expense for Self / Helper / Technician?</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
         <fields>
             <name>Title</name>
             <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>Title</elementReference>
+            </defaultValue>
             <fieldText>Title</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>Description</name>
             <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>Description</elementReference>
+            </defaultValue>
             <fieldText>Description</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -718,25 +1108,31 @@
         <fields>
             <name>Transaction_Date</name>
             <dataType>Date</dataType>
+            <defaultValue>
+                <elementReference>Transaction_Date</elementReference>
+            </defaultValue>
             <fieldText>Transaction Date</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>Start_Date</name>
             <dataType>Date</dataType>
+            <defaultValue>
+                <elementReference>Start_Date</elementReference>
+            </defaultValue>
             <fieldText>Start Date</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>End_Date</name>
             <dataType>Date</dataType>
+            <defaultValue>
+                <elementReference>End_Date</elementReference>
+            </defaultValue>
             <fieldText>End Date</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
         </fields>
         <fields>
@@ -748,18 +1144,22 @@
             <name>Expense_Type1</name>
             <choiceReferences>ExpenseTypevalues</choiceReferences>
             <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>Expense_Type1</elementReference>
+            </defaultValue>
             <fieldText>Expense Type</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>Expense_Category1</name>
             <choiceReferences>ExpenseCategory</choiceReferences>
             <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>Expense_Category1</elementReference>
+            </defaultValue>
             <fieldText>Expense Category</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -769,20 +1169,6 @@
             <fieldType>InputField</fieldType>
             <isRequired>false</isRequired>
             <scale>0</scale>
-            <validationRule>
-                <errorMessage>&lt;p&gt;Enter The Correct Value for : {!Expense_Category1}&lt;/p&gt;</errorMessage>
-                <formulaExpression>OR(
-AND(({!Expense_Category1} = &apos;Mileage&apos;),Value(Text({!Amount})) &lt;= Value({!TestMilege})) 
-,
-AND(({!Expense_Category1} = &apos;Zone&apos;),Value(Text({!Amount})) &lt;= Value({!testZone}))
-,
-AND(({!Expense_Category1} = &apos;Per Diem&apos;),Value(Text({!Amount})) &lt;= Value({!testPerDiem}))
-,
-AND(({!Expense_Category1} = &apos;Cartage&apos;),Value(Text({!Amount})) &lt;= Value({!testCartage}))
-,
-AND(({!Expense_Category1} = &apos;Other&apos;),Value(Text({!Amount})) &lt;= Value({!testOthers}))
-)</formulaExpression>
-            </validationRule>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -790,8 +1176,8 @@ AND(({!Expense_Category1} = &apos;Other&apos;),Value(Text({!Amount})) &lt;= Valu
     <screens>
         <name>Expense_Submission_Flow_3</name>
         <label>Expense Submission Flow 3</label>
-        <locationX>50</locationX>
-        <locationY>1490</locationY>
+        <locationX>402</locationX>
+        <locationY>2756</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -803,7 +1189,6 @@ AND(({!Expense_Category1} = &apos;Other&apos;),Value(Text({!Amount})) &lt;= Valu
             <dataType>String</dataType>
             <fieldText>Reason</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -812,8 +1197,8 @@ AND(({!Expense_Category1} = &apos;Other&apos;),Value(Text({!Amount})) &lt;= Valu
     <screens>
         <name>Expension_Submission1</name>
         <label>Expension Submission1</label>
-        <locationX>50</locationX>
-        <locationY>1082</locationY>
+        <locationX>402</locationX>
+        <locationY>2348</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -828,7 +1213,6 @@ AND(({!Expense_Category1} = &apos;Other&apos;),Value(Text({!Amount})) &lt;= Valu
             </defaultValue>
             <fieldText>Per Diem Overnight</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -839,7 +1223,6 @@ AND(({!Expense_Category1} = &apos;Other&apos;),Value(Text({!Amount})) &lt;= Valu
             </defaultValue>
             <fieldText>Receipt Required</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -850,17 +1233,37 @@ AND(({!Expense_Category1} = &apos;Other&apos;),Value(Text({!Amount})) &lt;= Valu
             </defaultValue>
             <fieldText>Receipt Not Present</fieldText>
             <fieldType>InputField</fieldType>
-             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <screens>
+        <name>Search_Helper_Screen</name>
+        <label>Search Helper Screen</label>
+        <locationX>556</locationX>
+        <locationY>1556</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Choose_Helper_Resource</targetReference>
+        </connector>
+        <fields>
+            <name>Search_Helper</name>
+            <dataType>String</dataType>
+            <fieldText>Search Helper</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Upload_Image</name>
         <label>Upload Image</label>
-        <locationX>50</locationX>
-        <locationY>2330</locationY>
+        <locationX>402</locationX>
+        <locationY>3596</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -890,10 +1293,10 @@ AND(({!Expense_Category1} = &apos;Other&apos;),Value(Text({!Amount})) &lt;= Valu
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>56</locationX>
+        <locationX>408</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Work_Order</targetReference>
+            <targetReference>Check_for_Mobile_or_Desktop</targetReference>
         </connector>
     </start>
     <status>Active</status>
@@ -934,6 +1337,14 @@ AND(({!Expense_Category1} = &apos;Other&apos;),Value(Text({!Amount})) &lt;= Valu
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>ExpenseReport</objectType>
+    </variables>
+    <variables>
+        <name>cartageValue</name>
+        <dataType>Currency</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
     </variables>
     <variables>
         <name>company</name>
@@ -1113,11 +1524,35 @@ AND(({!Expense_Category1} = &apos;Other&apos;),Value(Text({!Amount})) &lt;= Valu
         <objectType>ExpenseReportEntry</objectType>
     </variables>
     <variables>
+        <name>mileageCurrecy</name>
+        <dataType>Currency</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+    </variables>
+    <variables>
+        <name>mileageValue</name>
+        <dataType>Currency</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+    </variables>
+    <variables>
         <name>name</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>otherValue</name>
+        <dataType>Currency</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
     </variables>
     <variables>
         <name>PerDiemOverNightCheck</name>
@@ -1132,6 +1567,14 @@ AND(({!Expense_Category1} = &apos;Other&apos;),Value(Text({!Amount})) &lt;= Valu
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>perDiemValue</name>
+        <dataType>Currency</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
     </variables>
     <variables>
         <name>ReasonAssignVar</name>
@@ -1211,6 +1654,13 @@ AND(({!Expense_Category1} = &apos;Other&apos;),Value(Text({!Amount})) &lt;= Valu
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>ServiceResIds</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>serviceResourceId</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
@@ -1224,6 +1674,30 @@ AND(({!Expense_Category1} = &apos;Other&apos;),Value(Text({!Amount})) &lt;= Valu
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>ServiceResourceRecords</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceResource</objectType>
+    </variables>
+    <variables>
+        <name>ServiceTerrMember</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceTerritoryMember</objectType>
+    </variables>
+    <variables>
+        <name>SRid</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceResource</objectType>
     </variables>
     <variables>
         <name>StatusIsNew</name>
@@ -1241,39 +1715,20 @@ AND(({!Expense_Category1} = &apos;Other&apos;),Value(Text({!Amount})) &lt;= Valu
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>testCartage</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
+        <name>STMrecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+        <objectType>ServiceTerritoryMember</objectType>
     </variables>
     <variables>
-        <name>TestMilege</name>
-        <dataType>String</dataType>
+        <name>TestAmount</name>
+        <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>testOthers</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>testPerDiem</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>testZone</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
+        <objectType>OTIS_Expense_Setting__c</objectType>
     </variables>
     <variables>
         <name>UserId</name>
@@ -1319,5 +1774,13 @@ AND(({!Expense_Category1} = &apos;Other&apos;),Value(Text({!Amount})) &lt;= Valu
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>WorkOrder</objectType>
+    </variables>
+    <variables>
+        <name>zoneValue</name>
+        <dataType>Currency</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
     </variables>
 </Flow>
