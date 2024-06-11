@@ -308,5 +308,7 @@ stages:
                         subscribers: $(subs_deployPR_FsDev)
                       ${{ elseif eq(variables['Build.SourceBranchName'], 'master') }}:
                         subscribers: $(subs_deployPR_FsRelease)
+                      ${{ elseif eq(variables['Build.SourceBranchName'], 'master-patch') }}:
+                        subscribers: $(subs_deployPR_FsPatch)
                       active: $(enableSubsDeployPR)
                   

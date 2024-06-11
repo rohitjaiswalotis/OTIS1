@@ -90,6 +90,8 @@ stages:
               parameters:
                 ${{ if and(eq(parameters.envProfile, 'default'), eq(variables['Build.SourceBranchName'], 'master')) }}:
                   envProfile: 'release'
+                ${{ elseif and(eq(parameters.envProfile, 'default'), eq(variables['Build.SourceBranchName'], 'master-patch')) }}:
+                  envProfile: 'patch'
                 ${{ else }}:
                   envProfile: ${{ parameters.envProfile }}
                 skipValidation: ${{ parameters.skipValidation }}
