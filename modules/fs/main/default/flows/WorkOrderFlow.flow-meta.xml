@@ -148,6 +148,25 @@
         <locationY>1055</locationY>
         <defaultConnectorLabel>End</defaultConnectorLabel>
         <rules>
+            <name>Less_than_1_Adequate_actual_duration</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>CountPendingSA</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <numberValue>1.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Actual Duration Inadequate</stringValue>
+                </rightValue>
+            </conditions>
+            <label>Less than 1 &amp; Adequate actual duration</label>
+        </rules>
+        <rules>
             <name>Less_than_1</name>
             <conditionLogic>and</conditionLogic>
             <conditions>

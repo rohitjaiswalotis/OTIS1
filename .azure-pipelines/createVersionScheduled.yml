@@ -8,17 +8,24 @@ pr: none
 schedules:
 
 - cron: '0 1 * * *'
-  displayName: Nightly Field Service Global Package Version Build
+  displayName: Nightly Field Service Global Dev Package Version Build
   branches:
     include:
     - dev
   always: false
 
 - cron: '0 0 * * *'
-  displayName: Nightly Field Service Japan Package Version Build
+  displayName: Nightly Field Service Japan Dev Package Version Build
   branches:
     include:
     - dev-jpn
+  always: false
+
+- cron: '0 2 * * *'
+  displayName: Nightly Field Service Global Release Package Version Build
+  branches:
+    include:
+    - master
   always: false
 
 

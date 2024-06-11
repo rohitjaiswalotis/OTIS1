@@ -164,15 +164,42 @@ test('Scheduling -> General Logic', async ({ basePage, baseUrl }) => {
 	await utils.uncheckBooleanSetting(frame, "Respect secondary STM operating hours");
 	
 	
-	await utils.setCheckboxesInGroup(
-		frame,
-		frame.locator("scheduling-logic")
-			.locator("#pinned-status-container")
-		,
-		{
-			labelsToCheck: GENERAL_LOGIC_PINNED_STATUSES 
+	// 'Scheduling Logic' section
+	{
+		
+		const globalOptimizationSection = (
+			frame
+			.locator("scheduling-logic")
+			.locator(".guarded-optimization-container")
+		);
+		
+		await globalOptimizationSection.waitFor();
+		
+		
+		const multiselectComponentContainer = globalOptimizationSection.locator(".multiselect-component-container");
+		
+		// clear all selected options first
+		await multiselectComponentContainer.waitFor();
+		const selectedOptionsLocator = multiselectComponentContainer.locator(".multiselect-pillars-container .multiselect-pillar");
+		
+		for (const selectedOptionLocator of await selectedOptionsLocator.all()) {
+			if (await selectedOptionLocator.isVisible()) {
+				await selectedOptionLocator.click();
+			}
 		}
-	);
+		
+		// open drop down to select statuses
+		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
+		
+		// select statuses
+		for (const statusToPin of GENERAL_LOGIC_PINNED_STATUSES) {
+			await multiselectComponentContainer.locator("ul li").filter({ hasText: statusToPin }).dispatchEvent("click");
+		}
+		
+		// close drop down to select statuses
+		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
+		
+	}
 	
 	
 	await utils.selectPicklistSettingByLabel(frame, "Work Order Priority Field", "None");
@@ -301,6 +328,16 @@ test('Optimization -> Logic', async ({ basePage, baseUrl }) => {
 		]
 	);
 	
+	const INDAY_OPTIMIZATION_PINNED_STATUSES = new utils.CaseInsensitiveSet(
+		[ 
+			"Enroute", 
+			"Onsite",
+			"Canceled",
+			"Cannot Complete",
+			"Completed"
+		]
+	);
+	
 	const RESOURCE_OPTIMIZATION_PINNED_STATUSES = new utils.CaseInsensitiveSet(
 		[ 
 			"Enroute", 
@@ -330,40 +367,128 @@ test('Optimization -> Logic', async ({ basePage, baseUrl }) => {
 	// 'Global Optimization' section
 	{
 		
-		await utils.setCheckboxesInGroup(
-			frame,
-			frame.locator("optimization-logic")
-				.locator("#pinned-status-container")
-				.and(
-					frame.locator(":below(:text('Global Optimization'))")
-				)
-				.and(
-					frame.locator(":above(:text('In-Day and Resource Schedule Optimization'))")
-				)
-			,
-			{
-				labelsToCheck: GLOBAL_OPTIMIZATION_PINNED_STATUSES 
-			}
+		const globalOptimizationSection = (
+			frame
+			.locator("optimization-logic")
+			.locator(".guarded-optimization-container")
+			.filter({ 
+				has: frame.locator(".optimization-title").filter({
+					hasText: "Global Optimization"
+				})
+			})
 		);
+		
+		await globalOptimizationSection.waitFor();
+		
+		
+		const multiselectComponentContainer = globalOptimizationSection.locator(".multiselect-component-container");
+		
+		// clear all selected options first
+		await multiselectComponentContainer.waitFor();
+		const selectedOptionsLocator = multiselectComponentContainer.locator(".multiselect-pillars-container .multiselect-pillar");
+		
+		for (const selectedOptionLocator of await selectedOptionsLocator.all()) {
+			if (await selectedOptionLocator.isVisible()) {
+				await selectedOptionLocator.click();
+			}
+		}
+		
+		// open drop down to select statuses
+		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
+		
+		// select statuses
+		for (const statusToPin of GLOBAL_OPTIMIZATION_PINNED_STATUSES) {
+			await multiselectComponentContainer.locator("ul li").filter({ hasText: statusToPin }).dispatchEvent("click");
+		}
+		
+		// close drop down to select statuses
+		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
 		
 	}
 	
 	
-	// 'In-Day and Resource Schedule Optimization' section
+	// 'In-Day Optimization' section
 	{
 		
-		await utils.setCheckboxesInGroup(
-			frame,
-			frame.locator("optimization-logic")
-				.locator("#pinned-status-container")
-				.and(
-					frame.locator(":below(:text('In-Day and Resource Schedule Optimization'))")
-				)
-			,
-			{
-				labelsToCheck: RESOURCE_OPTIMIZATION_PINNED_STATUSES 
-			}
+		const inDayOptimizationSection = (
+			frame
+			.locator("optimization-logic")
+			.locator(".guarded-optimization-container")
+			.filter({ 
+				has: frame.locator(".optimization-title").filter({
+					hasText: "In-Day Optimization"
+				})
+			})
 		);
+		
+		await inDayOptimizationSection.waitFor();
+		
+		
+		const multiselectComponentContainer = inDayOptimizationSection.locator(".multiselect-component-container");
+		
+		// clear all selected options first
+		await multiselectComponentContainer.waitFor();
+		const selectedOptionsLocator = multiselectComponentContainer.locator(".multiselect-pillars-container .multiselect-pillar");
+		
+		for (const selectedOptionLocator of await selectedOptionsLocator.all()) {
+			if (await selectedOptionLocator.isVisible()) {
+				await selectedOptionLocator.click();
+			}
+		}
+		
+		// open drop down to select status
+		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
+		
+		// select statuses
+		for (const statusToPin of INDAY_OPTIMIZATION_PINNED_STATUSES) {
+			await multiselectComponentContainer.locator("ul li").filter({ hasText: statusToPin }).dispatchEvent("click");
+		}
+		
+		// close drop down to select statuses
+		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
+		
+	}
+	
+	
+	// 'Resource Schedule Optimization' section
+	{
+		
+		const resourceScheduleOptimizationSection = (
+			frame
+			.locator("optimization-logic")
+			.locator(".guarded-optimization-container")
+			.filter({ 
+				has: frame.locator(".optimization-title").filter({
+					hasText: "Resource Schedule Optimization"
+				})
+			})
+		);
+		
+		await resourceScheduleOptimizationSection.waitFor();
+		
+		
+		const multiselectComponentContainer = resourceScheduleOptimizationSection.locator(".multiselect-component-container");
+		
+		// clear all selected options first
+		await multiselectComponentContainer.waitFor();
+		const selectedOptionsLocator = multiselectComponentContainer.locator(".multiselect-pillars-container .multiselect-pillar");
+		
+		for (const selectedOptionLocator of await selectedOptionsLocator.all()) {
+			if (await selectedOptionLocator.isVisible()) {
+				await selectedOptionLocator.click();
+			}
+		}
+		
+		// open drop down to select status
+		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
+		
+		// select statuses
+		for (const statusToPin of RESOURCE_OPTIMIZATION_PINNED_STATUSES) {
+			await multiselectComponentContainer.locator("ul li").filter({ hasText: statusToPin }).dispatchEvent("click");
+		}
+		
+		// close drop down to select statuses
+		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
 		
 	}
 	
@@ -482,7 +607,7 @@ test('Optimization -> Scheduled Jobs', async ({ basePage, baseUrl }) => {
 		
 		await utils.fillSetting(frame, "Time Horizon in days", 30);
 		
-		await utils.selectPicklistSettingByLabel(frame, "Filter by criteria", "None");
+		await utils.selectPicklistSettingByLabel(frame, "Appointment Optimization Criteria", "Include all types");
 		await utils.selectPicklistSettingByLabel(frame, "Scheduling Policy", "Customer First");
 		
 		await utils.fillSetting(frame, "Email recipient user name", '');
@@ -864,7 +989,8 @@ test('Setup -> Field Service Mobile App Builder -> Create/Edit and Publish', asy
 	
 	const selectPageType = async (root, name) => {
 		
-		await root.getByLabel("Page Type", { exact: true }).dispatchEvent("click");
+		//await root.getByLabel("Page Type", { exact: true }).dispatchEvent("click");
+		await root.getByRole("combobox", { name: "Page Type" }).dispatchEvent("click");
 		await utils.clickByText(root.getByRole("listbox"), name);
 		
 	}
@@ -885,7 +1011,8 @@ test('Setup -> Field Service Mobile App Builder -> Create/Edit and Publish', asy
 	
 	const selectFieldServicePage = async (root, name) => {
 		
-		await root.getByLabel("Field Service Page", { exact: true }).dispatchEvent("click");
+		//await root.getByLabel("Field Service Page", { exact: true }).dispatchEvent("click");
+		await root.getByRole("combobox", { name: "Field Service Page" }).dispatchEvent("click");
 		await utils.clickByText(root.getByRole("listbox"), name);
 		
 	}
