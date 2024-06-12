@@ -28,6 +28,13 @@ schedules:
     - master
   always: false
 
+- cron: '0 3 * * *'
+  displayName: Nightly Field Service Global Patch Package Version Build
+  branches:
+    include:
+    - master-patch
+  always: false
+
 
 parameters:
 
