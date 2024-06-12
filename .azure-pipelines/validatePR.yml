@@ -79,6 +79,12 @@ stages:
                     secureFile: fsMasterPool
                   displayName: 'Copy fsMasterPool secure file'
                   
+                - task: DownloadSEcureFile@1
+                  name: fsPatchPoolAuthFile
+                  inputs:
+                    secureFile: fsPatchPool
+                  displayName: 'Copy fsPatchPool secure file'
+                  
                 - script: |
                       
                       echo "Number of pipelines execution for $(Build.Reason): $(counter)"
@@ -92,7 +98,8 @@ stages:
                         
                         if [[ "$(System.PullRequest.TargetBranchName)" =~ ^master$ ]]; then
                           fsPoolFilePath="$(fsMasterPoolAuthFile.secureFilePath)";
-                          
+                        elif [[ "$(System.PullRequest.TargetBranchName)" =~ ^master-patch$ ]]; then
+                          fsPoolFilePath="$(fsPatchPoolAuthFile.secureFilePath)";
                         fi
                         
                       fi
