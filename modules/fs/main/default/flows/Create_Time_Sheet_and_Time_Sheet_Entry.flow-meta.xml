@@ -5,7 +5,7 @@
         <name>Check_For_TimeSheet_Record</name>
         <label>Check For TimeSheet Record</label>
         <locationX>380</locationX>
-        <locationY>755</locationY>
+        <locationY>647</locationY>
         <defaultConnector>
             <targetReference>Create_Time_Sheet_Entry_for_Enroute</targetReference>
         </defaultConnector>
@@ -29,7 +29,7 @@
     <decisions>
         <name>Check_For_TimeSheet_Records</name>
         <label>Check For TimeSheet Records</label>
-        <locationX>1172</locationX>
+        <locationX>1964</locationX>
         <locationY>971</locationY>
         <defaultConnector>
             <targetReference>Create_Time_Sheet_Entry_for_Onsite</targetReference>
@@ -55,7 +55,7 @@
         <name>Check_New_Created_Record</name>
         <label>Check New Created Record</label>
         <locationX>182</locationX>
-        <locationY>971</locationY>
+        <locationY>863</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>If_Not_Null</name>
@@ -73,7 +73,7 @@
     <decisions>
         <name>Check_New_Created_Records</name>
         <label>Check New Created Records</label>
-        <locationX>974</locationX>
+        <locationX>1766</locationX>
         <locationY>1187</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -92,8 +92,8 @@
     <decisions>
         <name>Check_the_Status</name>
         <label>Check the Status</label>
-        <locationX>1403</locationX>
-        <locationY>539</locationY>
+        <locationX>1931</locationX>
+        <locationY>431</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Enroute</name>
@@ -135,7 +135,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_Time_Sheet_Entry_for_Onsite_Status</targetReference>
+                <targetReference>SA_Status_Check</targetReference>
             </connector>
             <label>Onsite</label>
         </rules>
@@ -214,25 +214,81 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Parent_WO_RecordType_NULL_Check</name>
-        <label>Parent WO RecordType NULL Check</label>
-        <locationX>2046</locationX>
-        <locationY>323</locationY>
+        <name>Copy_1_of_Check_For_TimeSheet_Record</name>
+        <label>Check For TimeSheet Record</label>
+        <locationX>1172</locationX>
+        <locationY>755</locationY>
+        <defaultConnector>
+            <targetReference>Copy_1_of_Create_Time_Sheet_Entry_for_Enroute</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>WO_Record_type_Not_Null</name>
+            <name>Copy_2_of_If_Null</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.WorkOrder__r.RecordTypeId</leftValueReference>
-                <operator>IsNull</operator>
+                <leftValueReference>Copy_1_of_Get_ServiceResource_Related_TimeSheet_Record</leftValueReference>
+                <operator>EqualTo</operator>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Create_TimeSheet_Record</targetReference>
+            </connector>
+            <label>If Null</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Copy_1_of_Check_New_Created_Record</name>
+        <label>Check New Created Record</label>
+        <locationX>974</locationX>
+        <locationY>971</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Copy_2_of_If_Not_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Copy_1_of_Create_TimeSheet_Record</leftValueReference>
+                <operator>NotEqualTo</operator>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Create_Time_Sheet_Entry</targetReference>
+            </connector>
+            <label>If Not Null</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>SA_Status_Check</name>
+        <label>SA Status Check</label>
+        <locationX>1799</locationX>
+        <locationY>539</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Prior_Status_is_Dispatched</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.Status</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <booleanValue>false</booleanValue>
+                    <stringValue>Dispatched</stringValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_Service_Resource</targetReference>
+                <targetReference>Copy_1_of_Get_ServiceResource_Related_TimeSheet_Record</targetReference>
             </connector>
-            <label>WO Record type Not Null</label>
+            <label>Prior Status is Dispatched</label>
+        </rules>
+        <rules>
+            <name>Prior_Status_is_Enroute</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Enroute</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Time_Sheet_Entry_for_Onsite_Status</targetReference>
+            </connector>
+            <label>Prior Status is Enroute</label>
         </rules>
     </decisions>
     <description>US913825 flow is used for this US, when SA status is changed at that time time sheet entry will be created on the time sheet Object.</description>
@@ -264,10 +320,163 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
+        <name>Copy_1_of_Create_Time_Sheet_Entry</name>
+        <label>Create Time Sheet Entry</label>
+        <locationX>842</locationX>
+        <locationY>1079</locationY>
+        <inputAssignments>
+            <field>EndTime</field>
+        </inputAssignments>
+        <inputAssignments>
+            <field>LocationTimeZone</field>
+            <value>
+                <elementReference>Get_Service_Resource.TimeZone__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Multiplier_Type__c</field>
+            <value>
+                <stringValue>Regular</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Multiplier_Values__c</field>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Service_Appointment__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>StartTime</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>TimeSheetId</field>
+            <value>
+                <elementReference>Copy_1_of_Create_TimeSheet_Record</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Time_Entry_Type__c</field>
+            <value>
+                <stringValue>Work</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WorkOrderId</field>
+            <value>
+                <elementReference>$Record.WorkOrder__r.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>TimeSheetEntry</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Copy_1_of_Create_Time_Sheet_Entry_for_Enroute</name>
+        <label>Create Time Sheet Entry for Enroute</label>
+        <locationX>1370</locationX>
+        <locationY>863</locationY>
+        <inputAssignments>
+            <field>EndTime</field>
+        </inputAssignments>
+        <inputAssignments>
+            <field>LocationTimeZone</field>
+            <value>
+                <elementReference>Get_Service_Resource.TimeZone__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Multiplier_Type__c</field>
+            <value>
+                <stringValue>Regular</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Multiplier_Values__c</field>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Service_Appointment__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>StartTime</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>TimeSheetId</field>
+            <value>
+                <elementReference>Copy_1_of_Get_ServiceResource_Related_TimeSheet_Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Time_Entry_Type__c</field>
+            <value>
+                <stringValue>Work</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WorkOrderId</field>
+            <value>
+                <elementReference>$Record.WorkOrder__r.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>TimeSheetEntry</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Copy_1_of_Create_TimeSheet_Record</name>
+        <label>Create TimeSheet Record</label>
+        <locationX>974</locationX>
+        <locationY>863</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Check_New_Created_Record</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>EndDate</field>
+            <value>
+                <elementReference>TimeSheetEndDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ServiceResourceId</field>
+            <value>
+                <elementReference>$Record.AssignedServiceResource__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>StartDate</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>New</stringValue>
+            </value>
+        </inputAssignments>
+        <object>TimeSheet</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Create_Time_Sheet_Entry</name>
         <label>Create Time Sheet Entry</label>
         <locationX>50</locationX>
-        <locationY>1079</locationY>
+        <locationY>971</locationY>
         <inputAssignments>
             <field>EndTime</field>
         </inputAssignments>
@@ -326,7 +535,7 @@
         <name>Create_Time_Sheet_Entry_for_Enroute</name>
         <label>Create Time Sheet Entry for Enroute</label>
         <locationX>578</locationX>
-        <locationY>863</locationY>
+        <locationY>755</locationY>
         <inputAssignments>
             <field>EndTime</field>
         </inputAssignments>
@@ -384,7 +593,7 @@
     <recordCreates>
         <name>Create_Time_Sheet_Entry_for_Onsite</name>
         <label>Create Time Sheet Entry for Onsite</label>
-        <locationX>1370</locationX>
+        <locationX>2162</locationX>
         <locationY>1079</locationY>
         <inputAssignments>
             <field>EndTime</field>
@@ -443,7 +652,7 @@
     <recordCreates>
         <name>Create_Time_Sheet_Entry_for_Onsites</name>
         <label>Create Time Sheet Entry for Onsites</label>
-        <locationX>842</locationX>
+        <locationX>1634</locationX>
         <locationY>1295</locationY>
         <inputAssignments>
             <field>EndTime</field>
@@ -503,7 +712,7 @@
         <name>Create_TimeSheet_Record</name>
         <label>Create TimeSheet Record</label>
         <locationX>182</locationX>
-        <locationY>863</locationY>
+        <locationY>755</locationY>
         <connector>
             <targetReference>Check_New_Created_Record</targetReference>
         </connector>
@@ -537,7 +746,7 @@
     <recordCreates>
         <name>Create_TimeSheet_Records</name>
         <label>Create TimeSheet Records</label>
-        <locationX>974</locationX>
+        <locationX>1766</locationX>
         <locationY>1079</locationY>
         <connector>
             <targetReference>Check_New_Created_Records</targetReference>
@@ -570,10 +779,54 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordLookups>
+        <name>Copy_1_of_Get_ServiceResource_Related_TimeSheet_Record</name>
+        <label>Get ServiceResource Related TimeSheet Record</label>
+        <locationX>1172</locationX>
+        <locationY>647</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Copy_1_of_Check_For_TimeSheet_Record</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ServiceResourceId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Service_Resource.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>StartDate</field>
+            <operator>LessThanOrEqualTo</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>EndDate</field>
+            <operator>GreaterThanOrEqualTo</operator>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>New</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>TimeSheet</object>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Service_Resource</name>
         <label>Get Service Resource</label>
-        <locationX>1403</locationX>
-        <locationY>431</locationY>
+        <locationX>1931</locationX>
+        <locationY>323</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_the_Status</targetReference>
@@ -594,7 +847,7 @@
         <name>Get_ServiceResource_Related_TimeSheet_Record</name>
         <label>Get ServiceResource Related TimeSheet Record</label>
         <locationX>380</locationX>
-        <locationY>647</locationY>
+        <locationY>539</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_For_TimeSheet_Record</targetReference>
@@ -637,7 +890,7 @@
     <recordLookups>
         <name>Get_ServiceResource_Related_TimeSheet_Records</name>
         <label>Get ServiceResource Related TimeSheet Records</label>
-        <locationX>1172</locationX>
+        <locationX>1964</locationX>
         <locationY>863</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -681,8 +934,8 @@
     <recordLookups>
         <name>Get_Time_Sheet_Entry_for_Completed_Status</name>
         <label>Get Time Sheet Entry for Completed Status</label>
-        <locationX>1634</locationX>
-        <locationY>647</locationY>
+        <locationX>2690</locationX>
+        <locationY>539</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Update_the_Completed_Time_Sheet_Entry</targetReference>
@@ -704,7 +957,7 @@
     <recordLookups>
         <name>Get_Time_Sheet_Entry_for_Onsite_Status</name>
         <label>Get Time Sheet Entry for Onsite Status</label>
-        <locationX>1172</locationX>
+        <locationX>1964</locationX>
         <locationY>647</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -727,8 +980,8 @@
     <recordLookups>
         <name>Get_Time_Sheet_Entry_for_SA_Can_not_Complete_Status</name>
         <label>Get Time Sheet Entry for SA Can not Complete Status</label>
-        <locationX>1898</locationX>
-        <locationY>647</locationY>
+        <locationX>2954</locationX>
+        <locationY>539</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Update_the_SA_Can_not_Complete_Time_Sheet_Entry_on_ON</targetReference>
@@ -750,8 +1003,8 @@
     <recordLookups>
         <name>Get_Time_Sheet_Entry_for_the_SA_can_not_Complete_Status</name>
         <label>Get Time Sheet Entry for the SA can not Complete Status</label>
-        <locationX>2162</locationX>
-        <locationY>647</locationY>
+        <locationX>3218</locationX>
+        <locationY>539</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Update_the_SA_Can_not_Complete_Time_Sheet_Entry_on_EN</targetReference>
@@ -773,8 +1026,8 @@
     <recordUpdates>
         <name>Update_the_Completed_Time_Sheet_Entry</name>
         <label>Update the Completed Time Sheet Entry</label>
-        <locationX>1634</locationX>
-        <locationY>755</locationY>
+        <locationX>2690</locationX>
+        <locationY>647</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>EndTime</field>
@@ -850,8 +1103,8 @@
     <recordUpdates>
         <name>Update_the_SA_Can_not_Complete_Time_Sheet_Entry_on_EN</name>
         <label>Update the SA Can not Complete Time Sheet Entry on EN</label>
-        <locationX>2162</locationX>
-        <locationY>755</locationY>
+        <locationX>3218</locationX>
+        <locationY>647</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>EndTime</field>
@@ -927,8 +1180,8 @@
     <recordUpdates>
         <name>Update_the_SA_Can_not_Complete_Time_Sheet_Entry_on_ON</name>
         <label>Update the SA Can not Complete Time Sheet Entry on ON</label>
-        <locationX>1898</locationX>
-        <locationY>755</locationY>
+        <locationX>2954</locationX>
+        <locationY>647</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>EndTime</field>
@@ -1004,7 +1257,7 @@
     <recordUpdates>
         <name>UpdatetheOnsiteTimeSheetEntry</name>
         <label>Update the Onsite Time Sheet Entry</label>
-        <locationX>1172</locationX>
+        <locationX>1964</locationX>
         <locationY>755</locationY>
         <connector>
             <targetReference>Get_ServiceResource_Related_TimeSheet_Records</targetReference>
@@ -1079,7 +1332,7 @@
         <object>TimeSheetEntry</object>
     </recordUpdates>
     <start>
-        <locationX>1920</locationX>
+        <locationX>1805</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Parent_WO_RecordType_NULL_Check</targetReference>
