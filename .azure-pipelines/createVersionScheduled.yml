@@ -28,6 +28,13 @@ schedules:
     - master
   always: false
 
+- cron: '0 3 * * *'
+  displayName: Nightly Field Service Global Patch Package Version Build
+  branches:
+    include:
+    - master-patch
+  always: false
+
 
 parameters:
 
@@ -124,6 +131,8 @@ stages:
               parameters:
                 ${{ if and(eq(parameters.envProfile, 'default'), eq(variables['Build.SourceBranchName'], 'master')) }}:
                   envProfile: 'release'
+                ${{ elseif and(eq(parameters.envProfile, 'default'), eq(variables['Build.SourceBranchName'], 'master-patch')) }}:
+                  envProfile: 'patch'
                 ${{ else }}:
                   envProfile: ${{ parameters.envProfile }}
                 skipValidation: ${{ parameters.skipValidation }}
@@ -157,6 +166,8 @@ stages:
                     subscribers: $(subs_pkgVersion_FsDev)
                   ${{ elseif eq(variables['Build.SourceBranchName'], 'master') }}:
                     subscribers: $(subs_pkgVersion_FsRelease)
+                  ${{ elseif eq(variables['Build.SourceBranchName'], 'master-patch') }}:
+                    subscribers: $(subs_pkgVersion_FsPatch)
                   active: $(enableSubsPkgVersion)
                   enableDebugMode: ${{ parameters.enableDebugMode }}
               
