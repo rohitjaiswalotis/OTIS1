@@ -3,7 +3,7 @@
     <assignments>
         <name>assignBuildingContact</name>
         <label>assignBuildingContact</label>
-        <locationX>622</locationX>
+        <locationX>754</locationX>
         <locationY>1406</locationY>
         <assignmentItems>
             <assignToReference>contactId</assignToReference>
@@ -19,8 +19,8 @@
     <assignments>
         <name>contactAssign</name>
         <label>contactAssign</label>
-        <locationX>622</locationX>
-        <locationY>1814</locationY>
+        <locationX>754</locationX>
+        <locationY>1922</locationY>
         <assignmentItems>
             <assignToReference>BuildingcontactName</assignToReference>
             <operator>Add</operator>
@@ -33,9 +33,34 @@
         </connector>
     </assignments>
     <decisions>
+        <name>Decision_4</name>
+        <label>Decision 4</label>
+        <locationX>886</locationX>
+        <locationY>1814</locationY>
+        <defaultConnector>
+            <targetReference>contactLoop</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>If_true</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>contactId</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <elementReference>contactvar.Id</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>contactAssign</targetReference>
+            </connector>
+            <label>If true</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Reco</name>
         <label>Recordtype check</label>
-        <locationX>292</locationX>
+        <locationX>358</locationX>
         <locationY>458</locationY>
         <defaultConnector>
             <targetReference>unitdetails</targetReference>
@@ -60,7 +85,7 @@
     <decisions>
         <name>Unit_Not_found</name>
         <label>Unit Not found</label>
-        <locationX>534</locationX>
+        <locationX>666</locationX>
         <locationY>674</locationY>
         <defaultConnector>
             <targetReference>Building</targetReference>
@@ -104,7 +129,7 @@
     <loops>
         <name>BuildingLoop</name>
         <label>BuildingLoop</label>
-        <locationX>534</locationX>
+        <locationX>666</locationX>
         <locationY>1298</locationY>
         <assignNextValueToReference>contactrecord</assignNextValueToReference>
         <collectionReference>buildingContactRecord</collectionReference>
@@ -119,13 +144,13 @@
     <loops>
         <name>contactLoop</name>
         <label>contactLoop</label>
-        <locationX>534</locationX>
+        <locationX>666</locationX>
         <locationY>1706</locationY>
         <assignNextValueToReference>contactvar</assignNextValueToReference>
         <collectionReference>contactCollection</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
-            <targetReference>contactAssign</targetReference>
+            <targetReference>Decision_4</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
             <targetReference>Contact_Info</targetReference>
@@ -153,7 +178,7 @@
     <recordLookups>
         <name>Building</name>
         <label>Building</label>
-        <locationX>534</locationX>
+        <locationX>666</locationX>
         <locationY>1082</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -174,7 +199,7 @@
     <recordLookups>
         <name>buildingContact</name>
         <label>buildingContact</label>
-        <locationX>534</locationX>
+        <locationX>666</locationX>
         <locationY>1190</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -197,7 +222,7 @@
     <recordLookups>
         <name>get_RecordType</name>
         <label>get RecordType</label>
-        <locationX>292</locationX>
+        <locationX>358</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -220,7 +245,7 @@
     <recordLookups>
         <name>get_Service_Appoinment</name>
         <label>get Service Appoinment</label>
-        <locationX>292</locationX>
+        <locationX>358</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -244,7 +269,7 @@
     <recordLookups>
         <name>get_WO</name>
         <label>get WO</label>
-        <locationX>292</locationX>
+        <locationX>358</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -266,7 +291,7 @@
     <recordLookups>
         <name>getContact</name>
         <label>getContact</label>
-        <locationX>534</locationX>
+        <locationX>666</locationX>
         <locationY>1598</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -288,7 +313,7 @@
     <recordLookups>
         <name>unitdetails</name>
         <label>unitdetails</label>
-        <locationX>534</locationX>
+        <locationX>666</locationX>
         <locationY>566</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -320,8 +345,8 @@
     <screens>
         <name>Contact_Info</name>
         <label>Building Contact Information</label>
-        <locationX>534</locationX>
-        <locationY>2006</locationY>
+        <locationX>666</locationX>
+        <locationY>2198</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -330,6 +355,7 @@
             <fieldText>&lt;p&gt;{!BuildingcontactName}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
+        <nextOrFinishButtonLabel>Next</nextOrFinishButtonLabel>
         <showFooter>false</showFooter>
         <showHeader>false</showHeader>
     </screens>
@@ -352,7 +378,7 @@
     <screens>
         <name>error_Flow</name>
         <label>No Data</label>
-        <locationX>314</locationX>
+        <locationX>446</locationX>
         <locationY>782</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -362,11 +388,12 @@
             <fieldText>&lt;p&gt;&lt;strong&gt;No Unit found&lt;/strong&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
+        <nextOrFinishButtonLabel>Done</nextOrFinishButtonLabel>
         <showFooter>false</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>166</locationX>
+        <locationX>232</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>get_Service_Appoinment</targetReference>
