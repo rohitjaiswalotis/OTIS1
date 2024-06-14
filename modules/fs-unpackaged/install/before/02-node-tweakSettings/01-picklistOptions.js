@@ -5,7 +5,7 @@ const fs = require("fs");
 
 
 // defaults
-const DEFAULT_API_VERSION = "60.0";
+const DEFAULT_API_VERSION = "61.0";
 const DEFAULT_INSTANCE_URL = "https://test.salesforce.com";
 
 // urls
