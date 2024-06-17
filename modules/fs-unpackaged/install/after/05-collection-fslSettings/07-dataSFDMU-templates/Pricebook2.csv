@@ -1,2 +1,2 @@
-Id,Name
-01sDn000006scoAIAQ,Standard Price Book
+$$Name$IsStandard,Id,Name,IsStandard,IsActive
+Standard Price Book;true,01sDn000006scoAIAQ,Standard Price Book,true,true

@@ -373,9 +373,9 @@
             </conditions>
             <conditions>
                 <leftValueReference>$Record.TimeSheet.Status</leftValueReference>
-                <operator>NotEqualTo</operator>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Submitted</stringValue>
+                    <stringValue>Approved</stringValue>
                 </rightValue>
             </conditions>
             <connector>
