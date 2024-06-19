@@ -368,6 +368,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>PayCode__c</field>
+            <value>
+                <elementReference>Get_Service_Resource.Pay_Code__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Service_Appointment__c</field>
             <value>
                 <elementReference>$Record.Id</elementReference>
@@ -424,6 +430,12 @@
             <field>Multiplier_Values__c</field>
             <value>
                 <numberValue>1.0</numberValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>PayCode__c</field>
+            <value>
+                <elementReference>Get_Service_Resource.Pay_Code__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -521,6 +533,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>PayCode__c</field>
+            <value>
+                <elementReference>Get_Service_Resource.Pay_Code__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Service_Appointment__c</field>
             <value>
                 <elementReference>$Record.Id</elementReference>
@@ -577,6 +595,12 @@
             <field>Multiplier_Values__c</field>
             <value>
                 <numberValue>1.0</numberValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>PayCode__c</field>
+            <value>
+                <elementReference>Get_Service_Resource.Pay_Code__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -639,6 +663,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>PayCode__c</field>
+            <value>
+                <elementReference>Get_Service_Resource.Pay_Code__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Service_Appointment__c</field>
             <value>
                 <elementReference>$Record.Id</elementReference>
@@ -695,6 +725,12 @@
             <field>Multiplier_Values__c</field>
             <value>
                 <numberValue>1.0</numberValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>PayCode__c</field>
+            <value>
+                <elementReference>Get_Service_Resource.Pay_Code__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1097,6 +1133,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>PayCode__c</field>
+            <value>
+                <elementReference>Get_Service_Resource.Pay_Code__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Service_Appointment__c</field>
             <value>
                 <elementReference>$Record.Id</elementReference>
@@ -1174,6 +1216,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>PayCode__c</field>
+            <value>
+                <elementReference>Get_Service_Resource.Pay_Code__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Service_Appointment__c</field>
             <value>
                 <elementReference>$Record.Id</elementReference>
@@ -1248,6 +1296,12 @@
             <field>Multiplier_Values__c</field>
             <value>
                 <numberValue>1.0</numberValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>PayCode__c</field>
+            <value>
+                <elementReference>Get_Service_Resource.Pay_Code__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
