@@ -19,13 +19,6 @@
                 <elementReference>Initial_ETA</elementReference>
             </value>
         </assignmentItems>
-        <assignmentItems>
-            <assignToReference>serviceAppointmentRec.EarliestStartTime</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Initial_ETA</elementReference>
-            </value>
-        </assignmentItems>
         <connector>
             <targetReference>Update_Accept_Status</targetReference>
         </connector>
@@ -536,7 +529,7 @@
     <recordUpdates>
         <name>AR_Check</name>
         <label>AR Check</label>
-        <locationX>1898</locationX>
+        <locationX>2074</locationX>
         <locationY>1430</locationY>
         <connector>
             <targetReference>Update_SAToRejected</targetReference>
@@ -644,7 +637,7 @@
         <name>Update_SAToRejected</name>
         <label>Update SA To Rejected</label>
         <locationX>2074</locationX>
-        <locationY>1430</locationY>
+        <locationY>1538</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -759,7 +752,7 @@
             <dataType>String</dataType>
             <fieldText>Accept/Reject</fieldText>
             <fieldType>RadioButtons</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -800,7 +793,7 @@
             </defaultValue>
             <fieldText>Initial ETA</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <validationRule>
                 <errorMessage>&lt;p&gt;Initial ETA date/time should not be null and should not be in the past.&lt;/p&gt;</errorMessage>
