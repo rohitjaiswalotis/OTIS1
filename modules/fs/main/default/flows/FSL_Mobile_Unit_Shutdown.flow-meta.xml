@@ -6,7 +6,7 @@
         <locationX>314</locationX>
         <locationY>1106</locationY>
         <assignmentItems>
-            <assignToReference>storeShutdownLogRecords.BackInServiceDateTime__c</assignToReference>
+            <assignToReference>storeShutdownLogRecords.EndTime</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>Back_In_Service_Date_Time</elementReference>
@@ -847,6 +847,12 @@
             <field>AssetId</field>
             <value>
                 <elementReference>Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>BackInServiceDateTime__c</field>
+            <value>
+                <elementReference>Projected_Restart_Date</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
