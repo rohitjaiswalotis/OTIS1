@@ -20,7 +20,9 @@ Map<String, String> profileNameToPermSetGroup =
 		'Remote Engineer'					=>		'FS_RemoteEngineer_Persona',
 		'Solution Manager'					=>		'FS_SolutionManager_Persona',
 		'Support Analyst - Readonly'		=>		'FS_SupportAnalystReadonly_Persona',
-		'Support Analyst - Readonly_BCK'	=>		'FS_SupportAnalystReadOnlyBCK_Persona'
+		'Support Analyst - Readonly_BCK'	=>		'FS_SupportAnalystReadOnlyBCK_Persona',
+		'FS Helper'							=>		'FS_FSHelper_Persona',
+		'Field Operations Manager'			=>		'FS_FieldOperationsManager_Persona'
 	}
 ;
 

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>FS Field Operations Manager Permission Set Group</description>
+    <label>FS Field Operations Manager Persona</label>
+    <permissionSets>FS_FieldOperationsManager_Permissions</permissionSets>
+    <permissionSets>FS_Gantt_Palette_ReadOnly</permissionSets>
+</PermissionSetGroup>

@@ -5,6 +5,12 @@
 	"objects": [
 		
 		{
+			"query": "SELECT Id, Name, IsStandard, IsActive FROM Pricebook2 WHERE Name = 'Standard Price Book' AND IsStandard = true",
+			"operation": "Upsert",
+			"externalId": "Name;IsStandard"
+		},
+		
+		{
 			"query": "SELECT Id, Name FROM Account WHERE Name = 'Account Template (DO NOT USE)'",
 			"operation": "Upsert",
 			"externalId": "Name"
