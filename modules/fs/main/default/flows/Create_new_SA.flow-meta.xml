@@ -4,138 +4,82 @@
         <name>AssignRecordValuesForUpdate</name>
         <label>AssignRecordValuesForUpdate</label>
         <locationX>314</locationX>
-        <locationY>2198</locationY>
+        <locationY>2606</locationY>
         <assignmentItems>
-            <assignToReference>Service_Appointment_Record.WorkOrder__c</assignToReference>
+            <assignToReference>SA_to_create.WorkOrder__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>Id</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>Service_Appointment_Record.FSL__Pinned__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Service_Appointment_Record.Status</assignToReference>
+            <assignToReference>SA_to_create.Status</assignToReference>
             <operator>Assign</operator>
             <value>
                 <stringValue>None</stringValue>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>Service_Appointment_Record.EarliestStartTime</assignToReference>
+            <assignToReference>SA_to_create.Initial_ETA__c</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>Initial_ETA_Field</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>Service_Appointment_Record.SchedStartTime</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Initial_ETA_Field</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Service_Appointment_Record.WorkTypeId</assignToReference>
+            <assignToReference>SA_to_create.WorkTypeId</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>WorkType.Id</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>Service_Appointment_Record.DueDate</assignToReference>
+            <assignToReference>SA_to_create.DueDate</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>DueDate1</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>Service_Appointment_Record.ParentRecordId</assignToReference>
+            <assignToReference>SA_to_create.ParentRecordId</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>WorkOrderRecord.Id</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>Service_Appointment_Record.SchedEndTime</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>DueDate1</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Service_Appointment_Record.Street</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>UnitRecord.Street</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Service_Appointment_Record.City</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>UnitRecord.City</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Service_Appointment_Record.Country</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>UnitRecord.Country</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Service_Appointment_Record.PostalCode</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>UnitRecord.PostalCode</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Service_Appointment_Record.State</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>UnitRecord.State</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>Service_Appointment_Record.Subject</assignToReference>
+            <assignToReference>SA_to_create.Subject</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>Subject</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>Service_Appointment_Record.Description</assignToReference>
+            <assignToReference>SA_to_create.Description</assignToReference>
             <operator>Assign</operator>
             <value>
                 <elementReference>Description</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>Service_Appointment_Record.AssignedServiceResource__c</assignToReference>
+            <assignToReference>SA_to_create.EarliestStartTime</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>ServiceResourceData.Id</elementReference>
+                <elementReference>Earliest_Start_Permitted</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>Service_Appointment_Record.Initial_ETA__c</assignToReference>
+            <assignToReference>SA_to_create.ArrivalWindowStartTime</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Initial_ETA_Field</elementReference>
+                <elementReference>Arrival_Window_Start</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>Service_Appointment_Record.ParentRecordId</assignToReference>
+            <assignToReference>SA_to_create.ArrivalWindowEndTime</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Id</elementReference>
+                <elementReference>Arrival_Window_End</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -146,7 +90,7 @@
         <name>DueDateValue</name>
         <label>DueDateValue</label>
         <locationX>50</locationX>
-        <locationY>2006</locationY>
+        <locationY>2414</locationY>
         <assignmentItems>
             <assignToReference>DueDate1</assignToReference>
             <operator>Assign</operator>
@@ -162,7 +106,7 @@
         <name>dueDateValue1</name>
         <label>dueDateValue</label>
         <locationX>314</locationX>
-        <locationY>2006</locationY>
+        <locationY>2414</locationY>
         <assignmentItems>
             <assignToReference>DueDate1</assignToReference>
             <operator>Assign</operator>
@@ -177,8 +121,8 @@
     <assignments>
         <name>get_Open_SA_Count</name>
         <label>get Open SA Count</label>
-        <locationX>798</locationX>
-        <locationY>890</locationY>
+        <locationX>930</locationX>
+        <locationY>1298</locationY>
         <assignmentItems>
             <assignToReference>openSAcount</assignToReference>
             <operator>Add</operator>
@@ -193,12 +137,12 @@
     <decisions>
         <name>Check_Data_Or_Not</name>
         <label>Check Data Or Not</label>
-        <locationX>534</locationX>
-        <locationY>1166</locationY>
+        <locationX>666</locationX>
+        <locationY>1574</locationY>
         <defaultConnector>
             <targetReference>Show_Error</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Open SA does not exist?</defaultConnectorLabel>
+        <defaultConnectorLabel>Open SA exists</defaultConnectorLabel>
         <rules>
             <name>Open_SA_exist</name>
             <conditionLogic>and</conditionLogic>
@@ -233,14 +177,14 @@
             <connector>
                 <targetReference>Check_Work_order_Details</targetReference>
             </connector>
-            <label>Open SA exist?</label>
+            <label>Open SA doesn&apos;t exist</label>
         </rules>
     </decisions>
     <decisions>
         <name>check_Duration_Type</name>
         <label>check Duration Type</label>
         <locationX>314</locationX>
-        <locationY>1898</locationY>
+        <locationY>2306</locationY>
         <defaultConnector>
             <targetReference>AssignRecordValuesForUpdate</targetReference>
         </defaultConnector>
@@ -277,10 +221,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Check_Id_is_null_or_not</name>
+        <label>Check Id is null or not</label>
+        <locationX>974</locationX>
+        <locationY>134</locationY>
+        <defaultConnector>
+            <targetReference>Copy_1_of_Get_Work_Order_Record</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>If_not_null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Work_Order_Record</targetReference>
+            </connector>
+            <label>If not null</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Check_Work_order_Details</name>
         <label>Check Work order Details</label>
         <locationX>314</locationX>
-        <locationY>1274</locationY>
+        <locationY>1682</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_Update_Work_Order_Record</targetReference>
         </defaultConnector>
@@ -311,8 +280,8 @@
     <decisions>
         <name>Open_Appointments</name>
         <label>Open Appointments ?</label>
-        <locationX>710</locationX>
-        <locationY>782</locationY>
+        <locationX>842</locationX>
+        <locationY>1190</locationY>
         <defaultConnector>
             <targetReference>get_Open_SA_Count</targetReference>
         </defaultConnector>
@@ -338,13 +307,6 @@
                 <leftValueReference>Service_Appointment_Record.Status</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Rejected</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Service_Appointment_Record.Status</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
                     <stringValue>Completed</stringValue>
                 </rightValue>
             </conditions>
@@ -352,6 +314,53 @@
                 <targetReference>SA_Iteration</targetReference>
             </connector>
             <label>canceled , cannot completed</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Preference_Exists</name>
+        <label>Preference Exists</label>
+        <locationX>314</locationX>
+        <locationY>3038</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>No</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>PreferenceID</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Preferred_Resource_Set</targetReference>
+            </connector>
+            <label>No</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Record_type_check</name>
+        <label>Record type check</label>
+        <locationX>974</locationX>
+        <locationY>542</locationY>
+        <defaultConnector>
+            <targetReference>error</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>is_SR</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>RecordType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Service_Request</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Unit_Record</targetReference>
+            </connector>
+            <label>is SR</label>
         </rules>
     </decisions>
     <description>#921525  FS - FSL Mechanic worked on S1 Service request self assigns incomplete downgraded Service request.</description>
@@ -364,20 +373,20 @@
     <formulas>
         <name>duedatecapture1</name>
         <dataType>DateTime</dataType>
-        <expression>{!Initial_ETA_Field} + {!WorkType.EstimatedDuration}/24</expression>
+        <expression>{!Earliest_Start_Permitted} + {!WorkType.EstimatedDuration}/24</expression>
     </formulas>
     <formulas>
         <name>duedatecapture2</name>
         <dataType>DateTime</dataType>
-        <expression>{!Initial_ETA_Field}+ {!WorkType.EstimatedDuration} /(24*60)</expression>
+        <expression>{!Earliest_Start_Permitted}+ {!WorkType.EstimatedDuration} /(24*60)</expression>
     </formulas>
     <interviewLabel>Create New {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Create new SA</label>
     <loops>
         <name>SA_Iteration</name>
         <label>SA Iteration</label>
-        <locationX>534</locationX>
-        <locationY>674</locationY>
+        <locationX>666</locationX>
+        <locationY>1082</locationY>
         <assignNextValueToReference>Service_Appointment_Record</assignNextValueToReference>
         <collectionReference>ServiceAppointmentRecord</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -411,130 +420,185 @@
         <name>Create_Service_Appointment_Record</name>
         <label>Create Service Appointment Record</label>
         <locationX>314</locationX>
-        <locationY>2306</locationY>
-        <assignRecordIdToReference>newSAcreated.Id</assignRecordIdToReference>
+        <locationY>2714</locationY>
         <connector>
-            <targetReference>update_service_Appointment</targetReference>
+            <targetReference>Update_SA_record</targetReference>
         </connector>
-        <inputAssignments>
-            <field>AssignedServiceResource__c</field>
-            <value>
-                <elementReference>ServiceResourceData.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>City</field>
-            <value>
-                <elementReference>UnitRecord.City</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Country</field>
-            <value>
-                <elementReference>UnitRecord.Country</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Description</field>
-            <value>
-                <elementReference>Description</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>DueDate</field>
-            <value>
-                <elementReference>DueDate1</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>EarliestStartTime</field>
-            <value>
-                <elementReference>Initial_ETA_Field</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>FSL__Pinned__c</field>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Initial_ETA__c</field>
-            <value>
-                <elementReference>Initial_ETA_Field</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>ParentRecordId</field>
-            <value>
-                <elementReference>Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>PostalCode</field>
-            <value>
-                <elementReference>UnitRecord.PostalCode</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>SchedEndTime</field>
-            <value>
-                <elementReference>DueDate1</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>SchedStartTime</field>
-            <value>
-                <elementReference>Initial_ETA_Field</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>State</field>
-            <value>
-                <elementReference>UnitRecord.State</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Status</field>
-            <value>
-                <stringValue>None</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Street</field>
-            <value>
-                <elementReference>UnitRecord.Street</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Subject</field>
-            <value>
-                <elementReference>Subject</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>WorkOrder__c</field>
-            <value>
-                <elementReference>Id</elementReference>
-            </value>
-        </inputAssignments>
-        <object>ServiceAppointment</object>
+        <faultConnector>
+            <targetReference>err</targetReference>
+        </faultConnector>
+        <inputReference>SA_to_create</inputReference>
     </recordCreates>
+    <recordCreates>
+        <name>Preferred_Resource_Set</name>
+        <label>Preferred Resource Set</label>
+        <locationX>182</locationX>
+        <locationY>3146</locationY>
+        <inputAssignments>
+            <field>PreferenceType</field>
+            <value>
+                <stringValue>Preferred</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RelatedRecordId</field>
+            <value>
+                <elementReference>WorkOrderRecord.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ServiceResourceId</field>
+            <value>
+                <elementReference>ServiceResourceId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>ResourcePreference</object>
+    </recordCreates>
+    <recordLookups>
+        <name>Copy_1_of_Get_Work_Order_Record</name>
+        <label>Copy 1 of Get Work Order Record</label>
+        <locationX>1106</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>RecordType_Name</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Cannot Complete</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrder</object>
+        <outputReference>WorkOrderRecord</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Status</queriedFields>
+        <queriedFields>AssetId</queriedFields>
+        <queriedFields>ParentWorkOrderId</queriedFields>
+        <queriedFields>OwnerId</queriedFields>
+        <queriedFields>ServiceTerritoryId</queriedFields>
+        <queriedFields>Subject</queriedFields>
+        <queriedFields>Description</queriedFields>
+        <queriedFields>ETAByMechanicDateTime__c</queriedFields>
+        <queriedFields>FS_Priority__c</queriedFields>
+        <queriedFields>WorkTypeId</queriedFields>
+        <queriedFields>WorkOrderNumber</queriedFields>
+        <queriedFields>Priority</queriedFields>
+        <queriedFields>LastModifiedById</queriedFields>
+        <queriedFields>TrappedPassengerReleasedByOTIS__c</queriedFields>
+        <queriedFields>Reason__c</queriedFields>
+        <queriedFields>RecordTypeId</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Assigned_Resource_of_Latest_SA</name>
+        <label>Get Assigned Resource of Latest SA</label>
+        <locationX>314</locationX>
+        <locationY>2090</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>SA_Details</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>LatestSA.AssignedServiceResource__c</elementReference>
+            </value>
+        </filters>
+        <object>ServiceResource</object>
+        <outputAssignments>
+            <assignToReference>ServiceResourceId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>get_Latest_SA</name>
+        <label>get Latest SA</label>
+        <locationX>314</locationX>
+        <locationY>1982</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Assigned_Resource_of_Latest_SA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ParentRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>WorkOrderRecord.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <object>ServiceAppointment</object>
+        <outputReference>LatestSA</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Subject</queriedFields>
+        <queriedFields>Description</queriedFields>
+        <queriedFields>AssignedServiceResource__c</queriedFields>
+        <sortField>CreatedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Resource_Preference_if_any</name>
+        <label>Get Resource Preference if any</label>
+        <locationX>314</locationX>
+        <locationY>2930</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Preference_Exists</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>RelatedRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>WorkOrderRecord.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>PreferenceType</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Preferred</stringValue>
+            </value>
+        </filters>
+        <object>ResourcePreference</object>
+        <outputAssignments>
+            <assignToReference>PreferenceID</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
     <recordLookups>
         <name>Get_Service_Appointment_Record</name>
         <label>Get Service Appointment Record</label>
-        <locationX>534</locationX>
-        <locationY>566</locationY>
+        <locationX>666</locationX>
+        <locationY>974</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>SA_Iteration</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>WorkOrder__c</field>
+            <field>ParentRecordId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Id</elementReference>
+                <elementReference>WorkOrderRecord.Id</elementReference>
             </value>
         </filters>
         <object>ServiceAppointment</object>
@@ -543,32 +607,10 @@
         <queriedFields>Status</queriedFields>
     </recordLookups>
     <recordLookups>
-        <name>get_service_resource</name>
-        <label>get service resource</label>
-        <locationX>314</locationX>
-        <locationY>1682</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>SA_Details</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>RelatedRecordId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>workOrder1.LastModifiedById</elementReference>
-            </value>
-        </filters>
-        <object>ServiceResource</object>
-        <outputReference>ServiceResourceData</outputReference>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>Name</queriedFields>
-    </recordLookups>
-    <recordLookups>
         <name>Get_Service_Territory</name>
         <label>Get Service Territory</label>
-        <locationX>534</locationX>
-        <locationY>350</locationY>
+        <locationX>666</locationX>
+        <locationY>758</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Work_Type</targetReference>
@@ -589,8 +631,8 @@
     <recordLookups>
         <name>Get_Unit_Record</name>
         <label>Get Unit Record</label>
-        <locationX>534</locationX>
-        <locationY>242</locationY>
+        <locationX>666</locationX>
+        <locationY>650</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Service_Territory</targetReference>
@@ -617,11 +659,11 @@
     <recordLookups>
         <name>Get_Work_Order_Record</name>
         <label>Get Work Order Record</label>
-        <locationX>534</locationX>
-        <locationY>134</locationY>
+        <locationX>842</locationX>
+        <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Unit_Record</targetReference>
+            <targetReference>RecordType_Name</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -656,12 +698,13 @@
         <queriedFields>LastModifiedById</queriedFields>
         <queriedFields>TrappedPassengerReleasedByOTIS__c</queriedFields>
         <queriedFields>Reason__c</queriedFields>
+        <queriedFields>RecordTypeId</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>Get_Work_Type</name>
         <label>Get Work Type</label>
-        <locationX>534</locationX>
-        <locationY>458</locationY>
+        <locationX>666</locationX>
+        <locationY>866</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Service_Appointment_Record</targetReference>
@@ -681,13 +724,35 @@
         <queriedFields>DurationType</queriedFields>
     </recordLookups>
     <recordLookups>
-        <name>Updated_Work_Order</name>
-        <label>Updated Work Order</label>
-        <locationX>314</locationX>
-        <locationY>1574</locationY>
+        <name>RecordType_Name</name>
+        <label>RecordType Name</label>
+        <locationX>974</locationX>
+        <locationY>434</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>get_service_resource</targetReference>
+            <targetReference>Record_type_check</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>WorkOrderRecord.RecordTypeId</elementReference>
+            </value>
+        </filters>
+        <object>RecordType</object>
+        <outputAssignments>
+            <assignToReference>RecordType</assignToReference>
+            <field>DeveloperName</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordUpdates>
+        <name>Copy_1_of_Update_Work_Order_Record</name>
+        <label>Copy 1 of Update Work Order Record</label>
+        <locationX>446</locationX>
+        <locationY>1790</locationY>
+        <connector>
+            <targetReference>get_Latest_SA</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -697,27 +762,12 @@
                 <elementReference>WorkOrderRecord.Id</elementReference>
             </value>
         </filters>
-        <object>WorkOrder</object>
-        <outputReference>workOrder1</outputReference>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>LastModifiedById</queriedFields>
-    </recordLookups>
-    <recordUpdates>
-        <name>Copy_1_of_Update_Work_Order_Record</name>
-        <label>Copy 1 of Update Work Order Record</label>
-        <locationX>446</locationX>
-        <locationY>1382</locationY>
-        <connector>
-            <targetReference>Updated_Work_Order</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
+        <inputAssignments>
+            <field>AssignmentType__c</field>
             <value>
-                <elementReference>Id</elementReference>
+                <stringValue>Auto</stringValue>
             </value>
-        </filters>
+        </inputAssignments>
         <inputAssignments>
             <field>Priority</field>
             <value>
@@ -727,22 +777,25 @@
         <object>WorkOrder</object>
     </recordUpdates>
     <recordUpdates>
-        <name>update_service_Appointment</name>
-        <label>update service Appointment</label>
+        <name>Update_SA_record</name>
+        <label>Update SA record</label>
         <locationX>314</locationX>
-        <locationY>2414</locationY>
+        <locationY>2822</locationY>
+        <connector>
+            <targetReference>Get_Resource_Preference_if_any</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>newSAcreated.Id</elementReference>
+                <elementReference>SA_to_create.Id</elementReference>
             </value>
         </filters>
         <inputAssignments>
-            <field>Status</field>
+            <field>FSL__Auto_Schedule__c</field>
             <value>
-                <stringValue>Accepted</stringValue>
+                <booleanValue>true</booleanValue>
             </value>
         </inputAssignments>
         <object>ServiceAppointment</object>
@@ -751,18 +804,24 @@
         <name>Update_Work_Order_Record</name>
         <label>Update Work Order Record</label>
         <locationX>182</locationX>
-        <locationY>1382</locationY>
+        <locationY>1790</locationY>
         <connector>
-            <targetReference>Updated_Work_Order</targetReference>
+            <targetReference>get_Latest_SA</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>Id</elementReference>
+                <elementReference>WorkOrderRecord.Id</elementReference>
             </value>
         </filters>
+        <inputAssignments>
+            <field>AssignmentType__c</field>
+            <value>
+                <stringValue>Auto</stringValue>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>Priority</field>
             <value>
@@ -772,10 +831,42 @@
         <object>WorkOrder</object>
     </recordUpdates>
     <screens>
+        <name>err</name>
+        <label>Error</label>
+        <locationX>754</locationX>
+        <locationY>2822</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>errortext</name>
+            <fieldText>&lt;p&gt;{!$Flow.FaultMessage}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>error</name>
+        <label>New SA process</label>
+        <locationX>1282</locationX>
+        <locationY>650</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>text</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;This Action only works for Service Request WO-SA and WO Status should be &apos;Cannot Complete&apos;.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>SA_Details</name>
         <label>SA Details</label>
         <locationX>314</locationX>
-        <locationY>1790</locationY>
+        <locationY>2198</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -788,8 +879,8 @@
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>AssignendServiceResource</name>
-            <fieldText>&lt;p&gt;Assigned Service Resource : {!ServiceResourceData.Name}&lt;/p&gt;</fieldText>
+            <name>Status</name>
+            <fieldText>&lt;p&gt;Status : None&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -805,16 +896,20 @@
         <fields>
             <name>Subject</name>
             <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>LatestSA.Subject</elementReference>
+            </defaultValue>
             <fieldText>Subject</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>Description</name>
+            <defaultValue>
+                <stringValue>{!LatestSA.Description}</stringValue>
+            </defaultValue>
             <fieldText>Description</fieldText>
             <fieldType>LargeTextArea</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
         </fields>
         <fields>
@@ -822,8 +917,37 @@
             <dataType>DateTime</dataType>
             <fieldText>Initial ETA Field</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
+            <validationRule>
+                <errorMessage>&lt;p&gt;Initial ETA should not be greater than Arrival Window End.&lt;/p&gt;</errorMessage>
+                <formulaExpression>{!Initial_ETA_Field} &lt; {!Arrival_Window_End} || ISBLANK({!Arrival_Window_End})</formulaExpression>
+            </validationRule>
+        </fields>
+        <fields>
+            <name>Earliest_Start_Permitted</name>
+            <dataType>DateTime</dataType>
+            <fieldText>Earliest Start Permitted</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Arrival_Window_Start</name>
+            <dataType>DateTime</dataType>
+            <fieldText>Arrival Window Start</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Arrival_Window_End</name>
+            <dataType>DateTime</dataType>
+            <fieldText>Arrival Window End</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Duration</name>
+            <fieldText>&lt;p&gt;Duration : {!WorkType.EstimatedDuration} {!WorkType.DurationType}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
         </fields>
         <nextOrFinishButtonLabel>Create</nextOrFinishButtonLabel>
         <showFooter>true</showFooter>
@@ -832,25 +956,25 @@
     <screens>
         <description>Show Error on not present work order</description>
         <name>Show_Error</name>
-        <label>Show Error</label>
-        <locationX>754</locationX>
-        <locationY>1274</locationY>
-        <allowBack>true</allowBack>
+        <label>SA creation not allowed</label>
+        <locationX>1018</locationX>
+        <locationY>1682</locationY>
+        <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <fields>
             <name>ErrorMessage</name>
-            <fieldText>&lt;p&gt;&lt;strong&gt;New SA Creation is not allowed ,Please review Work Order or existing Service Appointment Status.&lt;/strong&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong&gt;New SA creation is not allowed. Please review Work Order or existing Service Appointment Status.&lt;/strong&gt;&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;﻿&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>408</locationX>
+        <locationX>848</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Work_Order_Record</targetReference>
+            <targetReference>Check_Id_is_null_or_not</targetReference>
         </connector>
     </start>
     <status>Active</status>
@@ -877,6 +1001,14 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>LatestSA</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
     </variables>
     <variables>
         <name>newSAcreated</name>
@@ -906,12 +1038,41 @@
         <objectType>User</objectType>
     </variables>
     <variables>
+        <name>PreferenceID</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>RecordType</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>Route1</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>ServiceTerritory</objectType>
+    </variables>
+    <variables>
+        <name>SA_to_create</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
     </variables>
     <variables>
         <name>Service_Appointment_Record</name>
@@ -936,6 +1097,13 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>ServiceResource</objectType>
+    </variables>
+    <variables>
+        <name>ServiceResourceId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>UnitRecord</name>
