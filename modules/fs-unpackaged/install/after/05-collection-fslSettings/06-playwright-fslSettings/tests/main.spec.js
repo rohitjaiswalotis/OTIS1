@@ -499,6 +499,8 @@ test('Optimization -> Logic', async ({ basePage, baseUrl }) => {
 
 
 
+/*
+// job scheduling should be done manually per GBO/territory basis
 test('Optimization -> Scheduled Jobs', async ({ basePage, baseUrl }) => {
 	
 	const TARGET_JOB_NAME = "Optimization";
@@ -666,6 +668,7 @@ test('Optimization -> Scheduled Jobs', async ({ basePage, baseUrl }) => {
 	}
 	
 });
+*/
 
 
 
@@ -690,6 +693,8 @@ test('Dispatch -> Drip Feed', async ({ basePage, baseUrl }) => {
 
 
 
+/*
+// job scheduling should be done manually per GBO/territory basis
 test('Dispatch -> Scheduled Jobs', async ({ basePage, baseUrl }) => {
 	
 	const TARGET_JOB_NAME = "Auto Dispatch";
@@ -862,6 +867,7 @@ test('Dispatch -> Scheduled Jobs', async ({ basePage, baseUrl }) => {
 	}
 	
 });
+*/
 
 
 
