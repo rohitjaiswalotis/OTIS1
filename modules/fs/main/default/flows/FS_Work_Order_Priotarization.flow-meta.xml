@@ -332,7 +332,7 @@ IF({!$Record.Asset.FS_LowUsage__c}=true,&quot;Low Usage&quot;, &quot;Regular Mai
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Obselete</status>
+    <status>Obsolete</status>
     <subflows>
         <name>Separate_values_with_Comma</name>
         <label>Separate values with Comma</label>
