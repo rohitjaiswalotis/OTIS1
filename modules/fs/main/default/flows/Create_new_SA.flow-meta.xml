@@ -4,7 +4,7 @@
         <name>AssignRecordValuesForUpdate</name>
         <label>AssignRecordValuesForUpdate</label>
         <locationX>314</locationX>
-        <locationY>2606</locationY>
+        <locationY>2906</locationY>
         <assignmentItems>
             <assignToReference>SA_to_create.WorkOrder__c</assignToReference>
             <operator>Assign</operator>
@@ -90,7 +90,7 @@
         <name>DueDateValue</name>
         <label>DueDateValue</label>
         <locationX>50</locationX>
-        <locationY>2414</locationY>
+        <locationY>2714</locationY>
         <assignmentItems>
             <assignToReference>DueDate1</assignToReference>
             <operator>Assign</operator>
@@ -106,7 +106,7 @@
         <name>dueDateValue1</name>
         <label>dueDateValue</label>
         <locationX>314</locationX>
-        <locationY>2414</locationY>
+        <locationY>2714</locationY>
         <assignmentItems>
             <assignToReference>DueDate1</assignToReference>
             <operator>Assign</operator>
@@ -121,7 +121,7 @@
     <assignments>
         <name>get_Open_SA_Count</name>
         <label>get Open SA Count</label>
-        <locationX>930</locationX>
+        <locationX>578</locationX>
         <locationY>1298</locationY>
         <assignmentItems>
             <assignToReference>openSAcount</assignToReference>
@@ -137,7 +137,7 @@
     <decisions>
         <name>Check_Data_Or_Not</name>
         <label>Check Data Or Not</label>
-        <locationX>666</locationX>
+        <locationX>314</locationX>
         <locationY>1574</locationY>
         <defaultConnector>
             <targetReference>Show_Error</targetReference>
@@ -179,12 +179,55 @@
             </connector>
             <label>Open SA doesn&apos;t exist</label>
         </rules>
+        <rules>
+            <name>Open_SA_doesnt_exists_with_mechanic_reason</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>openSAcount</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>WorkOrderRecord.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cannot Complete</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>WorkOrderRecord.TrappedPassengerReleasedByOTIS__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>WorkOrderRecord.Reason__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Additional Skills Needed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>recordId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_Work_order_Details</targetReference>
+            </connector>
+            <label>Open SA doesnt exists with mechanic reason</label>
+        </rules>
     </decisions>
     <decisions>
         <name>check_Duration_Type</name>
         <label>check Duration Type</label>
         <locationX>314</locationX>
-        <locationY>2306</locationY>
+        <locationY>2606</locationY>
         <defaultConnector>
             <targetReference>AssignRecordValuesForUpdate</targetReference>
         </defaultConnector>
@@ -223,7 +266,7 @@
     <decisions>
         <name>Check_Id_is_null_or_not</name>
         <label>Check Id is null or not</label>
-        <locationX>974</locationX>
+        <locationX>666</locationX>
         <locationY>134</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_Get_Work_Order_Record</targetReference>
@@ -249,7 +292,7 @@
         <name>Check_Work_order_Details</name>
         <label>Check Work order Details</label>
         <locationX>314</locationX>
-        <locationY>1682</locationY>
+        <locationY>1982</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_Update_Work_Order_Record</targetReference>
         </defaultConnector>
@@ -280,7 +323,7 @@
     <decisions>
         <name>Open_Appointments</name>
         <label>Open Appointments ?</label>
-        <locationX>842</locationX>
+        <locationX>490</locationX>
         <locationY>1190</locationY>
         <defaultConnector>
             <targetReference>get_Open_SA_Count</targetReference>
@@ -320,7 +363,10 @@
         <name>Preference_Exists</name>
         <label>Preference Exists</label>
         <locationX>314</locationX>
-        <locationY>3038</locationY>
+        <locationY>3230</locationY>
+        <defaultConnector>
+            <targetReference>SA_auto_schedule</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>No</name>
@@ -341,7 +387,7 @@
     <decisions>
         <name>Record_type_check</name>
         <label>Record type check</label>
-        <locationX>974</locationX>
+        <locationX>666</locationX>
         <locationY>542</locationY>
         <defaultConnector>
             <targetReference>error</targetReference>
@@ -361,6 +407,28 @@
                 <targetReference>Get_Unit_Record</targetReference>
             </connector>
             <label>is SR</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>SA_auto_schedule</name>
+        <label>SA auto schedule</label>
+        <locationX>314</locationX>
+        <locationY>3530</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>is_Supv</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>recordId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_SA_record</targetReference>
+            </connector>
+            <label>is Supv</label>
         </rules>
     </decisions>
     <description>#921525  FS - FSL Mechanic worked on S1 Service request self assigns incomplete downgraded Service request.</description>
@@ -385,7 +453,7 @@
     <loops>
         <name>SA_Iteration</name>
         <label>SA Iteration</label>
-        <locationX>666</locationX>
+        <locationX>314</locationX>
         <locationY>1082</locationY>
         <assignNextValueToReference>Service_Appointment_Record</assignNextValueToReference>
         <collectionReference>ServiceAppointmentRecord</collectionReference>
@@ -420,9 +488,9 @@
         <name>Create_Service_Appointment_Record</name>
         <label>Create Service Appointment Record</label>
         <locationX>314</locationX>
-        <locationY>2714</locationY>
+        <locationY>3014</locationY>
         <connector>
-            <targetReference>Update_SA_record</targetReference>
+            <targetReference>Get_Resource_Preference_if_any</targetReference>
         </connector>
         <faultConnector>
             <targetReference>err</targetReference>
@@ -433,7 +501,10 @@
         <name>Preferred_Resource_Set</name>
         <label>Preferred Resource Set</label>
         <locationX>182</locationX>
-        <locationY>3146</locationY>
+        <locationY>3338</locationY>
+        <connector>
+            <targetReference>SA_auto_schedule</targetReference>
+        </connector>
         <inputAssignments>
             <field>PreferenceType</field>
             <value>
@@ -457,7 +528,7 @@
     <recordLookups>
         <name>Copy_1_of_Get_Work_Order_Record</name>
         <label>Copy 1 of Get Work Order Record</label>
-        <locationX>1106</locationX>
+        <locationX>798</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -502,7 +573,7 @@
         <name>Get_Assigned_Resource_of_Latest_SA</name>
         <label>Get Assigned Resource of Latest SA</label>
         <locationX>314</locationX>
-        <locationY>2090</locationY>
+        <locationY>2390</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>SA_Details</targetReference>
@@ -525,7 +596,7 @@
         <name>get_Latest_SA</name>
         <label>get Latest SA</label>
         <locationX>314</locationX>
-        <locationY>1982</locationY>
+        <locationY>2282</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Assigned_Resource_of_Latest_SA</targetReference>
@@ -558,7 +629,7 @@
         <name>Get_Resource_Preference_if_any</name>
         <label>Get Resource Preference if any</label>
         <locationX>314</locationX>
-        <locationY>2930</locationY>
+        <locationY>3122</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Preference_Exists</targetReference>
@@ -587,7 +658,7 @@
     <recordLookups>
         <name>Get_Service_Appointment_Record</name>
         <label>Get Service Appointment Record</label>
-        <locationX>666</locationX>
+        <locationX>314</locationX>
         <locationY>974</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -609,7 +680,7 @@
     <recordLookups>
         <name>Get_Service_Territory</name>
         <label>Get Service Territory</label>
-        <locationX>666</locationX>
+        <locationX>314</locationX>
         <locationY>758</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -631,7 +702,7 @@
     <recordLookups>
         <name>Get_Unit_Record</name>
         <label>Get Unit Record</label>
-        <locationX>666</locationX>
+        <locationX>314</locationX>
         <locationY>650</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -659,7 +730,7 @@
     <recordLookups>
         <name>Get_Work_Order_Record</name>
         <label>Get Work Order Record</label>
-        <locationX>842</locationX>
+        <locationX>534</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -703,7 +774,7 @@
     <recordLookups>
         <name>Get_Work_Type</name>
         <label>Get Work Type</label>
-        <locationX>666</locationX>
+        <locationX>314</locationX>
         <locationY>866</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -726,7 +797,7 @@
     <recordLookups>
         <name>RecordType_Name</name>
         <label>RecordType Name</label>
-        <locationX>974</locationX>
+        <locationX>666</locationX>
         <locationY>434</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -750,7 +821,7 @@
         <name>Copy_1_of_Update_Work_Order_Record</name>
         <label>Copy 1 of Update Work Order Record</label>
         <locationX>446</locationX>
-        <locationY>1790</locationY>
+        <locationY>2090</locationY>
         <connector>
             <targetReference>get_Latest_SA</targetReference>
         </connector>
@@ -769,6 +840,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>FS_Priority__c</field>
+            <value>
+                <stringValue>S3</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Priority</field>
             <value>
                 <stringValue>S3 - Normal</stringValue>
@@ -779,11 +856,8 @@
     <recordUpdates>
         <name>Update_SA_record</name>
         <label>Update SA record</label>
-        <locationX>314</locationX>
-        <locationY>2822</locationY>
-        <connector>
-            <targetReference>Get_Resource_Preference_if_any</targetReference>
-        </connector>
+        <locationX>182</locationX>
+        <locationY>3638</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -804,7 +878,7 @@
         <name>Update_Work_Order_Record</name>
         <label>Update Work Order Record</label>
         <locationX>182</locationX>
-        <locationY>1790</locationY>
+        <locationY>2090</locationY>
         <connector>
             <targetReference>get_Latest_SA</targetReference>
         </connector>
@@ -823,6 +897,12 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>FS_Priority__c</field>
+            <value>
+                <stringValue>S2</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Priority</field>
             <value>
                 <stringValue>S2 - High</stringValue>
@@ -834,7 +914,7 @@
         <name>err</name>
         <label>Error</label>
         <locationX>754</locationX>
-        <locationY>2822</locationY>
+        <locationY>3122</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -849,7 +929,7 @@
     <screens>
         <name>error</name>
         <label>New SA process</label>
-        <locationX>1282</locationX>
+        <locationX>1018</locationX>
         <locationY>650</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -866,7 +946,7 @@
         <name>SA_Details</name>
         <label>SA Details</label>
         <locationX>314</locationX>
-        <locationY>2198</locationY>
+        <locationY>2498</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -901,6 +981,7 @@
             </defaultValue>
             <fieldText>Subject</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -910,6 +991,7 @@
             </defaultValue>
             <fieldText>Description</fieldText>
             <fieldType>LargeTextArea</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
         </fields>
         <fields>
@@ -917,6 +999,7 @@
             <dataType>DateTime</dataType>
             <fieldText>Initial ETA Field</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
             <validationRule>
                 <errorMessage>&lt;p&gt;Initial ETA should not be greater than Arrival Window End.&lt;/p&gt;</errorMessage>
@@ -928,6 +1011,7 @@
             <dataType>DateTime</dataType>
             <fieldText>Earliest Start Permitted</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -935,6 +1019,7 @@
             <dataType>DateTime</dataType>
             <fieldText>Arrival Window Start</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
         </fields>
         <fields>
@@ -942,6 +1027,7 @@
             <dataType>DateTime</dataType>
             <fieldText>Arrival Window End</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
         </fields>
         <fields>
@@ -957,7 +1043,7 @@
         <description>Show Error on not present work order</description>
         <name>Show_Error</name>
         <label>SA creation not allowed</label>
-        <locationX>1018</locationX>
+        <locationX>490</locationX>
         <locationY>1682</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -971,7 +1057,7 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>848</locationX>
+        <locationX>540</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Check_Id_is_null_or_not</targetReference>
