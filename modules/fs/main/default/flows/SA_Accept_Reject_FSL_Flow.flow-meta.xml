@@ -4,7 +4,7 @@
         <name>Assign_Accept_Status</name>
         <label>Assign Accept Status</label>
         <locationX>446</locationX>
-        <locationY>1514</locationY>
+        <locationY>1622</locationY>
         <assignmentItems>
             <assignToReference>serviceAppointmentRec.Status</assignToReference>
             <operator>Assign</operator>
@@ -19,6 +19,13 @@
                 <elementReference>Initial_ETA</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>serviceAppointmentRec.EarliestStartTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Initial_ETA</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Update_Accept_Status</targetReference>
         </connector>
@@ -26,8 +33,8 @@
     <assignments>
         <name>Assign_Rejected_Status</name>
         <label>Assign Rejected Status</label>
-        <locationX>1612</locationX>
-        <locationY>1106</locationY>
+        <locationX>1700</locationX>
+        <locationY>1214</locationY>
         <assignmentItems>
             <assignToReference>serviceAppointmentRec.Status</assignToReference>
             <operator>Assign</operator>
@@ -58,8 +65,8 @@
     <decisions>
         <name>Accepted_OR_Rejected</name>
         <label>Accepted OR Rejected</label>
-        <locationX>1392</locationX>
-        <locationY>998</locationY>
+        <locationX>1480</locationX>
+        <locationY>1106</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Accepted</name>
@@ -93,10 +100,32 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Checking_Assigned_Resource_is_Present_or_Not</name>
+        <label>Checking Assigned Resource is Present or Not</label>
+        <locationX>1942</locationX>
+        <locationY>2078</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Not_Present</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>newSA.AssignedServiceResource__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_SAs</targetReference>
+            </connector>
+            <label>Not Present</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Compare_Decision</name>
         <label>Compare Decision</label>
         <locationX>446</locationX>
-        <locationY>1214</locationY>
+        <locationY>1322</locationY>
         <defaultConnector>
             <targetReference>Assign_Accept_Status</targetReference>
         </defaultConnector>
@@ -121,7 +150,7 @@
         <name>Duty_Roster_check</name>
         <label>Duty Roster check</label>
         <locationX>1150</locationX>
-        <locationY>1754</locationY>
+        <locationY>1862</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_Update_SA</targetReference>
         </defaultConnector>
@@ -156,8 +185,8 @@
     <decisions>
         <name>rec_type_check</name>
         <label>rec type check</label>
-        <locationX>1023</locationX>
-        <locationY>566</locationY>
+        <locationX>1089</locationX>
+        <locationY>674</locationY>
         <defaultConnector>
             <targetReference>Get_Related_Account</targetReference>
         </defaultConnector>
@@ -181,8 +210,8 @@
     <decisions>
         <name>Rejection_Paths</name>
         <label>Rejection Paths</label>
-        <locationX>1612</locationX>
-        <locationY>1322</locationY>
+        <locationX>1700</locationX>
+        <locationY>1430</locationY>
         <defaultConnector>
             <targetReference>AR_Check</targetReference>
         </defaultConnector>
@@ -228,7 +257,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Update_WO</targetReference>
+                <targetReference>Scheduling_Policy</targetReference>
             </connector>
             <label>Give to Supervisor</label>
         </rules>
@@ -236,8 +265,8 @@
     <decisions>
         <name>SA_Status_Check</name>
         <label>SA Status Check</label>
-        <locationX>1997</locationX>
-        <locationY>782</locationY>
+        <locationX>2129</locationX>
+        <locationY>890</locationY>
         <defaultConnector>
             <targetReference>SA_already_accepted</targetReference>
         </defaultConnector>
@@ -316,11 +345,62 @@
         </value>
     </processMetadataValues>
     <processType>FieldServiceMobile</processType>
+    <recordCreates>
+        <name>ResourcePreference</name>
+        <label>ResourcePreference</label>
+        <locationX>1942</locationX>
+        <locationY>1646</locationY>
+        <assignRecordIdToReference>resourceVariable</assignRecordIdToReference>
+        <connector>
+            <targetReference>Update_WO</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>PreferenceType</field>
+            <value>
+                <stringValue>Excluded</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RelatedRecordId</field>
+            <value>
+                <elementReference>ParentWO.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ServiceResourceId</field>
+            <value>
+                <elementReference>getAssigenedSR.ServiceResourceId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>ResourcePreference</object>
+    </recordCreates>
+    <recordLookups>
+        <name>Copy_1_of_Get_SA_Records</name>
+        <label>Copy 1 of Get SA Records</label>
+        <locationX>1942</locationX>
+        <locationY>1970</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Checking_Assigned_Resource_is_Present_or_Not</targetReference>
+        </connector>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>serviceAppointmentRec.Id</elementReference>
+            </value>
+        </filters>
+        <object>ServiceAppointment</object>
+        <outputReference>newSA</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>AssignedServiceResource__c</queriedFields>
+    </recordLookups>
     <recordLookups>
         <name>Get_Full_WO</name>
         <label>Get Full WO</label>
-        <locationX>1023</locationX>
-        <locationY>242</locationY>
+        <locationX>1089</locationX>
+        <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>get_WO</targetReference>
@@ -341,7 +421,7 @@
         <name>Get_Office_Of_SR</name>
         <label>Get Office Of SR</label>
         <locationX>1546</locationX>
-        <locationY>1430</locationY>
+        <locationY>1538</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Reassign</targetReference>
@@ -363,8 +443,8 @@
     <recordLookups>
         <name>Get_RecordType</name>
         <label>Get RecordType</label>
-        <locationX>1023</locationX>
-        <locationY>458</locationY>
+        <locationX>1089</locationX>
+        <locationY>566</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>rec_type_check</targetReference>
@@ -386,8 +466,8 @@
     <recordLookups>
         <name>Get_Related_Account</name>
         <label>Get Related Account</label>
-        <locationX>1997</locationX>
-        <locationY>674</locationY>
+        <locationX>2129</locationX>
+        <locationY>782</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>SA_Status_Check</targetReference>
@@ -408,11 +488,11 @@
     <recordLookups>
         <name>Get_SA_Records</name>
         <label>Get SA Records</label>
-        <locationX>1023</locationX>
+        <locationX>1089</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Full_WO</targetReference>
+            <targetReference>Get_SR_from_Assigned_Resource</targetReference>
         </connector>
         <filterLogic>or</filterLogic>
         <filters>
@@ -435,10 +515,32 @@
         <queriedFields>LastModifiedById</queriedFields>
     </recordLookups>
     <recordLookups>
+        <name>Get_SR_from_Assigned_Resource</name>
+        <label>Get SR from Assigned Resource</label>
+        <locationX>1089</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Full_WO</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ServiceResourceId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>serviceAppointmentRec.AssignedServiceResource__c</elementReference>
+            </value>
+        </filters>
+        <object>AssignedResource</object>
+        <outputReference>getAssigenedSR</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>ServiceResourceId</queriedFields>
+    </recordLookups>
+    <recordLookups>
         <name>Get_units_of_Route</name>
         <label>Get units of Route</label>
         <locationX>1150</locationX>
-        <locationY>1646</locationY>
+        <locationY>1754</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Duty_Roster_check</targetReference>
@@ -460,8 +562,8 @@
     <recordLookups>
         <name>get_WO</name>
         <label>get WO</label>
-        <locationX>1023</locationX>
-        <locationY>350</locationY>
+        <locationX>1089</locationX>
+        <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_RecordType</targetReference>
@@ -484,7 +586,7 @@
         <name>Route_Coverage_Records</name>
         <label>Route Coverage Records</label>
         <locationX>1150</locationX>
-        <locationY>1430</locationY>
+        <locationY>1538</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>ShiftPattenEntries</targetReference>
@@ -504,10 +606,33 @@
         </outputAssignments>
     </recordLookups>
     <recordLookups>
+        <name>Scheduling_Policy</name>
+        <label>Scheduling Policy</label>
+        <locationX>1942</locationX>
+        <locationY>1538</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>ResourcePreference</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>Contains</operator>
+            <value>
+                <stringValue>Customer First</stringValue>
+            </value>
+        </filters>
+        <object>FSL__Scheduling_Policy__c</object>
+        <outputAssignments>
+            <assignToReference>schedulingPolicy</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
         <name>ShiftPattenEntries</name>
         <label>ShiftPattenEntries</label>
         <locationX>1150</locationX>
-        <locationY>1538</locationY>
+        <locationY>1646</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_units_of_Route</targetReference>
@@ -529,8 +654,8 @@
     <recordUpdates>
         <name>AR_Check</name>
         <label>AR Check</label>
-        <locationX>2074</locationX>
-        <locationY>1430</locationY>
+        <locationX>2250</locationX>
+        <locationY>1538</locationY>
         <connector>
             <targetReference>Update_SAToRejected</targetReference>
         </connector>
@@ -561,7 +686,7 @@
         <name>Copy_1_of_Update_SA</name>
         <label>Update SA To None</label>
         <locationX>1282</locationX>
-        <locationY>1862</locationY>
+        <locationY>1970</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -579,7 +704,7 @@
         <name>SR_Reassignment</name>
         <label>SR Reassignment</label>
         <locationX>1546</locationX>
-        <locationY>1646</locationY>
+        <locationY>1754</locationY>
         <connector>
             <targetReference>Update_WO_Of_SA</targetReference>
         </connector>
@@ -609,7 +734,7 @@
         <name>Update_Accept_Status</name>
         <label>Update Accept Status</label>
         <locationX>446</locationX>
-        <locationY>1622</locationY>
+        <locationY>1730</locationY>
         <faultConnector>
             <targetReference>Error_Message</targetReference>
         </faultConnector>
@@ -618,8 +743,11 @@
     <recordUpdates>
         <name>Update_SA</name>
         <label>Update SA</label>
-        <locationX>1810</locationX>
-        <locationY>1538</locationY>
+        <locationX>1942</locationX>
+        <locationY>1862</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Get_SA_Records</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -631,13 +759,58 @@
         <inputAssignments>
             <field>AssignedServiceResource__c</field>
         </inputAssignments>
+        <inputAssignments>
+            <field>FSL__Auto_Schedule__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>FSL__InJeopardyReason__c</field>
+            <value>
+                <stringValue>Rejection SPV Assignment</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>FSL__Scheduling_Policy_Used__c</field>
+            <value>
+                <elementReference>schedulingPolicy</elementReference>
+            </value>
+        </inputAssignments>
+        <object>ServiceAppointment</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_SAs</name>
+        <label>Update SA</label>
+        <locationX>1810</locationX>
+        <locationY>2186</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>newSA.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>FSL__InJeopardyReason__c</field>
+            <value>
+                <stringValue>Supervisor Review Required</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>FSL__InJeopardy__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
         <object>ServiceAppointment</object>
     </recordUpdates>
     <recordUpdates>
         <name>Update_SAToRejected</name>
         <label>Update SA To Rejected</label>
-        <locationX>2074</locationX>
-        <locationY>1538</locationY>
+        <locationX>2250</locationX>
+        <locationY>1646</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -657,8 +830,8 @@
     <recordUpdates>
         <name>Update_WO</name>
         <label>Update WO</label>
-        <locationX>1810</locationX>
-        <locationY>1430</locationY>
+        <locationX>1942</locationX>
+        <locationY>1754</locationY>
         <connector>
             <targetReference>Update_SA</targetReference>
         </connector>
@@ -670,6 +843,12 @@
                 <elementReference>serviceAppointmentRec.ParentRecordId</elementReference>
             </value>
         </filters>
+        <inputAssignments>
+            <field>AssignmentType__c</field>
+            <value>
+                <stringValue>Auto</stringValue>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>FS_Mark_For_Supervisor_Review__c</field>
             <value>
@@ -700,7 +879,7 @@
         <name>Update_WO_Of_SA</name>
         <label>Update WO Of SA</label>
         <locationX>1546</locationX>
-        <locationY>1754</locationY>
+        <locationY>1862</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -727,8 +906,8 @@
     <screens>
         <name>Accept_OR_Reject</name>
         <label>Accept OR Reject</label>
-        <locationX>1392</locationX>
-        <locationY>890</locationY>
+        <locationX>1480</locationX>
+        <locationY>998</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -752,7 +931,7 @@
             <dataType>String</dataType>
             <fieldText>Accept/Reject</fieldText>
             <fieldType>RadioButtons</fieldType>
-             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -762,7 +941,7 @@
         <name>Error_Message</name>
         <label>Error Message</label>
         <locationX>754</locationX>
-        <locationY>1730</locationY>
+        <locationY>1838</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -778,7 +957,7 @@
         <name>Provide_Initial_ETA</name>
         <label>Provide Initial ETA</label>
         <locationX>446</locationX>
-        <locationY>1106</locationY>
+        <locationY>1214</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -793,7 +972,7 @@
             </defaultValue>
             <fieldText>Initial ETA</fieldText>
             <fieldType>InputField</fieldType>
-             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <validationRule>
                 <errorMessage>&lt;p&gt;Initial ETA date/time should not be null and should not be in the past.&lt;/p&gt;</errorMessage>
@@ -812,7 +991,7 @@
         <name>Reassign</name>
         <label>Reassign</label>
         <locationX>1546</locationX>
-        <locationY>1538</locationY>
+        <locationY>1646</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -833,8 +1012,8 @@
     <screens>
         <name>Rejection_Reason</name>
         <label>Rejection Reason</label>
-        <locationX>1612</locationX>
-        <locationY>1214</locationY>
+        <locationX>1700</locationX>
+        <locationY>1322</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -858,8 +1037,8 @@
     <screens>
         <name>SA_already_accepted</name>
         <label>SA already accepted.</label>
-        <locationX>2602</locationX>
-        <locationY>890</locationY>
+        <locationX>2778</locationX>
+        <locationY>998</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -875,7 +1054,7 @@
         <name>test2</name>
         <label>test</label>
         <locationX>50</locationX>
-        <locationY>674</locationY>
+        <locationY>782</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -891,7 +1070,7 @@
         <name>Warning_Screen_Element</name>
         <label>Warning Screen</label>
         <locationX>314</locationX>
-        <locationY>1322</locationY>
+        <locationY>1430</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -908,7 +1087,7 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>897</locationX>
+        <locationX>963</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_SA_Records</targetReference>
@@ -924,11 +1103,48 @@
         <objectType>Account</objectType>
     </variables>
     <variables>
+        <name>getAssigenedSR</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>AssignedResource</objectType>
+    </variables>
+    <variables>
+        <name>getAssignedService</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>getAssignedServiceResource</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>getAssignedServices</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>Id</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>newSA</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
     </variables>
     <variables>
         <name>NewSR</name>
@@ -975,6 +1191,13 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>resourceVariable</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>Rotecoverageids</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
@@ -983,6 +1206,13 @@
     </variables>
     <variables>
         <name>RouteCoverage</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>schedulingPolicy</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
