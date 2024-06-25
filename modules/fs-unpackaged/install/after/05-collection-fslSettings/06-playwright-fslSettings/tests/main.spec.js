@@ -316,6 +316,25 @@ test('Scheduling -> Routing', async ({ basePage, baseUrl }) => {
 
 
 
+test('Dispatcher Console UI -> Gantt Configurations', async ({ basePage, baseUrl }) => {
+	
+	await utils.openSettings(basePage, baseUrl);
+	
+	const frame = utils.getMainFrame(basePage);
+	
+	await utils.switchToSettingsMenu(frame, "Dispatcher Console UI");
+	
+	await utils.switchToSettingsTab(frame, "Gantt Configurations");
+	
+	await utils.checkBooleanSetting(frame, "Show secondary Service Territory Members on Gantt chart");
+	
+	
+	await utils.clickSaveSettingButton(frame);
+	
+});
+
+
+
 test('Optimization -> Logic', async ({ basePage, baseUrl }) => {
 	
 	const GLOBAL_OPTIMIZATION_PINNED_STATUSES = new utils.CaseInsensitiveSet(
