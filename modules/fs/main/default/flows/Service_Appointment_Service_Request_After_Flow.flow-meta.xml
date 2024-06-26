@@ -221,7 +221,7 @@
         <locationX>880</locationX>
         <locationY>839</locationY>
         <defaultConnector>
-            <targetReference>Get_WO_Details</targetReference>
+            <targetReference>Downgrading_WO</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -267,6 +267,31 @@
                 <targetReference>Get_Assigned_Resource</targetReference>
             </connector>
             <label>if Status Change</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_unit_production</name>
+        <label>Check unit production</label>
+        <locationX>781</locationX>
+        <locationY>1247</locationY>
+        <defaultConnector>
+            <targetReference>Update_WO</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>If_it_is_true</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Unit__r.FS_ProductionUnitMaintenance__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Update_WO</targetReference>
+            </connector>
+            <label>If it is true</label>
         </rules>
     </decisions>
     <decisions>
@@ -321,6 +346,73 @@
                 <targetReference>No_LTA_Update</targetReference>
             </connector>
             <label>If Priority either S3 or S4</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Downgrading_WO</name>
+        <label>Downgrading WO</label>
+        <locationX>979</locationX>
+        <locationY>1139</locationY>
+        <defaultConnector>
+            <targetReference>Get_WO_Details</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>If_SA_status_changed_and_issue_is_not_fixed</name>
+            <conditionLogic>(1 OR 2 OR 3 )AND 4 AND 5 AND 6 AND 7</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cannot Complete</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Canceled</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.Fixed_Issue__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Yes</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.TrappedPassengerReleasedByOTIS__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.Priority</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>S1 - Emergency</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_unit_production</targetReference>
+            </connector>
+            <label>If SA status changed and issue is not fixed</label>
         </rules>
     </decisions>
     <decisions>
@@ -514,7 +606,8 @@
     <description>#902617: This flow is used to send notification to supervisor when SA assigned to Mechanic and send text message to mechanic upon assigned SA to mechanic.
 #902447: If WO Priority is S1 or S2 LTA field will be updated with SA Created date +1 hour For S3 and S4 no update on LTA.
 #920644: Updating FTF count for each mechanic on service resource used to calculate FTF of last 7 days on Service resource level
-#936465: To update the SA&apos;s related WO and WO&apos;s related Case</description>
+#936465: To update the SA&apos;s related WO and WO&apos;s related Case
+#921568_921600 : To update WO priority when issue is not fixed</description>
     <environments>Default</environments>
     <formulas>
         <name>last5mindateTime</name>
@@ -774,6 +867,36 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
+        <name>Copy_1_of_Update_WO</name>
+        <label>Copy 1 of Update WO</label>
+        <locationX>649</locationX>
+        <locationY>1355</locationY>
+        <connector>
+            <targetReference>Get_WO_Details</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WorkOrder__r.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>FS_Priority__c</field>
+            <value>
+                <stringValue>S2</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Priority</field>
+            <value>
+                <stringValue>S2 - High</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
+    <recordUpdates>
         <name>No_LTA_Update</name>
         <label>No LTA Update</label>
         <locationX>726</locationX>
@@ -802,6 +925,36 @@
         </inputAssignments>
         <inputReference>$Record</inputReference>
     </recordUpdates>
+    <recordUpdates>
+        <name>Update_WO</name>
+        <label>Update WO</label>
+        <locationX>913</locationX>
+        <locationY>1355</locationY>
+        <connector>
+            <targetReference>Get_WO_Details</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WorkOrder__r.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>FS_Priority__c</field>
+            <value>
+                <stringValue>S3</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Priority</field>
+            <value>
+                <stringValue>S3 - Normal</stringValue>
+            </value>
+        </inputAssignments>
+        <object>WorkOrder</object>
+    </recordUpdates>
     <start>
         <locationX>856</locationX>
         <locationY>0</locationY>
@@ -819,7 +972,7 @@
         <locationX>748</locationX>
         <locationY>947</locationY>
         <connector>
-            <targetReference>Get_WO_Details</targetReference>
+            <targetReference>Downgrading_WO</targetReference>
         </connector>
         <flowName>Auto_launched_Update_FTF_Count</flowName>
         <inputAssignments>
