@@ -766,12 +766,6 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>FSL__InJeopardyReason__c</field>
-            <value>
-                <stringValue>Rejection SPV Assignment</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>FSL__Scheduling_Policy_Used__c</field>
             <value>
                 <elementReference>schedulingPolicy</elementReference>
