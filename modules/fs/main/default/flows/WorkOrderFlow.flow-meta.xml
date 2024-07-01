@@ -4,8 +4,8 @@
     <assignments>
         <name>Assign_Auto_Schedule_False</name>
         <label>Assign Auto Schedule False</label>
-        <locationX>3130</locationX>
-        <locationY>2879</locationY>
+        <locationX>2954</locationX>
+        <locationY>1703</locationY>
         <assignmentItems>
             <assignToReference>Loop_Thorugh_SA_List.FSL__Auto_Schedule__c</assignToReference>
             <operator>Assign</operator>
@@ -27,8 +27,8 @@
     <assignments>
         <name>Assign_Auto_Schedule_True</name>
         <label>Assign Auto Schedule True</label>
-        <locationX>3746</locationX>
-        <locationY>2879</locationY>
+        <locationX>3570</locationX>
+        <locationY>1703</locationY>
         <assignmentItems>
             <assignToReference>Loop_Through_SA_List1.FSL__Auto_Schedule__c</assignToReference>
             <operator>Assign</operator>
@@ -50,8 +50,8 @@
     <assignments>
         <name>Assignment</name>
         <label>Assignment</label>
-        <locationX>8014</locationX>
-        <locationY>1271</locationY>
+        <locationX>7706</locationX>
+        <locationY>1055</locationY>
         <assignmentItems>
             <assignToReference>Loop_SAs.DueDate</assignToReference>
             <operator>Assign</operator>
@@ -73,7 +73,7 @@
     <assignments>
         <name>Count_OF_Pending_SA</name>
         <label>Count OF Pending SA</label>
-        <locationX>974</locationX>
+        <locationX>1106</locationX>
         <locationY>947</locationY>
         <assignmentItems>
             <assignToReference>CountPendingSA</assignToReference>
@@ -89,8 +89,8 @@
     <assignments>
         <name>Skill_Found</name>
         <label>Skill Found</label>
-        <locationX>4626</locationX>
-        <locationY>1487</locationY>
+        <locationX>3878</locationX>
+        <locationY>2729</locationY>
         <assignmentItems>
             <assignToReference>SkillFound</assignToReference>
             <operator>Assign</operator>
@@ -105,7 +105,7 @@
     <assignments>
         <name>Value_Assign</name>
         <label>Value Assign</label>
-        <locationX>4934</locationX>
+        <locationX>5418</locationX>
         <locationY>947</locationY>
         <assignmentItems>
             <assignToReference>AdvSkillSplitterV2</assignToReference>
@@ -144,7 +144,7 @@
     <decisions>
         <name>Check_Count</name>
         <label>Check Count</label>
-        <locationX>974</locationX>
+        <locationX>1106</locationX>
         <locationY>1055</locationY>
         <defaultConnectorLabel>End</defaultConnectorLabel>
         <rules>
@@ -186,7 +186,7 @@
         <description>This Decision Will Check For Whether the Work Order is of Type Maintenance or Not .</description>
         <name>Check_For_Maintenance</name>
         <label>Check For Maintenance</label>
-        <locationX>5462</locationX>
+        <locationX>6089</locationX>
         <locationY>623</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -234,7 +234,7 @@
         <description>check if he status is cancelled or not</description>
         <name>Check_for_Status</name>
         <label>Check for Status</label>
-        <locationX>5462</locationX>
+        <locationX>6089</locationX>
         <locationY>323</locationY>
         <defaultConnector>
             <targetReference>Mark_For_RM_Review</targetReference>
@@ -298,7 +298,7 @@
     <decisions>
         <name>DetectionofFieldChange</name>
         <label>Detection of Field Change</label>
-        <locationX>3680</locationX>
+        <locationX>3790</locationX>
         <locationY>839</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -622,7 +622,7 @@
     <decisions>
         <name>If_Get_SA_has_any_Value</name>
         <label>If Get SA has any Value</label>
-        <locationX>6122</locationX>
+        <locationX>6606</locationX>
         <locationY>947</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -644,7 +644,7 @@
     <decisions>
         <name>If_SA_status_is_in_Progress</name>
         <label>If SA status is in Progress</label>
-        <locationX>3482</locationX>
+        <locationX>4802</locationX>
         <locationY>1871</locationY>
         <defaultConnectorLabel>in Progress</defaultConnectorLabel>
         <rules>
@@ -687,8 +687,8 @@
     <decisions>
         <name>Is_Skill_Found</name>
         <label>Is Skill Found</label>
-        <locationX>4538</locationX>
-        <locationY>1763</locationY>
+        <locationX>3790</locationX>
+        <locationY>3005</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Skill_Found_Record_Delete</name>
@@ -709,8 +709,8 @@
     <decisions>
         <name>Null_Check</name>
         <label>Null Check</label>
-        <locationX>3174</locationX>
-        <locationY>2663</locationY>
+        <locationX>2998</locationX>
+        <locationY>1487</locationY>
         <defaultConnectorLabel>Null</defaultConnectorLabel>
         <rules>
             <name>Not_Null</name>
@@ -731,8 +731,8 @@
     <decisions>
         <name>Null_Check1</name>
         <label>Null Check</label>
-        <locationX>3790</locationX>
-        <locationY>2663</locationY>
+        <locationX>3614</locationX>
+        <locationY>1487</locationY>
         <defaultConnectorLabel>Null</defaultConnectorLabel>
         <rules>
             <name>Not_Null1</name>
@@ -753,8 +753,8 @@
     <decisions>
         <name>SA_Scheduling_Automation</name>
         <label>SA Scheduling Automation</label>
-        <locationX>3680</locationX>
-        <locationY>2447</locationY>
+        <locationX>3504</locationX>
+        <locationY>1271</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Waiting_For_Parts_OR_Parts_Requested</name>
@@ -825,8 +825,8 @@
     <decisions>
         <name>Skill_Is_Present</name>
         <label>Skill Is Present</label>
-        <locationX>4758</locationX>
-        <locationY>1379</locationY>
+        <locationX>4010</locationX>
+        <locationY>2621</locationY>
         <defaultConnector>
             <targetReference>Loop_Skill_Check_Revert</targetReference>
         </defaultConnector>
@@ -850,8 +850,8 @@
     <decisions>
         <name>Skill_requirement_Value</name>
         <label>Skill requirement Value?</label>
-        <locationX>4142</locationX>
-        <locationY>1271</locationY>
+        <locationX>2734</locationX>
+        <locationY>1163</locationY>
         <defaultConnector>
             <targetReference>Looping_All_Selected_Values_of_AdditionalSkills_Field</targetReference>
         </defaultConnector>
@@ -875,7 +875,7 @@
     <decisions>
         <name>Skill_requirement_Value_v2</name>
         <label>Skill requirement Value v2</label>
-        <locationX>3526</locationX>
+        <locationX>4846</locationX>
         <locationY>1163</locationY>
         <defaultConnector>
             <targetReference>Looping_All_Selected_Values_of_AdditionalSkills_Field_v2</targetReference>
@@ -900,7 +900,7 @@
     <decisions>
         <name>Update_Work_Order_decision</name>
         <label>Update Work Order decision</label>
-        <locationX>3614</locationX>
+        <locationX>4032</locationX>
         <locationY>731</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -996,120 +996,6 @@
                 <targetReference>Get_Pending_SA</targetReference>
             </connector>
             <label>Update SPR and Review</label>
-        </rules>
-        <rules>
-            <name>WOLI_Items_Present</name>
-            <conditionLogic>(1 OR 2) AND (3 OR 4) AND 5 AND 6 AND 7</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record__Prior.Total_WOLI_with_Checked_Review__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Total_WOLI_with_Checked_Review__c</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Status</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Unassigned</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Get_New_System_Reason_2</targetReference>
-            </connector>
-            <label>WOLI Items Present</label>
-        </rules>
-        <rules>
-            <name>WOLI_Empty</name>
-            <conditionLogic>1 AND 2 AND (3 OR 4) AND (5 OR 6) AND 7</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.Total_WOLI_with_Checked_Review__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record__Prior.Total_WOLI_with_Checked_Review__c</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Status</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Unassigned</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Update_Supervisor_Review_and_Reason_to_empty</targetReference>
-            </connector>
-            <label>WOLI Empty</label>
         </rules>
         <rules>
             <name>QuickActionPartUpdate</name>
@@ -1249,7 +1135,7 @@
             </connector>
             <label>Gantt Priority</label>
         </rules>
-         <rules>
+        <rules>
             <name>Check_Site_Arrival_Time</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
@@ -1265,7 +1151,8 @@
             <label>Check Site Arrival Time</label>
         </rules>
     </decisions>
-    <description>WO Flow with Record Type Filter ( With Custom Settings )</description>
+    <description>WO Flow with Record Type Filter ( With Custom Settings )
+Removed references of WO.Total Woli with checked Review Field - 1 July 24</description>
     <environments>Default</environments>
     <formulas>
         <description>flow rundate +2. the 2 is coming from custom setting &quot;otis custom setting&quot;</description>
@@ -1303,7 +1190,7 @@
     <loops>
         <name>Loop_SA</name>
         <label>Loop SA</label>
-        <locationX>3306</locationX>
+        <locationX>4626</locationX>
         <locationY>1763</locationY>
         <collectionReference>FetchSA</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -1317,8 +1204,8 @@
     <loops>
         <name>Loop_SAs</name>
         <label>Loop SA</label>
-        <locationX>7926</locationX>
-        <locationY>1163</locationY>
+        <locationX>7618</locationX>
+        <locationY>947</locationY>
         <collectionReference>Get_SAs</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1331,8 +1218,8 @@
     <loops>
         <name>Loop_Skill_Check_Revert</name>
         <label>Loop Skill Check Revert</label>
-        <locationX>4538</locationX>
-        <locationY>1271</locationY>
+        <locationX>3790</locationX>
+        <locationY>2513</locationY>
         <collectionReference>AdvSkillSplitterV2</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1345,8 +1232,8 @@
     <loops>
         <name>Loop_Thorugh_SA_List</name>
         <label>Loop Through SA List</label>
-        <locationX>3042</locationX>
-        <locationY>2771</locationY>
+        <locationX>2866</locationX>
+        <locationY>1595</locationY>
         <collectionReference>Get_ALL_SA</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1359,8 +1246,8 @@
     <loops>
         <name>Loop_Through_SA_List1</name>
         <label>Loop Through SA List</label>
-        <locationX>3658</locationX>
-        <locationY>2771</locationY>
+        <locationX>3482</locationX>
+        <locationY>1595</locationY>
         <collectionReference>Get_ALL_SA1</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1373,8 +1260,8 @@
     <loops>
         <name>Looping_All_Selected_Values_of_AdditionalSkills_Field</name>
         <label>Looping All Selected Values of AdditionalSkills Field</label>
-        <locationX>3922</locationX>
-        <locationY>1163</locationY>
+        <locationX>2514</locationX>
+        <locationY>1055</locationY>
         <collectionReference>String_splitting_with_subflow.SplitResults</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1384,7 +1271,7 @@
     <loops>
         <name>Looping_All_Selected_Values_of_AdditionalSkills_Field_v2</name>
         <label>Looping All Selected Values of AdditionalSkills Field v2</label>
-        <locationX>3306</locationX>
+        <locationX>4626</locationX>
         <locationY>1055</locationY>
         <collectionReference>AdvSkillSplitter</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -1392,7 +1279,7 @@
             <targetReference>Skill_requirement_Value_v2</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <isGoTo>true</isGoTo>
+             <isGoTo>true</isGoTo>
             <targetReference>UpdatingWOPartStatus</targetReference>
         </noMoreValuesConnector>
     </loops>
@@ -1432,7 +1319,7 @@
     <recordCreates>
         <name>Create_New_SA</name>
         <label>Create New SA</label>
-        <locationX>5990</locationX>
+        <locationX>6474</locationX>
         <locationY>1055</locationY>
         <inputAssignments>
             <field>DueDate</field>
@@ -1470,7 +1357,7 @@
     <recordCreates>
         <name>Create_Repair_Skills_Required_Record_v2</name>
         <label>Create Repair Skills Required Record v2</label>
-        <locationX>3394</locationX>
+        <locationX>4714</locationX>
         <locationY>1271</locationY>
         <connector>
             <targetReference>Looping_All_Selected_Values_of_AdditionalSkills_Field_v2</targetReference>
@@ -1499,7 +1386,7 @@
     <recordCreates>
         <name>Create_Skill_Requirement</name>
         <label>Create Skill Requirement</label>
-        <locationX>2690</locationX>
+        <locationX>3504</locationX>
         <locationY>947</locationY>
         <connector>
             <targetReference>Update_WO_Part_Status</targetReference>
@@ -1528,8 +1415,8 @@
     <recordCreates>
         <name>CreateSkillsRequiredRecord</name>
         <label>Create Repair Skills Required Record</label>
-        <locationX>4010</locationX>
-        <locationY>1379</locationY>
+        <locationX>2602</locationX>
+        <locationY>1271</locationY>
         <connector>
             <targetReference>Looping_All_Selected_Values_of_AdditionalSkills_Field</targetReference>
         </connector>
@@ -1557,7 +1444,7 @@
     <recordCreates>
         <name>Creation_of_SA_Record</name>
         <label>Creation of SA Record</label>
-        <locationX>2690</locationX>
+        <locationX>3504</locationX>
         <locationY>1163</locationY>
         <connector>
             <isGoTo>true</isGoTo>
@@ -1599,7 +1486,7 @@
     <recordCreates>
         <name>CreationOfSAOnAnotherVisit</name>
         <label>Creation Of SA On Another Visit</label>
-        <locationX>5726</locationX>
+        <locationX>6210</locationX>
         <locationY>839</locationY>
         <assignRecordIdToReference>NewlyCreatedSA</assignRecordIdToReference>
         <connector>
@@ -1646,7 +1533,7 @@
     <recordCreates>
         <name>SA_Creation_after_Part_Delivery</name>
         <label>SA Creation after Part Delivery</label>
-        <locationX>3306</locationX>
+        <locationX>4626</locationX>
         <locationY>2255</locationY>
         <connector>
             <targetReference>SA_Scheduling_Automation</targetReference>
@@ -1687,8 +1574,8 @@
     <recordDeletes>
         <name>DeleteSkillRequiredRelatedRecordsFromWOHasContextMenu</name>
         <label>Delete SkillRequired related records from WO has context menu</label>
-        <locationX>4406</locationX>
-        <locationY>1871</locationY>
+        <locationX>3658</locationX>
+        <locationY>3113</locationY>
         <connector>
             <targetReference>Update_Addtional_Skill</targetReference>
         </connector>
@@ -1726,7 +1613,7 @@
     <recordLookups>
         <name>FetchSA</name>
         <label>Fetch SA</label>
-        <locationX>3306</locationX>
+        <locationX>4626</locationX>
         <locationY>1655</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1747,8 +1634,8 @@
     <recordLookups>
         <name>Get_ALL_SA</name>
         <label>Get ALL SA</label>
-        <locationX>3174</locationX>
-        <locationY>2555</locationY>
+        <locationX>2998</locationX>
+        <locationY>1379</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Null_Check</targetReference>
@@ -1803,8 +1690,8 @@
     <recordLookups>
         <name>Get_ALL_SA1</name>
         <label>Get ALL SA</label>
-        <locationX>3790</locationX>
-        <locationY>2555</locationY>
+        <locationX>3614</locationX>
+        <locationY>1379</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Null_Check1</targetReference>
@@ -1866,7 +1753,7 @@
     <recordLookups>
         <name>Get_Pending_SA</name>
         <label>Get Pending SA</label>
-        <locationX>974</locationX>
+        <locationX>1106</locationX>
         <locationY>839</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1915,7 +1802,7 @@
     <recordLookups>
         <name>Get_related_completed_SA_records</name>
         <label>Get related completed SA records</label>
-        <locationX>6518</locationX>
+        <locationX>7002</locationX>
         <locationY>839</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1945,7 +1832,7 @@
     <recordLookups>
         <name>Get_Related_SA</name>
         <label>Get Related SA</label>
-        <locationX>6782</locationX>
+        <locationX>7266</locationX>
         <locationY>839</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1966,7 +1853,7 @@
     <recordLookups>
         <name>Get_SA</name>
         <label>Get SA</label>
-        <locationX>6122</locationX>
+        <locationX>6606</locationX>
         <locationY>839</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -2022,8 +1909,8 @@
     <recordLookups>
         <name>Get_SAs</name>
         <label>Get SA</label>
-        <locationX>7926</locationX>
-        <locationY>1055</locationY>
+        <locationX>7618</locationX>
+        <locationY>839</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Loop_SAs</targetReference>
@@ -2064,7 +1951,7 @@
     <recordUpdates>
         <name>Change_SA_status_to_Cancelled</name>
         <label>Change SA status to Cancelled</label>
-        <locationX>4538</locationX>
+        <locationX>5154</locationX>
         <locationY>1055</locationY>
         <connector>
             <targetReference>Additional_Skill_String_Splitter_v2</targetReference>
@@ -2101,7 +1988,7 @@
     <recordUpdates>
         <name>Closing_Triggering_WO_upon_Review</name>
         <label>Closing Triggering WO upon Review</label>
-        <locationX>6518</locationX>
+        <locationX>7002</locationX>
         <locationY>947</locationY>
         <inputAssignments>
             <field>FS_System_Reason__c</field>
@@ -2124,7 +2011,7 @@
         <description>This Update component will work when SPV cancel the WO</description>
         <name>Mark_For_RM_Review</name>
         <label>Mark For RM Review</label>
-        <locationX>5550</locationX>
+        <locationX>6177</locationX>
         <locationY>431</locationY>
         <connector>
             <targetReference>Check_For_Maintenance</targetReference>
@@ -2190,7 +2077,7 @@
     <recordUpdates>
         <name>Set_WO_status_to_OnHold_and_PartsStatus_to_WaitingForParts</name>
         <label>Set WO status to OnHold and PartsStatus to WaitingForParts</label>
-        <locationX>4538</locationX>
+        <locationX>5154</locationX>
         <locationY>947</locationY>
         <connector>
             <targetReference>Change_SA_status_to_Cancelled</targetReference>
@@ -2212,8 +2099,8 @@
     <recordUpdates>
         <name>Update_Addtional_Skill</name>
         <label>Update Addtional Skill</label>
-        <locationX>4406</locationX>
-        <locationY>1979</locationY>
+        <locationX>3658</locationX>
+        <locationY>3221</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -2230,23 +2117,24 @@
     <recordUpdates>
         <name>Update_List_Of_SA</name>
         <label>Update List Of SA</label>
-        <locationX>3658</locationX>
-        <locationY>3071</locationY>
+        <locationX>3482</locationX>
+        <locationY>1895</locationY>
         <inputReference>ListOfUpdatedSA</inputReference>
     </recordUpdates>
     <recordUpdates>
         <name>Update_List_Of_SA1</name>
         <label>Update List Of SA</label>
-        <locationX>3042</locationX>
-        <locationY>3071</locationY>
+        <locationX>2866</locationX>
+        <locationY>1895</locationY>
         <inputReference>ListOfUnscheduledSA</inputReference>
     </recordUpdates>
     <recordUpdates>
         <name>Update_Part_Status_for_Forecast_Part_Delivery_Date</name>
         <label>Update Part Status for Forecast Part Delivery Date</label>
-        <locationX>1898</locationX>
+        <locationX>1634</locationX>
         <locationY>947</locationY>
         <connector>
+            <isGoTo>true</isGoTo>
             <targetReference>SA_Scheduling_Automation</targetReference>
         </connector>
         <inputAssignments>
@@ -2260,10 +2148,10 @@
     <recordUpdates>
         <name>Update_Part_Status_for_Forecast_Part_Delivery_Date_Null</name>
         <label>Update Part Status for Forecast Part Delivery Date Null</label>
-        <locationX>5198</locationX>
+        <locationX>5682</locationX>
         <locationY>947</locationY>
         <connector>
-             <isGoTo>true</isGoTo>
+            <isGoTo>true</isGoTo>
             <targetReference>SA_Scheduling_Automation</targetReference>
         </connector>
         <inputAssignments>
@@ -2277,7 +2165,7 @@
     <recordUpdates>
         <name>Update_Part_Status_for_Forecast_Part_Delivery_Date_v2</name>
         <label>Update Part Status for Forecast Part Delivery Date v2</label>
-        <locationX>3922</locationX>
+        <locationX>4890</locationX>
         <locationY>947</locationY>
         <connector>
             <isGoTo>true</isGoTo>
@@ -2294,7 +2182,7 @@
     <recordUpdates>
         <name>Update_Priority_for_Gantt_on_SA</name>
         <label>Update Priority for Gantt on SA</label>
-        <locationX>6782</locationX>
+        <locationX>7266</locationX>
         <locationY>947</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -2315,7 +2203,7 @@
     <recordUpdates>
         <name>Update_Reason_and_SPR</name>
         <label>Update Reason and SPR</label>
-        <locationX>842</locationX>
+        <locationX>1106</locationX>
         <locationY>1271</locationY>
         <inputAssignments>
             <field>FS_Mark_For_Supervisor_Review__c</field>
@@ -2367,52 +2255,14 @@
     <recordUpdates>
         <name>Update_SA_Due_date</name>
         <label>Update SA Due date</label>
-        <locationX>7926</locationX>
-        <locationY>1463</locationY>
+        <locationX>7618</locationX>
+        <locationY>1247</locationY>
         <inputReference>StoreSAduedate</inputReference>
-    </recordUpdates>
-    <recordUpdates>
-        <name>Update_Supervisor_Review_and_Reason</name>
-        <label>Update Supervisor Review and Reason</label>
-        <locationX>1370</locationX>
-        <locationY>947</locationY>
-        <inputAssignments>
-            <field>FS_Mark_For_Supervisor_Review__c</field>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>FS_System_Reason__c</field>
-            <value>
-                <elementReference>UpdatedSystemReason</elementReference>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record</inputReference>
-    </recordUpdates>
-    <recordUpdates>
-        <name>Update_Supervisor_Review_and_Reason_to_empty</name>
-        <label>Update Supervisor Review and Reason to empty</label>
-        <locationX>1634</locationX>
-        <locationY>839</locationY>
-        <inputAssignments>
-            <field>FS_Mark_For_Supervisor_Review__c</field>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>FS_System_Reason__c</field>
-            <value>
-                <stringValue></stringValue>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
         <name>Update_WO_Part_Status</name>
         <label>Update WO Part Status</label>
-        <locationX>2690</locationX>
+        <locationX>3504</locationX>
         <locationY>1055</locationY>
         <connector>
             <targetReference>Creation_of_SA_Record</targetReference>
@@ -2428,7 +2278,7 @@
     <recordUpdates>
         <name>UpdatingWoFields</name>
         <label>Updating Wo Fields</label>
-        <locationX>5726</locationX>
+        <locationX>6210</locationX>
         <locationY>947</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -2448,7 +2298,7 @@
         <description>When Actual Part deliver date is filled this automation gonna happen .</description>
         <name>UpdatingWOPartStatus</name>
         <label>Updating WO Part Status</label>
-        <locationX>3306</locationX>
+        <locationX>4626</locationX>
         <locationY>1547</locationY>
         <connector>
             <targetReference>FetchSA</targetReference>
@@ -2462,7 +2312,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>5336</locationX>
+        <locationX>5963</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Check_for_Status</targetReference>
@@ -2504,7 +2354,7 @@
     <subflows>
         <name>Additional_Skill_String_Splitter</name>
         <label>Additional Skill String Splitter</label>
-        <locationX>3306</locationX>
+        <locationX>4626</locationX>
         <locationY>947</locationY>
         <connector>
             <targetReference>Looping_All_Selected_Values_of_AdditionalSkills_Field_v2</targetReference>
@@ -2530,7 +2380,7 @@
     <subflows>
         <name>Additional_Skill_String_Splitter_v2</name>
         <label>Additional Skill String Splitter v2</label>
-        <locationX>4538</locationX>
+        <locationX>5154</locationX>
         <locationY>1163</locationY>
         <connector>
             <targetReference>Loop_Skill_Check_Revert</targetReference>
@@ -2556,7 +2406,7 @@
     <subflows>
         <name>Get_New_System_Reason</name>
         <label>Get New System Reason</label>
-        <locationX>842</locationX>
+        <locationX>1106</locationX>
         <locationY>1163</locationY>
         <connector>
             <targetReference>Update_Reason_and_SPR</targetReference>
@@ -2580,36 +2430,10 @@
         </outputAssignments>
     </subflows>
     <subflows>
-        <name>Get_New_System_Reason_2</name>
-        <label>Get New System Reason 2</label>
-        <locationX>1370</locationX>
-        <locationY>839</locationY>
-        <connector>
-            <targetReference>Update_Supervisor_Review_and_Reason</targetReference>
-        </connector>
-        <flowName>FS_SubFlowSystemReasonPriority</flowName>
-        <inputAssignments>
-            <name>Prio_Sys_Reason_From_WO</name>
-            <value>
-                <elementReference>$Record__Prior.FS_System_Reason__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>Sys_Reason_From_WO</name>
-            <value>
-                <elementReference>$Record.FS_System_Reason__c</elementReference>
-            </value>
-        </inputAssignments>
-        <outputAssignments>
-            <assignToReference>UpdatedSystemReason</assignToReference>
-            <name>FinalSystemReason</name>
-        </outputAssignments>
-    </subflows>
-    <subflows>
         <name>String_splitting_with_subflow</name>
         <label>String splitting with subflow</label>
-        <locationX>3922</locationX>
-        <locationY>1055</locationY>
+        <locationX>2514</locationX>
+        <locationY>947</locationY>
         <connector>
             <targetReference>Looping_All_Selected_Values_of_AdditionalSkills_Field</targetReference>
         </connector>
