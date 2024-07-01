@@ -1608,7 +1608,7 @@ Removed references of WO.Total Woli with checked Review Field - 1 July 24</descr
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
     <triggerOrder>1</triggerOrder>
     <variables>
         <name>TransformPlatformEventOutput</name>
