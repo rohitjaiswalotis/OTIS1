@@ -4,7 +4,7 @@
     <decisions>
         <name>Check_WO_system_reason</name>
         <label>Check WO system reason</label>
-        <locationX>578</locationX>
+        <locationX>446</locationX>
         <locationY>242</locationY>
         <defaultConnector>
             <targetReference>Update_Wo_5</targetReference>
@@ -41,21 +41,6 @@
             <label>Open order Field Closure</label>
         </rules>
         <rules>
-            <name>Chargeability_context</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Get_Wo.Total_WOLI_with_Checked_Review__c</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Update_Wo_3</targetReference>
-            </connector>
-            <label>Chargeability context</label>
-        </rules>
-        <rules>
             <name>Actual_Duration_Inadequate</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
@@ -71,6 +56,7 @@
             <label>Actual Duration Inadequate</label>
         </rules>
     </decisions>
+    <description>Removed references of WO.Total Woli with checked Review Field - 1 July 24</description>
     <environments>Default</environments>
     <interviewLabel>Subflow: Validate WO System Reason and Update {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Subflow: Validate WO System Reason and Update</label>
@@ -96,7 +82,7 @@
     <recordLookups>
         <name>Get_Wo</name>
         <label>Get Wo</label>
-        <locationX>578</locationX>
+        <locationX>446</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -157,30 +143,9 @@
         <object>WorkOrder</object>
     </recordUpdates>
     <recordUpdates>
-        <name>Update_Wo_3</name>
-        <label>Update Wo</label>
-        <locationX>578</locationX>
-        <locationY>350</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>Get_Wo.Id</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>FS_System_Reason__c</field>
-            <value>
-                <stringValue>Chargeability Context</stringValue>
-            </value>
-        </inputAssignments>
-        <object>WorkOrder</object>
-    </recordUpdates>
-    <recordUpdates>
         <name>Update_Wo_4</name>
         <label>Update Wo</label>
-        <locationX>842</locationX>
+        <locationX>578</locationX>
         <locationY>350</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -201,7 +166,7 @@
     <recordUpdates>
         <name>Update_Wo_5</name>
         <label>Update Wo</label>
-        <locationX>1106</locationX>
+        <locationX>842</locationX>
         <locationY>350</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -217,7 +182,7 @@
         <object>WorkOrder</object>
     </recordUpdates>
     <start>
-        <locationX>452</locationX>
+        <locationX>320</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_Wo</targetReference>
