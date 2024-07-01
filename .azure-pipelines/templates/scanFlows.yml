@@ -39,14 +39,6 @@ steps:
         # disable exit on error
         set +e
         
-        # enable "debug" mode
-        if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
-          set -x
-          export LOG_LEVEL=debug
-        else
-          export LOG_LEVEL=info
-        fi
-        
         
         # install plugin
         (sf plugins | grep -i "lightning-flow-scanner") || (echo "y" | sf plugins install lightning-flow-scanner@$(flowScannerVersion))
@@ -61,7 +53,7 @@ steps:
         
         
         # actually scan flows and grab results into file
-        sf flow scan --directory="${{parameters.pathToScan}}" $CONFIG_OPTION --failon="${{parameters.failureThreshold}}" --loglevel="$LOG_LEVEL" > ${{ parameters.reportFileName }}; SCAN_RESULT_STATUS_CODE=$?;
+        sf flow scan --directory="${{parameters.pathToScan}}" $CONFIG_OPTION --failon="${{parameters.failureThreshold}}" > ${{ parameters.reportFileName }}; SCAN_RESULT_STATUS_CODE=$?;
         
         exit $SCAN_RESULT_STATUS_CODE
         
