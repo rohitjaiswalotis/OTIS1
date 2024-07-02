@@ -100,28 +100,6 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Checking_Assigned_Resource_is_Present_or_Not</name>
-        <label>Checking Assigned Resource is Present or Not</label>
-        <locationX>1942</locationX>
-        <locationY>2078</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Not_Present</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>newSA.AssignedServiceResource__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Update_SAs</targetReference>
-            </connector>
-            <label>Not Present</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>Compare_Decision</name>
         <label>Compare Decision</label>
         <locationX>446</locationX>
@@ -374,28 +352,6 @@
         </inputAssignments>
         <object>ResourcePreference</object>
     </recordCreates>
-    <recordLookups>
-        <name>Copy_1_of_Get_SA_Records</name>
-        <label>Copy 1 of Get SA Records</label>
-        <locationX>1942</locationX>
-        <locationY>1970</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Checking_Assigned_Resource_is_Present_or_Not</targetReference>
-        </connector>
-        <filterLogic>or</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>serviceAppointmentRec.Id</elementReference>
-            </value>
-        </filters>
-        <object>ServiceAppointment</object>
-        <outputReference>newSA</outputReference>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>AssignedServiceResource__c</queriedFields>
-    </recordLookups>
     <recordLookups>
         <name>Get_Full_WO</name>
         <label>Get Full WO</label>
@@ -745,9 +701,6 @@
         <label>Update SA</label>
         <locationX>1942</locationX>
         <locationY>1862</locationY>
-        <connector>
-            <targetReference>Copy_1_of_Get_SA_Records</targetReference>
-        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -769,33 +722,6 @@
             <field>FSL__Scheduling_Policy_Used__c</field>
             <value>
                 <elementReference>schedulingPolicy</elementReference>
-            </value>
-        </inputAssignments>
-        <object>ServiceAppointment</object>
-    </recordUpdates>
-    <recordUpdates>
-        <name>Update_SAs</name>
-        <label>Update SA</label>
-        <locationX>1810</locationX>
-        <locationY>2186</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>newSA.Id</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>FSL__InJeopardyReason__c</field>
-            <value>
-                <stringValue>Supervisor Review Required</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>FSL__InJeopardy__c</field>
-            <value>
-                <booleanValue>true</booleanValue>
             </value>
         </inputAssignments>
         <object>ServiceAppointment</object>
@@ -998,6 +924,7 @@
             <dataType>String</dataType>
             <fieldText>Reassign To</fieldText>
             <fieldType>RadioButtons</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -1023,6 +950,7 @@
             </defaultValue>
             <fieldText>Rejection reasons test</fieldText>
             <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
