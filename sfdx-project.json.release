@@ -10,10 +10,10 @@
       "definitionFile": "config/core/shape.json",
       "dependencies": [
         {
-          "package": "FSL@250.0.37"
+          "package": "FSL@250.0.103"
         },
         {
-          "package": "Salesforce Mobile Apps@1.21.0"
+          "package": "Salesforce Mobile Apps@1.22.0"
         },
         {
           "package": "OTIS Global CC Core",
@@ -21,7 +21,7 @@
           "branch": "master"
         },
         {
-          "package": "Salesforce Maps@246.9"
+          "package": "Salesforce Maps@250.14"
         },
         {
           "package": "Salesforce Field Service App@1.55"
@@ -54,9 +54,9 @@
     }
   ],
   "packageAliases": {
-    "FSL@250.0.37": "04t3y00000233gcAAA",
-    "Salesforce Mobile Apps@1.21.0": "04t4V000001VUpTQAW",
-    "Salesforce Maps@246.9": "04t4P000002fQreQAE",
+    "FSL@250.0.103": "04t3y00000233qTAAQ",
+    "Salesforce Mobile Apps@1.22.0": "04t4V00000236XKQAY",
+    "Salesforce Maps@250.14": "04tKe000000D1yEIAS",
     "Salesforce Field Service App@1.55": "04tHq000000lsw7IAA",
     "OTIS Global CC Core": "0HoDn000000TNCsKAO",
     "OTIS Field Service": "0HoDn000000TNHeKAO"
