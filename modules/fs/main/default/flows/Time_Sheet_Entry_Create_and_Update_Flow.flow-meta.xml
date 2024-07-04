@@ -520,7 +520,7 @@
             <field>Label</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>$Record.Service_Appointment__r.AssignedServiceResource__r.Company__c</elementReference>
+                <elementReference>$Record.TimeSheet.ServiceResource.Company__c</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
