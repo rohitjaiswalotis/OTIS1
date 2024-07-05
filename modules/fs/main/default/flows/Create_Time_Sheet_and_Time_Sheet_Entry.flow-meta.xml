@@ -1417,7 +1417,7 @@
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
     <variables>
         <name>EnrouteNewTSE</name>
         <dataType>SObject</dataType>
