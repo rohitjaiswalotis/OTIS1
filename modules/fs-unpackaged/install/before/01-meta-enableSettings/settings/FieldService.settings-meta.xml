@@ -16,12 +16,12 @@
     <doesShareSaWithAr>true</doesShareSaWithAr>
     <doesAllowEditSaForCrew>true</doesAllowEditSaForCrew>
     <enableDocumentBuilder>true</enableDocumentBuilder>
+    <enableWorkPlansAutoGeneration>true</enableWorkPlansAutoGeneration>
 	<!--
     <enableBatchWindow>false</enableBatchWindow>
     <enableFloatingWorkOrder>false</enableFloatingWorkOrder>
     <enablePopulateWorkOrderAddress>false</enablePopulateWorkOrderAddress>
     <enableWorkOrders>true</enableWorkOrders>
-    <enableWorkPlansAutoGeneration>false</enableWorkPlansAutoGeneration>
     <enableWorkStepManualStatusUpdate>false</enableWorkStepManualStatusUpdate>
 	-->
     <fieldServiceNotificationsOrgPref>true</fieldServiceNotificationsOrgPref>
