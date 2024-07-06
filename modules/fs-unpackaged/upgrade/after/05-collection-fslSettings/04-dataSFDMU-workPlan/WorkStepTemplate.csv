@@ -1,0 +1,11 @@
+$$Name$MajorTask__c,Description,Id,IsActive,MajorTask__c,Name
+LOTO if Applicable,,4L0DD000000CaWV0A0,true,false,LOTO if Applicable
+Obtain Customer Signature for Vandalism/Non Equipment related,Obtain Customer Signature for Vandalism/Non Equipment related,4L0DD000000CaWa0AK,true,false,Obtain Customer Signature for Vandalism/Non Equipment related
+Log Additional Work Details;true,Log the details of the Chargeable Work performed,4L0DD000000CaVS0A0,true,true,Log Additional Work Details
+Check in with Customer;true,Meet with customer and complete check-in formalities,4L0DD000000CaR70AK,true,true,Check in with Customer
+Test Elevator for proper operation;true,Ensure Unit is operating properly,4L0DD000000CaRE0A0,true,true,Test Elevator for proper operation
+Is the Otis One Hardware Gateway plugged in?;true,Validate if the required hardware is plugged in on the Unit. Mark this step as Not Applicable if needed.,4L0DD000000CaRA0A0,true,true,Is the Otis One Hardware Gateway plugged in?
+Use Upgrade app to propose any necessary work or potential upgrades;true,"If there are any leads, then use the Upgrade App. If no, then mark this step as Not Applicable",4L0DD000000CaRF0A0,true,true,Use Upgrade app to propose any necessary work or potential upgrades
+Complete assigned work;true,Complete the assigned work,4L0DD000000CaR90AK,true,true,Complete assigned work
+Check out with Customer;true,Complete check-out formalities,4L0DD000000CaR80AK,true,true,Check out with Customer
+JHA Pronto Form;true,Fill up the JHA form,4L0DD000000CaRB0A0,true,true,JHA Pronto Form

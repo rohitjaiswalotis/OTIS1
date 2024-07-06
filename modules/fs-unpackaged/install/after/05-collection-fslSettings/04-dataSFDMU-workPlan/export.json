@@ -1,0 +1,41 @@
+{
+	
+	"allOrNone": false,
+	
+	"createTargetCSVFiles": true,
+	
+	"objects": [
+		
+		{
+			"query": "SELECT Id, Name, DurationType, EstimatedDuration, FS_Type__c, FS_MinDuration__c, FS_MaxDuration__c, ShouldAutoCreateSvcAppt, FS_AutoSchedule__c, ProcedureCode__c, TaskType__c FROM WorkType",
+			"operation": "Upsert",
+			"externalId": "Name"
+		},
+		
+		{
+			"query": "SELECT Id, Name, IsActive, RelativeExecutionOrder, Description FROM WorkPlanTemplate",
+			"operation": "Upsert",
+			"externalId": "Name"
+		},
+		
+		{
+			"query": "SELECT Id, Name, IsActive, MajorTask__c, Description FROM WorkStepTemplate",
+			"operation": "Upsert",
+			"externalId": "Name;MajorTask__c"
+		},
+		
+		{
+			"query": "SELECT Id, WorkPlanTemplateId, WorkTypeId, IsActive FROM WorkPlanSelectionRule",
+			"operation": "Upsert",
+			"externalId": "WorkPlanTemplate.Name;WorkType.Name"
+		},
+		
+		{
+			"query": "SELECT Id, WorkPlanTemplateId, WorkStepTemplateId, ExecutionOrder FROM WorkPlanTemplateEntry",
+			"operation": "Upsert",
+			"externalId": "WorkPlanTemplate.Name;WorkStepTemplate.Name;WorkStepTemplate.MajorTask__c;ExecutionOrder"
+		}
+		
+	]
+	
+}
