@@ -59,12 +59,6 @@
 		},
 		
 		{
-			"query": "SELECT Id, Name, Type__c, WorkType__c, Description__c FROM FS_WorkOrderLineItemTemplate__c",
-			"operation": "Upsert",
-			"externalId": "Name;Type__c;WorkType__r.Name"
-		},
-		
-		{
 			"query": "SELECT all FROM BusinessHours",
 			"operation": "Upsert",
 			"externalId": "Name"
