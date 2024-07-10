@@ -256,7 +256,7 @@
         </scheduledPaths>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
     <variables>
         <name>UserIDCollection</name>
         <dataType>String</dataType>
