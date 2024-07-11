@@ -1292,11 +1292,16 @@
             <targetReference>Get_Record_of_Time_Sheet_Entry</targetReference>
         </connector>
         <fields>
+            <name>Display</name>
+            <fieldText>&lt;p&gt;Please select one of the following timesheet entry:&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
             <name>Time_Sheet_Entry_Records</name>
             <choiceReferences>timeSheetEntrySet</choiceReferences>
             <dataType>String</dataType>
             <fieldText>Time Sheet Entry Records</fieldText>
-            <fieldType>DropdownBox</fieldType>
+            <fieldType>RadioButtons</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
