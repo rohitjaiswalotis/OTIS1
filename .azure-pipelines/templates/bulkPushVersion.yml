@@ -73,6 +73,11 @@ parameters:
   - after
   - none
 
+- name: scriptParams
+  displayName: Script Params (json)
+  type: string
+  default: none
+
 - name: shouldRunAqaTests
   displayName: Run AQA Tests?
   type: boolean
@@ -209,6 +214,7 @@ stages:
                   compileScope: ${{ parameters.compileScope }}
                   upgradeType: ${{ parameters.upgradeType }}
                   actionPhase: ${{ parameters.actionPhase }}
+                  scriptParams: ${{ parameters.scriptParams }}
                   
                 
               - ${{ if eq(parameters.shouldRunAqaTests, true) }}:
