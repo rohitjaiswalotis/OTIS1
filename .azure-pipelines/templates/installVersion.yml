@@ -402,25 +402,36 @@ steps:
         fi
         
         
+        SCRIPT_PARAMS_FILE=$(mktemp)
+        
         # transforming script params (if provided)
         if [[ '${{parameters.scriptParams}}' =~ ^none$ ]] ; then
           
           echo "No script params passed."
-          
-          SCRIPT_PARAMS_FILE="none"
           
         else
           
           echo "Transforming provided script params..."
           echo '${{parameters.scriptParams}}'
           
-          SCRIPT_PARAMS_FILE=$(mktemp)
+          
           echo '${{parameters.scriptParams}}' | jq -r '. | to_entries | .[] | .key + "=" + (.value | @sh)' > $SCRIPT_PARAMS_FILE
           
           echo "Generated script params properties file: "
           cat $SCRIPT_PARAMS_FILE
           
         fi
+        
+        # include predefined context properties into script params, e.g. package version, id etc.
+        echo "SF_SR_VAR_GLOBAL_PACKAGE_VERSION_ID=$FS_PACKAGE_VERSION_ID" >> $SCRIPT_PARAMS_FILE
+        echo "SF_SR_VAR_GLOBAL_PACKAGE_VERSION_NUMBER=$FS_PACKAGE_VERSION_NUMBER" >> $SCRIPT_PARAMS_FILE
+        echo "SF_SR_VAR_GLOBAL_PACKAGE_VERSION_MAJOR=$FS_PACKAGE_VERSION_MAJOR" >> $SCRIPT_PARAMS_FILE
+        echo "SF_SR_VAR_GLOBAL_PACKAGE_VERSION_MINOR=$FS_PACKAGE_VERSION_MINOR" >> $SCRIPT_PARAMS_FILE
+        echo "SF_SR_VAR_GLOBAL_PACKAGE_VERSION_PATCH=$FS_PACKAGE_VERSION_PATCH" >> $SCRIPT_PARAMS_FILE
+        echo "SF_SR_VAR_GLOBAL_PACKAGE_VERSION_BUILD=$FS_PACKAGE_VERSION_BUILD" >> $SCRIPT_PARAMS_FILE
+        
+        echo "Extended script params properties file with context properties: "
+        cat $SCRIPT_PARAMS_FILE
         
         
         if [[ "${{ parameters.actionPhase }}" =~ ^before$ || "${{ parameters.actionPhase }}" =~ ^both$ ]] ; then
