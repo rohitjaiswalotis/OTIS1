@@ -19,7 +19,7 @@ parameters:
 - name: reportFileName
   displayName: Report File Name
   type: string
-  default: FlowScanResults_$(Build.BuildId).txt
+  default: FlowScanResults_$(Build.BuildId)_$(System.JobAttempt).txt
 
 - name: continueOnError
   displayName: Continue on Error?
