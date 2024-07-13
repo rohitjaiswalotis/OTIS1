@@ -73,7 +73,7 @@ parameters:
 - name: folderArtifactName
   displayName: Folder Artifact Name
   type: string
-  default: ScriptFolder_$(Build.BuildId)
+  default: ScriptFolder_$(Build.BuildId)_$(System.JobAttempt)
 
 - name: continueOnError
   displayName: Continue on Error?
