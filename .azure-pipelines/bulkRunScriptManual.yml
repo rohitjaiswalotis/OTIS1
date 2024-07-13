@@ -79,7 +79,7 @@ stages:
                   stepToRun: ${{ parameters.stepToRun }}
                   targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
                   saveFolderAsArtifact: ${{ parameters.saveFolderAsArtifact }}
-                  folderArtifactName: ScriptFolder_${{ targetOrgAuthFileName }}_$(Build.BuildId)
+                  folderArtifactName: ScriptFolder_${{ targetOrgAuthFileName }}_$(Build.BuildId)_$(System.JobAttempt)
                   continueOnError: ${{ parameters.continueOnError }}
                   enableDebugMode: ${{ parameters.enableDebugMode }}
                 

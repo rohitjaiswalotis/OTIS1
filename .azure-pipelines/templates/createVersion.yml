@@ -49,7 +49,7 @@ parameters:
 - name: packageDumpArtifactName
   displayName: Package Dump Artifact Name
   type: string
-  default: PackageDump_$(Build.BuildId)
+  default: PackageDump_$(Build.BuildId)_$(System.JobAttempt)
 
 - name: enableDebugMode
   displayName: Debug Mode?
