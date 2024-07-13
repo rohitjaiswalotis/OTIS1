@@ -169,7 +169,7 @@ stages:
                   - template: templates/generateTestsReport.yml
                     parameters:
                       targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
-                      reportFileName: TestsReport_${{ targetOrgAuthFileName }}_$(Build.BuildId)_before.xlsx
+                      reportFileName: TestsReport_${{ targetOrgAuthFileName }}_$(Build.BuildId)_$(System.JobAttempt)_before.xlsx
                       enableDebugMode: ${{ parameters.enableDebugMode }}
                 
               
@@ -227,7 +227,7 @@ stages:
                   - template: templates/generateTestsReport.yml
                     parameters:
                       targetOrgAuthFilePath: $(Agent.TempDirectory)/${{ targetOrgAuthFileName }}
-                      reportFileName: TestsReport_${{ targetOrgAuthFileName }}_$(Build.BuildId)_after.xlsx
+                      reportFileName: TestsReport_${{ targetOrgAuthFileName }}_$(Build.BuildId)_$(System.JobAttempt)_after.xlsx
                       enableDebugMode: ${{ parameters.enableDebugMode }}
                 
 

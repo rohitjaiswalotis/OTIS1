@@ -36,7 +36,7 @@ parameters:
 - name: reportFileName
   displayName: Report File Name
   type: string
-  default: CodeAnalyzerScanResults_$(Build.BuildId)
+  default: CodeAnalyzerScanResults_$(Build.BuildId)_$(System.JobAttempt)
 
 - name: active
   displayName: Is Active?

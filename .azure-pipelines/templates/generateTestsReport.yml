@@ -29,7 +29,7 @@ parameters:
 - name: reportFileName
   displayName: Tests Report File Name
   type: string
-  default: TestsReport_$(Build.BuildId).xlsx
+  default: TestsReport_$(Build.BuildId)_$(System.JobAttempt).xlsx
 
 - name: enableDebugMode
   displayName: Debug Mode?
