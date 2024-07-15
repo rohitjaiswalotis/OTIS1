@@ -27,7 +27,7 @@
     <assignments>
         <name>Assign_WorkOrder</name>
         <label>Assign WorkOrder</label>
-        <locationX>336</locationX>
+        <locationX>380</locationX>
         <locationY>1427</locationY>
         <assignmentItems>
             <assignToReference>$Record.WorkOrder__c</assignToReference>
@@ -113,7 +113,7 @@
     <decisions>
         <name>Check_for_AR_record</name>
         <label>Check for AR record</label>
-        <locationX>627</locationX>
+        <locationX>704</locationX>
         <locationY>827</locationY>
         <defaultConnector>
             <targetReference>WorkOrder_RecordType_Service_Request</targetReference>
@@ -136,6 +136,13 @@
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>ErrorMessage</targetReference>
             </connector>
@@ -145,7 +152,7 @@
     <decisions>
         <name>Check_SA_Status</name>
         <label>Check SA Status</label>
-        <locationX>781</locationX>
+        <locationX>858</locationX>
         <locationY>503</locationY>
         <defaultConnector>
             <targetReference>WorkOrder_RecordType_Service_Request</targetReference>
@@ -177,7 +184,7 @@
     <decisions>
         <name>Created_Updated</name>
         <label>Created/Updated ?</label>
-        <locationX>545</locationX>
+        <locationX>611</locationX>
         <locationY>1319</locationY>
         <defaultConnector>
             <targetReference>Update_Accepted_and_ETA_Time_difference</targetReference>
@@ -202,7 +209,7 @@
     <decisions>
         <name>Is_Building_Present</name>
         <label>Is Building Present ?</label>
-        <locationX>336</locationX>
+        <locationX>380</locationX>
         <locationY>1643</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -224,7 +231,7 @@
     <decisions>
         <name>Is_ParentRecord_WorkOrder1</name>
         <label>Is ParentRecord WorkOrder ?</label>
-        <locationX>1031</locationX>
+        <locationX>1114</locationX>
         <locationY>287</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -253,7 +260,7 @@
     <decisions>
         <name>WorkOrder_RecordType_Service_Request</name>
         <label>WorkOrder RecordType | Service Request ?</label>
-        <locationX>781</locationX>
+        <locationX>858</locationX>
         <locationY>1211</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -319,7 +326,7 @@
     <recordLookups>
         <name>Get_AR_of_Current_Record</name>
         <label>Get AR of Current Record</label>
-        <locationX>627</locationX>
+        <locationX>704</locationX>
         <locationY>611</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -342,7 +349,7 @@
     <recordLookups>
         <name>Get_AR_with_same_SR</name>
         <label>Get AR with same SR</label>
-        <locationX>627</locationX>
+        <locationX>704</locationX>
         <locationY>719</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -372,7 +379,7 @@
     <recordLookups>
         <name>Get_Building</name>
         <label>Get | Building</label>
-        <locationX>336</locationX>
+        <locationX>380</locationX>
         <locationY>1535</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -393,7 +400,7 @@
     <recordLookups>
         <name>Get_WorkOrder</name>
         <label>Get | WorkOrder</label>
-        <locationX>781</locationX>
+        <locationX>858</locationX>
         <locationY>395</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -427,7 +434,7 @@
     <recordUpdates>
         <name>Update_Accepted_and_ETA_Time_difference</name>
         <label>Update Accepted and ETA Time difference</label>
-        <locationX>754</locationX>
+        <locationX>842</locationX>
         <locationY>1427</locationY>
         <inputAssignments>
             <field>Appointment_Accepted_Date_Time__c</field>
@@ -438,7 +445,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>905</locationX>
+        <locationX>988</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Is_ParentRecord_WorkOrder1</targetReference>
