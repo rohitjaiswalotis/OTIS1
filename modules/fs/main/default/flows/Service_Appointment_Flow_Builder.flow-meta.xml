@@ -248,14 +248,14 @@
     </decisions>
     <decisions>
         <description>This decision will check whether  the related work Oder&apos;s record type is maintenance or not</description>
-        <name>Check_For_Maintenance</name>
-        <label>Check For Maintenance</label>
+        <name>Check_For_Maintenance_Or_Service_Request</name>
+        <label>Check For Maintenance Or Service Request</label>
         <locationX>7948</locationX>
         <locationY>276</locationY>
         <defaultConnectorLabel>Not maintenance</defaultConnectorLabel>
         <rules>
-            <name>Maintenance</name>
-            <conditionLogic>and</conditionLogic>
+            <name>Maintenance_Or_Service_Request</name>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.WorkOrder__r.RecordType.Id</leftValueReference>
                 <operator>EqualTo</operator>
@@ -263,10 +263,17 @@
                     <elementReference>$Setup.OTISCustomSettings__c.Work_Order_Maintenance_Record_Type__c</elementReference>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.RecordType.Id</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$Setup.OTISCustomSettings__c.Work_Order_Service_Request_Record_Type__c</elementReference>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Condition_Check</targetReference>
             </connector>
-            <label>Maintenance</label>
+            <label>Maintenance Or Service Request</label>
         </rules>
     </decisions>
     <decisions>
@@ -2185,7 +2192,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C
         <scheduledPaths>
             <name>Safety_Check_Worker</name>
             <connector>
-                <targetReference>Check_For_Maintenance</targetReference>
+                <targetReference>Check_For_Maintenance_Or_Service_Request</targetReference>
             </connector>
             <label>Safety Check Worker</label>
             <offsetNumber>1</offsetNumber>
