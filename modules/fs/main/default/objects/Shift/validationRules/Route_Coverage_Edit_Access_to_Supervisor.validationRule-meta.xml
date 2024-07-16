@@ -3,13 +3,13 @@
     <fullName>Route_Coverage_Edit_Access_to_Supervisor</fullName>
     <active>true</active>
     <errorConditionFormula>AND(
+				Office__r.FSLEnabled__c,
      ISPICKVAL(Type__c, &quot;Permanent&quot;),
      OR(
         ISCHANGED(StartTime),
         ISCHANGED(EndTime)
        ),
      $UserRole.Name =&quot;Route Supervisor&quot;
-    )
-    </errorConditionFormula>
+    )</errorConditionFormula>
     <errorMessage>You cannot edit Start time and End Time field if Type Field is Permanent</errorMessage>
 </ValidationRule>
