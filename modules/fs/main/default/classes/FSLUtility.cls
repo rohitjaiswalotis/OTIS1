@@ -38,8 +38,9 @@ public with sharing class FSLUtility{
             if(String.valueOf(obj.ParentRecordId).startsWith('0WO')){
                 workOrderIds.add(obj.WorkOrder__c);
                 workOrderToSAMap.put(obj.WorkOrder__c, obj);
-            }	
+            }  
         }
+      
         //List out Work Orders related to the Service Appointments
         List<WorkOrder> allWorkOrders = [select Id, RecordTypeId, RecordType.DeveloperName from WorkOrder where Id IN :workOrderIds];
         //Initialize List
@@ -63,6 +64,15 @@ public with sharing class FSLUtility{
         
         return returnData;
     }
+    
+    public static String transformUnitOperationalStatus(String status){
+        Map<String,String> allTransformationMap = new Map<String,String>();
+        for(Unit_Operational_Status_Reason_Mapping__mdt obj : Unit_Operational_Status_Reason_Mapping__mdt.getAll().values()){
+            allTransformationMap.put(obj.Unit_Operational_Status_Reason_SF__c, obj.Transformed_Platform_Event_Output__c);
+        }
+        return allTransformationMap.get(status);
+    }
+    
     public static String getUnitUsageFromUnit(Asset unitRecord){
         String unitUsages=null;
         String finalUnitUsages= null;
@@ -133,7 +143,7 @@ public with sharing class FSLUtility{
 
             }
 
-			}
+      }
 
      Else {
 

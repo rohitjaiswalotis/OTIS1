@@ -148,6 +148,8 @@ public without sharing class FSL_WorkOrderHandler extends TriggerHandler{
         if(!newServiceWorkOrdersMap.values().isEmpty()){
             //Add all methods that needs to be executed for SR. Sample below:
             FSL_ServiceAppointmentService.setPriorityOnServiceAppointment(new List<ServiceAppointment>(),newServiceWorkOrdersMap.values());
+            //Add method for invoking Platform Event to OTIS Note
+            FSL_WorkOrderService.handlePlatformEventOperationsForClosure(newServiceWorkOrdersMap, oldMap);
         }
         
         //Invoke the following methods for Maintenance Record Type

@@ -9,7 +9,7 @@ public class FSLRouteReassignmentHandlerQueueable implements Queueable{
     public List<Asset> newAssetRecords;
     public Map<Id,Asset> oldAssetRecMap;
     static final List<String> workOrdRTNames = new List<String> {'Service Request','Maintenance'};
-    static Map<Id,List<RouteResource__c>> unitIdVsListServResIdMap = new Map<Id,List<RouteResource__c>> ();
+        static Map<Id,List<RouteResource__c>> unitIdVsListServResIdMap = new Map<Id,List<RouteResource__c>> ();
     
     public FSLRouteReassignmentHandlerQueueable(List<Asset> newAsstRecds, Map<Id,Asset> oldAsstRecMap){
         this.newAssetRecords = newAsstRecds;
@@ -22,7 +22,7 @@ public class FSLRouteReassignmentHandlerQueueable implements Queueable{
         handleRouteReassignmentOperation(newAssetRecords,oldAssetRecMap,null);
     }
     
-/**=========================================================================================
+    /**=========================================================================================
 * Method Author : Yaswanth
 * Method Description: Utility Method for handling Resource Preferences Modification
 =========================================================================================*/
@@ -55,15 +55,23 @@ public class FSLRouteReassignmentHandlerQueueable implements Queueable{
         Map<Id,List<String>> routeIdVsListUnitIdMap = new Map<Id,List<String>> ();
         
         for (Asset unitRec : newUnitRecords){
-            if(unitRec?.NextRoute__c != unitRec?.Account?.Next_Route__c && unitRec?.NextRoute__c != unitRec?.Location?.NextRoute__c){
-                if(!routeIdVsListUnitIdMap.containskey(unitRec?.NextRoute__c)){
-                    routeIdVsListUnitIdMap.put(unitRec.NextRoute__c,new List<String>{unitRec.Id});
-                }
-                else{
-                    List<String> unitIds = new List<String>{unitRec.Id};
-                        unitIds.addAll(routeIdVsListUnitIdMap.get(unitRec?.NextRoute__c));
-                    routeIdVsListUnitIdMap.put(unitRec.NextRoute__c,unitIds);
-                }
+            /*if(unitRec?.NextRoute__c != unitRec?.Account?.Next_Route__c && unitRec?.NextRoute__c != unitRec?.Location?.NextRoute__c){
+if(!routeIdVsListUnitIdMap.containskey(unitRec?.NextRoute__c)){
+routeIdVsListUnitIdMap.put(unitRec.NextRoute__c,new List<String>{unitRec.Id});
+}
+else{
+List<String> unitIds = new List<String>{unitRec.Id};
+unitIds.addAll(routeIdVsListUnitIdMap.get(unitRec?.NextRoute__c));
+routeIdVsListUnitIdMap.put(unitRec.NextRoute__c,unitIds);
+}
+}*/
+            if(!routeIdVsListUnitIdMap.containskey(unitRec?.NextRoute__c)){
+                routeIdVsListUnitIdMap.put(unitRec.NextRoute__c,new List<String>{unitRec.Id});
+            }
+            else{
+                List<String> unitIds = new List<String>{unitRec.Id};
+                    unitIds.addAll(routeIdVsListUnitIdMap.get(unitRec?.NextRoute__c));
+                routeIdVsListUnitIdMap.put(unitRec.NextRoute__c,unitIds);
             }
         }
         
@@ -165,10 +173,11 @@ public class FSLRouteReassignmentHandlerQueueable implements Queueable{
         List<Asset> updateUnits=new List<Asset>();
         List<Schema.Location> updateLocations=new List<Schema.Location>();
         List<Account> updateAccounts=new List<Account>();
-        
-       //Replace the Duplicate WO 
-       set<WorkOrder> workReclist=new set<WorkOrder>();
-       workReclist.addAll(wolist);
+        List<AssignedResource> arslst =  new List<AssignedResource>();
+        Set<Id> saIds = new Set<Id>();
+        //Replace the Duplicate WO 
+        set<WorkOrder> workReclist=new set<WorkOrder>();
+        workReclist.addAll(wolist);
         
         for(WorkOrder workOrdRec: workReclist){
             System.debug('Get Condition: '+workOrdIdVsSerAppMap.containskey(workOrdRec.Id));
@@ -182,11 +191,11 @@ public class FSLRouteReassignmentHandlerQueueable implements Queueable{
                 saRec.Route__c = workOrdRec?.Asset?.NextRoute__c;
                 System.debug('impactedWO: '+impactedWO);
                 if(impactedWO){
-                    
                     saRec.FSL__Pinned__c= false;
-                  //  saRec.AssignedServiceResource__c =null;
+                    //  saRec.AssignedServiceResource__c =null;
                     saRec.ArrivalWindowStartTime = workOrdIdVsSerAppMap.get(workOrdRec.Id)?.SchedStartTime;
                     saRec.ArrivalWindowEndTime = workOrdIdVsSerAppMap.get(workOrdRec.Id)?.SchedEndTime;
+                    saIds.add(saRec.id);
                 }
                 updateSARecs.add(saRec);
             }
@@ -209,6 +218,10 @@ public class FSLRouteReassignmentHandlerQueueable implements Queueable{
                 updateAccounts.add(new Account(Id=asset.AccountId,Route__c= asset.Account.Next_Route__c,EffectiveDate__c=null,Next_Route__c=null));
             }
         }
+        if(saIds.size() >0){
+            arslst=[select id from AssignedResource where ServiceAppointmentId in : saIds];
+        }
+        
         handleResourcePreferenceOperations((new Map<Id,Asset>(newUnitList)).keyset(),'Delete',null);
         handleResourcePreferenceOperations((new Map<Id,Asset>(newUnitList)).keyset(),'Create',unitIdVsListServResIdMap);
         
@@ -218,24 +231,20 @@ public class FSLRouteReassignmentHandlerQueueable implements Queueable{
         system.debug('***updateLocations b'+updateLocations);
         system.debug('***updateLocations b'+updateLocations);
         
-       // List<Database.SaveResult> result = Database.update(updateSARecs,false);
+        // List<Database.SaveResult> result = Database.update(updateSARecs,false);
         List<Database.SaveResult> result2 = Database.update(updateWO,false);
         List<Database.SaveResult> result3 = Database.update(updateUnits,false);
         List<Database.SaveResult> result = Database.update(updateSARecs,false);
         List<Database.SaveResult> result4 = Database.update(updateLocations,false);
         List<Database.SaveResult> result5 = Database.update(updateAccounts,false);
-        
-        system.debug('***updateSARecs'+updateSARecs +'---'+workOrdIdVsSerAppMap);
-        system.debug('***updateWO'+updateWO);
-        system.debug('***updateUnits'+updateUnits);
-        system.debug('***updateLocations'+updateLocations);
-        system.debug('***updateLocations'+updateLocations);
+        Database.delete(arslst,false);
         
         system.debug('***updateSARecs'+result);
         system.debug('***updateWO'+result2);
         system.debug('***updateUnits'+result3);
         system.debug('***updateLocations'+result4);
         system.debug('***updateLocations'+result5);
+        
     }
     /**=========================================================================================
 * Method Author : Naga Swapna Nakka

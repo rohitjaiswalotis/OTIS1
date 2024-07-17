@@ -25,7 +25,9 @@ public class FSL_WorkOrderHandlerTest {
         insert acc;
         
         Contact ct =UTIL_TestDataFactory.createContact(acc.id,'TestContact');
+        ct.Phone='1234567890';
         insert ct;
+        
         
         Case cs = UTIL_TestDataFactory.createCase('New','Email',ct.Id);
         cs.Priority = 'S3 - Normal';

@@ -135,6 +135,7 @@ public class FSL_WorkOrderServiceTest {
         for( WorkOrder wo: allWORecords){
             wo.Description='Test Update';
             wo.Status='Closed';
+            wo.WorkOrderClosureDate__c = Date.today();
             updatedWO.add(wo);
         }
         update updatedWO;

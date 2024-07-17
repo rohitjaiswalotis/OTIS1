@@ -221,6 +221,7 @@ public inherited sharing class FSL_ServiceAppointmentService {
         
         List<WorkOrder> updatedWOs = new List<WorkOrder>();
         List<WOrkOrder>listToBeUpdated=new List<WorkOrder>();
+         List<SF2WSOtisNoteEvent__e> eventsToPublish = new List<SF2WSOtisNoteEvent__e>();
         Set<Id> relatedWOId = new Set<Id>();
         Map<Id , WorkOrder> saRelatedWOMap = new Map<Id , WorkOrder>();
         
@@ -253,7 +254,7 @@ public inherited sharing class FSL_ServiceAppointmentService {
                 }
                 when Onsite {
                     wo.Status = 'InProgress';
-                    generatePlatformEventUponMechanicOnsite(sa, wo);
+                   eventsToPublish.addAll(generatePlatformEvent(wo, 'OnSite'));
                 }
                 when Canceled {
                     wo.Status = 'Canceled';
@@ -277,7 +278,6 @@ public inherited sharing class FSL_ServiceAppointmentService {
                                     } else {
                                         wo.Status = 'Closed';
                                         wo.SvcReqAssignedMechanic__c = sa.AssignedServiceResource__c;
-                                        generatePlatformEventUponMechanicOnsite(sa, wo);
                                     }
                 }
             }
@@ -292,7 +292,11 @@ public inherited sharing class FSL_ServiceAppointmentService {
                 Logger.error(e.getMessage());
             } 
         }
-    }
+        if (!eventsToPublish.isEmpty()) {
+            EventBus.publish(eventsToPublish);
+            
+        }
+  }
     
     /*
     * @Description:Method for Status Transition for Record Type WorkOrder
@@ -333,7 +337,6 @@ public inherited sharing class FSL_ServiceAppointmentService {
                 }
                 when Onsite {
                     wo.Status = 'InProgress';
-                    generatePlatformEventUponMechanicOnsite(sa, wo);
                 }
                 when Canceled {
                     wo.Status = 'Canceled';
@@ -357,30 +360,40 @@ public inherited sharing class FSL_ServiceAppointmentService {
                 Logger.error(e.getMessage());
             } 
         }
-    }
+    } 
     
     /*
     * @Description:Method TO CREATE PLATFORM EVENT
-    * @Param : ServiceAppointment and Work Order object
-    */
-    public static void generatePlatformEventUponMechanicOnsite(ServiceAppointment sa, WorkOrder wo){
-        SF2WSOtisNoteEvent__e event = new SF2WSOtisNoteEvent__e();
-        if(sa.Status == 'OnSite'){
-            event.CallbackKey__c = wo.SvcReqCallBackKey__c;	
-            event.MechanicArrivalTime__c = System.now().format('yyyy-MM-dd HH:mm:ss.SSS');
-            event.TimeZone__c = wo.TimeZone__c;
-            event.WorkOrderStatus__c = wo.Status;
-            
+    * @Param : Work Order and Context
+    */   
+    public static List<SF2WSOtisNoteEvent__e> generatePlatformEvent(WorkOrder wo, String context){
+            List<SF2WSOtisNoteEvent__e> events = new List<SF2WSOtisNoteEvent__e>();
+            SF2WSOtisNoteEvent__e event = new SF2WSOtisNoteEvent__e();
+        Asset assets = [SELECT Id, OperationalStatusReason__c FROM Asset WHERE Id = :wo.AssetId LIMIT 1];
+        
+            if(context == 'OnSite' && wo != NULL){
+                event.CallbackKey__c = wo.SvcReqCallBackKey__c;    
+                event.MechanicArrivalTime__c = System.now().format('yyyy-MM-dd\'T\'hh:mm:ss\'Z\'');
+                event.TimeZone__c = wo.TimeZone__c;
+                event.WorkOrderStatus__c = wo.Status;
+                
+                events.add(event);
+            }
+            else {
+                event.CallbackKey__c = wo.SvcReqCallBackKey__c;
+                event.OperationalStatusReason__c = FSLUtility.transformUnitOperationalStatus(assets.OperationalStatusReason__c);
+                event.TimeZone__c = wo.TimeZone__c;
+                Date closureDate = Date.valueOf(wo.WorkOrderClosureDate__c);
+                DateTime closureDateTime = DateTime.newInstance(closureDate,Time.newInstance(0,0,0,0));
+                String format = closureDateTime.format('yyyy-MM-dd\'T\'hh:mm:ss\'Z\'');
+                event.WorkOrderClosureDate__c = format;
+               
+                event.WorkOrderStatus__c = wo.Status;
+                events.add(event);
+            }
+        
+            return events;
         }
-        else if (sa.Status == 'Completed' && wo.Status == 'Closed'){
-            event.CallbackKey__c = wo.SvcReqCallBackKey__c;
-            event.OperationalStatusReason__c = 'Transform Unit\'s operational status';
-            event.TimeZone__c = wo.TimeZone__c;
-            event.WorkOrderClosureDate__c =String.valueOf(wo.WorkOrderClosureDate__c);
-            event.WorkOrderStatus__c = wo.Status;
-        }
-    } 
-    
     /*
     * @Description:Method TO populate values in WorkOrder field & WorkOrderRecordType Id values
     * @Param : List of ServiceAppointment.

@@ -310,6 +310,7 @@ public inherited sharing class FSL_WorkOrderService {
                 for(ServiceContract sc : scRelatedToUnit){
                     assetIdContractId.put(sc.Id,sc.Unit__c);
                 }
+                
                 List<ContractLineItem> cliList=new List<ContractLineItem>([Select id,assetId, Name__c,FS_SalesContractLineItem__c,FS_SalesContractLineItem__r.FS_OptionCategory__c,ServiceContract.Unit__c from ContractLineItem 
                                                                            where (Name__c LIKE 'TPA%' OR Name__c LIKE 'INT1%' OR Name__c LIKE 'INT2%') AND ServiceContractId in : scRelatedToUnit]);
                 String weekDay= FSLUtility.getWeekDay();
@@ -479,6 +480,7 @@ public inherited sharing class FSL_WorkOrderService {
                 String OldStatus = oldRecordMap.get(wo.ID).Status;
                 if(wo.status== 'Closed' && OldStatus != 'Closed'){
                     wo.WorkOrderClosureDate__c = Date.Today();
+                    
                 }
                 
             }
@@ -648,7 +650,7 @@ public inherited sharing class FSL_WorkOrderService {
         
         if(!listOfWOId.isEmpty()){
             mapOfIdWithAsset=new Map<Id , Asset>([Select Id ,Branch__c , Branch__r.FSLEnabled__c From Asset where Id IN :listOfWOId]);
-            System.debug('Map :' +mapOfIdWithAsset );
+           
             if(!listOfWOWithRTId.isEmpty()){
                 for(WorkOrder wo : listOfWOWithRTId){
                     if(mapOfIdWithAsset.get(wo.AssetId).Branch__r.FSLEnabled__c){
@@ -661,5 +663,32 @@ public inherited sharing class FSL_WorkOrderService {
             listOfFinalWithRT = new List<WorkOrder>(setAssignmentTypeOnWO(listOfNewWOWithRTID,profileDetailsMap));
         }
         return listOfFinalWithRT;
+    }
+    
+    /*
+    * @DesCription: This method will publish the platform event when WO status change to Closed
+    *@param : trigger.newMap and trigger.oldMap 
+    */
+    public static void handlePlatformEventOperationsForClosure(Map<Id, WorkOrder> newServiceWorkOrdersMap, Map<Id, SObject> oldMap){
+        List<WorkOrder> eligibleWorkOrders = new List<WorkOrder>();
+        Map<Id, WorkOrder> oldWorkOrderMap = new Map<Id, WorkOrder>();
+        for(SObject sObj : oldMap.values()){
+            oldWorkOrderMap.put(sObj.Id, (WorkOrder) sObj);
+        }
+        for(WorkOrder obj: newServiceWorkOrdersMap.values()){
+            if(oldWorkOrderMap.get(obj.Id).Status != obj.Status && obj.Status == 'Closed'){
+                eligibleWorkOrders.add(obj);
+            }
+        }
+        if(!eligibleWorkOrders.isEmpty()){
+            List<SF2WSOtisNoteEvent__e> eventsToPublish = new List<SF2WSOtisNoteEvent__e>();
+            for(WorkOrder obj: eligibleWorkOrders){
+                eventsToPublish.addAll(FSL_ServiceAppointmentService.generatePlatformEvent(obj, 'Closed'));
+            }
+            if (!eventsToPublish.isEmpty()) {
+                EventBus.publish(eventsToPublish);
+               
+            }
+        }
     }
 }
