@@ -42,5 +42,7 @@ RETURN_PROPERTIES_FILE="${SCRIPT_DIR}/.return.properties"
 # delete "Additional Work" app extension (if any)
 sf force data record delete --sobject AppExtension --where "AppExtensionName='WOLI Create' AppExtensionLabel='Additional Work'" --target-org "$PARAM_ORG_ALIAS" --json || true
 
+# delete "Complete Line Item Status" app extension (if any)
+sf force data record delete --sobject AppExtension --where "AppExtensionName='FS_ChangeWOLIStatus' AppExtensionLabel='Complete Line Item Status'" --target-org "$PARAM_ORG_ALIAS" --json || true
 
 
