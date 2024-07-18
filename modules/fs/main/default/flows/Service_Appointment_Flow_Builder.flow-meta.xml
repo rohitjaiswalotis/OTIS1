@@ -248,14 +248,14 @@
     </decisions>
     <decisions>
         <description>This decision will check whether  the related work Oder&apos;s record type is maintenance or not</description>
-        <name>Check_For_Maintenance_Or_Service_Request</name>
-        <label>Check For Maintenance Or Service Request</label>
-        <locationX>7948</locationX>
+        <name>Check_For_Maintenance</name>
+        <label>Check For Maintenance</label>
+        <locationX>8212</locationX>
         <locationY>276</locationY>
         <defaultConnectorLabel>Not maintenance</defaultConnectorLabel>
         <rules>
-            <name>Maintenance_Or_Service_Request</name>
-            <conditionLogic>or</conditionLogic>
+            <name>Maintenance</name>
+            <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.WorkOrder__r.RecordType.Id</leftValueReference>
                 <operator>EqualTo</operator>
@@ -263,17 +263,10 @@
                     <elementReference>$Setup.OTISCustomSettings__c.Work_Order_Maintenance_Record_Type__c</elementReference>
                 </rightValue>
             </conditions>
-            <conditions>
-                <leftValueReference>$Record.WorkOrder__r.RecordType.Id</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <elementReference>$Setup.OTISCustomSettings__c.Work_Order_Service_Request_Record_Type__c</elementReference>
-                </rightValue>
-            </conditions>
             <connector>
                 <targetReference>Condition_Check</targetReference>
             </connector>
-            <label>Maintenance Or Service Request</label>
+            <label>Maintenance</label>
         </rules>
     </decisions>
     <decisions>
@@ -288,12 +281,12 @@
         <defaultConnectorLabel>Not maintenance</defaultConnectorLabel>
         <rules>
             <name>Copy_1_of_Maintenance</name>
-            <conditionLogic>and</conditionLogic>
+            <conditionLogic>or</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.WorkOrder__r.RecordType.Id</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>$Setup.OTISCustomSettings__c.Work_Order_Maintenance_Record_Type__c</elementReference>
+                    <stringValue>{!$Setup.OTISCustomSettings__c.Work_Order_Maintenance_Record_Type__c}</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -686,6 +679,35 @@
                 <targetReference>Get_User</targetReference>
             </connector>
             <label>SA status changed to Accepted</label>
+        </rules>
+        <rules>
+            <name>Populate_System_reason_for_SR</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>IsCompletedWithinTime</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.WorkOrder__r.FS_System_Reason__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Safety Check Lone Worker</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_System_Reason_Compare</targetReference>
+            </connector>
+            <label>Populate System reason for SR</label>
         </rules>
     </decisions>
     <decisions>
@@ -1701,6 +1723,31 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C
         <inputReference>$Record.Unit__r</inputReference>
     </recordUpdates>
     <recordUpdates>
+        <name>Copy_1_of_Updating_Reason_On_WO</name>
+        <label>Copy 1 of Updating Reason On WO</label>
+        <locationX>7090</locationX>
+        <locationY>708</locationY>
+        <inputAssignments>
+            <field>FS_Mark_For_Supervisor_Review__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>FS_System_Reason__c</field>
+            <value>
+                <stringValue>Actual Duration Inadequate</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Closed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record.WorkOrder__r</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>Copy_1_of_Updating_SA_with_Assignment_Type</name>
         <label>Copy 1 of Updating SA with Assignment Type</label>
         <locationX>50</locationX>
@@ -2192,7 +2239,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C
         <scheduledPaths>
             <name>Safety_Check_Worker</name>
             <connector>
-                <targetReference>Check_For_Maintenance_Or_Service_Request</targetReference>
+                <targetReference>Check_For_Maintenance</targetReference>
             </connector>
             <label>Safety Check Worker</label>
             <offsetNumber>1</offsetNumber>
@@ -2276,6 +2323,32 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C
                 <elementReference>$Record.WorkOrder__r.Id</elementReference>
             </value>
         </inputAssignments>
+    </subflows>
+    <subflows>
+        <name>Copy_1_of_System_Reason_Compare</name>
+        <label>Copy 1 of System Reason Compare</label>
+        <locationX>7090</locationX>
+        <locationY>600</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Updating_Reason_On_WO</targetReference>
+        </connector>
+        <flowName>FS_SubFlowSystemReasonPriority</flowName>
+        <inputAssignments>
+            <name>Prio_Sys_Reason_From_WO</name>
+            <value>
+                <elementReference>$Record__Prior.WorkOrder__r.FS_System_Reason__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Sys_Reason_From_WO</name>
+            <value>
+                <elementReference>$Record.WorkOrder__r.FS_System_Reason__c</elementReference>
+            </value>
+        </inputAssignments>
+        <outputAssignments>
+            <assignToReference>UpdatedSystemReason</assignToReference>
+            <name>FinalSystemReason</name>
+        </outputAssignments>
     </subflows>
     <subflows>
         <name>Downgrade_WO_System_Reason</name>
