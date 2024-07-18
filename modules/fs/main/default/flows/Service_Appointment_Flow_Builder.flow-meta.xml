@@ -669,7 +669,7 @@
                 </rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>$Record.Initial_ETA__c</leftValueReference>
+                <leftValueReference>$Record.SchedStartTime</leftValueReference>
                 <operator>GreaterThan</operator>
                 <rightValue>
                     <elementReference>$Record.ArrivalWindowEndTime</elementReference>

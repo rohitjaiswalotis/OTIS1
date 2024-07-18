@@ -294,7 +294,7 @@
     <formulas>
         <name>Accepted_ETA_Difference_in_Mins</name>
         <dataType>Number</dataType>
-        <expression>(UNIXTIMESTAMP({!$Record.Initial_ETA__c}) - UNIXTIMESTAMP(NOW()))/60</expression>
+        <expression>(UNIXTIMESTAMP({!$Record.SchedStartTime}) - UNIXTIMESTAMP(NOW()))/60</expression>
         <scale>0</scale>
     </formulas>
     <formulas>
