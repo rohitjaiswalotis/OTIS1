@@ -9,6 +9,8 @@
     <columns>ActualPartsDelivery__c</columns>
     <columns>AdditionalSkills__c</columns>
     <columns>Reason__c</columns>
+    <columns>ServiceTerritory</columns>
+    <columns>Route__c</columns>
     <filterScope>Everything</filterScope>
     <filters>
         <field>PartsStatus__c</field>
