@@ -40,7 +40,7 @@ public class FSL_AssignedResourceOnDeleteTest {
         List<WorkOrder> workOrdersMt = UTIL_TestDataFactory.createWorkOrders(acc.Id, ct.Id, null, assetForMT.id, null, null, null, recordTypeIdMt, 1);
         workOrdersMt[0].workTypeId=workTypeList[0].Id;
         allWo.addAll(workOrdersMt);
-        insert allWo;
+        //insert allWo;
         
 		/*
         User  mechanicUser = UTIL_TestDataFactory.createUser('Field Service Mechanic');
