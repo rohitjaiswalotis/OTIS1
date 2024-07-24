@@ -538,6 +538,14 @@
         <connector>
             <targetReference>Record_Type_Check</targetReference>
         </connector>
+         <filterLogic>and</filterLogic>
+        <filters>
+            <field>Route__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
         <object>ServiceAppointment</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
