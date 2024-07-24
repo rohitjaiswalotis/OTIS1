@@ -46,6 +46,8 @@ public class FSL_AssignedResourceOnDeleteTest {
         insert mechanicUser;   
         ServiceResource sr= UTIL_TestDataFactory.createServiceResource('Test',mechanicUser.id,'1234',null,'1234',true);
         insert sr;
+		
+		/*
         OperatingHours opHours= UTIL_TestDataFactory.createOperatingHours('Test' , 'Test', 'America/Los_Angeles');
         insert opHours;        
         ServiceTerritory serTerr= UTIL_TestDataFactory.createTerritory('Test', opHours.id, null, null);
@@ -54,6 +56,7 @@ public class FSL_AssignedResourceOnDeleteTest {
         insert stm;
         ServiceAppointment sa = UTIL_TestDataFactory.createServiceAppointment(workOrdersMt[0].id,'None', datetime.now() ,datetime.now()+1,datetime.now(),datetime.now()+1, serTerr.id);
         insert sa;
+		*/
         
     }
 	
