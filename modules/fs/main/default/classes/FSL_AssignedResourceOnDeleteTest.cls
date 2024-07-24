@@ -1,7 +1,11 @@
 @isTest(SeeAllData=false)
 public class FSL_AssignedResourceOnDeleteTest {
-     @testSetup
-    static void setup(){
+	
+    @testSetup
+    static void setup() {
+		
+		System.runAs(new User(Id = UserInfo.getUserId())) {
+			
         WorkType wt = UTIL_TestDataFactory.createWorkType('Default Work Type',2,'Hours',true);
         insert wt;
         List<WorkOrder> allWo = new List<WorkOrder>();
@@ -17,7 +21,6 @@ public class FSL_AssignedResourceOnDeleteTest {
         assetForMT.FS_UnitCompany__c ='OTIS Switzerland';
         insert assetForMT;
         
-     
         
         Account acc=UTIL_TestDataFactory.createAccount('TestAccount');
         insert acc;
@@ -40,7 +43,7 @@ public class FSL_AssignedResourceOnDeleteTest {
         List<WorkOrder> workOrdersMt = UTIL_TestDataFactory.createWorkOrders(acc.Id, ct.Id, null, assetForMT.id, null, null, null, recordTypeIdMt, 1);
         workOrdersMt[0].workTypeId=workTypeList[0].Id;
         allWo.addAll(workOrdersMt);
-        //insert allWo;
+        insert allWo;
         
 		/*
         User  mechanicUser = UTIL_TestDataFactory.createUser('Field Service Mechanic');
@@ -58,6 +61,8 @@ public class FSL_AssignedResourceOnDeleteTest {
         ServiceAppointment sa = UTIL_TestDataFactory.createServiceAppointment(workOrdersMt[0].id,'None', datetime.now() ,datetime.now()+1,datetime.now(),datetime.now()+1, serTerr.id);
         insert sa;
 		*/
+		
+		}
         
     }
 	
