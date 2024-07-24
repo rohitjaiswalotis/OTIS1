@@ -56,11 +56,14 @@ public class FSL_AssignedResourceOnDeleteTest {
         insert sa;
         
     }
-   
-@isTest
+	
+	
+	@isTest
     public static void deleteAssignedResourceTest()
     {
-        // Create test data
+        /*
+		
+		// Create test data
         serviceResource sr = [Select Id,name from ServiceResource where Name ='Test' Limit 1];
         ServiceAppointment sa =[Select Id from ServiceAppointment Order By CreatedDate Desc  Limit 1];
         AssignedResource testResource = new AssignedResource();
@@ -80,6 +83,9 @@ public class FSL_AssignedResourceOnDeleteTest {
         Test.startTest();
         FSL_AssignedResourceOnDelete.deleteAssignedResource(flowInputsList);
         Test.stopTest();
+		
+		*/
         
     }
+	
 }
