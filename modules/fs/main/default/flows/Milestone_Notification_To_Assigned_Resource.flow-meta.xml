@@ -126,7 +126,7 @@
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
     <subflows>
         <name>send_Milestone_Notification</name>
         <label>send Milestone Notification</label>
