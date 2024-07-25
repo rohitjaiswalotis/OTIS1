@@ -5,13 +5,18 @@ public class FSL_AssignedResourceOnDeleteTest {
     static void setup() {
 		
 		System.runAs(new User(Id = UserInfo.getUserId())) {
-		
-		UTIL_TestDataFactory.assignPermissionSets(
-			UserInfo.getUserId(),
-			new Set<String> {
-				'Admin_Permissions'
-			}
-		);
+			
+			UTIL_TestDataFactory.assignPermissionSets(
+				UserInfo.getUserId(),
+				new Set<String> {
+					'Admin_Permissions',
+					'FSL_Resource_Permissions',
+					'FSL_Admin_Permissions',
+					'FSL_Dispatcher_Permissions'
+				}
+			);
+			
+		}
 		
 		
         WorkType wt = UTIL_TestDataFactory.createWorkType('Default Work Type',2,'Hours',true);
@@ -69,8 +74,6 @@ public class FSL_AssignedResourceOnDeleteTest {
         ServiceAppointment sa = UTIL_TestDataFactory.createServiceAppointment(workOrdersMt[0].id,'None', datetime.now() ,datetime.now()+1,datetime.now(),datetime.now()+1, serTerr.id);
         insert sa;
 		*/
-		
-		}
         
     }
 	
