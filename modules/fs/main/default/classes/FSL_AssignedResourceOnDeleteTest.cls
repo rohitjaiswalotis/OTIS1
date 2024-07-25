@@ -5,7 +5,15 @@ public class FSL_AssignedResourceOnDeleteTest {
     static void setup() {
 		
 		System.runAs(new User(Id = UserInfo.getUserId())) {
-			
+		
+		UTIL_TestDataFactory.assignPermissionSets(
+			UserInfo.getUserId(),
+			new Set<String> {
+				'Admin_Permissions'
+			}
+		);
+		
+		
         WorkType wt = UTIL_TestDataFactory.createWorkType('Default Work Type',2,'Hours',true);
         insert wt;
         List<WorkOrder> allWo = new List<WorkOrder>();
