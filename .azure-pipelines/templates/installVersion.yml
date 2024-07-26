@@ -401,6 +401,11 @@ steps:
           export SF_SR_VAR_GLOBAL_LOCALIZATION_DOMAIN="${{parameters.localizationDomain}}";
         fi
         
+        export SF_SR_VAR_GLOBAL_VERSION_NUMBER="$FS_PACKAGE_VERSION_NUMBER"
+        export SF_SR_VAR_GLOBAL_VERSION_MAJOR="$FS_PACKAGE_VERSION_MAJOR"
+        export SF_SR_VAR_GLOBAL_VERSION_MINOR="$FS_PACKAGE_VERSION_MINOR"
+        export SF_SR_VAR_GLOBAL_VERSION_PATCH="$FS_PACKAGE_VERSION_PATCH"
+        
         
         # transforming script params (if provided)
         if [[ '${{parameters.scriptParams}}' =~ ^none$ ]] ; then
@@ -415,6 +420,7 @@ steps:
           echo '${{parameters.scriptParams}}'
           
           SCRIPT_PARAMS_FILE=$(mktemp)
+          
           echo '${{parameters.scriptParams}}' | jq -r '. | to_entries | .[] | .key + "=" + (.value | @sh)' > $SCRIPT_PARAMS_FILE
           
           echo "Generated script params properties file: "

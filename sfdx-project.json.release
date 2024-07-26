@@ -4,24 +4,24 @@
       "path": "modules/fs",
       "default": true,
       "package": "OTIS Field Service",
-      "versionName": "Release $CONF_PROP_UTC_DATE_HUMAN",
+      "versionName": "Main Release $CONF_PROP_UTC_DATE_HUMAN",
       "versionDescription": "OTIS Field Service",
-      "versionNumber": "2.0.0.NEXT",
+      "versionNumber": "2.0.1.NEXT",
       "definitionFile": "config/core/shape.json",
       "dependencies": [
         {
-          "package": "FSL@250.0.37"
+          "package": "FSL@250.0.103"
         },
         {
-          "package": "Salesforce Mobile Apps@1.21.0"
+          "package": "Salesforce Mobile Apps@1.22.0"
         },
         {
           "package": "OTIS Global CC Core",
-          "versionNumber": "2.0.0.LATEST",
+          "versionNumber": "2.0.1.LATEST",
           "branch": "master"
         },
         {
-          "package": "Salesforce Maps@246.9"
+          "package": "Salesforce Maps@250.14"
         },
         {
           "package": "Salesforce Field Service App@1.55"
@@ -54,12 +54,14 @@
     }
   ],
   "packageAliases": {
-    "FSL@250.0.37": "04t3y00000233gcAAA",
-    "Salesforce Mobile Apps@1.21.0": "04t4V000001VUpTQAW",
-    "Salesforce Maps@246.9": "04t4P000002fQreQAE",
+    "FSL@250.0.103": "04t3y00000233qTAAQ",
+    "Salesforce Mobile Apps@1.22.0": "04t4V00000236XKQAY",
+    "Salesforce Maps@250.14": "04tKe000000D1yEIAS",
     "Salesforce Field Service App@1.55": "04tHq000000lsw7IAA",
     "OTIS Global CC Core": "0HoDn000000TNCsKAO",
-    "OTIS Field Service": "0HoDn000000TNHeKAO"
+    "OTIS Field Service": "0HoDn000000TNHeKAO",
+    "released.latest": "04tQO00000014JJYAY",
+    "OTIS Field Service@2.0": "04tQO00000014JJYAY"
   },
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
