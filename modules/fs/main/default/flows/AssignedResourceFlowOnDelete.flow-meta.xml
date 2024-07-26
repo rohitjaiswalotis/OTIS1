@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Calling_Apex</name>
+        <label>Calling Apex</label>
+        <locationX>176</locationX>
+        <locationY>395</locationY>
+        <actionName>FSL_AssignedResourceOnDelete</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>assResource</name>
+            <value>
+                <elementReference>$Record</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>FSL_AssignedResourceOnDelete</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
     <apiVersion>59.0</apiVersion>
     <environments>Default</environments>
     <interviewLabel>Assigned Resource Flow on Delete {!$Flow.CurrentDateTime}</interviewLabel>
@@ -23,52 +40,24 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
-    <recordUpdates>
-        <name>Clear_the_Assigned_Service_Resource_field_on_parent_SA</name>
-        <label>Clear the Assigned Service Resource field on parent SA</label>
-        <locationX>176</locationX>
-        <locationY>395</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.ServiceAppointmentId</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>Status</field>
-            <operator>NotEqualTo</operator>
-            <value>
-                <stringValue>Canceled</stringValue>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>AssignedServiceResource__c</field>
-        </inputAssignments>
-        <object>ServiceAppointment</object>
-    </recordUpdates>
-    <recordUpdates>
-        <name>Set_AssignedResourceDeletedManually_field_to_TRUE</name>
-        <label>Set AssignedResourceDeletedManually field to TRUE</label>
+    <recordLookups>
+        <name>Get_SA_Record</name>
+        <label>Get SA Record</label>
         <locationX>176</locationX>
         <locationY>287</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Clear_the_Assigned_Service_Resource_field_on_parent_SA</targetReference>
+            <targetReference>Calling_Apex</targetReference>
         </connector>
-        <inputAssignments>
-            <field>AssignedResourceDeletedManually__c</field>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record</inputReference>
-    </recordUpdates>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>AssignedResource</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <start>
         <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Set_AssignedResourceDeletedManually_field_to_TRUE</targetReference>
+            <targetReference>Get_SA_Record</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -83,4 +72,12 @@
         <triggerType>RecordBeforeDelete</triggerType>
     </start>
     <status>Active</status>
+    <variables>
+        <name>listOfAssignedResource</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>AssignedResource</objectType>
+    </variables>
 </Flow>
