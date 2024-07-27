@@ -273,7 +273,7 @@
         <description>This decision will check whether  the related work Oder&apos;s record type is maintenance or not</description>
         <name>Check_For_Maintenancee</name>
         <label>Check For Maintenance</label>
-        <locationX>5066</locationX>
+        <locationX>5132</locationX>
         <locationY>384</locationY>
         <defaultConnector>
             <targetReference>If_SA_Status_changed_to_Accepted</targetReference>
@@ -437,7 +437,7 @@
     <decisions>
         <name>Condition_Check</name>
         <label>Condition Check</label>
-        <locationX>7750</locationX>
+        <locationX>8014</locationX>
         <locationY>384</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -648,7 +648,7 @@
     <decisions>
         <name>If_SA_Status_changed_to_Accepted</name>
         <label>If SA Status changed to Accepted</label>
-        <locationX>6958</locationX>
+        <locationX>7090</locationX>
         <locationY>492</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -702,6 +702,13 @@
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue>Safety Check Lone Worker</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Field Service Mechanic</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -856,7 +863,7 @@
     <decisions>
         <name>Parent_WO_RecordType_NULL_Check</name>
         <label>Parent WO RecordType NULL Check</label>
-        <locationX>6210</locationX>
+        <locationX>6375</locationX>
         <locationY>276</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -1742,7 +1749,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C
         <inputAssignments>
             <field>Status</field>
             <value>
-                <stringValue>Closed</stringValue>
+                <stringValue>Cannot Complete</stringValue>
             </value>
         </inputAssignments>
         <inputReference>$Record.WorkOrder__r</inputReference>
@@ -1797,7 +1804,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C
     <recordUpdates>
         <name>Udate_WO_Safety_Check</name>
         <label>Udate WO Safety Check</label>
-        <locationX>7618</locationX>
+        <locationX>7882</locationX>
         <locationY>492</locationY>
         <connector>
             <targetReference>Update_Gantt_Icon_on_SA</targetReference>
@@ -1819,7 +1826,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C
     <recordUpdates>
         <name>Update_Gantt_Icon_on_SA</name>
         <label>Update Gantt Icon on SA</label>
-        <locationX>7618</locationX>
+        <locationX>7882</locationX>
         <locationY>600</locationY>
         <connector>
             <targetReference>SendCustomNotificationToMaintenanceSupervisor</targetReference>
@@ -2229,7 +2236,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C
         <inputReference>$Record.WorkOrder__r</inputReference>
     </recordUpdates>
     <start>
-        <locationX>6953</locationX>
+        <locationX>7167</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Parent_WO_RecordType_NULL_Check</targetReference>
@@ -2466,7 +2473,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C
     <subflows>
         <name>SendCustomNotificationToMaintenanceSupervisor</name>
         <label>SendCustomNotificationToMaintenanceSupervisor</label>
-        <locationX>7618</locationX>
+        <locationX>7882</locationX>
         <locationY>708</locationY>
         <flowName>SendCustomNotification</flowName>
         <inputAssignments>
