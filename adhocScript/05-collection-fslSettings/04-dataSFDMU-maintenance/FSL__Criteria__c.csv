@@ -1,0 +1,4 @@
+FSL__Criteria_Items__c,FSL__Logic__c,FSL__Object_Type__c,FSL__Territories__c,FSL__User_Type__c,FSL__Work_Types__c,Id,Name
+"{""custom"":[],""mandatory"":{""statusCategory"":[""InProgress""]}}","{""custom"":{}}",ServiceAppointment,[],Resource;Dispatcher;Agent;Admin,[],a07DO000000NaNRYA0,Criteria-000006
+"{""custom"":[],""mandatory"":{""statusCategory"":[""CannotComplete"",""Completed""]}}","{""custom"":{}}",ServiceAppointment,[],Resource;Dispatcher;Admin,[],a07DO000000NaNMYA0,Criteria-000005
+"{""custom"":[],""mandatory"":{""statusCategory"":[""Canceled""]}}","{""custom"":{}}",ServiceAppointment,[],Resource;Dispatcher;Agent;Admin,[],a07DO000000NaNHYA0,Criteria-000004
