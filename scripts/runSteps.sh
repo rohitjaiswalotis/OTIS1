@@ -1273,7 +1273,7 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 		
 		while true; do 	
 			
-			sf sfdmu:run --sourceusername="csvfile" --targetusername="$sfTargetOrgAlias" --apiversion="$SF_API_VERSION" --canmodify --logfullquery --verbose; dataStepResultCode=$?;
+			sf sfdmu:run -c --sourceusername="csvfile" --targetusername="$sfTargetOrgAlias" --apiversion="$SF_API_VERSION" --logfullquery --verbose; dataStepResultCode=$?;
 			
 			
 			# print warning/error files (if any)
