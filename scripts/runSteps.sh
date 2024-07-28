@@ -647,11 +647,19 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 		while true; do 	
 			
 			if [[ -f "${file}/package.xml" ]]; then
+				
 				echo "Deploying metadata in classic/old format (package.xml has been detected inside folder)..."
-				sf force mdapi deploy --deploydir="$file" --target-org="$sfTargetOrgAlias" --ignorewarnings --purgeondelete --api-version="$SF_API_VERSION" -w 1000 --verbose; metaStepResultCode=$?;
+				
+				# DON'T use '--purgeondelete' option here - it doesn't work in production
+				# Error (1): INVALID_OPERATION: purgeOnDelete option can only be used on a non-active org
+				sf force mdapi deploy --deploydir="$file" --target-org="$sfTargetOrgAlias" --ignorewarnings --api-version="$SF_API_VERSION" -w 1000 --verbose; metaStepResultCode=$?;
+				
 			else
+				
 				echo "Deploying metadata in source format..."
+				
 				sf force source deploy --sourcepath="$file" --target-org="$sfTargetOrgAlias" --ignorewarnings --api-version="$SF_API_VERSION" -w 1000 --verbose; metaStepResultCode=$?;
+				
 			fi
 			
 			
