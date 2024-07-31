@@ -255,7 +255,7 @@
         </scheduledPaths>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Obsolete</status>
+    <status>Active</status>
     <variables>
         <name>LocationAlertTemplate</name>
         <dataType>String</dataType>
