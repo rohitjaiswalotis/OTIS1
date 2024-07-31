@@ -531,6 +531,7 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 			sfOrgDetails=$(sf org display --target-org "$PARAM_ORG_ALIAS" --verbose --json || true);
 			sfAccessToken=$(echo "$sfOrgDetails" | jq -r '.result.accessToken // empty');
 			sfInstanceUrl=$(echo "$sfOrgDetails" | jq -r '.result.instanceUrl // empty');
+			sfDomain=$(echo "$sfInstanceUrl" | cut -d'/' -f3);
 			
 			# success
 			if [[ ${sfAccessToken:+1} && ${sfInstanceUrl:+1} ]]; then
@@ -567,6 +568,7 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
         sfTargetOrgAlias="$PARAM_ORG_ALIAS"
         sfTargetOrgAccessToken="$sfAccessToken"
         sfTargetOrgInstanceUrl="$sfInstanceUrl"
+        sfTargetOrgDomain="$sfDomain"
         
     fi
     
@@ -586,6 +588,7 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 			sfOrgDetails2=$(sf org display --target-org "$PARAM_ORG2_ALIAS" --verbose --json || true);
 			sfAccessToken2=$(echo "$sfOrgDetails2" | jq -r '.result.accessToken // empty');
 			sfInstanceUrl2=$(echo "$sfOrgDetails2" | jq -r '.result.instanceUrl // empty');
+			sfDomain2=$(echo "$sfInstanceUrl2" | cut -d'/' -f3);
 			
 			# success
 			if [[ ${sfAccessToken2:+1} && ${sfInstanceUrl2:+1} ]]; then
@@ -624,6 +627,7 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
             sfTargetOrgAlias="$PARAM_ORG2_ALIAS"
             sfTargetOrgAccessToken="$sfAccessToken2"
             sfTargetOrgInstanceUrl="$sfInstanceUrl2"
+			sfTargetOrgDomain="$sfDomain2"
             
         fi
         
@@ -647,11 +651,19 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 		while true; do 	
 			
 			if [[ -f "${file}/package.xml" ]]; then
+				
 				echo "Deploying metadata in classic/old format (package.xml has been detected inside folder)..."
-				sf force mdapi deploy --deploydir="$file" --target-org="$sfTargetOrgAlias" --ignorewarnings --purgeondelete --api-version="$SF_API_VERSION" -w 1000 --verbose; metaStepResultCode=$?;
+				
+				# DON'T use '--purgeondelete' option here - it doesn't work in production
+				# Error (1): INVALID_OPERATION: purgeOnDelete option can only be used on a non-active org
+				sf force mdapi deploy --deploydir="$file" --target-org="$sfTargetOrgAlias" --ignorewarnings --api-version="$SF_API_VERSION" -w 1000 --verbose; metaStepResultCode=$?;
+				
 			else
+				
 				echo "Deploying metadata in source format..."
+				
 				sf force source deploy --sourcepath="$file" --target-org="$sfTargetOrgAlias" --ignorewarnings --api-version="$SF_API_VERSION" -w 1000 --verbose; metaStepResultCode=$?;
+				
 			fi
 			
 			
@@ -1273,7 +1285,7 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 		
 		while true; do 	
 			
-			sf sfdmu:run --sourceusername="csvfile" --targetusername="$sfTargetOrgAlias" --apiversion="$SF_API_VERSION" --noprompt --canmodify --logfullquery --verbose; dataStepResultCode=$?;
+			sf sfdmu:run --sourceusername="csvfile" --targetusername="$sfTargetOrgAlias" --apiversion="$SF_API_VERSION" --canmodify="$sfTargetOrgDomain" --noprompt --logfullquery --verbose; dataStepResultCode=$?;
 			
 			
 			# print warning/error files (if any)
