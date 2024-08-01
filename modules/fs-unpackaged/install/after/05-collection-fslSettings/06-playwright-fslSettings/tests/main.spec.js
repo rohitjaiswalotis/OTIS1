@@ -138,9 +138,7 @@ test('Scheduling -> General Logic', async ({ basePage, baseUrl }) => {
 	const GENERAL_LOGIC_PINNED_STATUSES = new utils.CaseInsensitiveSet(
 		[ 
 			"Cannot Complete", 
-			"Completed",
-			"Scheduled",
-			"Dispatched"
+			"Completed"
 		]
 	);
 	
