@@ -550,7 +550,7 @@
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
     <subflows>
         <name>Sub_Flow_for_FTF_Count</name>
         <label>Sub Flow for FTF Count</label>
