@@ -1505,7 +1505,7 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <value>
-            <stringValue>Completed</stringValue>
+            <stringValue>Closed</stringValue>
         </value>
     </variables>
     <variables>
