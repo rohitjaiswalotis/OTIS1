@@ -45,4 +45,7 @@ sf force data record delete --sobject AppExtension --where "AppExtensionName='WO
 # delete "Complete Line Item Status" app extension (if any)
 sf force data record delete --sobject AppExtension --where "AppExtensionName='FS_ChangeWOLIStatus' AppExtensionLabel='Complete Line Item Status'" --target-org "$PARAM_ORG_ALIAS" --json || true
 
+# update "Create_WO_for_Repair_Detection" app extension to align ScopedToObjectTypes
+sf force data record update --sobject AppExtension --where "AppExtensionName='Create_WO_for_Repair_Detection'" --values "ScopedToObjectTypes='ServiceAppointment,WorkOrder'" --target-org "$PARAM_ORG_ALIAS" --json || true
+
 
