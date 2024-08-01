@@ -19,6 +19,13 @@
                 <elementReference>Back_In_Service_By</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>storeShutdownLogRecords.Back_in_Service_Date_Time__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Back_In_Service_Date_Time</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Update_shutdown_log</targetReference>
         </connector>
