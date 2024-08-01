@@ -1742,7 +1742,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C
         <inputAssignments>
             <field>Status</field>
             <value>
-                <stringValue>Closed</stringValue>
+                <stringValue>Completed</stringValue>
             </value>
         </inputAssignments>
         <inputReference>$Record.WorkOrder__r</inputReference>
@@ -2121,7 +2121,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C
         <inputAssignments>
             <field>Status</field>
             <value>
-                <stringValue>Closed</stringValue>
+                <stringValue>Completed</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>

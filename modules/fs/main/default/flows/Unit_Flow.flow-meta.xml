@@ -1770,7 +1770,7 @@
             <field>Status</field>
             <operator>NotEqualTo</operator>
             <value>
-                <stringValue>Closed</stringValue>
+                <stringValue>Completed</stringValue>
             </value>
         </filters>
         <filters>

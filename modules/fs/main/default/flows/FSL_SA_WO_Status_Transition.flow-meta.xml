@@ -855,7 +855,7 @@
                 <leftValueReference>$Record.WorkOrder__r.Status</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Closed</stringValue>
+                    <stringValue>Completed</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -1313,7 +1313,7 @@ Removed references of WO.Total Woli with checked Review Field - 1 July 24</descr
         <inputAssignments>
             <field>Status</field>
             <value>
-                <stringValue>Closed</stringValue>
+                <stringValue>Completed</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
