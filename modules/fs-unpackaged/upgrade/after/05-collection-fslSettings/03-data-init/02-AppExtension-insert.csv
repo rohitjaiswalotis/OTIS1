@@ -1,2 +1,3 @@
 "FieldServiceMobileSettingsId","AppExtensionName","Type","LaunchValue","ScopedToObjectTypes","AppExtensionLabel","InstallationUrl"
 "$SF_SR_VAR_MOBILE_SETTING_ID","Create new SA","Flow","Create_new_SA","WorkOrder","Create new SA",
+"$SF_SR_VAR_MOBILE_SETTING_ID","Create_WO_for_Repair_Detection_1","Flow","Create_WO_for_Repair_Detection","Asset","Create Work Order for Repair","/flow/Create_WO_for_Repair_Detection"
