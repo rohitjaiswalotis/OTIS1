@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sorted>false</sorted>
+    <standardValue>
+        <fullName>Work</fullName>
+        <default>false</default>
+        <label>Work</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Travel</fullName>
+        <default>false</default>
+        <label>Travel</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Non Productive Time</fullName>
+        <default>false</default>
+        <label>Non Productive Time</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Vacation</fullName>
+        <default>false</default>
+        <label>Vacation</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Meeting</fullName>
+        <default>false</default>
+        <label>Meeting</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Training</fullName>
+        <default>false</default>
+        <label>Training</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Medical</fullName>
+        <default>false</default>
+        <label>Medical</label>
+    </standardValue>
+    <standardValue>
+        <fullName>External appointment</fullName>
+        <default>false</default>
+        <label>External appointment</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Outstanding break</fullName>
+        <default>false</default>
+        <label>Outstanding break</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Vehicle maintenance</fullName>
+        <default>false</default>
+        <label>Vehicle maintenance</label>
+    </standardValue>
+    <standardValue>
+        <fullName>On Leave</fullName>
+        <default>false</default>
+        <label>On Leave</label>
+    </standardValue>
+</StandardValueSet>

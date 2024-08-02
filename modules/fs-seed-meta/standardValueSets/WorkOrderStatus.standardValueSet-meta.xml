@@ -74,4 +74,10 @@
         <label>Canceled by Customer</label>
         <groupingString>Canceled</groupingString>
     </standardValue>
+    <standardValue>
+        <fullName>Completed</fullName>
+        <default>false</default>
+        <label>Completed</label>
+        <groupingString>Completed</groupingString>
+    </standardValue>
 </StandardValueSet>

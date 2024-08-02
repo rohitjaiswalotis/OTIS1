@@ -35,6 +35,11 @@
                 <default>false</default>
                 <label>Supervisor Review Required</label>
             </value>
+			<value>
+                <fullName>Escalation to Supervisor</fullName>
+                <default>false</default>
+                <label>Escalation to Supervisor</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
