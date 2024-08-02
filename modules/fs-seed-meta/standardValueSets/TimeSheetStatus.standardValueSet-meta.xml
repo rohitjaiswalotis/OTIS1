@@ -2,18 +2,23 @@
 <StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <sorted>false</sorted>
     <standardValue>
-        <fullName>Last Minute Absence</fullName>
-        <default>false</default>
-        <label>Last Minute Absence</label>
+        <fullName>New</fullName>
+        <default>true</default>
+        <label>New</label>
     </standardValue>
     <standardValue>
-        <fullName>99 Code Absence</fullName>
+        <fullName>Submitted</fullName>
         <default>false</default>
-        <label>99 Code Absence</label>
+        <label>Submitted</label>
     </standardValue>
     <standardValue>
-        <fullName>Regular Absence</fullName>
+        <fullName>Approved</fullName>
         <default>false</default>
-        <label>Regular Absence</label>
+        <label>Approved</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Rejected</fullName>
+        <default>false</default>
+        <label>Rejected</label>
     </standardValue>
 </StandardValueSet>

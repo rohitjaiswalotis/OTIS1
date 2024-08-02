@@ -21,4 +21,9 @@
         <default>false</default>
         <label>3rd Party Work Order</label>
     </standardValue>
+    <standardValue>
+        <fullName>Repair WO to Create</fullName>
+        <default>false</default>
+        <label>Repair WO to Create</label>
+    </standardValue>
 </StandardValueSet>
