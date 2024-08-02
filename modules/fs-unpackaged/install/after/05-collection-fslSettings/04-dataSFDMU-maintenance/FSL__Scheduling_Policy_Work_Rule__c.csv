@@ -29,3 +29,6 @@ Emergency;Active Resources,a0aDO000000WB2AYAW,Emergency,a0nDO000000UE42YAG,Activ
 Reduce Travel;Resource Availability,a0aDO000000WB2BYAW,Reduce Travel,a0nDO000000UE4CYAW,Resource Availability,a0ZDO000000JYFg2AO
 Customer First;Match Skills,a0aDO000000WB2EYAW,Customer First,a0nDO000000UE45YAG,Match Skills,a0ZDO000000JYEO2A4
 Focus on Service Request;Match Territory,a0aDO000000WB2CYAW,Focus on Service Request,a0nDO000000UE44YAG,Match Territory,a0ZDO000000JkCI2A0
+Focus on Service Request;Service Appointment Visiting Hours,a0aDO000000WB2CYAW,Focus on Service Request,a0nDO000000UE48YAG,Service Appointment Visiting Hours,a0ZDO000000JYEj2AO
+Limited Resource;Service Appointment Visiting Hours,a0aDO000000WB2DYAW,Limited Resource,a0nDO000000UE48YAG,Service Appointment Visiting Hours,a0ZDO000000JYEk2AO
+Reduce Travel;Service Appointment Visiting Hours,a0aDO000000WB2BYAW,Reduce Travel,a0nDO000000UE48YAG,Service Appointment Visiting Hours,a0ZDO000000JYEl2AO
