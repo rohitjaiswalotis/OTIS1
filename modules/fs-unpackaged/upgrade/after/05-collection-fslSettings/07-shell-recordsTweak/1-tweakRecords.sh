@@ -46,6 +46,9 @@ sf force data record delete --sobject AppExtension --where "AppExtensionName='WO
 sf force data record delete --sobject AppExtension --where "AppExtensionName='FS_ChangeWOLIStatus' AppExtensionLabel='Complete Line Item Status'" --target-org "$PARAM_ORG_ALIAS" --json || true
 
 # update "Create_WO_for_Repair_Detection" app extension to align ScopedToObjectTypes
-sf force data record update --sobject AppExtension --where "AppExtensionName='Create_WO_for_Repair_Detection'" --values "ScopedToObjectTypes='ServiceAppointment,WorkOrder'" --target-org "$PARAM_ORG_ALIAS" --json || true
+sf force data record update --sobject AppExtension --where "AppExtensionName='Create_WO_for_Repair_Detection'" --values "ScopedToObjectTypes='WorkOrder'" --target-org "$PARAM_ORG_ALIAS" --json || true
+
+# update "Time Sheet Entry Update" app extension with installation url
+sf force data record update --sobject AppExtension --where "AppExtensionName='Time Sheet Entry Update'" --values "InstallationUrl='/flow/Time_Sheet_Entry_Update'" --target-org "$PARAM_ORG_ALIAS" --json || true
 
 
