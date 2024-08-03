@@ -372,13 +372,9 @@ steps:
         
         echo "Printing dependencies of just created Field Service package version..."
         
-        # get access token and instance url
-        sfOrgDetails=$(sf org display --target-org "devHub" --verbose --json);
-        sfAccessToken=$(echo "$sfOrgDetails" | jq -r '.result.accessToken // empty');
-        sfInstanceUrl=$(echo "$sfOrgDetails" | jq -r '.result.instanceUrl // empty');
-        
-        FS_PACKAGE_VERSION_DEPENDENCIES=$(npx -p sf-package-inspector@$(packageInspectorVersion) sf-package-inspect --accessToken="${sfAccessToken}" --instanceUrl="${sfInstanceUrl}" --command="list-deps" --versionId="$FS_PACKAGE_VERSION_ID" --apiVersion="$(sfApiVersion)" || echo "unknown")
+        FS_PACKAGE_VERSION_DEPENDENCIES=$(npx -p sf-package-inspector@$(packageInspectorVersion) sf-package-inspect --orgAlias="devHub" --command="list-deps" --versionId="$FS_PACKAGE_VERSION_ID" --apiVersion="$(sfApiVersion)" || echo "unknown")
         echo "$FS_PACKAGE_VERSION_DEPENDENCIES"
+        
         
         # send success notif re package version creation
         curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; '"$NOTIFICATION_ICON"' **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version creation `'"$FS_PACKAGE_VERSION_NUMBER"'` [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)!\n\n**Version Details:**<pre>'"$(escapeJson "${FS_PACKAGE_VERSION_DETAILS// /&nbsp;}")"'<\/pre> **Version Dependencies:**<pre>'"$(escapeJson "${FS_PACKAGE_VERSION_DEPENDENCIES// /&nbsp;}")"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifSuccessUrls)
