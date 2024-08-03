@@ -1,0 +1,4 @@
+$$FSL__Scheduling_Policy__r.Name$FSL__Work_Rule__r.Name,FSL__Scheduling_Policy__c,FSL__Scheduling_Policy__r.Name,FSL__Work_Rule__c,FSL__Work_Rule__r.Name,Id
+Focus on Service Request;Service Appointment Visiting Hours,a0aDO000000WB2CYAW,Focus on Service Request,a0nDO000000UE48YAG,Service Appointment Visiting Hours,a0ZDO000000JYEj2AO
+Limited Resource;Service Appointment Visiting Hours,a0aDO000000WB2DYAW,Limited Resource,a0nDO000000UE48YAG,Service Appointment Visiting Hours,a0ZDO000000JYEk2AO
+Reduce Travel;Service Appointment Visiting Hours,a0aDO000000WB2BYAW,Reduce Travel,a0nDO000000UE48YAG,Service Appointment Visiting Hours,a0ZDO000000JYEl2AO

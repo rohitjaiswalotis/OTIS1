@@ -9,7 +9,7 @@
     <standardValue>
         <fullName>Elevator IVR</fullName>
         <default>false</default>
-        <label>Elevator IVR</label>
+        <label>IVR</label>
     </standardValue>
     <standardValue>
         <fullName>Phone</fullName>
@@ -70,5 +70,10 @@
         <fullName>Third Party Email</fullName>
         <default>false</default>
         <label>Third Party Email</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Elite Service</fullName>
+        <default>false</default>
+        <label>Elite Service</label>
     </standardValue>
 </StandardValueSet>

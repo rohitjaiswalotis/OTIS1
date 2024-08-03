@@ -4,8 +4,8 @@
     <assignments>
         <name>Assign_Auto_Schedule_False</name>
         <label>Assign Auto Schedule False</label>
-        <locationX>3130</locationX>
-        <locationY>2879</locationY>
+        <locationX>10324</locationX>
+        <locationY>2795</locationY>
         <assignmentItems>
             <assignToReference>Loop_Thorugh_SA_List.FSL__Auto_Schedule__c</assignToReference>
             <operator>Assign</operator>
@@ -27,8 +27,8 @@
     <assignments>
         <name>Assign_Auto_Schedule_True</name>
         <label>Assign Auto Schedule True</label>
-        <locationX>3746</locationX>
-        <locationY>2879</locationY>
+        <locationX>10940</locationX>
+        <locationY>2795</locationY>
         <assignmentItems>
             <assignToReference>Loop_Through_SA_List1.FSL__Auto_Schedule__c</assignToReference>
             <operator>Assign</operator>
@@ -50,8 +50,8 @@
     <assignments>
         <name>Assignment</name>
         <label>Assignment</label>
-        <locationX>8014</locationX>
-        <locationY>1271</locationY>
+        <locationX>6518</locationX>
+        <locationY>1055</locationY>
         <assignmentItems>
             <assignToReference>Loop_SAs.DueDate</assignToReference>
             <operator>Assign</operator>
@@ -71,9 +71,96 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Copy_1_of_Assignment</name>
+        <label>Copy 1 of Assignment</label>
+        <locationX>15142</locationX>
+        <locationY>1247</locationY>
+        <assignmentItems>
+            <assignToReference>Loop_SAs.DueDate</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.SiteArrivalDateTime__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>StoreSAduedate</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_SAs</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Copy_3_of_Loop_SA</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Copy_1_of_Copy_1_of_Skill_Found</name>
+        <label>Copy 1 of Copy 1 of Skill Found</label>
+        <locationX>12546</locationX>
+        <locationY>1271</locationY>
+        <assignmentItems>
+            <assignToReference>SkillFound</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Copy_1_of_Copy_1_of_Loop_Skill_Check_Revert</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Copy_1_of_Count_OF_Pending_SA</name>
+        <label>Copy 1 of Count OF Pending SA</label>
+        <locationX>8102</locationX>
+        <locationY>947</locationY>
+        <assignmentItems>
+            <assignToReference>CountPendingSA</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>Get_Pending_SA</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Copy_1_of_Check_Count</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Copy_1_of_Skill_Found</name>
+        <label>Copy 1 of Skill Found</label>
+        <locationX>11798</locationX>
+        <locationY>1487</locationY>
+        <assignmentItems>
+            <assignToReference>SkillFound</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Copy_1_of_Loop_Skill_Check_Revert</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Copy_1_of_Value_Assign</name>
+        <label>Copy 1 of Value Assign</label>
+        <locationX>12458</locationX>
+        <locationY>947</locationY>
+        <assignmentItems>
+            <assignToReference>AdvSkillSplitterV2</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>$Record__Prior.AdditionalSkills__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Copy_1_of_Copy_1_of_Loop_Skill_Check_Revert</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Count_OF_Pending_SA</name>
         <label>Count OF Pending SA</label>
-        <locationX>974</locationX>
+        <locationX>1106</locationX>
         <locationY>947</locationY>
         <assignmentItems>
             <assignToReference>CountPendingSA</assignToReference>
@@ -89,7 +176,7 @@
     <assignments>
         <name>Skill_Found</name>
         <label>Skill Found</label>
-        <locationX>4626</locationX>
+        <locationX>3922</locationX>
         <locationY>1487</locationY>
         <assignmentItems>
             <assignToReference>SkillFound</assignToReference>
@@ -105,7 +192,7 @@
     <assignments>
         <name>Value_Assign</name>
         <label>Value Assign</label>
-        <locationX>4934</locationX>
+        <locationX>4230</locationX>
         <locationY>947</locationY>
         <assignmentItems>
             <assignToReference>AdvSkillSplitterV2</assignToReference>
@@ -120,11 +207,36 @@
         </connector>
     </assignments>
     <customErrors>
+        <name>Copy_1_of_ErrorScreen</name>
+        <label>Copy 1 of ErrorScreen</label>
+        <locationX>7134</locationX>
+        <locationY>1163</locationY>
+        <connector>
+            <targetReference>Copy_2_of_Loop_SA</targetReference>
+        </connector>
+        <customErrorMessages>
+            <errorMessage>Service Appointment Present with status as InProgress/Completed/Travelling</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <customErrors>
+        <description>throws the error</description>
+        <name>Copy_2_of_ErrorScreen</name>
+        <label>Copy 2 of ErrorScreen</label>
+        <locationX>7310</locationX>
+        <locationY>947</locationY>
+        <customErrorMessages>
+            <errorMessage>You Should Give the Rejection Comment to cancel the Work Order</errorMessage>
+            <fieldSelection>FS_CancellationReason__c</fieldSelection>
+            <isFieldError>true</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <customErrors>
         <description>throws the error</description>
         <name>ErrorScreen</name>
         <label>ErrorScreen</label>
         <locationX>314</locationX>
-        <locationY>1163</locationY>
+        <locationY>947</locationY>
         <customErrorMessages>
             <errorMessage>You Should Give the Rejection Comment to cancel the Work Order</errorMessage>
             <fieldSelection>FS_CancellationReason__c</fieldSelection>
@@ -135,7 +247,7 @@
         <name>ErrorScreen1</name>
         <label>ErrorScreen</label>
         <locationX>314</locationX>
-        <locationY>1487</locationY>
+        <locationY>1271</locationY>
         <customErrorMessages>
             <errorMessage>Service Appointment Present with status as InProgress/Completed/Travelling</errorMessage>
             <isFieldError>false</isFieldError>
@@ -144,7 +256,7 @@
     <decisions>
         <name>Check_Count</name>
         <label>Check Count</label>
-        <locationX>974</locationX>
+        <locationX>1106</locationX>
         <locationY>1055</locationY>
         <defaultConnectorLabel>End</defaultConnectorLabel>
         <rules>
@@ -186,9 +298,9 @@
         <description>This Decision Will Check For Whether the Work Order is of Type Maintenance or Not .</description>
         <name>Check_For_Maintenance</name>
         <label>Check For Maintenance</label>
-        <locationX>5462</locationX>
+        <locationX>9466</locationX>
         <locationY>623</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <defaultConnectorLabel>end</defaultConnectorLabel>
         <rules>
             <name>Maintenance</name>
             <conditionLogic>and</conditionLogic>
@@ -196,13 +308,28 @@
                 <leftValueReference>$Record.RecordTypeId</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>$Setup.OTISCustomSettings__c.Work_Order_Maintenance_Record_Type__c</elementReference>
+                    <stringValue>{!$Setup.OTISCustomSettings__c.Work_Order_Maintenance_Record_Type__c}</stringValue>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>Update_Work_Order_decision</targetReference>
             </connector>
             <label>Maintenance</label>
+        </rules>
+        <rules>
+            <name>Service_Request</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.RecordTypeId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>{!$Setup.OTISCustomSettings__c.Work_Order_Service_Request_Record_Type__c}</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Update_Work_Order_decision</targetReference>
+            </connector>
+            <label>Service Request</label>
         </rules>
     </decisions>
     <decisions>
@@ -234,7 +361,7 @@
         <description>check if he status is cancelled or not</description>
         <name>Check_for_Status</name>
         <label>Check for Status</label>
-        <locationX>5462</locationX>
+        <locationX>9466</locationX>
         <locationY>323</locationY>
         <defaultConnector>
             <targetReference>Mark_For_RM_Review</targetReference>
@@ -296,9 +423,890 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Copy_1_of_Check_Count</name>
+        <label>Copy 1 of Check Count</label>
+        <locationX>8102</locationX>
+        <locationY>1055</locationY>
+        <defaultConnectorLabel>End</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_Less_than_1_Adequate_actual_duration</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>CountPendingSA</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <numberValue>1.0</numberValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Actual Duration Inadequate</stringValue>
+                </rightValue>
+            </conditions>
+            <label>Copy 1 of Less than 1 &amp; Adequate actual duration</label>
+        </rules>
+        <rules>
+            <name>Copy_1_of_Less_than_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>CountPendingSA</leftValueReference>
+                <operator>LessThan</operator>
+                <rightValue>
+                    <numberValue>1.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Get_New_System_Reason</targetReference>
+            </connector>
+            <label>Copy 1 of Less than 1</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Copy_1_of_Check_for_RC</name>
+        <label>Copy 1 of Check for RC</label>
+        <locationX>7178</locationX>
+        <locationY>839</locationY>
+        <defaultConnector>
+            <targetReference>Copy_2_of_ErrorScreen</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Not Present</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_Present</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.FS_CancellationReason__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Fetch_Releated_SA</targetReference>
+            </connector>
+            <label>Copy 1 of Present</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Copy_1_of_Copy_1_of_If_SA_status_is_in_Progress</name>
+        <label>Copy 1 of Copy 1 of If SA status is in Progress</label>
+        <locationX>15142</locationX>
+        <locationY>1055</locationY>
+        <defaultConnector>
+            <targetReference>Copy_1_of_Assignment</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>in Progress</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_Copy_1_of_Not_In_Progress</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Loop_SA.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Onsite</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Loop_SA.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>En Route</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Loop_SA.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Dispatched</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>Loop_SA.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Scheduled</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Assignment</targetReference>
+            </connector>
+            <label>Copy 1 of Copy 1 of Not In Progress</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Copy_1_of_Copy_1_of_Is_Skill_Found</name>
+        <label>Copy 1 of Copy 1 of Is Skill Found</label>
+        <locationX>12458</locationX>
+        <locationY>1547</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_Copy_1_of_Skill_Found_Record_Delete</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>SkillFound</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Copy_1_of_Delete_SkillRequired_related_records_from_WO_has_context_men</targetReference>
+            </connector>
+            <label>Copy 1 of Copy 1 of Skill Found Record Delete</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Copy_1_of_Copy_1_of_Skill_Is_Present</name>
+        <label>Copy 1 of Copy 1 of Skill Is Present</label>
+        <locationX>12678</locationX>
+        <locationY>1163</locationY>
+        <defaultConnector>
+            <targetReference>Copy_1_of_Copy_1_of_Loop_Skill_Check_Revert</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_Copy_1_of_Repair_Skill_Present</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Loop_Skill_Check_Revert</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Repair</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Copy_1_of_Skill_Found</targetReference>
+            </connector>
+            <label>Copy 1 of Copy 1 of Repair Skill Present</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Copy_1_of_Copy_1_of_Skill_requirement_Value_v2</name>
+        <label>Copy 1 of Copy 1 of Skill requirement Value v2</label>
+        <locationX>11314</locationX>
+        <locationY>1271</locationY>
+        <defaultConnector>
+            <targetReference>Copy_1_of_Copy_1_of_Looping_All_Selected_Values_of_AdditionalSkills_Field</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_Copy_1_of_If_Repair</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Looping_All_Selected_Values_of_AdditionalSkills_Field_v2</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Repair</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Copy_1_of_Create_Repair_Skills_Required_Record</targetReference>
+            </connector>
+            <label>Copy 1 of Copy 1 of If Repair</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Copy_1_of_Detection_of_Field_Change</name>
+        <label>Copy 1 of Detection of Field Change</label>
+        <locationX>10874</locationX>
+        <locationY>839</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_Only_Forecasted_Delivery_Date_Changed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ForecastedPartsDelivery__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ForecastedPartsDelivery__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ActualPartsDelivery__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AdditionalSkills__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Update_Part_Status_for_Forecast_Part_Delivery_Date</targetReference>
+            </connector>
+            <label>Copy 1 of Only Forecasted Delivery Date Changed</label>
+        </rules>
+        <rules>
+            <name>Copy_1_of_Only_Actual_Part_Delivery_Date_Changed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ActualPartsDelivery__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ActualPartsDelivery__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ForecastedPartsDelivery__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AdditionalSkills__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Updating_WO_Part_Status</targetReference>
+            </connector>
+            <label>Copy 1 of Only Actual Part Delivery Date Changed</label>
+        </rules>
+        <rules>
+            <name>Copy_1_of_Only_Additional_Skills_is_Changed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AdditionalSkills__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AdditionalSkills__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ActualPartsDelivery__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ForecastedPartsDelivery__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_String_splitting_with_subflow</targetReference>
+            </connector>
+            <label>Copy 1 of Only Additional Skills is Changed</label>
+        </rules>
+        <rules>
+            <name>Copy_1_of_Additional_skills_and_Part_Delivery_Date</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ActualPartsDelivery__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ActualPartsDelivery__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.ActualPartsDelivery__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AdditionalSkills__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AdditionalSkills__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Create_Skill_Requirement</targetReference>
+            </connector>
+            <label>Copy 1 of Additional skills and Part Delivery Date</label>
+        </rules>
+        <rules>
+            <name>Copy_1_of_ADDate_and_ADSkills_and_FD_Date_changed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ActualPartsDelivery__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ActualPartsDelivery__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AdditionalSkills__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AdditionalSkills__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ForecastedPartsDelivery__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ForecastedPartsDelivery__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Additional_Skill_String_Splitter</targetReference>
+            </connector>
+            <label>Copy 1 of ADDate and ADSkills and FD Date changed</label>
+        </rules>
+        <rules>
+            <name>Copy_1_of_FDDate_and_ADSkills_is_Change</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ForecastedPartsDelivery__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ForecastedPartsDelivery__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AdditionalSkills__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AdditionalSkills__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Update_Part_Status_for_Forecast_Part_Delivery_Date_v2</targetReference>
+            </connector>
+            <label>Copy 1 of FDDate and ADSkills is Change</label>
+        </rules>
+        <rules>
+            <name>Copy_1_of_Actual_Delivery_Date_Cleared</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.ActualPartsDelivery__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ActualPartsDelivery__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Set_WO_status_to_OnHold_and_PartsStatus_to_WaitingForParts</targetReference>
+            </connector>
+            <label>Copy 1 of Actual Delivery Date Cleared</label>
+        </rules>
+        <rules>
+            <name>Copy_1_of_Additional_Skills_Is_Cleared</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AdditionalSkills__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AdditionalSkills__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Value_Assign</targetReference>
+            </connector>
+            <label>Copy 1 of Additional Skills Is Cleared</label>
+        </rules>
+        <rules>
+            <name>Copy_1_of_FDDateRemoved</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ForecastedPartsDelivery__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ForecastedPartsDelivery__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record__Prior.ForecastedPartsDelivery__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.PartsStatus__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Waiting For Parts</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Update_Part_Status_for_Forecast_Part_Delivery_Date_Null</targetReference>
+            </connector>
+            <label>Copy 1 of FDDateRemoved</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Copy_1_of_If_Get_SA_has_any_Value</name>
+        <label>Copy 1 of If Get SA has any Value</label>
+        <locationX>13778</locationX>
+        <locationY>947</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_No</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_SA</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Create_New_SA</targetReference>
+            </connector>
+            <label>Copy 1 of No</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Copy_1_of_Is_Skill_Found</name>
+        <label>Copy 1 of Is Skill Found</label>
+        <locationX>11710</locationX>
+        <locationY>1763</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_Skill_Found_Record_Delete</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>SkillFound</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Delete_SkillRequired_related_records_from_WO_has_context_menu</targetReference>
+            </connector>
+            <label>Copy 1 of Skill Found Record Delete</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Copy_1_of_Skill_Is_Present</name>
+        <label>Copy 1 of Skill Is Present</label>
+        <locationX>11930</locationX>
+        <locationY>1379</locationY>
+        <defaultConnector>
+            <targetReference>Copy_1_of_Loop_Skill_Check_Revert</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_Repair_Skill_Present</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Loop_Skill_Check_Revert</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Repair</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Skill_Found</targetReference>
+            </connector>
+            <label>Copy 1 of Repair Skill Present</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Copy_1_of_Skill_requirement_Value_v2</name>
+        <label>Copy 1 of Skill requirement Value v2</label>
+        <locationX>9818</locationX>
+        <locationY>1163</locationY>
+        <defaultConnector>
+            <targetReference>Copy_1_of_Looping_All_Selected_Values_of_AdditionalSkills_Field</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_If_Repair</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Looping_All_Selected_Values_of_AdditionalSkills_Field_v2</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Repair</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Create_Repair_Skills_Required_Record</targetReference>
+            </connector>
+            <label>Copy 1 of If Repair</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Copy_1_of_Update_Work_Order_decision</name>
+        <label>Copy 1 of Update Work Order decision</label>
+        <locationX>11204</locationX>
+        <locationY>731</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_Cancelled_WO</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Canceled</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Canceled</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Check_for_RC</targetReference>
+            </connector>
+            <label>Copy 1 of Cancelled WO</label>
+        </rules>
+        <rules>
+            <name>Copy_1_of_Update_work_order_reason</name>
+            <conditionLogic>(1 AND 2 )AND( 3 AND 4 AND 5)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Reason__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Cannot Complete</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Next_Visit_Date__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Reason__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Need New Visit On Site</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Update_Reason_if_Review_checkbox_is_False</targetReference>
+            </connector>
+            <label>Copy 1 of Update work order reason</label>
+        </rules>
+        <rules>
+            <name>Copy_1_of_Update_SPR_and_Review</name>
+            <conditionLogic>(1 OR 2) AND 3</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Fixed_Issue__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>No</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Fixed_Issue__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Partially</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Reason__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>Parts Needed</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Get_Pending_SA</targetReference>
+            </connector>
+            <label>Copy 1 of Update SPR and Review</label>
+        </rules>
+        <rules>
+            <name>Copy_2_of_Quick_Action_Part_Update</name>
+            <conditionLogic>(1 OR 2 OR 3) AND 4</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ForecastedPartsDelivery__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ActualPartsDelivery__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.AdditionalSkills__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cannot Complete</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Detection_of_Field_Change</targetReference>
+            </connector>
+            <label>Copy 2 of Quick Action Part Update</label>
+        </rules>
+        <rules>
+            <name>Copy_1_of_SA_Creation_For_Another_Visit</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cannot Complete</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Reason__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Need New Visit On Site</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Next_Visit_Date__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Creation_Of_SA_On_Another_Visit</targetReference>
+            </connector>
+            <label>Copy 1 of SA Creation For Another Visit</label>
+        </rules>
+        <rules>
+            <name>Copy_1_of_WO_cannot_complete_and_Parts_Delivered</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Cannot Complete</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.PartsStatus__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Part Delivered</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Get_SA</targetReference>
+            </connector>
+            <label>Copy 1 of WO cannot complete and Parts Delivered</label>
+        </rules>
+        <rules>
+            <name>Copy_1_of_Mark_WO_as_Closed_post_SPV_Review</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IsUpdated</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_WorkOderType__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Open Order</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Get_related_completed_SA_records</targetReference>
+            </connector>
+            <label>Copy 1 of Mark WO as Closed post SPV Review</label>
+        </rules>
+        <rules>
+            <name>Copy_1_of_Gantt_Priority</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.FS_Priority__c</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record.FS_Priority__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Get_Related_SA</targetReference>
+            </connector>
+            <label>Copy 1 of Gantt Priority</label>
+        </rules>
+        <rules>
+            <name>Copy_1_of_Check_Site_Arrival_Time</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.SiteArrivalDateTime__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_2_of_Get_SA</targetReference>
+            </connector>
+            <label>Copy 1 of Check Site Arrival Time</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Copy_2_of_Skill_requirement_Value_v2</name>
+        <label>Copy 2 of Skill requirement Value v2</label>
+        <locationX>10698</locationX>
+        <locationY>1163</locationY>
+        <defaultConnector>
+            <targetReference>Copy_1_of_Looping_All_Selected_Values_of_AdditionalSkills_Field_v2</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Copy_2_of_If_Repair</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Looping_All_Selected_Values_of_AdditionalSkills_Field_v2</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Repair</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Copy_1_of_Create_Repair_Skills_Required_Record_v2</targetReference>
+            </connector>
+            <label>Copy 2 of If Repair</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>DetectionofFieldChange</name>
         <label>Detection of Field Change</label>
-        <locationX>3680</locationX>
+        <locationX>3196</locationX>
         <locationY>839</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -369,6 +1377,7 @@
                 </rightValue>
             </conditions>
             <connector>
+                <isGoTo>true</isGoTo>
                 <targetReference>UpdatingWOPartStatus</targetReference>
             </connector>
             <label>Only Actual Part Delivery Date Changed</label>
@@ -622,7 +1631,7 @@
     <decisions>
         <name>If_Get_SA_has_any_Value</name>
         <label>If Get SA has any Value</label>
-        <locationX>6122</locationX>
+        <locationX>5418</locationX>
         <locationY>947</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -644,7 +1653,7 @@
     <decisions>
         <name>If_SA_status_is_in_Progress</name>
         <label>If SA status is in Progress</label>
-        <locationX>3482</locationX>
+        <locationX>3130</locationX>
         <locationY>1871</locationY>
         <defaultConnectorLabel>in Progress</defaultConnectorLabel>
         <rules>
@@ -687,7 +1696,7 @@
     <decisions>
         <name>Is_Skill_Found</name>
         <label>Is Skill Found</label>
-        <locationX>4538</locationX>
+        <locationX>3834</locationX>
         <locationY>1763</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -709,8 +1718,8 @@
     <decisions>
         <name>Null_Check</name>
         <label>Null Check</label>
-        <locationX>3174</locationX>
-        <locationY>2663</locationY>
+        <locationX>10368</locationX>
+        <locationY>2579</locationY>
         <defaultConnectorLabel>Null</defaultConnectorLabel>
         <rules>
             <name>Not_Null</name>
@@ -731,8 +1740,8 @@
     <decisions>
         <name>Null_Check1</name>
         <label>Null Check</label>
-        <locationX>3790</locationX>
-        <locationY>2663</locationY>
+        <locationX>10984</locationX>
+        <locationY>2579</locationY>
         <defaultConnectorLabel>Null</defaultConnectorLabel>
         <rules>
             <name>Not_Null1</name>
@@ -753,8 +1762,8 @@
     <decisions>
         <name>SA_Scheduling_Automation</name>
         <label>SA Scheduling Automation</label>
-        <locationX>3680</locationX>
-        <locationY>2447</locationY>
+        <locationX>10874</locationX>
+        <locationY>2363</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Waiting_For_Parts_OR_Parts_Requested</name>
@@ -825,7 +1834,7 @@
     <decisions>
         <name>Skill_Is_Present</name>
         <label>Skill Is Present</label>
-        <locationX>4758</locationX>
+        <locationX>4054</locationX>
         <locationY>1379</locationY>
         <defaultConnector>
             <targetReference>Loop_Skill_Check_Revert</targetReference>
@@ -850,8 +1859,8 @@
     <decisions>
         <name>Skill_requirement_Value</name>
         <label>Skill requirement Value?</label>
-        <locationX>4142</locationX>
-        <locationY>1271</locationY>
+        <locationX>3416</locationX>
+        <locationY>2729</locationY>
         <defaultConnector>
             <targetReference>Looping_All_Selected_Values_of_AdditionalSkills_Field</targetReference>
         </defaultConnector>
@@ -875,7 +1884,7 @@
     <decisions>
         <name>Skill_requirement_Value_v2</name>
         <label>Skill requirement Value v2</label>
-        <locationX>3526</locationX>
+        <locationX>3174</locationX>
         <locationY>1163</locationY>
         <defaultConnector>
             <targetReference>Looping_All_Selected_Values_of_AdditionalSkills_Field_v2</targetReference>
@@ -900,7 +1909,7 @@
     <decisions>
         <name>Update_Work_Order_decision</name>
         <label>Update Work Order decision</label>
-        <locationX>3614</locationX>
+        <locationX>3438</locationX>
         <locationY>731</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -998,120 +2007,6 @@
             <label>Update SPR and Review</label>
         </rules>
         <rules>
-            <name>WOLI_Items_Present</name>
-            <conditionLogic>(1 OR 2) AND (3 OR 4) AND 5 AND 6 AND 7</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record__Prior.Total_WOLI_with_Checked_Review__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Total_WOLI_with_Checked_Review__c</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Status</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Unassigned</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Get_New_System_Reason_2</targetReference>
-            </connector>
-            <label>WOLI Items Present</label>
-        </rules>
-        <rules>
-            <name>WOLI_Empty</name>
-            <conditionLogic>1 AND 2 AND (3 OR 4) AND (5 OR 6) AND 7</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.Total_WOLI_with_Checked_Review__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record__Prior.Total_WOLI_with_Checked_Review__c</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.FS_System_Reason__c</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.FS_Mark_For_Supervisor_Review__c</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Status</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Unassigned</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Update_Supervisor_Review_and_Reason_to_empty</targetReference>
-            </connector>
-            <label>WOLI Empty</label>
-        </rules>
-        <rules>
             <name>QuickActionPartUpdate</name>
             <conditionLogic>(1 OR 2 OR 3) AND 4</conditionLogic>
             <conditions>
@@ -1132,7 +2027,7 @@
                 <leftValueReference>$Record.AdditionalSkills__c</leftValueReference>
                 <operator>IsChanged</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <conditions>
@@ -1249,7 +2144,7 @@
             </connector>
             <label>Gantt Priority</label>
         </rules>
-         <rules>
+        <rules>
             <name>Check_Site_Arrival_Time</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
@@ -1265,7 +2160,7 @@
             <label>Check Site Arrival Time</label>
         </rules>
     </decisions>
-    <description>WO Flow with Record Type Filter ( With Custom Settings )</description>
+    <description>Final flow</description>
     <environments>Default</environments>
     <formulas>
         <description>flow rundate +2. the 2 is coming from custom setting &quot;otis custom setting&quot;</description>
@@ -1301,9 +2196,123 @@
     <interviewLabel>WorkOrderFlow {!$Flow.CurrentDateTime}</interviewLabel>
     <label>WorkOrderFlow</label>
     <loops>
+        <name>Copy_1_of_Copy_1_of_Loop_SA</name>
+        <label>Copy 1 of Copy 1 of Loop SA</label>
+        <locationX>10478</locationX>
+        <locationY>1763</locationY>
+        <collectionReference>FetchSA</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <noMoreValuesConnector>
+            <targetReference>Copy_1_of_Copy_1_of_SA_Creation_after_Part_Delivery</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Copy_1_of_Copy_1_of_Loop_Skill_Check_Revert</name>
+        <label>Copy 1 of Copy 1 of Loop Skill Check Revert</label>
+        <locationX>12458</locationX>
+        <locationY>1055</locationY>
+        <collectionReference>AdvSkillSplitterV2</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Copy_1_of_Copy_1_of_Skill_Is_Present</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Copy_1_of_Copy_1_of_Is_Skill_Found</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Copy_1_of_Copy_1_of_Looping_All_Selected_Values_of_AdditionalSkills_Field</name>
+        <label>Copy 1 of Copy 1 of Looping All Selected Values of AdditionalSkills Field</label>
+        <locationX>11094</locationX>
+        <locationY>1163</locationY>
+        <collectionReference>String_splitting_with_subflow.SplitResults</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Copy_1_of_Copy_1_of_Skill_requirement_Value_v2</targetReference>
+        </nextValueConnector>
+    </loops>
+    <loops>
+        <name>Copy_1_of_Loop_SA</name>
+        <label>Copy 1 of Loop SA</label>
+        <locationX>8982</locationX>
+        <locationY>1163</locationY>
+        <collectionReference>FetchSA</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <noMoreValuesConnector>
+            <targetReference>Copy_1_of_SA_Creation_after_Part_Delivery</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Copy_1_of_Loop_Skill_Check_Revert</name>
+        <label>Copy 1 of Loop Skill Check Revert</label>
+        <locationX>11710</locationX>
+        <locationY>1271</locationY>
+        <collectionReference>AdvSkillSplitterV2</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Copy_1_of_Skill_Is_Present</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Copy_1_of_Is_Skill_Found</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Copy_1_of_Looping_All_Selected_Values_of_AdditionalSkills_Field</name>
+        <label>Copy 1 of Looping All Selected Values of AdditionalSkills Field</label>
+        <locationX>9598</locationX>
+        <locationY>1055</locationY>
+        <collectionReference>String_splitting_with_subflow.SplitResults</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Copy_1_of_Skill_requirement_Value_v2</targetReference>
+        </nextValueConnector>
+    </loops>
+    <loops>
+        <name>Copy_1_of_Looping_All_Selected_Values_of_AdditionalSkills_Field_v2</name>
+        <label>Copy 1 of Looping All Selected Values of AdditionalSkills Field v2</label>
+        <locationX>10478</locationX>
+        <locationY>1055</locationY>
+        <collectionReference>AdvSkillSplitter</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Copy_2_of_Skill_requirement_Value_v2</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Copy_2_of_Updating_WO_Part_Status</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Copy_2_of_Loop_SA</name>
+        <label>Copy 2 of Loop SA</label>
+        <locationX>7046</locationX>
+        <locationY>1055</locationY>
+        <collectionReference>FetchReleatedSA</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Copy_1_of_ErrorScreen</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Copy_1_of_SA_Status_Update</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Copy_3_of_Loop_SA</name>
+        <label>Copy 3 of Loop SA</label>
+        <locationX>14966</locationX>
+        <locationY>947</locationY>
+        <collectionReference>Get_SAs</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Copy_1_of_Copy_1_of_If_SA_status_is_in_Progress</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Copy_1_of_Update_SA_Due_date</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
         <name>Loop_SA</name>
         <label>Loop SA</label>
-        <locationX>3306</locationX>
+        <locationX>2954</locationX>
         <locationY>1763</locationY>
         <collectionReference>FetchSA</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -1317,8 +2326,8 @@
     <loops>
         <name>Loop_SAs</name>
         <label>Loop SA</label>
-        <locationX>7926</locationX>
-        <locationY>1163</locationY>
+        <locationX>6430</locationX>
+        <locationY>947</locationY>
         <collectionReference>Get_SAs</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1331,7 +2340,7 @@
     <loops>
         <name>Loop_Skill_Check_Revert</name>
         <label>Loop Skill Check Revert</label>
-        <locationX>4538</locationX>
+        <locationX>3834</locationX>
         <locationY>1271</locationY>
         <collectionReference>AdvSkillSplitterV2</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -1345,8 +2354,8 @@
     <loops>
         <name>Loop_Thorugh_SA_List</name>
         <label>Loop Through SA List</label>
-        <locationX>3042</locationX>
-        <locationY>2771</locationY>
+        <locationX>10236</locationX>
+        <locationY>2687</locationY>
         <collectionReference>Get_ALL_SA</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1359,8 +2368,8 @@
     <loops>
         <name>Loop_Through_SA_List1</name>
         <label>Loop Through SA List</label>
-        <locationX>3658</locationX>
-        <locationY>2771</locationY>
+        <locationX>10852</locationX>
+        <locationY>2687</locationY>
         <collectionReference>Get_ALL_SA1</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1373,8 +2382,8 @@
     <loops>
         <name>Looping_All_Selected_Values_of_AdditionalSkills_Field</name>
         <label>Looping All Selected Values of AdditionalSkills Field</label>
-        <locationX>3922</locationX>
-        <locationY>1163</locationY>
+        <locationX>3196</locationX>
+        <locationY>2621</locationY>
         <collectionReference>String_splitting_with_subflow.SplitResults</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1384,7 +2393,7 @@
     <loops>
         <name>Looping_All_Selected_Values_of_AdditionalSkills_Field_v2</name>
         <label>Looping All Selected Values of AdditionalSkills Field v2</label>
-        <locationX>3306</locationX>
+        <locationX>2954</locationX>
         <locationY>1055</locationY>
         <collectionReference>AdvSkillSplitter</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -1392,7 +2401,6 @@
             <targetReference>Skill_requirement_Value_v2</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <isGoTo>true</isGoTo>
             <targetReference>UpdatingWOPartStatus</targetReference>
         </noMoreValuesConnector>
     </loops>
@@ -1430,9 +2438,333 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordCreates>
+        <name>Copy_1_of_Copy_1_of_Create_Repair_Skills_Required_Record</name>
+        <label>Copy 1 of Copy 1 of Create Repair Skills Required Record</label>
+        <locationX>11182</locationX>
+        <locationY>1379</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Copy_1_of_Looping_All_Selected_Values_of_AdditionalSkills_Field</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>RelatedRecordId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SkillId</field>
+            <value>
+                <elementReference>$Setup.OTISCustomSettings__c.RepairSkillId__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SkillLevel</field>
+            <value>
+                <numberValue>99.0</numberValue>
+            </value>
+        </inputAssignments>
+        <object>SkillRequirement</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Copy_1_of_Copy_1_of_SA_Creation_after_Part_Delivery</name>
+        <label>Copy 1 of Copy 1 of SA Creation after Part Delivery</label>
+        <locationX>10478</locationX>
+        <locationY>1955</locationY>
+        <connector>
+            <targetReference>SA_Scheduling_Automation</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>DueDate</field>
+            <value>
+                <elementReference>DueDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>EarliestStartTime</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ParentRecordId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SACreatedFromWOFlow__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WorkOrder__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>ServiceAppointment</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Copy_1_of_Create_New_SA</name>
+        <label>Copy 1 of Create New SA</label>
+        <locationX>13646</locationX>
+        <locationY>1055</locationY>
+        <inputAssignments>
+            <field>DueDate</field>
+            <value>
+                <elementReference>CalculateDueDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>EarliestStartTime</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ParentRecordId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SACreatedFromWOFlow__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WorkOrder__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>ServiceAppointment</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Copy_1_of_Create_Repair_Skills_Required_Record</name>
+        <label>Copy 1 of Create Repair Skills Required Record</label>
+        <locationX>9686</locationX>
+        <locationY>1271</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Looping_All_Selected_Values_of_AdditionalSkills_Field</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>RelatedRecordId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SkillId</field>
+            <value>
+                <elementReference>$Setup.OTISCustomSettings__c.RepairSkillId__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SkillLevel</field>
+            <value>
+                <numberValue>99.0</numberValue>
+            </value>
+        </inputAssignments>
+        <object>SkillRequirement</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Copy_1_of_Create_Repair_Skills_Required_Record_v2</name>
+        <label>Copy 1 of Create Repair Skills Required Record v2</label>
+        <locationX>10566</locationX>
+        <locationY>1271</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Looping_All_Selected_Values_of_AdditionalSkills_Field_v2</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>RelatedRecordId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SkillId</field>
+            <value>
+                <elementReference>$Setup.OTISCustomSettings__c.RepairSkillId__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SkillLevel</field>
+            <value>
+                <numberValue>99.0</numberValue>
+            </value>
+        </inputAssignments>
+        <object>SkillRequirement</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Copy_1_of_Create_Skill_Requirement</name>
+        <label>Copy 1 of Create Skill Requirement</label>
+        <locationX>9862</locationX>
+        <locationY>947</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Update_WO_Part_Status</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>RelatedRecordId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SkillId</field>
+            <value>
+                <elementReference>$Setup.OTISCustomSettings__c.RepairSkillId__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SkillLevel</field>
+            <value>
+                <numberValue>99.0</numberValue>
+            </value>
+        </inputAssignments>
+        <object>SkillRequirement</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Copy_1_of_Creation_Of_SA_On_Another_Visit</name>
+        <label>Copy 1 of Creation Of SA On Another Visit</label>
+        <locationX>13382</locationX>
+        <locationY>839</locationY>
+        <assignRecordIdToReference>NewlyCreatedSA</assignRecordIdToReference>
+        <connector>
+            <targetReference>Copy_1_of_Updating_Wo_Fields</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>DueDate</field>
+            <value>
+                <elementReference>DueDateCalculationForNewSA</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>EarliestStartTime</field>
+            <value>
+                <elementReference>$Record.ActualPartsDelivery__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ParentRecordId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ServiceTerritoryId</field>
+            <value>
+                <elementReference>$Record.ServiceTerritoryId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <elementReference>SubjectSA</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Unit__c</field>
+            <value>
+                <elementReference>$Record.AssetId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>ServiceAppointment</object>
+    </recordCreates>
+    <recordCreates>
+        <name>Copy_1_of_Creation_of_SA_Record</name>
+        <label>Copy 1 of Creation of SA Record</label>
+        <locationX>9862</locationX>
+        <locationY>1163</locationY>
+        <connector>
+            <targetReference>SA_Scheduling_Automation</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>DueDate</field>
+            <value>
+                <elementReference>DueDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>EarliestStartTime</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ParentRecordId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SACreatedFromWOFlow__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WorkOrder__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>ServiceAppointment</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Copy_1_of_SA_Creation_after_Part_Delivery</name>
+        <label>Copy 1 of SA Creation after Part Delivery</label>
+        <locationX>8982</locationX>
+        <locationY>1355</locationY>
+        <connector>
+            <targetReference>SA_Scheduling_Automation</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>DueDate</field>
+            <value>
+                <elementReference>DueDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>EarliestStartTime</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ParentRecordId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SACreatedFromWOFlow__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WorkOrder__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>ServiceAppointment</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
         <name>Create_New_SA</name>
         <label>Create New SA</label>
-        <locationX>5990</locationX>
+        <locationX>5286</locationX>
         <locationY>1055</locationY>
         <inputAssignments>
             <field>DueDate</field>
@@ -1470,7 +2802,7 @@
     <recordCreates>
         <name>Create_Repair_Skills_Required_Record_v2</name>
         <label>Create Repair Skills Required Record v2</label>
-        <locationX>3394</locationX>
+        <locationX>3042</locationX>
         <locationY>1271</locationY>
         <connector>
             <targetReference>Looping_All_Selected_Values_of_AdditionalSkills_Field_v2</targetReference>
@@ -1499,7 +2831,7 @@
     <recordCreates>
         <name>Create_Skill_Requirement</name>
         <label>Create Skill Requirement</label>
-        <locationX>2690</locationX>
+        <locationX>2338</locationX>
         <locationY>947</locationY>
         <connector>
             <targetReference>Update_WO_Part_Status</targetReference>
@@ -1528,8 +2860,8 @@
     <recordCreates>
         <name>CreateSkillsRequiredRecord</name>
         <label>Create Repair Skills Required Record</label>
-        <locationX>4010</locationX>
-        <locationY>1379</locationY>
+        <locationX>3284</locationX>
+        <locationY>2837</locationY>
         <connector>
             <targetReference>Looping_All_Selected_Values_of_AdditionalSkills_Field</targetReference>
         </connector>
@@ -1557,7 +2889,7 @@
     <recordCreates>
         <name>Creation_of_SA_Record</name>
         <label>Creation of SA Record</label>
-        <locationX>2690</locationX>
+        <locationX>2338</locationX>
         <locationY>1163</locationY>
         <connector>
             <isGoTo>true</isGoTo>
@@ -1599,7 +2931,7 @@
     <recordCreates>
         <name>CreationOfSAOnAnotherVisit</name>
         <label>Creation Of SA On Another Visit</label>
-        <locationX>5726</locationX>
+        <locationX>5022</locationX>
         <locationY>839</locationY>
         <assignRecordIdToReference>NewlyCreatedSA</assignRecordIdToReference>
         <connector>
@@ -1646,9 +2978,10 @@
     <recordCreates>
         <name>SA_Creation_after_Part_Delivery</name>
         <label>SA Creation after Part Delivery</label>
-        <locationX>3306</locationX>
+        <locationX>2954</locationX>
         <locationY>2255</locationY>
         <connector>
+            <isGoTo>true</isGoTo>
             <targetReference>SA_Scheduling_Automation</targetReference>
         </connector>
         <inputAssignments>
@@ -1685,9 +3018,45 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
     <recordDeletes>
+        <name>Copy_1_of_Copy_1_of_Delete_SkillRequired_related_records_from_WO_has_context_men</name>
+        <label>Copy 1 of Copy 1 of Delete SkillRequired related records from WO has context menu</label>
+        <locationX>12326</locationX>
+        <locationY>1655</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Copy_1_of_Update_Addtional_Skill</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>RelatedRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <object>SkillRequirement</object>
+    </recordDeletes>
+    <recordDeletes>
+        <name>Copy_1_of_Delete_SkillRequired_related_records_from_WO_has_context_menu</name>
+        <label>Copy 1 of Delete SkillRequired related records from WO has context menu</label>
+        <locationX>11578</locationX>
+        <locationY>1871</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Update_Addtional_Skill</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>RelatedRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <object>SkillRequirement</object>
+    </recordDeletes>
+    <recordDeletes>
         <name>DeleteSkillRequiredRelatedRecordsFromWOHasContextMenu</name>
         <label>Delete SkillRequired related records from WO has context menu</label>
-        <locationX>4406</locationX>
+        <locationX>3702</locationX>
         <locationY>1871</locationY>
         <connector>
             <targetReference>Update_Addtional_Skill</targetReference>
@@ -1702,6 +3071,267 @@
         </filters>
         <object>SkillRequirement</object>
     </recordDeletes>
+    <recordLookups>
+        <name>Copy_1_of_Copy_1_of_Fetch_SA</name>
+        <label>Copy 1 of Copy 1 of Fetch SA</label>
+        <locationX>10478</locationX>
+        <locationY>1655</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Copy_1_of_Copy_1_of_Loop_SA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ParentRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ServiceAppointment</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Copy_1_of_Fetch_Releated_SA</name>
+        <label>Copy 1 of Fetch Releated SA</label>
+        <locationX>7046</locationX>
+        <locationY>947</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Copy_2_of_Loop_SA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ParentRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ServiceAppointment</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Copy_1_of_Fetch_SA</name>
+        <label>Copy 1 of Fetch SA</label>
+        <locationX>8982</locationX>
+        <locationY>1055</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Copy_1_of_Loop_SA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ParentRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ServiceAppointment</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Copy_1_of_Get_Pending_SA</name>
+        <label>Copy 1 of Get Pending SA</label>
+        <locationX>8102</locationX>
+        <locationY>839</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Copy_1_of_Count_OF_Pending_SA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>WorkOrder__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Cannot Complete</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Canceled</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Cannot Execute</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ServiceAppointment</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Copy_1_of_Get_related_completed_SA_records</name>
+        <label>Copy 1 of Get related completed SA records</label>
+        <locationX>14174</locationX>
+        <locationY>839</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Copy_1_of_Closing_Triggering_WO_upon_Review</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ParentRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ServiceAppointment</object>
+        <sortField>LastModifiedDate</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Copy_1_of_Get_Related_SA</name>
+        <label>Copy 1 of Get Related SA</label>
+        <locationX>14438</locationX>
+        <locationY>839</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Copy_1_of_Update_Priority_for_Gantt_on_SA</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ParentRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ServiceAppointment</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Copy_1_of_Get_SA</name>
+        <label>Copy 1 of Get SA</label>
+        <locationX>13778</locationX>
+        <locationY>839</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Copy_1_of_If_Get_SA_has_any_Value</targetReference>
+        </connector>
+        <filterLogic>1 AND (2 OR 3 OR 4 OR 5 OR 6)</filterLogic>
+        <filters>
+            <field>ParentRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>None</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Scheduled</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Dispatched</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>En Route</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Onsite</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ServiceAppointment</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Copy_2_of_Get_SA</name>
+        <label>Copy 2 of Get SA</label>
+        <locationX>14966</locationX>
+        <locationY>839</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Copy_3_of_Loop_SA</targetReference>
+        </connector>
+        <filterLogic>1 AND (2 OR 3 OR 4)</filterLogic>
+        <filters>
+            <field>ParentRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Scheduled</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Dispatched</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>None</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ServiceAppointment</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordLookups>
         <name>FetchReleatedSA</name>
         <label>Fetch Releated SA</label>
@@ -1726,7 +3356,7 @@
     <recordLookups>
         <name>FetchSA</name>
         <label>Fetch SA</label>
-        <locationX>3306</locationX>
+        <locationX>2954</locationX>
         <locationY>1655</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1747,8 +3377,8 @@
     <recordLookups>
         <name>Get_ALL_SA</name>
         <label>Get ALL SA</label>
-        <locationX>3174</locationX>
-        <locationY>2555</locationY>
+        <locationX>10368</locationX>
+        <locationY>2471</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Null_Check</targetReference>
@@ -1803,8 +3433,8 @@
     <recordLookups>
         <name>Get_ALL_SA1</name>
         <label>Get ALL SA</label>
-        <locationX>3790</locationX>
-        <locationY>2555</locationY>
+        <locationX>10984</locationX>
+        <locationY>2471</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Null_Check1</targetReference>
@@ -1866,7 +3496,7 @@
     <recordLookups>
         <name>Get_Pending_SA</name>
         <label>Get Pending SA</label>
-        <locationX>974</locationX>
+        <locationX>1106</locationX>
         <locationY>839</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1915,7 +3545,7 @@
     <recordLookups>
         <name>Get_related_completed_SA_records</name>
         <label>Get related completed SA records</label>
-        <locationX>6518</locationX>
+        <locationX>5814</locationX>
         <locationY>839</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1945,7 +3575,7 @@
     <recordLookups>
         <name>Get_Related_SA</name>
         <label>Get Related SA</label>
-        <locationX>6782</locationX>
+        <locationX>6078</locationX>
         <locationY>839</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1966,7 +3596,7 @@
     <recordLookups>
         <name>Get_SA</name>
         <label>Get SA</label>
-        <locationX>6122</locationX>
+        <locationX>5418</locationX>
         <locationY>839</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -2022,8 +3652,8 @@
     <recordLookups>
         <name>Get_SAs</name>
         <label>Get SA</label>
-        <locationX>7926</locationX>
-        <locationY>1055</locationY>
+        <locationX>6430</locationX>
+        <locationY>839</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Loop_SAs</targetReference>
@@ -2064,7 +3694,7 @@
     <recordUpdates>
         <name>Change_SA_status_to_Cancelled</name>
         <label>Change SA status to Cancelled</label>
-        <locationX>4538</locationX>
+        <locationX>3834</locationX>
         <locationY>1055</locationY>
         <connector>
             <targetReference>Additional_Skill_String_Splitter_v2</targetReference>
@@ -2101,7 +3731,7 @@
     <recordUpdates>
         <name>Closing_Triggering_WO_upon_Review</name>
         <label>Closing Triggering WO upon Review</label>
-        <locationX>6518</locationX>
+        <locationX>5814</locationX>
         <locationY>947</locationY>
         <inputAssignments>
             <field>FS_System_Reason__c</field>
@@ -2109,7 +3739,7 @@
         <inputAssignments>
             <field>Status</field>
             <value>
-                <stringValue>Closed</stringValue>
+                <stringValue>Completed</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -2121,10 +3751,320 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
+        <name>Copy_1_of_Change_SA_status_to_Cancelled</name>
+        <label>Copy 1 of Change SA status to Cancelled</label>
+        <locationX>11710</locationX>
+        <locationY>1055</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Additional_Skill_String_Splitter_v2</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ParentRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>SACreatedFromWOFlow__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>SACreatedFromWOFlow__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Canceled</stringValue>
+            </value>
+        </inputAssignments>
+        <object>ServiceAppointment</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Copy_1_of_Closing_Triggering_WO_upon_Review</name>
+        <label>Copy 1 of Closing Triggering WO upon Review</label>
+        <locationX>14174</locationX>
+        <locationY>947</locationY>
+        <inputAssignments>
+            <field>FS_System_Reason__c</field>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>SvcReqAssignedMechanic__c</field>
+            <value>
+                <elementReference>Get_related_completed_SA_records.AssignedServiceResource__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Copy_1_of_Copy_1_of_Update_Addtional_Skill</name>
+        <label>Copy 1 of Copy 1 of Update Addtional Skill</label>
+        <locationX>12326</locationX>
+        <locationY>1763</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>AdditionalSkills__c</field>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Copy_1_of_SA_Status_Update</name>
+        <label>Copy 1 of SA Status Update</label>
+        <locationX>7046</locationX>
+        <locationY>1355</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ParentRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Canceled</stringValue>
+            </value>
+        </inputAssignments>
+        <object>ServiceAppointment</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Copy_1_of_Set_WO_status_to_OnHold_and_PartsStatus_to_WaitingForParts</name>
+        <label>Copy 1 of Set WO status to OnHold and PartsStatus to WaitingForParts</label>
+        <locationX>11710</locationX>
+        <locationY>947</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Change_SA_status_to_Cancelled</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>PartsStatus__c</field>
+            <value>
+                <stringValue>Waiting For Parts</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Cannot Complete</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Copy_1_of_Update_Addtional_Skill</name>
+        <label>Copy 1 of Update Addtional Skill</label>
+        <locationX>11578</locationX>
+        <locationY>1979</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>AdditionalSkills__c</field>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Copy_1_of_Update_Part_Status_for_Forecast_Part_Delivery_Date</name>
+        <label>Copy 1 of Update Part Status for Forecast Part Delivery Date</label>
+        <locationX>8630</locationX>
+        <locationY>947</locationY>
+        <connector>
+            <targetReference>SA_Scheduling_Automation</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>PartsStatus__c</field>
+            <value>
+                <stringValue>Waiting For Parts</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Copy_1_of_Update_Part_Status_for_Forecast_Part_Delivery_Date_Null</name>
+        <label>Copy 1 of Update Part Status for Forecast Part Delivery Date Null</label>
+        <locationX>12854</locationX>
+        <locationY>947</locationY>
+        <connector>
+            <targetReference>SA_Scheduling_Automation</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>PartsStatus__c</field>
+            <value>
+                <stringValue>Parts Required</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Copy_1_of_Update_Part_Status_for_Forecast_Part_Delivery_Date_v2</name>
+        <label>Copy 1 of Update Part Status for Forecast Part Delivery Date v2</label>
+        <locationX>11094</locationX>
+        <locationY>947</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Copy_1_of_String_splitting_with_subflow</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>PartsStatus__c</field>
+            <value>
+                <stringValue>Waiting For Parts</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Copy_1_of_Update_Priority_for_Gantt_on_SA</name>
+        <label>Copy 1 of Update Priority for Gantt on SA</label>
+        <locationX>14438</locationX>
+        <locationY>947</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ParentRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>FS_PriorityForGanttPalette__c</field>
+            <value>
+                <elementReference>$Record.FS_Priority__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>ServiceAppointment</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Copy_1_of_Update_Reason_if_Review_checkbox_is_False</name>
+        <label>Copy 1 of Update Reason if Review checkbox is False</label>
+        <locationX>7574</locationX>
+        <locationY>839</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>FS_Mark_For_Supervisor_Review__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>FS_System_Reason__c</field>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Copy_1_of_Update_SA_Due_date</name>
+        <label>Copy 1 of Update SA Due date</label>
+        <locationX>14966</locationX>
+        <locationY>1439</locationY>
+        <inputReference>StoreSAduedate</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Copy_1_of_Update_WO_Part_Status</name>
+        <label>Copy 1 of Update WO Part Status</label>
+        <locationX>9862</locationX>
+        <locationY>1055</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Creation_of_SA_Record</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>PartsStatus__c</field>
+            <value>
+                <stringValue>Part Delivered</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Copy_1_of_Updating_Wo_Fields</name>
+        <label>Copy 1 of Updating Wo Fields</label>
+        <locationX>13382</locationX>
+        <locationY>947</locationY>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Unassigned</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WorkTypeId</field>
+            <value>
+                <elementReference>$Setup.OTISCustomSettings__c.DefaultWorkTypeId__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>When Actual Part deliver date is filled this automation gonna happen .</description>
+        <name>Copy_1_of_Updating_WO_Part_Status</name>
+        <label>Copy 1 of Updating WO Part Status</label>
+        <locationX>8982</locationX>
+        <locationY>947</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Fetch_SA</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>PartsStatus__c</field>
+            <value>
+                <stringValue>Part Delivered</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>When Actual Part deliver date is filled this automation gonna happen .</description>
+        <name>Copy_2_of_Updating_WO_Part_Status</name>
+        <label>Copy 2 of Updating WO Part Status</label>
+        <locationX>10478</locationX>
+        <locationY>1547</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Copy_1_of_Fetch_SA</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>PartsStatus__c</field>
+            <value>
+                <stringValue>Part Delivered</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <description>This Update component will work when SPV cancel the WO</description>
         <name>Mark_For_RM_Review</name>
         <label>Mark For RM Review</label>
-        <locationX>5550</locationX>
+        <locationX>9554</locationX>
         <locationY>431</locationY>
         <connector>
             <targetReference>Check_For_Maintenance</targetReference>
@@ -2190,7 +4130,7 @@
     <recordUpdates>
         <name>Set_WO_status_to_OnHold_and_PartsStatus_to_WaitingForParts</name>
         <label>Set WO status to OnHold and PartsStatus to WaitingForParts</label>
-        <locationX>4538</locationX>
+        <locationX>3834</locationX>
         <locationY>947</locationY>
         <connector>
             <targetReference>Change_SA_status_to_Cancelled</targetReference>
@@ -2212,7 +4152,7 @@
     <recordUpdates>
         <name>Update_Addtional_Skill</name>
         <label>Update Addtional Skill</label>
-        <locationX>4406</locationX>
+        <locationX>3702</locationX>
         <locationY>1979</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -2230,23 +4170,24 @@
     <recordUpdates>
         <name>Update_List_Of_SA</name>
         <label>Update List Of SA</label>
-        <locationX>3658</locationX>
-        <locationY>3071</locationY>
+        <locationX>10852</locationX>
+        <locationY>2987</locationY>
         <inputReference>ListOfUpdatedSA</inputReference>
     </recordUpdates>
     <recordUpdates>
         <name>Update_List_Of_SA1</name>
         <label>Update List Of SA</label>
-        <locationX>3042</locationX>
-        <locationY>3071</locationY>
+        <locationX>10236</locationX>
+        <locationY>2987</locationY>
         <inputReference>ListOfUnscheduledSA</inputReference>
     </recordUpdates>
     <recordUpdates>
         <name>Update_Part_Status_for_Forecast_Part_Delivery_Date</name>
         <label>Update Part Status for Forecast Part Delivery Date</label>
-        <locationX>1898</locationX>
+        <locationX>1634</locationX>
         <locationY>947</locationY>
         <connector>
+            <isGoTo>true</isGoTo>
             <targetReference>SA_Scheduling_Automation</targetReference>
         </connector>
         <inputAssignments>
@@ -2260,10 +4201,10 @@
     <recordUpdates>
         <name>Update_Part_Status_for_Forecast_Part_Delivery_Date_Null</name>
         <label>Update Part Status for Forecast Part Delivery Date Null</label>
-        <locationX>5198</locationX>
+        <locationX>4494</locationX>
         <locationY>947</locationY>
         <connector>
-             <isGoTo>true</isGoTo>
+            <isGoTo>true</isGoTo>
             <targetReference>SA_Scheduling_Automation</targetReference>
         </connector>
         <inputAssignments>
@@ -2277,10 +4218,9 @@
     <recordUpdates>
         <name>Update_Part_Status_for_Forecast_Part_Delivery_Date_v2</name>
         <label>Update Part Status for Forecast Part Delivery Date v2</label>
-        <locationX>3922</locationX>
+        <locationX>3218</locationX>
         <locationY>947</locationY>
         <connector>
-            <isGoTo>true</isGoTo>
             <targetReference>String_splitting_with_subflow</targetReference>
         </connector>
         <inputAssignments>
@@ -2294,7 +4234,7 @@
     <recordUpdates>
         <name>Update_Priority_for_Gantt_on_SA</name>
         <label>Update Priority for Gantt on SA</label>
-        <locationX>6782</locationX>
+        <locationX>6078</locationX>
         <locationY>947</locationY>
         <filterLogic>and</filterLogic>
         <filters>
@@ -2315,7 +4255,7 @@
     <recordUpdates>
         <name>Update_Reason_and_SPR</name>
         <label>Update Reason and SPR</label>
-        <locationX>842</locationX>
+        <locationX>1106</locationX>
         <locationY>1271</locationY>
         <inputAssignments>
             <field>FS_Mark_For_Supervisor_Review__c</field>
@@ -2359,7 +4299,7 @@
         <inputAssignments>
             <field>Status</field>
             <value>
-                <stringValue>Closed</stringValue>
+                <stringValue>Completed</stringValue>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -2367,52 +4307,14 @@
     <recordUpdates>
         <name>Update_SA_Due_date</name>
         <label>Update SA Due date</label>
-        <locationX>7926</locationX>
-        <locationY>1463</locationY>
+        <locationX>6430</locationX>
+        <locationY>1247</locationY>
         <inputReference>StoreSAduedate</inputReference>
-    </recordUpdates>
-    <recordUpdates>
-        <name>Update_Supervisor_Review_and_Reason</name>
-        <label>Update Supervisor Review and Reason</label>
-        <locationX>1370</locationX>
-        <locationY>947</locationY>
-        <inputAssignments>
-            <field>FS_Mark_For_Supervisor_Review__c</field>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>FS_System_Reason__c</field>
-            <value>
-                <elementReference>UpdatedSystemReason</elementReference>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record</inputReference>
-    </recordUpdates>
-    <recordUpdates>
-        <name>Update_Supervisor_Review_and_Reason_to_empty</name>
-        <label>Update Supervisor Review and Reason to empty</label>
-        <locationX>1634</locationX>
-        <locationY>839</locationY>
-        <inputAssignments>
-            <field>FS_Mark_For_Supervisor_Review__c</field>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>FS_System_Reason__c</field>
-            <value>
-                <stringValue></stringValue>
-            </value>
-        </inputAssignments>
-        <inputReference>$Record</inputReference>
     </recordUpdates>
     <recordUpdates>
         <name>Update_WO_Part_Status</name>
         <label>Update WO Part Status</label>
-        <locationX>2690</locationX>
+        <locationX>2338</locationX>
         <locationY>1055</locationY>
         <connector>
             <targetReference>Creation_of_SA_Record</targetReference>
@@ -2428,7 +4330,7 @@
     <recordUpdates>
         <name>UpdatingWoFields</name>
         <label>Updating Wo Fields</label>
-        <locationX>5726</locationX>
+        <locationX>5022</locationX>
         <locationY>947</locationY>
         <inputAssignments>
             <field>Status</field>
@@ -2448,7 +4350,7 @@
         <description>When Actual Part deliver date is filled this automation gonna happen .</description>
         <name>UpdatingWOPartStatus</name>
         <label>Updating WO Part Status</label>
-        <locationX>3306</locationX>
+        <locationX>2954</locationX>
         <locationY>1547</locationY>
         <connector>
             <targetReference>FetchSA</targetReference>
@@ -2462,7 +4364,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>5336</locationX>
+        <locationX>9340</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Check_for_Status</targetReference>
@@ -2472,7 +4374,7 @@
             <field>Status</field>
             <operator>NotEqualTo</operator>
             <value>
-                <stringValue>Closed</stringValue>
+                <stringValue>Completed</stringValue>
             </value>
         </filters>
         <filters>
@@ -2504,7 +4406,7 @@
     <subflows>
         <name>Additional_Skill_String_Splitter</name>
         <label>Additional Skill String Splitter</label>
-        <locationX>3306</locationX>
+        <locationX>2954</locationX>
         <locationY>947</locationY>
         <connector>
             <targetReference>Looping_All_Selected_Values_of_AdditionalSkills_Field_v2</targetReference>
@@ -2530,7 +4432,7 @@
     <subflows>
         <name>Additional_Skill_String_Splitter_v2</name>
         <label>Additional Skill String Splitter v2</label>
-        <locationX>4538</locationX>
+        <locationX>3834</locationX>
         <locationY>1163</locationY>
         <connector>
             <targetReference>Loop_Skill_Check_Revert</targetReference>
@@ -2554,9 +4456,130 @@
         </outputAssignments>
     </subflows>
     <subflows>
+        <name>Copy_1_of_Additional_Skill_String_Splitter</name>
+        <label>Copy 1 of Additional Skill String Splitter</label>
+        <locationX>10478</locationX>
+        <locationY>947</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Looping_All_Selected_Values_of_AdditionalSkills_Field_v2</targetReference>
+        </connector>
+        <flowName>SUB_CommonLogicForStringSplitter</flowName>
+        <inputAssignments>
+            <name>flowSeparator</name>
+            <value>
+                <stringValue>;</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varT_StringToSplit</name>
+            <value>
+                <elementReference>$Record.AdditionalSkills__c</elementReference>
+            </value>
+        </inputAssignments>
+        <outputAssignments>
+            <assignToReference>AdvSkillSplitter</assignToReference>
+            <name>SplitResults</name>
+        </outputAssignments>
+    </subflows>
+    <subflows>
+        <name>Copy_1_of_Additional_Skill_String_Splitter_v2</name>
+        <label>Copy 1 of Additional Skill String Splitter v2</label>
+        <locationX>11710</locationX>
+        <locationY>1163</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Loop_Skill_Check_Revert</targetReference>
+        </connector>
+        <flowName>SUB_CommonLogicForStringSplitter</flowName>
+        <inputAssignments>
+            <name>flowSeparator</name>
+            <value>
+                <stringValue>;</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varT_StringToSplit</name>
+            <value>
+                <elementReference>$Record.AdditionalSkills__c</elementReference>
+            </value>
+        </inputAssignments>
+        <outputAssignments>
+            <assignToReference>AdvSkillSplitterV2</assignToReference>
+            <name>SplitResults</name>
+        </outputAssignments>
+    </subflows>
+    <subflows>
+        <name>Copy_1_of_Copy_1_of_String_splitting_with_subflow</name>
+        <label>Copy 1 of Copy 1 of String splitting with subflow</label>
+        <locationX>11094</locationX>
+        <locationY>1055</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Copy_1_of_Looping_All_Selected_Values_of_AdditionalSkills_Field</targetReference>
+        </connector>
+        <flowName>SUB_CommonLogicForStringSplitter</flowName>
+        <inputAssignments>
+            <name>flowSeparator</name>
+            <value>
+                <stringValue>;</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varT_StringToSplit</name>
+            <value>
+                <elementReference>$Record.AdditionalSkills__c</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <subflows>
+        <name>Copy_1_of_Get_New_System_Reason</name>
+        <label>Copy 1 of Get New System Reason</label>
+        <locationX>8102</locationX>
+        <locationY>1163</locationY>
+        <flowName>FS_SubFlowSystemReasonPriority</flowName>
+        <inputAssignments>
+            <name>Prio_Sys_Reason_From_WO</name>
+            <value>
+                <elementReference>$Record.FS_System_Reason__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>Sys_Reason_From_WO</name>
+            <value>
+                <stringValue>Next Action Required</stringValue>
+            </value>
+        </inputAssignments>
+        <outputAssignments>
+            <assignToReference>UpdatedSystemReason</assignToReference>
+            <name>FinalSystemReason</name>
+        </outputAssignments>
+    </subflows>
+    <subflows>
+        <name>Copy_1_of_String_splitting_with_subflow</name>
+        <label>Copy 1 of String splitting with subflow</label>
+        <locationX>9598</locationX>
+        <locationY>947</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Looping_All_Selected_Values_of_AdditionalSkills_Field</targetReference>
+        </connector>
+        <flowName>SUB_CommonLogicForStringSplitter</flowName>
+        <inputAssignments>
+            <name>flowSeparator</name>
+            <value>
+                <stringValue>;</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>varT_StringToSplit</name>
+            <value>
+                <elementReference>$Record.AdditionalSkills__c</elementReference>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
+    <subflows>
         <name>Get_New_System_Reason</name>
         <label>Get New System Reason</label>
-        <locationX>842</locationX>
+        <locationX>1106</locationX>
         <locationY>1163</locationY>
         <connector>
             <targetReference>Update_Reason_and_SPR</targetReference>
@@ -2580,36 +4603,10 @@
         </outputAssignments>
     </subflows>
     <subflows>
-        <name>Get_New_System_Reason_2</name>
-        <label>Get New System Reason 2</label>
-        <locationX>1370</locationX>
-        <locationY>839</locationY>
-        <connector>
-            <targetReference>Update_Supervisor_Review_and_Reason</targetReference>
-        </connector>
-        <flowName>FS_SubFlowSystemReasonPriority</flowName>
-        <inputAssignments>
-            <name>Prio_Sys_Reason_From_WO</name>
-            <value>
-                <elementReference>$Record__Prior.FS_System_Reason__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>Sys_Reason_From_WO</name>
-            <value>
-                <elementReference>$Record.FS_System_Reason__c</elementReference>
-            </value>
-        </inputAssignments>
-        <outputAssignments>
-            <assignToReference>UpdatedSystemReason</assignToReference>
-            <name>FinalSystemReason</name>
-        </outputAssignments>
-    </subflows>
-    <subflows>
         <name>String_splitting_with_subflow</name>
         <label>String splitting with subflow</label>
-        <locationX>3922</locationX>
-        <locationY>1055</locationY>
+        <locationX>3196</locationX>
+        <locationY>2513</locationY>
         <connector>
             <targetReference>Looping_All_Selected_Values_of_AdditionalSkills_Field</targetReference>
         </connector>

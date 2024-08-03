@@ -40,28 +40,22 @@
 			"query": "SELECT Id, FSL__Service_Goal__c, FSL__Scheduling_Policy__c, FSL__Weight__c FROM FSL__Scheduling_Policy_Goal__c",
 			"operation": "Upsert",
 			"externalId": "FSL__Scheduling_Policy__r.Name;FSL__Service_Goal__r.Name",
-			"deleteOldData": true,
-			"deleteQuery": "SELECT Id FROM FSL__Scheduling_Policy_Goal__c WHERE FSL__Scheduling_Policy__r.Name IN ('Emergency', 'Reduce Travel', 'Focus on Service Request', 'Limited Resource', 'Customer First')"
+			"commented_deleteOldData": true,
+			"commented_deleteQuery": "SELECT Id FROM FSL__Scheduling_Policy_Goal__c WHERE FSL__Scheduling_Policy__r.Name IN ('Emergency', 'Reduce Travel', 'Focus on Service Request', 'Limited Resource', 'Customer First')"
 		},
 		
 		{
 			"query": "SELECT Id, FSL__Scheduling_Policy__c, FSL__Work_Rule__c FROM FSL__Scheduling_Policy_Work_Rule__c",
 			"operation": "Upsert",
 			"externalId": "FSL__Scheduling_Policy__r.Name;FSL__Work_Rule__r.Name",
-			"deleteOldData": true,
-			"deleteQuery": "SELECT Id FROM FSL__Scheduling_Policy_Work_Rule__c WHERE FSL__Scheduling_Policy__r.Name IN ('Emergency', 'Reduce Travel', 'Focus on Service Request', 'Limited Resource', 'Customer First') AND FSL__Work_Rule__r.Name NOT IN ('Due Date', 'Earliest Start Permitted')"
+			"commented_deleteOldData": true,
+			"commented_deleteQuery": "SELECT Id FROM FSL__Scheduling_Policy_Work_Rule__c WHERE FSL__Scheduling_Policy__r.Name IN ('Emergency', 'Reduce Travel', 'Focus on Service Request', 'Limited Resource', 'Customer First') AND FSL__Work_Rule__r.Name NOT IN ('Due Date', 'Earliest Start Permitted')"
 		},
 		
 		{
 			"query": "SELECT Id, Name, DurationType, DurationInMinutes, EstimatedDuration, ShouldAutoCreateSvcAppt, ServiceReportTemplateId, WoDocumentTemplate FROM WorkType",
 			"operation": "Upsert",
 			"externalId": "Name;DurationType;DurationInMinutes"
-		},
-		
-		{
-			"query": "SELECT Id, Name, Type__c, WorkType__c, Description__c FROM FS_WorkOrderLineItemTemplate__c",
-			"operation": "Upsert",
-			"externalId": "Name;Type__c;WorkType__r.Name"
 		},
 		
 		{
@@ -80,12 +74,6 @@
 			"query": "SELECT Id, Name, FSL__Criterias__c, FSL__Days_after_horizon__c, FSL__Days_before_horizon__c, FSL__Description__c, FSL__Displayed_Fields__c, FSL__Hidden__c, FSL__List_only_appointments_on_the_gantt__c, FSL__Logic__c, FSL__Public__c, FSL__Selected_Statuses__c FROM FSL__Gantt_Filter__c",
 			"operation": "Upsert",
 			"externalId": "Name;FSL__Displayed_Fields__c;FSL__Criterias__c;FSL__Logic__c"
-		},
-		
-		{
-			"query": "SELECT Product_Type__c, Component__c, Sub_Component__c, Adjust__c, Clean__c, Lubricate__c, Repair__c, Replace__c, Verify__c FROM WOLI_Setting__c",
-			"operation": "Upsert",
-			"externalId": "Product_Type__c;Component__c;Sub_Component__c"
 		},
 		
 		{

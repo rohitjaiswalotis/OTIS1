@@ -107,5 +107,5 @@ Action #2: Mark Next Route and Effective Date as BLANK</description>
         </schedule>
         <triggerType>Scheduled</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
 </Flow>

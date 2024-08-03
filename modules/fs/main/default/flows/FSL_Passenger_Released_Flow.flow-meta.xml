@@ -247,12 +247,59 @@
         <queriedFields>SvcReqRescueDateTime__c</queriedFields>
         <queriedFields>RecordTypeId</queriedFields>
         <queriedFields>FS_Priority__c</queriedFields>
+        <queriedFields>PassengerOutreachNoLongerRequired__c</queriedFields>
+        <queriedFields>TrappedPassengerReleasedByOTIS__c</queriedFields>
     </recordLookups>
+    <recordUpdates>
+        <name>Update_Case_Field</name>
+        <label>Update Case Field</label>
+        <locationX>314</locationX>
+        <locationY>1106</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>WORecord.CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>PassengersSafelyExited__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_Case_Fields</name>
+        <label>Update Case Fields</label>
+        <locationX>578</locationX>
+        <locationY>1106</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>WORecord.CaseId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>PassengersSafelyExited__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordUpdates>
     <recordUpdates>
         <name>Update_the_WO_Field</name>
         <label>Update the WO Field</label>
         <locationX>578</locationX>
         <locationY>998</locationY>
+        <connector>
+            <targetReference>Update_Case_Fields</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -292,12 +339,15 @@
         <label>Update the WO Fields</label>
         <locationX>314</locationX>
         <locationY>998</locationY>
+        <connector>
+            <targetReference>Update_Case_Field</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>SA_Record.ParentRecordId</elementReference>
+                <elementReference>WORecord.Id</elementReference>
             </value>
         </filters>
         <inputAssignments>
@@ -418,6 +468,7 @@
             </defaultValue>
             <fieldText>Passenger Rescue Datetime</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <validationRule>
                 <errorMessage>&lt;p&gt;Release time should not be more than 15 mins in past from current time&lt;/p&gt;</errorMessage>
@@ -446,6 +497,7 @@
             </defaultValue>
             <fieldText>Passenger Rescue Datetime</fieldText>
             <fieldType>InputField</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>

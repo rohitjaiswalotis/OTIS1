@@ -151,7 +151,7 @@
             <targetReference>Get_SA_Record</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
     <variables>
         <name>Id</name>
         <dataType>String</dataType>

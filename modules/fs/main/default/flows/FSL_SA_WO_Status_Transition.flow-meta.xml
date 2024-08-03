@@ -700,13 +700,6 @@
             <name>If_There_Are_Items_Pending_Approval</name>
             <conditionLogic>or</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.WorkOrder__r.Total_WOLI_with_Checked_Review__c</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>0.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
                 <leftValueReference>$Record.WorkOrder__r.FS_Mark_For_Supervisor_Review__c</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
@@ -862,7 +855,7 @@
                 <leftValueReference>$Record.WorkOrder__r.Status</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Closed</stringValue>
+                    <stringValue>Completed</stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -1021,7 +1014,8 @@
             <label>Work Completed</label>
         </rules>
     </decisions>
-    <description>Work Order Status changes when related Service Appointment status is changed by the Mechanic</description>
+    <description>Work Order Status changes when related Service Appointment status is changed by the Mechanic
+Removed references of WO.Total Woli with checked Review Field - 1 July 24</description>
     <environments>Default</environments>
     <formulas>
         <name>CurrentTimeArrival</name>
@@ -1319,7 +1313,7 @@
         <inputAssignments>
             <field>Status</field>
             <value>
-                <stringValue>Closed</stringValue>
+                <stringValue>Completed</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -1614,7 +1608,7 @@
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
     <triggerOrder>1</triggerOrder>
     <variables>
         <name>TransformPlatformEventOutput</name>

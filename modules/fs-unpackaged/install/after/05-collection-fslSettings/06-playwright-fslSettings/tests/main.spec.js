@@ -138,9 +138,7 @@ test('Scheduling -> General Logic', async ({ basePage, baseUrl }) => {
 	const GENERAL_LOGIC_PINNED_STATUSES = new utils.CaseInsensitiveSet(
 		[ 
 			"Cannot Complete", 
-			"Completed",
-			"Scheduled",
-			"Dispatched"
+			"Completed"
 		]
 	);
 	
@@ -206,7 +204,7 @@ test('Scheduling -> General Logic', async ({ basePage, baseUrl }) => {
 	await utils.selectPicklistSettingByLabel(frame, "Work Order Line Item Priority Field", "None");
 	await utils.selectPicklistSettingByLabel(frame, "Service Appointment Priority Field", "Priority");
 	
-	await utils.checkBooleanSetting(frame, "Use 1-100 priority scale");
+	await utils.uncheckBooleanSetting(frame, "Use 1-100 priority scale");
 	
 	await utils.checkBooleanSetting(frame, "Enable complex work");
 	await utils.uncheckBooleanSetting(frame, "Use all-or-none scheduling for related appointments");

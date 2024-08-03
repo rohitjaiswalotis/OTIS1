@@ -825,10 +825,10 @@
         <displayField>TimeSheetEntryNumber</displayField>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>Service_Appointment__c</field>
+            <field>WorkOrderId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>ServiceAppointmentRecord.Id</elementReference>
+                <elementReference>WorkOrderRecord.Id</elementReference>
             </value>
         </filters>
         <object>TimeSheetEntry</object>
@@ -906,12 +906,6 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>Service_Appointment__c</field>
-            <value>
-                <elementReference>serviceAppointmentData.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>StartTime</field>
             <value>
                 <elementReference>StartTimeForSTSE</elementReference>
@@ -972,10 +966,10 @@
         <name>Get_Record_of_Time_Sheet_Entry</name>
         <label>Get Record of Time Sheet Entry</label>
         <locationX>1246</locationX>
-        <locationY>566</locationY>
+        <locationY>674</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Service_Appointments</targetReference>
+            <targetReference>Get_Unit_Record</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -986,10 +980,10 @@
             </value>
         </filters>
         <filters>
-            <field>Service_Appointment__c</field>
+            <field>WorkOrderId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>ServiceAppointmentRecord.Id</elementReference>
+                <elementReference>WorkOrderRecord.Id</elementReference>
             </value>
         </filters>
         <object>TimeSheetEntry</object>
@@ -1000,7 +994,6 @@
         <queriedFields>Multiplier_Type__c</queriedFields>
         <queriedFields>Multiplier_Values__c</queriedFields>
         <queriedFields>TimeSheetEntryNumber</queriedFields>
-        <queriedFields>Service_Appointment__c</queriedFields>
         <queriedFields>Time_Entry_Type__c</queriedFields>
         <queriedFields>CreatedDate</queriedFields>
     </recordLookups>
@@ -1011,7 +1004,7 @@
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Timesheet_Entry_Records</targetReference>
+            <targetReference>Get_Work_Order</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1027,35 +1020,13 @@
         <queriedFields>Unit__c</queriedFields>
         <queriedFields>AssignedServiceResource__c</queriedFields>
         <queriedFields>ParentRecordId</queriedFields>
-    </recordLookups>
-    <recordLookups>
-        <name>Get_Service_Appointments</name>
-        <label>Get Service Appointments</label>
-        <locationX>1246</locationX>
-        <locationY>674</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Get_Unit_Record</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>TimeRecordData.Service_Appointment__c</elementReference>
-            </value>
-        </filters>
-        <object>ServiceAppointment</object>
-        <outputReference>serviceAppointmentData</outputReference>
-        <queriedFields>Id</queriedFields>
         <queriedFields>AppointmentNumber</queriedFields>
-        <queriedFields>Unit__c</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>Get_Time_sheetId_from_Assigned_Resource</name>
         <label>Get Time sheetId from Assigned Resource</label>
         <locationX>1246</locationX>
-        <locationY>350</locationY>
+        <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Display_the_Time_Sheet_Entry_Records</targetReference>
@@ -1099,17 +1070,17 @@
         <name>Get_Timesheet_Entry_Records</name>
         <label>Get Timesheet Entry Records</label>
         <locationX>1246</locationX>
-        <locationY>242</locationY>
+        <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Time_sheetId_from_Assigned_Resource</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>Service_Appointment__c</field>
+            <field>WorkOrderId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>ServiceAppointmentRecord.Id</elementReference>
+                <elementReference>WorkOrderRecord.Id</elementReference>
             </value>
         </filters>
         <object>TimeSheetEntry</object>
@@ -1119,7 +1090,6 @@
         <queriedFields>StartTime</queriedFields>
         <queriedFields>EndTime</queriedFields>
         <queriedFields>Multiplier_Values__c</queriedFields>
-        <queriedFields>Service_Appointment__c</queriedFields>
         <queriedFields>Multiplier_Type__c</queriedFields>
         <queriedFields>CreatedDate</queriedFields>
     </recordLookups>
@@ -1137,7 +1107,7 @@
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>serviceAppointmentData.Unit__c</elementReference>
+                <elementReference>ServiceAppointmentRecord.Unit__c</elementReference>
             </value>
         </filters>
         <object>Asset</object>
@@ -1145,6 +1115,27 @@
         <queriedFields>Id</queriedFields>
         <queriedFields>BranchCode__c</queriedFields>
         <queriedFields>FS_UnitCompany__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Work_Order</name>
+        <label>Get Work Order</label>
+        <locationX>1246</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Timesheet_Entry_Records</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>ServiceAppointmentRecord.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrder</object>
+        <outputReference>WorkOrderRecord</outputReference>
+        <queriedFields>Id</queriedFields>
     </recordLookups>
     <recordUpdates>
         <name>Update_the_Time_Sheet_Entry</name>
@@ -1293,7 +1284,7 @@
         <name>Display_the_Time_Sheet_Entry_Records</name>
         <label>Display the Time Sheet Entry Records</label>
         <locationX>1246</locationX>
-        <locationY>458</locationY>
+        <locationY>566</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1301,11 +1292,16 @@
             <targetReference>Get_Record_of_Time_Sheet_Entry</targetReference>
         </connector>
         <fields>
+            <name>Display</name>
+            <fieldText>&lt;p&gt;Please select one of the following timesheet entry:&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
             <name>Time_Sheet_Entry_Records</name>
             <choiceReferences>timeSheetEntrySet</choiceReferences>
             <dataType>String</dataType>
             <fieldText>Time Sheet Entry Records</fieldText>
-            <fieldType>DropdownBox</fieldType>
+            <fieldType>RadioButtons</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
@@ -1330,7 +1326,7 @@
         </fields>
         <fields>
             <name>serviceAppointment</name>
-            <fieldText>&lt;p&gt;&lt;strong&gt;Service Appointment:&lt;/strong&gt; {!serviceAppointmentData.AppointmentNumber}&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Service Appointment:&lt;/strong&gt; {!ServiceAppointmentRecord.AppointmentNumber}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -1714,5 +1710,13 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <scale>1</scale>
+    </variables>
+    <variables>
+        <name>WorkOrderRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrder</objectType>
     </variables>
 </Flow>

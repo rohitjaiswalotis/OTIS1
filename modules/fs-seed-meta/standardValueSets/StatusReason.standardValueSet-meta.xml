@@ -31,4 +31,44 @@
         <default>false</default>
         <label>Off</label>
     </standardValue>
+    <standardValue>
+        <fullName>End of FOS period - Lost unit</fullName>
+        <default>false</default>
+        <label>End of FOS period - Lost unit</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Free period started</fullName>
+        <default>false</default>
+        <label>Free period started</label>
+    </standardValue>
+    <standardValue>
+        <fullName>New equipment unit pending Handover</fullName>
+        <default>false</default>
+        <label>New equipment unit pending Handover</label>
+    </standardValue>
+    <standardValue>
+        <fullName>OTIS Installation Unit Period started</fullName>
+        <default>false</default>
+        <label>OTIS Installation Unit Period started</label>
+    </standardValue>
+     <standardValue>
+        <fullName>Pending Contract activation (NE Won Unit)</fullName>
+        <default>false</default>
+        <label>Pending Contract activation (NE Won Unit)</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Under Contract (NE Won Unit)</fullName>
+        <default>false</default>
+        <label>Under Contract (NE Won Unit)</label>
+    </standardValue>
+    <standardValue>
+        <fullName>In Extended FOS period</fullName>
+        <default>false</default>
+        <label>In Extended FOS period</label>
+    </standardValue>
+    <standardValue>
+        <fullName>Contract Renewal</fullName>
+        <default>false</default>
+        <label>Contract Renewal</label>
+    </standardValue>
 </StandardValueSet>

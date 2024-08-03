@@ -2,43 +2,18 @@
 <StandardValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <sorted>false</sorted>
     <standardValue>
-        <fullName>Vacation</fullName>
-        <default>true</default>
-        <label>Vacation</label>
+        <fullName>Last Minute Absence</fullName>
+        <default>false</default>
+        <label>Last Minute Absence</label>
     </standardValue>
     <standardValue>
-        <fullName>Meeting</fullName>
+        <fullName>99 Code Absence</fullName>
         <default>false</default>
-        <label>Meeting</label>
+        <label>99 Code Absence</label>
     </standardValue>
     <standardValue>
-        <fullName>Training</fullName>
+        <fullName>Regular Absence</fullName>
         <default>false</default>
-        <label>Training</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Medical</fullName>
-        <default>false</default>
-        <label>Medical</label>
-    </standardValue>
-    <standardValue>
-        <fullName>External appointment</fullName>
-        <default>false</default>
-        <label>External appointment</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Outstanding break</fullName>
-        <default>false</default>
-        <label>Outstanding break</label>
-    </standardValue>
-    <standardValue>
-        <fullName>Vehicle maintenance</fullName>
-        <default>false</default>
-        <label>Vehicle maintenance</label>
-    </standardValue>
-    <standardValue>
-        <fullName>On Leave</fullName>
-        <default>false</default>
-        <label>On Leave</label>
+        <label>Regular Absence</label>
     </standardValue>
 </StandardValueSet>

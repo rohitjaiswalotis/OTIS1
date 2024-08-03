@@ -35,8 +35,8 @@
     <decisions>
         <name>Check_status_equals_to_approved</name>
         <label>Check status equals to approved</label>
-        <locationX>457</locationX>
-        <locationY>458</locationY>
+        <locationX>479</locationX>
+        <locationY>566</locationY>
         <defaultConnector>
             <targetReference>check_status_equals_to_new</targetReference>
         </defaultConnector>
@@ -60,8 +60,8 @@
     <decisions>
         <name>check_status_equals_to_new</name>
         <label>check status equals to new</label>
-        <locationX>864</locationX>
-        <locationY>566</locationY>
+        <locationX>908</locationX>
+        <locationY>674</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Is_new</name>
@@ -98,7 +98,7 @@
         <name>check_yes_or_no</name>
         <label>check yes or no</label>
         <locationX>446</locationX>
-        <locationY>782</locationY>
+        <locationY>890</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>if_yes</name>
@@ -120,7 +120,7 @@
         <name>check_yes_or_no1</name>
         <label>check yes or no</label>
         <locationX>974</locationX>
-        <locationY>782</locationY>
+        <locationY>890</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>If_yes1</name>
@@ -164,11 +164,11 @@
     <recordLookups>
         <name>get_SA</name>
         <label>get SA</label>
-        <locationX>457</locationX>
+        <locationX>479</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>get_Timesheet_entry_records</targetReference>
+            <targetReference>Get_WorkOrder</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -181,22 +181,24 @@
         <object>ServiceAppointment</object>
         <outputReference>SAId</outputReference>
         <queriedFields>Id</queriedFields>
+        <queriedFields>ParentRecordId</queriedFields>
+        <queriedFields>ParentRecordType</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>get_Timesheet_entry_records</name>
         <label>get Timesheet entry records</label>
-        <locationX>457</locationX>
-        <locationY>242</locationY>
+        <locationX>479</locationX>
+        <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>get_timesheets</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>Service_Appointment__c</field>
+            <field>WorkOrderId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>SAId.Id</elementReference>
+                <elementReference>WorkOrderRecord.Id</elementReference>
             </value>
         </filters>
         <object>TimeSheetEntry</object>
@@ -209,8 +211,8 @@
     <recordLookups>
         <name>get_timesheets</name>
         <label>get timesheets</label>
-        <locationX>457</locationX>
-        <locationY>350</locationY>
+        <locationX>479</locationX>
+        <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_status_equals_to_approved</targetReference>
@@ -228,11 +230,32 @@
         <queriedFields>Id</queriedFields>
         <queriedFields>Status</queriedFields>
     </recordLookups>
+    <recordLookups>
+        <name>Get_WorkOrder</name>
+        <label>Get WorkOrder</label>
+        <locationX>479</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>get_Timesheet_entry_records</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>SAId.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <object>WorkOrder</object>
+        <outputReference>WorkOrderRecord</outputReference>
+        <queriedFields>Id</queriedFields>
+    </recordLookups>
     <recordUpdates>
         <name>Copy_1_of_update_the_time_sheet_status_to_submitted</name>
         <label>Copy 1 of update the time sheet status to submitted</label>
         <locationX>842</locationX>
-        <locationY>890</locationY>
+        <locationY>998</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -253,7 +276,7 @@
         <name>update_the_time_sheet_status_to_submitted</name>
         <label>update the time sheet status to submitted</label>
         <locationX>314</locationX>
-        <locationY>890</locationY>
+        <locationY>998</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -274,7 +297,7 @@
         <name>Footer</name>
         <label>Footer</label>
         <locationX>50</locationX>
-        <locationY>566</locationY>
+        <locationY>674</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -291,7 +314,7 @@
         <name>Screen2</name>
         <label>Screen2</label>
         <locationX>446</locationX>
-        <locationY>674</locationY>
+        <locationY>782</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -321,7 +344,7 @@
         <name>Screen3</name>
         <label>Screen3</label>
         <locationX>974</locationX>
-        <locationY>674</locationY>
+        <locationY>782</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -348,7 +371,7 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>331</locationX>
+        <locationX>353</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>get_SA</targetReference>
@@ -385,5 +408,13 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>TimeSheetEntry</objectType>
+    </variables>
+    <variables>
+        <name>WorkOrderRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>WorkOrder</objectType>
     </variables>
 </Flow>

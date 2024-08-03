@@ -262,7 +262,7 @@
     <recordUpdates>
         <name>Copy_1_of_Update_SA_fields_from_Unit_Fields</name>
         <label>Copy 1 of Update SA fields from Unit Fields</label>
-        <locationX>490</locationX>
+        <locationX>578</locationX>
         <locationY>1769</locationY>
         <inputAssignments>
             <field>BuildingId__c</field>
@@ -271,39 +271,9 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>City</field>
-            <value>
-                <elementReference>$Record.Unit__r.City</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Country</field>
-            <value>
-                <elementReference>$Record.Unit__r.Country</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>PostalCode</field>
-            <value>
-                <elementReference>$Record.Unit__r.PostalCode</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>ServiceTerritoryId</field>
             <value>
                 <elementReference>$Record.Unit__r.RouteName__c</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>State</field>
-            <value>
-                <elementReference>$Record.Unit__r.State</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Street</field>
-            <value>
-                <elementReference>$Record.Unit__r.Street</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -328,7 +298,7 @@
         <name>Update_SA_Dute_date</name>
         <label>Update SA Dute date</label>
         <locationX>138</locationX>
-        <locationY>1661</locationY>
+        <locationY>1769</locationY>
         <connector>
             <targetReference>Update_SA_fields_from_Unit_Fields</targetReference>
         </connector>
@@ -343,8 +313,8 @@
     <recordUpdates>
         <name>Update_SA_fields_from_Unit_Fields</name>
         <label>Update SA fields from Unit Fields</label>
-        <locationX>226</locationX>
-        <locationY>1769</locationY>
+        <locationX>358</locationX>
+        <locationY>2069</locationY>
         <inputAssignments>
             <field>BuildingId__c</field>
             <value>
@@ -448,6 +418,6 @@
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordBeforeSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
     <triggerOrder>1700</triggerOrder>
 </Flow>
