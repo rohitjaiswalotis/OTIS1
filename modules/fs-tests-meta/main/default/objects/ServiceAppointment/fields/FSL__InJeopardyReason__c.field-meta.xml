@@ -40,6 +40,16 @@
                 <default>false</default>
                 <label>Escalation to Supervisor</label>
             </value>
+            <value>
+                <fullName>Service Request Not Scheduled</fullName>
+                <default>false</default>
+                <label>Service Request Not Scheduled</label>
+            </value>
+            <value>
+                <fullName>Address not found</fullName>
+                <default>false</default>
+                <label>Address not found</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
