@@ -4,8 +4,8 @@
     <assignments>
         <name>Assign_Values_to_ServiceResObj</name>
         <label>Assign Values to ServiceResObj</label>
-        <locationX>176</locationX>
-        <locationY>242</locationY>
+        <locationX>50</locationX>
+        <locationY>350</locationY>
         <assignmentItems>
             <assignToReference>serviceResObj.Id</assignToReference>
             <operator>Assign</operator>
@@ -17,6 +17,31 @@
             <targetReference>service_resource</targetReference>
         </connector>
     </assignments>
+    <decisions>
+        <name>check_if_data_exist</name>
+        <label>check if data exist ?</label>
+        <locationX>182</locationX>
+        <locationY>242</locationY>
+        <defaultConnector>
+            <targetReference>service_resource</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>not_null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_ServiceResource_Details</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Values_to_ServiceResObj</targetReference>
+            </connector>
+            <label>not null</label>
+        </rules>
+    </decisions>
     <description>Update Current Login Date/Time on service resource</description>
     <environments>Default</environments>
     <interviewLabel>Update Current Login Date/Time {!$Flow.CurrentDateTime}</interviewLabel>
@@ -43,11 +68,11 @@
     <recordLookups>
         <name>Get_ServiceResource_Details</name>
         <label>Get ServiceResource Details</label>
-        <locationX>176</locationX>
+        <locationX>182</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Assign_Values_to_ServiceResObj</targetReference>
+            <targetReference>check_if_data_exist</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -64,12 +89,13 @@
     <recordUpdates>
         <name>service_resource</name>
         <label>service resource</label>
-        <locationX>176</locationX>
-        <locationY>350</locationY>
+        <locationX>182</locationX>
+        <locationY>542</locationY>
         <inputReference>serviceResObj</inputReference>
     </recordUpdates>
+    <runInMode>SystemModeWithoutSharing</runInMode>
     <start>
-        <locationX>50</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_ServiceResource_Details</targetReference>
