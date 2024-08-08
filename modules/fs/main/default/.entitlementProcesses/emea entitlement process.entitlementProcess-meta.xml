@@ -199,6 +199,14 @@
         </milestoneCriteriaFilterItems>
         <milestoneName>EMEA TPR</milestoneName>
         <minutesToComplete>60</minutesToComplete>
+        <timeTriggers>
+            <actions>
+                <name>X15_Mins_remaining_for_TPR</name>
+                <type>FieldUpdate</type>
+            </actions>
+            <timeLength>-15</timeLength>
+            <workflowTimeTriggerUnit>Minutes</workflowTimeTriggerUnit>
+        </timeTriggers>
         <useCriteriaStartTime>false</useCriteriaStartTime>
     </milestones>
     <milestones>
