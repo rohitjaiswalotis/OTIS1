@@ -5,7 +5,7 @@
     <formulas>
         <name>FormulaField</name>
         <dataType>String</dataType>
-        <expression>&quot;CallbackKey:&quot; + {!$Record.CallbackKey__c}+  BR()+ &quot;MechanicArrivalTime:&quot;+ {!$Record.MechanicArrivalTime__c} + BR()+ &quot;OperationalStatusReason:&quot;+BR()+{!$Record.OperationalStatusReason__c} + BR()+ &quot;Timezone:&quot;+ {!$Record.TimeZone__c} +BR() +&quot;WorkOrderClosure:&quot;+{!$Record.WorkOrderClosureDate__c} +BR()+&quot;WorkOrderStatus:&quot;+ {!$Record.WorkOrderStatus__c}</expression>
+        <expression>&quot;CallbackKey:&quot; + {!$Record.CallbackKey__c}+  BR()+ &quot;MechanicArrivalTime:&quot;+ {!$Record.MechanicArrivalTime__c} + BR()+ &quot;OperationalStatusReason:&quot;+BR()+{!$Record.OperationalStatusReason__c} + BR()+ &quot;Timezone:&quot;+ {!$Record.TimeZone__c} +BR() +&quot;WorkOrderClosure:&quot;+{!$Record.WorkOrderClosureDateTime__c} +BR()+&quot;WorkOrderStatus:&quot;+ {!$Record.WorkOrderStatus__c}</expression>
     </formulas>
     <interviewLabel>TestPlatformevent {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Platform Event Triggered Flow</label>
