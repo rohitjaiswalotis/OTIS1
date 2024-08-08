@@ -50,6 +50,11 @@
                 <default>false</default>
                 <label>Address not found</label>
             </value>
+            <value>
+                <fullName>Maintenance Job Past Due</fullName>
+                <default>false</default>
+                <label>Maintenance Job Past Due</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
