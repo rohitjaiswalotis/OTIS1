@@ -316,7 +316,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Send_Notification_To_Service_Resource_When_SA_Dispatched</targetReference>
+                <targetReference>TimeDifffetch</targetReference>
             </connector>
             <label>SR Check And Record Updated</label>
         </rules>
@@ -455,46 +455,6 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
-    <subflows>
-        <name>Send_Notification_To_Service_Resource_When_SA_Dispatched</name>
-        <label>Send Notification To Service Resource When SA Dispatched</label>
-        <locationX>974</locationX>
-        <locationY>384</locationY>
-        <connector>
-            <targetReference>TimeDifffetch</targetReference>
-        </connector>
-        <flowName>SendCustomNotification</flowName>
-        <inputAssignments>
-            <name>CustomNotificationTypeName</name>
-            <value>
-                <stringValue>Work_Order</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>NotificationBody</name>
-            <value>
-                <stringValue>is Dispatched to {!$Record.AssignedServiceResource__r.Name} for Work Order -  {!$Record.WorkOrder__r.WorkOrderNumber} </stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>NotificationTitle</name>
-            <value>
-                <elementReference>$Record.AppointmentNumber</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>RecipientId</name>
-            <value>
-                <elementReference>$Record.AssignedServiceResource__r.RelatedRecord.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <name>TargetId</name>
-            <value>
-                <elementReference>$Record.WorkOrder__r.Id</elementReference>
-            </value>
-        </inputAssignments>
-    </subflows>
     <variables>
         <name>TestField</name>
         <dataType>Number</dataType>
