@@ -1077,9 +1077,9 @@ Removed references of WO.Total Woli with checked Review Field - 1 July 24</descr
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>WorkOrderClosureDate__c</field>
+            <field>WorkOrderClosureDateTime__c</field>
             <value>
-                <elementReference>$Record.WorkOrder__r.WorkOrderClosureDate__c</elementReference>
+                <elementReference>$Record.WorkOrder__r.WorkOrderClosureDateTime__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
