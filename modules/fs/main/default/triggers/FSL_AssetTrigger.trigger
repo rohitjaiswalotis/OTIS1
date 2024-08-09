@@ -5,5 +5,5 @@
 * Created Date : 02-08-2024
 */
 trigger FSL_AssetTrigger on Asset (after update) {
-    TriggerDispatcher.fsl_run(new FSL_AssetHandler(), Asset.getSObjectType().getDescribe().getName());
+    //TriggerDispatcher.fsl_run(new FSL_AssetHandler(), Asset.getSObjectType().getDescribe().getName());
 }

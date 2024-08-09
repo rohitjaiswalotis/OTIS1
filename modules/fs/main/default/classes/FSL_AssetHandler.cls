@@ -18,11 +18,11 @@ public without sharing class FSL_AssetHandler extends TriggerHandler{
     * @Description:Method For After Insert
     * @Param : Trigger.newMap and Trigger.oldMap
     */
-    public override void afterUpdate(Map<Id,SObject> newMap, Map<Id,SObject> oldMap){
+   /* public override void afterUpdate(Map<Id,SObject> newMap, Map<Id,SObject> oldMap){
         Map<Id,Asset> newAssetMap = (Map<Id,Asset>) newMap;
         Map<Id,Asset> oldAssetMap = (Map<Id,Asset>) oldMap;
         //Invoke this method when the GeoLocation get updated on Asset record
         FSL_AssetService.updateSArecordsFromUnit(newAssetMap,oldAssetMap);
     
-}
+}*/
 }

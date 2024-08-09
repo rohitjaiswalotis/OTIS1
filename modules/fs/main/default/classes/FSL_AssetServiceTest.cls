@@ -50,7 +50,7 @@ public class FSL_AssetServiceTest {
         
         Test.startTest();
         // Call the method to update ServiceAppointments
-        FSL_AssetService.updateSArecordsFromUnit(newAssetMap, oldAssetMap);
+        AssetTriggerService.updateSArecordsFromUnit(newAssetMap, oldAssetMap);
         Test.stopTest();
          
         System.assertEquals(39.767,oldAsset.Latitude , 'Updated Lat');
