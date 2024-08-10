@@ -10,6 +10,12 @@
 			"query": "SELECT Id, FSL__Scheduling_Policy__c, FSL__Work_Rule__c FROM FSL__Scheduling_Policy_Work_Rule__c",
 			"operation": "Upsert",
 			"externalId": "FSL__Scheduling_Policy__r.Name;FSL__Work_Rule__r.Name"
+		},
+		
+		{
+			"query": "SELECT Name, FSL__Active__c, FSL__ColorLevel__c, FSL__ColorScheme__c, FSL__Description__c, FSL__ServiceProperty__c FROM FSL__GanttPalette__c",
+			"operation": "Upsert",
+			"externalId": "Name"
 		}
 		
 	]
