@@ -13,12 +13,11 @@ Id defaultFSMobileSettingId = [
 	SELECT Id, DeveloperName, MasterLabel, IsDefault FROM FieldServiceMobileSettings WHERE IsDefault = true ORDER BY CreatedDate DESC LIMIT 1 
 ]?.Id;
 
-if (defaultFSMobileSettingId != null) {
-	propToValue.put(
-		'SF_SR_VAR_MOBILE_SETTING_ID', 
-		defaultFSMobileSettingId
-	);
-}
+
+propToValue.put(
+	'SF_SR_VAR_MOBILE_SETTING_ID', 
+	defaultFSMobileSettingId == null ? '' : defaultFSMobileSettingId
+);
 
 
 // get KPI Dashboards Mechanics
