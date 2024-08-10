@@ -4,7 +4,7 @@
         <name>TimeDifffetch</name>
         <label>TimeDifffetch</label>
         <locationX>974</locationX>
-        <locationY>492</locationY>
+        <locationY>384</locationY>
         <actionName>FSL_ServiceAppointmentService</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -26,7 +26,7 @@
         <name>Store_S1</name>
         <label>Store S1</label>
         <locationX>842</locationX>
-        <locationY>924</locationY>
+        <locationY>816</locationY>
         <assignmentItems>
             <assignToReference>TestField</assignToReference>
             <operator>Add</operator>
@@ -42,7 +42,7 @@
         <name>Store_S1_Timing</name>
         <label>Store S1 Timing</label>
         <locationX>50</locationX>
-        <locationY>924</locationY>
+        <locationY>816</locationY>
         <assignmentItems>
             <assignToReference>TestField</assignToReference>
             <operator>Add</operator>
@@ -58,7 +58,7 @@
         <name>Store_S2</name>
         <label>Store S2</label>
         <locationX>1106</locationX>
-        <locationY>924</locationY>
+        <locationY>816</locationY>
         <assignmentItems>
             <assignToReference>TestField</assignToReference>
             <operator>Add</operator>
@@ -74,7 +74,7 @@
         <name>Store_S2_Timing</name>
         <label>Store S2 Timing</label>
         <locationX>314</locationX>
-        <locationY>924</locationY>
+        <locationY>816</locationY>
         <assignmentItems>
             <assignToReference>TestField</assignToReference>
             <operator>Add</operator>
@@ -90,7 +90,7 @@
         <name>Store_S3</name>
         <label>Store S3</label>
         <locationX>1370</locationX>
-        <locationY>924</locationY>
+        <locationY>816</locationY>
         <assignmentItems>
             <assignToReference>TestField</assignToReference>
             <operator>Add</operator>
@@ -106,7 +106,7 @@
         <name>Store_S3_Timing</name>
         <label>Store S3 Timing</label>
         <locationX>578</locationX>
-        <locationY>924</locationY>
+        <locationY>816</locationY>
         <assignmentItems>
             <assignToReference>TestField</assignToReference>
             <operator>Add</operator>
@@ -121,7 +121,7 @@
     <decisions>
         <name>Check_SA_status</name>
         <label>Check SA status</label>
-        <locationX>2294</locationX>
+        <locationX>2558</locationX>
         <locationY>276</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -144,7 +144,7 @@
         <name>Check_WO_Deferral_Date</name>
         <label>Check WO Deferral Date</label>
         <locationX>974</locationX>
-        <locationY>708</locationY>
+        <locationY>600</locationY>
         <defaultConnectorLabel>Exit</defaultConnectorLabel>
         <rules>
             <name>Deferral_Null_Or_Today</name>
@@ -195,7 +195,7 @@
         <name>Check_WO_Priority</name>
         <label>Check WO Priority</label>
         <locationX>1106</locationX>
-        <locationY>816</locationY>
+        <locationY>708</locationY>
         <defaultConnector>
             <targetReference>Store_S3</targetReference>
         </defaultConnector>
@@ -242,7 +242,7 @@
         <name>Check_WO_Priority_for_Deferral_Date_Null_Or_Today</name>
         <label>Check WO Priority for Deferral Date Null Or Today</label>
         <locationX>314</locationX>
-        <locationY>816</locationY>
+        <locationY>708</locationY>
         <defaultConnector>
             <targetReference>Store_S3_Timing</targetReference>
         </defaultConnector>
@@ -281,7 +281,7 @@
     <decisions>
         <name>RecordUpdatedAndSRCheck</name>
         <label>Record Updated And SR Check</label>
-        <locationX>1436</locationX>
+        <locationX>1568</locationX>
         <locationY>276</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -319,6 +319,35 @@
                 <targetReference>TimeDifffetch</targetReference>
             </connector>
             <label>SR Check And Record Updated</label>
+        </rules>
+        <rules>
+            <name>DeferalDate_To_None</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>None</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.FS_DeferralDateTime__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Deferal_date_None</targetReference>
+            </connector>
+            <label>DeferalDate To None</label>
         </rules>
     </decisions>
     <environments>Default</environments>
@@ -377,7 +406,7 @@
         <name>Get_Service_Territory_Timer</name>
         <label>Get Service Territory Timer</label>
         <locationX>974</locationX>
-        <locationY>600</locationY>
+        <locationY>492</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Check_WO_Deferral_Date</targetReference>
@@ -395,10 +424,23 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
+        <name>Update_Deferal_date_None</name>
+        <label>Update Deferal date None</label>
+        <locationX>1898</locationX>
+        <locationY>384</locationY>
+        <inputAssignments>
+            <field>FS_DeferralDateTime__c</field>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <name>Update_SA</name>
         <label>Update SA</label>
-        <locationX>2162</locationX>
+        <locationX>2426</locationX>
         <locationY>384</locationY>
+        <inputAssignments>
+            <field>FS_DeferralDateTime__c</field>
+        </inputAssignments>
         <inputAssignments>
             <field>Status</field>
             <value>
@@ -411,7 +453,7 @@
         <name>Update_SA1</name>
         <label>Update SA</label>
         <locationX>1106</locationX>
-        <locationY>1116</locationY>
+        <locationY>1008</locationY>
         <inputAssignments>
             <field>FS_DeferralDateTime__c</field>
             <value>
@@ -424,7 +466,7 @@
         <name>Update_SA_Deferral_Date</name>
         <label>Update SA Deferral Date</label>
         <locationX>314</locationX>
-        <locationY>1116</locationY>
+        <locationY>1008</locationY>
         <inputAssignments>
             <field>FS_DeferralDateTime__c</field>
             <value>
@@ -434,7 +476,7 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>1739</locationX>
+        <locationX>1937</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>RecordUpdatedAndSRCheck</targetReference>
