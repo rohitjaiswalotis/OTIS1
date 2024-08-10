@@ -1,2 +1,2 @@
 "Id","PastDaysInDatePicker","FutureDaysInDatePicker","DefaultListViewDeveloperName","IsShowEditFullRecord","IsSendLocationHistory","IsAssignmentNotification","IsDispatchNotification","GeoLocationMinUpdateFreqMins","GeoLocationAccuracy","BgGeoLocationMinUpdateFreqMins","BgGeoLocationAccuracy","RecordDataCacheTimeMins","UpdateScheduleTimeMins","AscRadiusInMeters","AscCompletedStatus","IsTimeSheetEnabled"
-"$SF_SR_VAR_MOBILE_SETTING_ID",45,45,"Service_Appointments",true,true,false,true,1,"Fine",1,"Medium",15,10,150,"Completed",true
+"$SF_SR_VAR_MOBILE_SETTING_ID",45,45,"Service_Appointments",true,true,false,false,1,"Fine",1,"Medium",15,10,150,"Completed",true
