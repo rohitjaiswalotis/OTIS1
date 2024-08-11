@@ -1,4 +1,2 @@
 $$WorkPlanTemplate.Name$WorkType.Name,Id,IsActive,WorkPlanTemplate.Name,WorkPlanTemplateId,WorkType.Name,WorkTypeId
 Service Request Work Plan template;Service Request Work Type,0grDD000000CaTaYAK,true,Service Request Work Plan template,7IyDD000000CaXw0AK,Service Request Work Type,08qDD000000L0IpYAK
-Tram Maintenance;MTRAM,0grDD000000CajJYAS,true,Tram Maintenance,7IyDD000000Cb1S0AS,MTRAM,08qDD000000L1dPYAS
-Pre-Inspection Qualification;SPREQ,0grDD000000CajEYAS,true,Pre-Inspection Qualification,7IyDD000000Cb1N0AS,SPREQ,08qDD000000L1d5YAC

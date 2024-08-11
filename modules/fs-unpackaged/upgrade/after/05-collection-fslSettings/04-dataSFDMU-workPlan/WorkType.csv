@@ -1,4 +1,2 @@
 DurationType,EstimatedDuration,FS_AutoSchedule__c,FS_MaxDuration__c,FS_MinDuration__c,FS_Type__c,Id,Name,ProcedureCode__c,ShouldAutoCreateSvcAppt,TaskType__c
 Hours,1,true,75,45,Service Request,08qDD000000L0IpYAK,Service Request Work Type,,true,
-Minutes,60,false,,,,08qDD000000L1dPYAS,MTRAM,MTRAM,true,Maintenance
-Minutes,60,false,,,,08qDD000000L1d5YAC,SPREQ,SPREQ,true,Maintenance
