@@ -4,8 +4,16 @@ Obtain Customer Signature for Vandalism/Non Equipment related,Obtain Customer Si
 Log Additional Work Details;true,Log the details of the Chargeable Work performed,4L0DD000000CaVS0A0,true,true,Log Additional Work Details
 Check in with Customer;true,Meet with customer and complete check-in formalities,4L0DD000000CaR70AK,true,true,Check in with Customer
 Test Elevator for proper operation;true,Ensure Unit is operating properly,4L0DD000000CaRE0A0,true,true,Test Elevator for proper operation
-Is the Otis One Hardware Gateway plugged in?;true,Validate if the required hardware is plugged in on the Unit. Mark this step as Not Applicable if needed.,4L0DD000000CaRA0A0,true,true,Is the Otis One Hardware Gateway plugged in?
-Use Upgrade app to propose any necessary work or potential upgrades;true,"If there are any leads, then use the Upgrade App. If no, then mark this step as Not Applicable",4L0DD000000CaRF0A0,true,true,Use Upgrade app to propose any necessary work or potential upgrades
+Is the Otis One Hardware Gateway plugged in?;true,Validate if the required hardware is plugged in on the Unit. Mark this step as Not Applicable if needed.,4L0DD000000CaRA0A0,true,false,Is the Otis One Hardware Gateway plugged in?
+Use Upgrade app to propose any necessary work or potential upgrades;true,"If there are any leads, then use the Upgrade App. If no, then mark this step as Not Applicable",4L0DD000000CaRF0A0,true,false,Use Upgrade app to propose any necessary work or potential upgrades
 Complete assigned work;true,Complete the assigned work,4L0DD000000CaR90AK,true,true,Complete assigned work
 Check out with Customer;true,Complete check-out formalities,4L0DD000000CaR80AK,true,true,Check out with Customer
 JHA Pronto Form;true,Fill up the JHA form,4L0DD000000CaRB0A0,true,true,JHA Pronto Form
+Check last done dates for proper code compliance;true,Check last done dates for proper code compliance,4L0DD000000CamY0AS,true,true,Check last done dates for proper code compliance
+Contact Supervisor for additional information;true,Contact Supervisor for additional information,4L0DD000000CamT0AS,true,true,Contact Supervisor for additional information
+"Perform a test of the emergency communication devices, close appropriate OMMS tasks upon completion","Perform a test of the emergency communication devices, close appropriate OMMS tasks upon completion",4L0DD000000Camd0AC,true,false,"Perform a test of the emergency communication devices, close appropriate OMMS tasks upon completion"
+Complete pre-qualification documentation if required by local AHJ or local office,Complete pre-qualification documentation if required by local AHJ or local office,4L0DD000000Came0AC,true,false,Complete pre-qualification documentation if required by local AHJ or local office
+Perform Maintenance in accordance with manufacturer's recommendations;true,Perform Maintenance in accordance with manufacturer's recommendations,4L0DD000000Cami0AC,true,true,Perform Maintenance in accordance with manufacturer's recommendations
+Prepare equipment for upcoming scheduled inspection;true,Prepare equipment for upcoming scheduled inspection,4L0DD000000CamO0AS,true,true,Prepare equipment for upcoming scheduled inspection
+"Perform a test of the emergency lights, close proper OMMS task upon completion;true","Perform a test of the emergency lights, close proper OMMS task upon completion",4L0DD000000CamP0AS,true,true,"Perform a test of the emergency lights, close proper OMMS task upon completion"
+Prepare equipment for inspection;true,Prepare equipment for inspection,4L0DD000000CamQ0AS,true,true,Prepare equipment for inspection
