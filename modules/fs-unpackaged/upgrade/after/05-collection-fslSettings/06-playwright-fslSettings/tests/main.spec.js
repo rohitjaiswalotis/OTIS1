@@ -74,3 +74,33 @@ test('Scheduling -> General Logic', async ({ basePage, baseUrl }) => {
 });
 
 
+
+test('Sharing -> Scheduled Jobs', async ({ basePage, baseUrl }) => {
+	
+	await utils.openSettings(basePage, baseUrl);
+	
+	const frame = utils.getMainFrame(basePage);
+	
+	await utils.switchToSettingsMenu(frame, "Sharing");
+	
+	await utils.switchToSettingsTab(frame, "Scheduled Jobs");
+	
+	
+	await utils.checkBooleanSetting(frame, "Share parent Work Order when Service Appointment is shared");
+	await utils.checkBooleanSetting(frame, "Share parent Account when Service Appointment is shared");
+	
+	await utils.uncheckBooleanSetting(frame, "Share parent Opportunity when Service Appointment is shared");
+	
+	await utils.checkBooleanSetting(frame, "Share parent Asset when Service Appointment is shared");
+	await utils.checkBooleanSetting(frame, "Enable User Territories sharing");
+	await utils.checkBooleanSetting(frame, "Automatically populate user groups based on User Territory");
+	
+	await utils.uncheckBooleanSetting(frame, "Share all work capacity records with public groups associated with the service territory");
+	await utils.uncheckBooleanSetting(frame, "Make assigned resources followers of service appointments that are Dispatched or In Progress");
+	
+	
+	await utils.clickSaveSettingButton(frame);
+	
+});
+
+
