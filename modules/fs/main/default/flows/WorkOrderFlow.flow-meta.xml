@@ -4402,7 +4402,7 @@
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
     <subflows>
         <name>Additional_Skill_String_Splitter</name>
         <label>Additional Skill String Splitter</label>

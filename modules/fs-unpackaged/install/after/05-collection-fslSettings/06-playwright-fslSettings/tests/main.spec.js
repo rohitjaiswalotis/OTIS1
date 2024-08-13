@@ -156,7 +156,7 @@ test('Scheduling -> General Logic', async ({ basePage, baseUrl }) => {
 	await utils.fillSetting(frame, "Maximum days to get candidates or to book an appointment", 10);
 	
 	await utils.checkBooleanSetting(frame, "Delay auto-scheduling until appointments are geocoded");
-	await utils.checkBooleanSetting(frame, "Activate Approval confirmation on resource absences");
+	await utils.uncheckBooleanSetting(frame, "Activate Approval confirmation on resource absences");
 	await utils.uncheckBooleanSetting(frame, "Enable resource crew skill grouping");
 	await utils.checkBooleanSetting(frame, "Avoid aerial calculation upon callout DML exception");
 	await utils.uncheckBooleanSetting(frame, "Respect secondary STM operating hours");
