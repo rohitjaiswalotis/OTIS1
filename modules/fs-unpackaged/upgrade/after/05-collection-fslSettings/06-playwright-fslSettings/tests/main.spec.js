@@ -96,7 +96,7 @@ test('Sharing -> Scheduled Jobs', async ({ basePage, baseUrl }) => {
 	await utils.checkBooleanSetting(frame, "Automatically populate user groups based on User Territory");
 	
 	await utils.uncheckBooleanSetting(frame, "Share all work capacity records with public groups associated with the service territory");
-	await utils.uncheckBooleanSetting(frame, "Make assigned resources followers of service appointments that are Dispatched or In Progress");
+	await utils.checkBooleanSetting(frame, "Make assigned resources followers of service appointments that are Dispatched or In Progress");
 	
 	
 	await utils.clickSaveSettingButton(frame);
