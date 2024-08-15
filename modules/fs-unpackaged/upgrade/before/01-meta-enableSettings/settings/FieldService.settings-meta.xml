@@ -2,4 +2,5 @@
 <FieldServiceSettings xmlns="http://soap.sforce.com/2006/04/metadata">
     <enableDocumentBuilder>true</enableDocumentBuilder>
     <enableWorkPlansAutoGeneration>true</enableWorkPlansAutoGeneration>
+    <o2EngineEnabled>true</o2EngineEnabled>
 </FieldServiceSettings>
