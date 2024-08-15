@@ -25,7 +25,7 @@
     <enableWorkStepManualStatusUpdate>false</enableWorkStepManualStatusUpdate>
 	-->
     <fieldServiceNotificationsOrgPref>true</fieldServiceNotificationsOrgPref>
-    <o2EngineEnabled>false</o2EngineEnabled>
+    <o2EngineEnabled>true</o2EngineEnabled>
 	<!--
     <fieldServiceOrgPref>true</fieldServiceOrgPref>
     <isGeoCodeSyncEnabled>false</isGeoCodeSyncEnabled>
