@@ -278,6 +278,7 @@ stages:
                   displayName: 'Publish Test Results'
                   continueOnError: true
                   condition: not(eq(variables['TARGET_ORG_TEST_LEVEL'], 'NoTestRun'))
+                  retryCountOnTaskFailure: 1
                   
                 - task: UseDotNet@2
                   displayName: 'Use .NET Core sdk 7.0.x'
@@ -285,6 +286,7 @@ stages:
                     packageType: 'sdk'
                     version: 7.0.x
                   condition: not(eq(variables['TARGET_ORG_TEST_LEVEL'], 'NoTestRun'))
+                  retryCountOnTaskFailure: 1
                     
                 - task: PublishCodeCoverageResults@2
                   inputs:
@@ -292,6 +294,7 @@ stages:
                   displayName: 'Publish Coverage Results'
                   continueOnError: true
                   condition: not(eq(variables['TARGET_ORG_TEST_LEVEL'], 'NoTestRun'))
+                  retryCountOnTaskFailure: 1
                   
                   
                 - bash: |
