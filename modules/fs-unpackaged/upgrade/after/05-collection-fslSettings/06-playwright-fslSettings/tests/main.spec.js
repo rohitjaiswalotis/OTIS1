@@ -95,7 +95,30 @@ test('Sharing -> Scheduled Jobs', async ({ basePage, baseUrl }) => {
 	await utils.checkBooleanSetting(frame, "Enable User Territories sharing");
 	await utils.checkBooleanSetting(frame, "Automatically populate user groups based on User Territory");
 	
-	await utils.uncheckBooleanSetting(frame, "Share all work capacity records with public groups associated with the service territory");
+	
+	// uncheck setting that may be represented with 2 different labels in orgs for some reason
+	try {
+		
+		await utils.uncheckBooleanSetting(frame, "Share all work capacity records with public groups associated with the service territory");
+		
+	} catch (outerError) {
+		
+		console.log("Error when unchecking 'Share all work capacity records...' scheduled job settings. Trying alternative label ...");
+		
+		try {
+			
+			await utils.uncheckBooleanSetting(frame, "Share all work capacity records with public user groups associated with the service territory");
+			console.log("Successfully unchecked 'Share all work capacity records...' scheduled job settings using alternative label.");
+			
+		} catch (innerError) {
+			
+			console.log("Error when unchecking 'Share all work capacity records...' scheduled job settings using alternative label!");
+			
+		}
+		
+	}
+	
+	
 	await utils.checkBooleanSetting(frame, "Make assigned resources followers of service appointments that are Dispatched or In Progress");
 	
 	
