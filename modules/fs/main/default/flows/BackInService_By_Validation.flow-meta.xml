@@ -209,7 +209,7 @@ US 935186: Unit field status &quot;OTIS Installation Unit&quot;, Status Reason f
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Obsolete</status>
     <variables>
         <name>ChangedTime</name>
         <dataType>String</dataType>
