@@ -60,8 +60,9 @@
     "Salesforce Field Service App@1.55": "04tHq000000lsw7IAA",
     "OTIS Global CC Core": "0HoDn000000TNCsKAO",
     "OTIS Field Service": "0HoDn000000TNHeKAO",
-    "released.latest": "04tQO00000014JJYAY",
-    "OTIS Field Service@2.0": "04tQO00000014JJYAY"
+    "released.latest": "04tQO0000001NllYAE",
+    "OTIS Field Service@2.0": "04tQO00000014JJYAY",
+    "OTIS Field Service@2.0.2": "04tQO0000001NllYAE"
   },
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
