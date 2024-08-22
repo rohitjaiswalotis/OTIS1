@@ -1,43 +1,121 @@
 
-List<FSL.StatusTransition> updatedStatusTransitions = new List<FSL.StatusTransition>();
+Map<String, FSL.StatusTransition> transitionsToRemoveRegistry = 
+	indexTransitionsByKey(
+		new List<FSL.StatusTransition> {
+			new FSL.StatusTransition(
+				'Onsite',
+				'Canceled'
+			)
+		}
+	)
+;
+
+Map<String, FSL.StatusTransition> transitionsToAddRegistry = 
+	indexTransitionsByKey(
+		new List<FSL.StatusTransition> {
+			new FSL.StatusTransition(
+				'Cannot Complete',
+				'Canceled'
+			)
+		}
+	)
+;
+
+
+Map<String, FSL.StatusTransition> originalTransitionsRegistry = 
+	indexTransitionsByKey(
+		FSL.GlobalAPIS.getAllStatusTransitions()
+	)
+;
 
 
 // filter out some status transitions to be removed
-for (FSL.StatusTransition currentStatusTransition : FSL.GlobalAPIS.getAllStatusTransitions()) {
+Map<String, FSL.StatusTransition> transitionsAfterRemovalRegistry = new Map<String, FSL.StatusTransition>(); {
 	
-	if (
-		currentStatusTransition.fromStatus?.equalsIgnoreCase('Onsite')
-		&&
-		currentStatusTransition.toStatus?.equalsIgnoreCase('Canceled')
-	) {
+	for (FSL.StatusTransition currentStatusTransition : originalTransitionsRegistry.values()) {
+		
+		String key = generateTransitionKey(currentStatusTransition);
+		
+		if (transitionsToRemoveRegistry.containsKey(key)) {
+			continue;
+		}
+		
+		transitionsAfterRemovalRegistry.put(
+			key,
+			currentStatusTransition
+		);
+		
+	}
+	
+}
+
+
+// removal is required
+if (originalTransitionsRegistry.size() > transitionsAfterRemovalRegistry.size()) {
+	
+	// remove all status transitions
+	FSL.GlobalAPIS.clearAllStatusTransitions();
+	
+	
+	// put back filtered status transitions after global cleanup
+	for (FSL.StatusTransition transitionAfterRemoval : transitionsAfterRemovalRegistry.values()) {
+		
+		FSL.GlobalAPIS.addStatusTransition(
+			transitionAfterRemoval
+		);
+		
+	}
+	
+}
+
+
+// add new status transitions if not available already
+for (FSL.StatusTransition transitionToAdd : transitionsToAddRegistry.values()) {
+	
+	String key = generateTransitionKey(transitionToAdd);
+	
+	if (transitionsAfterRemovalRegistry.containsKey(key)) {
 		continue;
 	}
 	
-	updatedStatusTransitions.add(
-		currentStatusTransition
-	);
-	
-}
-
-
-// remove all status transitions
-FSL.GlobalAPIS.clearAllStatusTransitions();
-
-
-// put back filtered status transitions
-for (FSL.StatusTransition updatedStatusTransition : updatedStatusTransitions) {
-	
 	FSL.GlobalAPIS.addStatusTransition(
-		updatedStatusTransition
+		transitionToAdd.fromStatus, 
+		transitionToAdd.toStatus
 	);
 	
 }
 
 
-// add new status transitions on top existent once
-try {
-	FSL.GlobalAPIS.addStatusTransition('Cannot Complete', 'Canceled');
-} catch (Exception exp) {
-    // suppress errors deliberately in case of such status transition already exists
+
+private static Map<String, FSL.StatusTransition> indexTransitionsByKey(List<FSL.StatusTransition> transitions) {
+	
+	Map<String, FSL.StatusTransition> transitionsRegistry = new Map<String, FSL.StatusTransition>();
+	
+	for (FSL.StatusTransition transition : transitions) {
+		
+		transitionsRegistry.put(
+			generateTransitionKey(transition),
+			transition
+		);
+		
+	}
+	
+	
+	return transitionsRegistry;
+	
+}
+
+
+
+private static String generateTransitionKey(FSL.StatusTransition transition) {
+	
+	return
+		transition.fromStatus?.toLowerCase() 
+		+ 
+		'$_###_$' 
+		+ 
+		transition.toStatus?.toLowerCase()
+	;
+	
 }
 
