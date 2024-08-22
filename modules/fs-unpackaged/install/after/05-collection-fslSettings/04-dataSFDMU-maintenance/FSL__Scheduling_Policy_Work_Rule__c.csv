@@ -32,3 +32,15 @@ Focus on Service Request;Match Territory,a0aDO000000WB2CYAW,Focus on Service Req
 Focus on Service Request;Service Appointment Visiting Hours,a0aDO000000WB2CYAW,Focus on Service Request,a0nDO000000UE48YAG,Service Appointment Visiting Hours,a0ZDO000000JYEj2AO
 Limited Resource;Service Appointment Visiting Hours,a0aDO000000WB2DYAW,Limited Resource,a0nDO000000UE48YAG,Service Appointment Visiting Hours,a0ZDO000000JYEk2AO
 Reduce Travel;Service Appointment Visiting Hours,a0aDO000000WB2BYAW,Reduce Travel,a0nDO000000UE48YAG,Service Appointment Visiting Hours,a0ZDO000000JYEl2AO
+Otis Default Scheduling Policy;Scheduled End,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDD0000069tPPYAY,Scheduled End,a0ZDD00000E8xQl2AJ
+Otis Default Scheduling Policy;Working Territories,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDD0000069tPDYAY,Working Territories,a0ZDD00000E8xQv2AJ
+Otis Default Scheduling Policy;Match Skills,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDD0000069tPJYAY,Match Skills,a0ZDD00000E8xQb2AJ
+Otis Default Scheduling Policy;Excluded Resources,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDD0000069tPBYAY,Excluded Resources,a0ZDD00000E8xQc2AJ
+Otis Default Scheduling Policy;Earliest Start Permitted,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDD0000069tP7YAI,Earliest Start Permitted,a0ZDD00000E8xQW2AZ
+Otis Default Scheduling Policy;Due Date,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDD0000069tP6YAI,Due Date,a0ZDD00000E8xQX2AZ
+Otis Default Scheduling Policy;Active Resources,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDD0000069tPGYAY,Active Resources,a0ZDD00000E8xQY2AZ
+Otis Default Scheduling Policy;Required Service Resource,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDD0000069tPLYAY,Required Service Resource,a0ZDD00000E8xQg2AJ
+Otis Default Scheduling Policy;Scheduled Start,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDD0000069tPNYAY,Scheduled Start,a0ZDD00000E8xQZ2AZ
+Otis Default Scheduling Policy;TimeSlot Designated Work for Shifts,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDD0000069zc7YAA,TimeSlot Designated Work for Shifts,a0ZDD00000E8xQa2AJ
+Otis Default Scheduling Policy;Service Appointment Visiting Hours,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDD0000069tPMYAY,Service Appointment Visiting Hours,a0ZDD00000E8xQq2AJ
+Otis Default Scheduling Policy;Resource Availability,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDD0000069tPQYAY,Resource Availability,a0ZDD00000E8yyz2AB
