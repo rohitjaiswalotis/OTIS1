@@ -300,7 +300,7 @@ test('Scheduling -> Routing', async ({ basePage, baseUrl }) => {
 	
 	await utils.checkBooleanSetting(frame, "Calculate travel and breaks");
 	
-	await utils.selectPicklistSettingByLabel(frame, "Travel speed unit", "KM/h");
+	await utils.selectPicklistSettingByLabel(frame, "Travel speed unit", "MPH");
 	
 	await utils.fillSetting(frame, "Default travel speed", 50);
 	

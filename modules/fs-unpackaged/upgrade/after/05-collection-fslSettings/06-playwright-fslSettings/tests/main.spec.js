@@ -75,6 +75,26 @@ test('Scheduling -> General Logic', async ({ basePage, baseUrl }) => {
 
 
 
+test('Scheduling -> Routing', async ({ basePage, baseUrl }) => {
+	
+	await utils.openSettings(basePage, baseUrl);
+	
+	const frame = utils.getMainFrame(basePage);
+	
+	await utils.switchToSettingsMenu(frame, "Scheduling");
+	
+	await utils.switchToSettingsTab(frame, "Routing");
+	
+	
+	await utils.selectPicklistSettingByLabel(frame, "Travel speed unit", "MPH");
+	
+	
+	await utils.clickSaveSettingButton(frame);
+	
+});
+
+
+
 test('Sharing -> Scheduled Jobs', async ({ basePage, baseUrl }) => {
 	
 	await utils.openSettings(basePage, baseUrl);

@@ -11,7 +11,6 @@ FSL.GlobalAPIS.addStatusTransition('Enroute', 'Onsite');
 FSL.GlobalAPIS.addStatusTransition('Scheduled', 'Onsite');
 FSL.GlobalAPIS.addStatusTransition('Completed', 'Enroute');
 FSL.GlobalAPIS.addStatusTransition('Onsite', 'Completed');
-FSL.GlobalAPIS.addStatusTransition('Onsite', 'Canceled');
 FSL.GlobalAPIS.addStatusTransition('Dispatched', 'Accepted');
 FSL.GlobalAPIS.addStatusTransition('Dispatched', 'Rejected');
 FSL.GlobalAPIS.addStatusTransition('Accepted', 'Enroute');
@@ -29,4 +28,5 @@ FSL.GlobalAPIS.addStatusTransition('Enroute', 'None');
 FSL.GlobalAPIS.addStatusTransition('Enroute', 'Dispatched');
 FSL.GlobalAPIS.addStatusTransition('Onsite', 'None');
 FSL.GlobalAPIS.addStatusTransition('Onsite', 'Dispatched');
+FSL.GlobalAPIS.addStatusTransition('Cannot Complete', 'Canceled');
 
