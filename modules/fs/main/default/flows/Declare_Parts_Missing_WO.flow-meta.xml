@@ -3,8 +3,8 @@
     <assignments>
         <name>Update_Reason_and_SA_on_WO</name>
         <label>Update Reason and SA on WO</label>
-        <locationX>176</locationX>
-        <locationY>242</locationY>
+        <locationX>182</locationX>
+        <locationY>350</locationY>
         <assignmentItems>
             <assignToReference>WORecord.Reason__c</assignToReference>
             <operator>Assign</operator>
@@ -20,9 +20,34 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Declare_Missing_Parts</targetReference>
+            <targetReference>Check_SA_is_on_onsite_or_not</targetReference>
         </connector>
     </assignments>
+    <decisions>
+        <name>Check_SA_is_on_onsite_or_not</name>
+        <label>Check SA is on onsite or not</label>
+        <locationX>182</locationX>
+        <locationY>458</locationY>
+        <defaultConnector>
+            <targetReference>Error</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>SA_on_onsite</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>SARecord.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Onsite</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Declare_Missing_Parts</targetReference>
+            </connector>
+            <label>SA on onsite</label>
+        </rules>
+    </decisions>
     <dynamicChoiceSets>
         <name>FixedIssuePicklist</name>
         <dataType>Picklist</dataType>
@@ -64,11 +89,11 @@
     <recordLookups>
         <name>Get_Present_WO</name>
         <label>Get Present WO</label>
-        <locationX>176</locationX>
+        <locationX>182</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Update_Reason_and_SA_on_WO</targetReference>
+            <targetReference>get_SA_records</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -87,11 +112,85 @@
         <queriedFields>Fixed_Issue__c</queriedFields>
         <queriedFields>Urgent__c</queriedFields>
     </recordLookups>
+    <recordLookups>
+        <name>get_SA_records</name>
+        <label>get SA records</label>
+        <locationX>182</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Update_Reason_and_SA_on_WO</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>WorkOrder__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>WORecord.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Canceled</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Cannot Complete</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Rejected</stringValue>
+            </value>
+        </filters>
+        <object>ServiceAppointment</object>
+        <outputReference>SARecord</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Status</queriedFields>
+    </recordLookups>
+    <recordUpdates>
+        <name>update_related_SA</name>
+        <label>update related SA</label>
+        <locationX>50</locationX>
+        <locationY>782</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>SARecord.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Completed</stringValue>
+            </value>
+        </inputAssignments>
+        <object>ServiceAppointment</object>
+    </recordUpdates>
     <recordUpdates>
         <name>UpdateRecordsOnWO</name>
         <label>Update Records on Wo</label>
-        <locationX>176</locationX>
-        <locationY>458</locationY>
+        <locationX>50</locationX>
+        <locationY>674</locationY>
+        <connector>
+            <targetReference>update_related_SA</targetReference>
+        </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -147,8 +246,8 @@
     <screens>
         <name>Declare_Missing_Parts</name>
         <label>Declare Missing Parts</label>
-        <locationX>176</locationX>
-        <locationY>350</locationY>
+        <locationX>50</locationX>
+        <locationY>566</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -198,8 +297,24 @@
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
+    <screens>
+        <name>Error</name>
+        <label>Error</label>
+        <locationX>314</locationX>
+        <locationY>566</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Display_Error</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Check related SA status.&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
     <start>
-        <locationX>50</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_Present_WO</targetReference>
@@ -212,6 +327,14 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>SARecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ServiceAppointment</objectType>
     </variables>
     <variables>
         <name>WORecord</name>
