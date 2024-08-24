@@ -206,7 +206,8 @@ test('Scheduling -> General Logic', async ({ basePage, baseUrl }) => {
 	
 	await utils.uncheckBooleanSetting(frame, "Use 1-100 priority scale");
 	
-	await utils.checkBooleanSetting(frame, "Enable complex work");
+	await utils.checkBooleanSetting(frame, "Enable complex work", "territory");
+	
 	await utils.uncheckBooleanSetting(frame, "Use all-or-none scheduling for related appointments");
 	
 	await utils.uncheckBooleanSetting(frame, "Set Apex operation timeout limits");
