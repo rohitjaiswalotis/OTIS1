@@ -474,7 +474,7 @@ steps:
   displayName: 'Install Version Dependencies into Target Org'
   condition: ne(lower(variables['INSTALL_PACKAGE_EARLY_EXIT']), 'true')
   continueOnError: false
-  timeoutInMinutes: 30
+  timeoutInMinutes: 360
   env:
     AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
 
