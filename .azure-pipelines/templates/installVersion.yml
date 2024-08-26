@@ -183,7 +183,42 @@ steps:
     displayName: 'Assign Target Org token'
 
 
-# install/upgrade package  
+
+# init common properties
+- bash: |
+        
+        # enable "debug" mode
+        if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
+          set -x
+          export DEBUG_MODE=1
+          echo "##vso[task.setvariable variable=DEBUG_MODE]$DEBUG_MODE"
+        fi
+        
+        
+        # include common utils
+        chmod +x $(commonUtils)
+        source $(commonUtils)
+        
+        
+        # set localization domain (if provided) to be available inside steps runner
+        if [[ ! "${{parameters.localizationDomain}}" =~ ^none$ ]] ; then
+          export SF_SR_VAR_GLOBAL_LOCALIZATION_DOMAIN="${{parameters.localizationDomain}}";
+          echo "##vso[task.setvariable variable=SF_SR_VAR_GLOBAL_LOCALIZATION_DOMAIN]$SF_SR_VAR_GLOBAL_LOCALIZATION_DOMAIN"
+        fi
+        
+        export INSTALL_PACKAGE_EARLY_EXIT="false";
+        echo "##vso[task.setvariable variable=INSTALL_PACKAGE_EARLY_EXIT]$INSTALL_PACKAGE_EARLY_EXIT"
+        
+        
+  displayName: 'Init common Properties'
+  continueOnError: false
+  timeoutInMinutes: 30
+  env:
+    AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+
+
+
+# authorize into target org
 - bash: |
         
         # enable "debug" mode
@@ -196,12 +231,6 @@ steps:
         # include common utils
         chmod +x $(commonUtils)
         source $(commonUtils)
-        
-        
-        # set localization domain (if provided) to be available inside steps runner
-        if [[ ! "${{parameters.localizationDomain}}" =~ ^none$ ]] ; then
-          export SF_SR_VAR_GLOBAL_LOCALIZATION_DOMAIN="${{parameters.localizationDomain}}";
-        fi
         
         
         # check if target org creds provided
@@ -242,18 +271,23 @@ steps:
           TARGET_ORG_AUTH_FILE_NAME="${TARGET_ORG_AUTH_FILE##*/}"
           TARGET_ORG_AUTH_FILE_NAME="${TARGET_ORG_AUTH_FILE_NAME%%.*}"
           
+          echo "##vso[task.setvariable variable=TARGET_ORG_USERNAME]$TARGET_ORG_USERNAME"
+          echo "##vso[task.setvariable variable=TARGET_ORG_AUTH_FILE_NAME]$TARGET_ORG_AUTH_FILE_NAME"
+          
         # check if target org token provided
         elif [[ ${TARGET_ORG_TOKEN:+1} && ${TARGET_ORG_URL:+1} ]] ; then
           
           # log in to target org by token
           
           export SF_ACCESS_TOKEN="${TARGET_ORG_TOKEN}" SFDX_ACCESS_TOKEN="${TARGET_ORG_TOKEN}"
-          DX_STATUS_CODE=$(sf org login access-token -a targetOrg --instance-url="$TARGET_ORG_URL" --json --no-prompt | jq .status);
+          DX_AUTH_RESPONSE=$(sf org login access-token -a targetOrg --instance-url="$TARGET_ORG_URL" --json --no-prompt);
+          DX_STATUS_CODE=$(echo "$DX_AUTH_RESPONSE" | jq .status);
           unset SF_ACCESS_TOKEN SFDX_ACCESS_TOKEN
           
           # early exit - error when authorizing to target org by token
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
             echo "Error when logging in to target org by token!"
+            echo "$DX_AUTH_RESPONSE" | jq .
             exit 1;
           fi
           
@@ -261,7 +295,38 @@ steps:
           
           echo "Successfully logged into target org by token as user '${TARGET_ORG_USERNAME:-unknown}'"
           
+          echo "##vso[task.setvariable variable=TARGET_ORG_USERNAME]$TARGET_ORG_USERNAME"
+          
+          
+        else
+          
+          echo "No authorization info provided to log in to target org!"
+          exit 1;
+          
         fi
+        
+  displayName: 'Authorize into Target Org'
+  condition: ne(lower(variables['INSTALL_PACKAGE_EARLY_EXIT']), 'true')
+  continueOnError: false
+  timeoutInMinutes: 30
+  env:
+    AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+
+
+
+# grab info re package version already installed into target org
+- bash: |
+        
+        # enable "debug" mode
+        if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
+          set -x
+          export DEBUG_MODE=1
+        fi
+        
+        
+        # include common utils
+        chmod +x $(commonUtils)
+        source $(commonUtils)
         
         
         # read version details by id to get version number
@@ -276,6 +341,12 @@ steps:
         FS_PACKAGE_VERSION_NUMBER="${FS_PACKAGE_VERSION_MAJOR}.${FS_PACKAGE_VERSION_MINOR}.${FS_PACKAGE_VERSION_PATCH}.${FS_PACKAGE_VERSION_BUILD}"
         
         echo "Parsed package version number: $FS_PACKAGE_VERSION_NUMBER"
+        
+        echo "##vso[task.setvariable variable=FS_PACKAGE_VERSION_MAJOR]$FS_PACKAGE_VERSION_MAJOR"
+        echo "##vso[task.setvariable variable=FS_PACKAGE_VERSION_MINOR]$FS_PACKAGE_VERSION_MINOR"
+        echo "##vso[task.setvariable variable=FS_PACKAGE_VERSION_PATCH]$FS_PACKAGE_VERSION_PATCH"
+        echo "##vso[task.setvariable variable=FS_PACKAGE_VERSION_BUILD]$FS_PACKAGE_VERSION_BUILD"
+        echo "##vso[task.setvariable variable=FS_PACKAGE_VERSION_NUMBER]$FS_PACKAGE_VERSION_NUMBER"
         
         
         # get packages installed into target org
@@ -301,11 +372,20 @@ steps:
         if [[ "$(enableVersionComparison)" =~ ^[Tt]rue$ && ${FS_PACKAGE_ORIGINAL_VERSION_DETAILS:+1} ]]; then
           
           if [[ "${FS_PACKAGE_ORIGINAL_VERSION_ID::15}" == "${FS_PACKAGE_VERSION_ID::15}" ]]; then
+            
             echo "'$(fsPackageName)' package version $FS_PACKAGE_VERSION_NUMBER ($FS_PACKAGE_VERSION_ID) is already installed into target org, so nothing to do here!"
+            
+            export INSTALL_PACKAGE_EARLY_EXIT="true";
+            echo "##vso[task.setvariable variable=INSTALL_PACKAGE_EARLY_EXIT]$INSTALL_PACKAGE_EARLY_EXIT"
+            
             exit 0;
+            
           fi
           
         fi
+        
+        echo "##vso[task.setvariable variable=FS_PACKAGE_ORIGINAL_VERSION_DETAILS]$FS_PACKAGE_ORIGINAL_VERSION_DETAILS"
+        echo "##vso[task.setvariable variable=FS_PACKAGE_ORIGINAL_VERSION_ID]$FS_PACKAGE_ORIGINAL_VERSION_ID"
         
         
         echo "Authorizing to dev hub..."
@@ -330,9 +410,36 @@ steps:
             
             FS_PACKAGE_MERGED_COMMMIT_MESSAGES=$(git log -100 --merges --date-order --pretty="format:%ai (%an) %s" ${FS_PACKAGE_ORIGINAL_VERSION_TAG}..HEAD || true);
             
+            echo "##vso[task.setvariable variable=FS_PACKAGE_ORIGINAL_VERSION_TAG]$FS_PACKAGE_ORIGINAL_VERSION_TAG"
+            echo "##vso[task.setvariable variable=FS_PACKAGE_MERGED_COMMMIT_MESSAGES]$FS_PACKAGE_MERGED_COMMMIT_MESSAGES"
+            
           fi
           
         fi
+        
+        
+  displayName: 'Check installed Version into Target Org'
+  condition: ne(lower(variables['INSTALL_PACKAGE_EARLY_EXIT']), 'true')
+  continueOnError: false
+  timeoutInMinutes: 30
+  env:
+    AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+
+
+
+# install dependencies
+- bash: |
+        
+        # enable "debug" mode
+        if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
+          set -x
+          export DEBUG_MODE=1
+        fi
+        
+        
+        # include common utils
+        chmod +x $(commonUtils)
+        source $(commonUtils)
         
         
         # auto install dependencies if requested
@@ -362,6 +469,30 @@ steps:
           fi
           
         fi
+        
+        
+  displayName: 'Install Version Dependencies into Target Org'
+  condition: ne(lower(variables['INSTALL_PACKAGE_EARLY_EXIT']), 'true')
+  continueOnError: false
+  timeoutInMinutes: 30
+  env:
+    AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+
+
+
+# install/upgrade package version
+- bash: |
+        
+        # enable "debug" mode
+        if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
+          set -x
+          export DEBUG_MODE=1
+        fi
+        
+        
+        # include common utils
+        chmod +x $(commonUtils)
+        source $(commonUtils)
         
         
         # evaluate action type in case of auto mode
@@ -551,6 +682,34 @@ steps:
         fi
         
         
+        # send success notif re package version install
+        curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Installed Packages:**<pre style=\"font-size:10px\">'"$(escapeJson "$DX_LIST_INSTALLED_PACKAGES_RESPONSE")"'<\/pre> **Version Dependencies:**<pre>'"$(escapeJson "${FS_PACKAGE_VERSION_DEPENDENCIES// /&nbsp;}")"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifSuccessUrls)
+        
+        
+  displayName: 'Install/Upgrade Version into Target Org'
+  condition: ne(lower(variables['INSTALL_PACKAGE_EARLY_EXIT']), 'true')
+  continueOnError: false
+  timeoutInMinutes: 360
+  env:
+    AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
+
+
+
+# get installed version dependencies
+- bash: |
+        
+        # enable "debug" mode
+        if [[ "${{ parameters.enableDebugMode }}" =~ ^[Tt]rue$ ]] ; then
+          set -x
+          export DEBUG_MODE=1
+        fi
+        
+        
+        # include common utils
+        chmod +x $(commonUtils)
+        source $(commonUtils)
+        
+        
         # get packages installed into target org again
         echo "Fetching packages available in target org after Field Service package install/upgrade..."
         
@@ -564,13 +723,10 @@ steps:
         echo "$FS_PACKAGE_VERSION_DEPENDENCIES"
         
         
-        # send success notif re package version install
-        curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Installed Packages:**<pre style=\"font-size:10px\">'"$(escapeJson "$DX_LIST_INSTALLED_PACKAGES_RESPONSE")"'<\/pre> **Version Dependencies:**<pre>'"$(escapeJson "${FS_PACKAGE_VERSION_DEPENDENCIES// /&nbsp;}")"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifSuccessUrls)
-        
-        
-  displayName: 'Install/Upgrade Field Service Package into Target Org'
+  displayName: 'Get Dependencies of installed Version'
+  condition: ne(lower(variables['INSTALL_PACKAGE_EARLY_EXIT']), 'true')
   continueOnError: false
-  timeoutInMinutes: 360
+  timeoutInMinutes: 30
   env:
     AZURE_DEVOPS_EXT_PAT: $(System.AccessToken)
 
