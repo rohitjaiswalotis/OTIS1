@@ -593,6 +593,9 @@ steps:
           
           echo "Early exit after successfully installing dependencies, since no package version installation has been requested."
           
+          export INSTALL_PACKAGE_EARLY_EXIT="true";
+          echo "##vso[task.setvariable variable=INSTALL_PACKAGE_EARLY_EXIT]$INSTALL_PACKAGE_EARLY_EXIT"
+          
           exit 0;
           
         fi
