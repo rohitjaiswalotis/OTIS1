@@ -60,11 +60,8 @@
     <decisions>
         <name>More_Images</name>
         <label>More Images</label>
-        <locationX>462</locationX>
-        <locationY>1046</locationY>
-        <defaultConnector>
-            <targetReference>Error</targetReference>
-        </defaultConnector>
+        <locationX>50</locationX>
+        <locationY>998</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>More_Image</name>
