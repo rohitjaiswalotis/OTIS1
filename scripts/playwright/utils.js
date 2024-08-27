@@ -56,54 +56,98 @@ export const switchToSettingsTab = async (root, tabLabel) => {
 }
 
 
-export const getBooleanSettingLocator = (root, label) => {
+export const getBooleanSettingLocator = (root, labelPositive, labelNegative) => {
 	
 	const booleanSettingLocator = root.locator('boolean-setting');
 	const booleanTextSettingLocator = root.locator('boolean-text-setting');
 	
-	return booleanSettingLocator.or(booleanTextSettingLocator).filter({ hasText: label });
+	let componentFilter = {};
+	
+	if (labelPositive) {
+		componentFilter.hasText = labelPositive;
+	}
+	
+	if (labelNegative) {
+		componentFilter.hasNotText = labelNegative;
+	}
+	
+	return booleanSettingLocator.or(booleanTextSettingLocator).filter(componentFilter);
 	
 }
 
 
-export const checkBooleanSetting = async (root, label) => {
+export const checkBooleanSetting = async (root, labelPositive, labelNegative) => {
 	
-	await getBooleanSettingLocator(root, label).getByRole('checkbox').check({ force: true });
+	let checkboxLocator = getBooleanSettingLocator(root, labelPositive, labelNegative).getByRole('checkbox');
 	
-}
-
-
-export const checkOptinalBooleanSetting = async (root, label) => {
-	
-	if (await getBooleanSettingLocator(root, label).isVisible()) {
+	try {
 		
-		await checkBooleanSetting(root, label);
+		await checkboxLocator.check({ force: true });
 		
-	} else {
+	} catch (error) {
 		
-		console.log(`WARNING: Optional boolean settings '${label}' not available!`);
+		console.log(`Error when ticking boolean settings '${labelPositive}' checkbox!`);
+		console.log(error);
+		
+		console.log(`Trying alternative approach to tick boolean settings '${labelPositive}' checkbox...`);
+		
+		if ( (await checkboxLocator.isChecked()) !== true ) {
+			await checkboxLocator.dispatchEvent("click");
+		}
 		
 	}
 	
 }
 
 
-export const uncheckBooleanSetting = async (root, label) => {
+export const checkOptinalBooleanSetting = async (root, labelPositive, labelNegative) => {
 	
-	await getBooleanSettingLocator(root, label).getByRole('checkbox').uncheck({ force: true });
+	if (await getBooleanSettingLocator(root, labelPositive, labelNegative).isVisible()) {
+		
+		await checkBooleanSetting(root, labelPositive, labelNegative);
+		
+	} else {
+		
+		console.log(`WARNING: Optional boolean settings '${labelPositive}' not available!`);
+		
+	}
 	
 }
 
 
-export const uncheckOptinalBooleanSetting = async (root, label) => {
+export const uncheckBooleanSetting = async (root, labelPositive, labelNegative) => {
 	
-	if (await getBooleanSettingLocator(root, label).isVisible()) {
+	let checkboxLocator = getBooleanSettingLocator(root, labelPositive, labelNegative).getByRole('checkbox');
+	
+	try {
 		
-		await uncheckBooleanSetting(root, label);
+		await checkboxLocator.uncheck({ force: true });
+		
+	} catch (error) {
+		
+		console.log(`Error when unticking boolean settings '${labelPositive}' checkbox!`);
+		console.log(error);
+		
+		console.log(`Trying alternative approach to untick boolean settings '${labelPositive}' checkbox...`);
+		
+		if ( (await checkboxLocator.isChecked()) === true ) {
+			await checkboxLocator.dispatchEvent("click");
+		}
+		
+	}
+	
+}
+
+
+export const uncheckOptinalBooleanSetting = async (root, labelPositive, labelNegative) => {
+	
+	if (await getBooleanSettingLocator(root, labelPositive, labelNegative).isVisible()) {
+		
+		await uncheckBooleanSetting(root, labelPositive, labelNegative);
 		
 	} else {
 		
-		console.log(`WARNING: Optional boolean settings '${label}' not available!`);
+		console.log(`WARNING: Optional boolean settings '${labelPositive}' not available!`);
 		
 	}
 	

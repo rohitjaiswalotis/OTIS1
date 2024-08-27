@@ -1,4 +1,46 @@
 $$FSL__Scheduling_Policy__r.Name$FSL__Work_Rule__r.Name,FSL__Scheduling_Policy__c,FSL__Scheduling_Policy__r.Name,FSL__Work_Rule__c,FSL__Work_Rule__r.Name,Id
+Limited Resource;Field Employee Availability,a0aDO000000WB2DYAW,Limited Resource,a0nDO000000UE40YAG,Field Employee Availability,a0ZDO000000JYFN2A4
+Emergency;Earliest Start Permitted,a0aDO000000WB2AYAW,Emergency,a0nDO000000UE4EYAW,Earliest Start Permitted,a0ZDO000000JYDk2AO
+Emergency;Due Date,a0aDO000000WB2AYAW,Emergency,a0nDO000000UE4DYAW,Due Date,a0ZDO000000JYDl2AO
+Reduce Travel;Earliest Start Permitted,a0aDO000000WB2BYAW,Reduce Travel,a0nDO000000UE4EYAW,Earliest Start Permitted,a0ZDO000000JYDm2AO
+Reduce Travel;Due Date,a0aDO000000WB2BYAW,Reduce Travel,a0nDO000000UE4DYAW,Due Date,a0ZDO000000JYDn2AO
+Focus on Service Request;Earliest Start Permitted,a0aDO000000WB2CYAW,Focus on Service Request,a0nDO000000UE4EYAW,Earliest Start Permitted,a0ZDO000000JYDo2AO
+Focus on Service Request;Due Date,a0aDO000000WB2CYAW,Focus on Service Request,a0nDO000000UE4DYAW,Due Date,a0ZDO000000JYDp2AO
+Limited Resource;Earliest Start Permitted,a0aDO000000WB2DYAW,Limited Resource,a0nDO000000UE4EYAW,Earliest Start Permitted,a0ZDO000000JYDq2AO
+Limited Resource;Due Date,a0aDO000000WB2DYAW,Limited Resource,a0nDO000000UE4DYAW,Due Date,a0ZDO000000JYDr2AO
+Customer First;Earliest Start Permitted,a0aDO000000WB2EYAW,Customer First,a0nDO000000UE4EYAW,Earliest Start Permitted,a0ZDO000000JYDs2AO
+Customer First;Due Date,a0aDO000000WB2EYAW,Customer First,a0nDO000000UE4DYAW,Due Date,a0ZDO000000JYDt2AO
+Emergency;Resource Availability,a0aDO000000WB2AYAW,Emergency,a0nDO000000UE4CYAW,Resource Availability,a0ZDO000000JYF22AO
+Customer First;Active Resources,a0aDO000000WB2EYAW,Customer First,a0nDO000000UE42YAG,Active Resources,a0ZDO000000JYEE2A4
+Limited Resource;Active Resources,a0aDO000000WB2DYAW,Limited Resource,a0nDO000000UE42YAG,Active Resources,a0ZDO000000JYFH2A4
+Reduce Travel;Match Territory,a0aDO000000WB2BYAW,Reduce Travel,a0nDO000000UE44YAG,Match Territory,a0ZDO000000JkCD2A0
+Customer First;Required Service Resource,a0aDO000000WB2EYAW,Customer First,a0nDO000000UE47YAG,Required Service Resource,a0ZDO000000JYEY2A4
+Focus on Service Request;Active Resources,a0aDO000000WB2CYAW,Focus on Service Request,a0nDO000000UE42YAG,Active Resources,a0ZDO000000JYF72AO
+Customer First;Service Appointment Visiting Hours,a0aDO000000WB2EYAW,Customer First,a0nDO000000UE48YAG,Service Appointment Visiting Hours,a0ZDO000000JYEi2AO
+Customer First;Scheduled End,a0aDO000000WB2EYAW,Customer First,a0nDO000000UE4BYAW,Scheduled End,a0ZDO000000JYEd2AO
+Customer First;Scheduled Start,a0aDO000000WB2EYAW,Customer First,a0nDO000000UE49YAG,Scheduled Start,a0ZDO000000JYDz2AO
+Focus on Service Request;Field Employee Availability,a0aDO000000WB2CYAW,Focus on Service Request,a0nDO000000UE40YAG,Field Employee Availability,a0ZDO000000JYEe2AO
+Customer First;Match Territory,a0aDO000000WB2EYAW,Customer First,a0nDO000000UE44YAG,Match Territory,a0ZDO000000JYET2A4
+Limited Resource;Match Territory,a0aDO000000WB2DYAW,Limited Resource,a0nDO000000UE44YAG,Match Territory,a0ZDO000000JkCN2A0
+Customer First;Service Crew Resources Availability,a0aDO000000WB2EYAW,Customer First,a0nDO000000UE43YAG,Service Crew Resources Availability,a0ZDO000000JYEn2AO
+Reduce Travel;Active Resources,a0aDO000000WB2BYAW,Reduce Travel,a0nDO000000UE42YAG,Active Resources,a0ZDO000000JYFW2A4
+Customer First;Field Employee Availability,a0aDO000000WB2EYAW,Customer First,a0nDO000000UE40YAG,Field Employee Availability,a0ZDO000000JYEJ2A4
+Emergency;Active Resources,a0aDO000000WB2AYAW,Emergency,a0nDO000000UE42YAG,Active Resources,a0ZDO000000JYEK2A4
+Reduce Travel;Resource Availability,a0aDO000000WB2BYAW,Reduce Travel,a0nDO000000UE4CYAW,Resource Availability,a0ZDO000000JYFg2AO
+Customer First;Match Skills,a0aDO000000WB2EYAW,Customer First,a0nDO000000UE45YAG,Match Skills,a0ZDO000000JYEO2A4
+Focus on Service Request;Match Territory,a0aDO000000WB2CYAW,Focus on Service Request,a0nDO000000UE44YAG,Match Territory,a0ZDO000000JkCI2A0
 Focus on Service Request;Service Appointment Visiting Hours,a0aDO000000WB2CYAW,Focus on Service Request,a0nDO000000UE48YAG,Service Appointment Visiting Hours,a0ZDO000000JYEj2AO
 Limited Resource;Service Appointment Visiting Hours,a0aDO000000WB2DYAW,Limited Resource,a0nDO000000UE48YAG,Service Appointment Visiting Hours,a0ZDO000000JYEk2AO
 Reduce Travel;Service Appointment Visiting Hours,a0aDO000000WB2BYAW,Reduce Travel,a0nDO000000UE48YAG,Service Appointment Visiting Hours,a0ZDO000000JYEl2AO
+Otis Default Scheduling Policy;Scheduled End,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDO000000UE4BYAW,Scheduled End,a0ZDD00000E8xQl2AJ
+Otis Default Scheduling Policy;Working Territories,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDO000000UE3zYAG,Working Territories,a0ZDD00000E8xQv2AJ
+Otis Default Scheduling Policy;Match Skills,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDO000000UE45YAG,Match Skills,a0ZDD00000E8xQb2AJ
+Otis Default Scheduling Policy;Excluded Resources,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDO000000UE3xYAG,Excluded Resources,a0ZDD00000E8xQc2AJ
+Otis Default Scheduling Policy;Earliest Start Permitted,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDO000000UE4EYAW,Earliest Start Permitted,a0ZDD00000E8xQW2AZ
+Otis Default Scheduling Policy;Due Date,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDO000000UE4DYAW,Due Date,a0ZDD00000E8xQX2AZ
+Otis Default Scheduling Policy;Active Resources,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDO000000UE42YAG,Active Resources,a0ZDD00000E8xQY2AZ
+Otis Default Scheduling Policy;Required Service Resource,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDO000000UE47YAG,Required Service Resource,a0ZDD00000E8xQg2AJ
+Otis Default Scheduling Policy;Scheduled Start,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDO000000UE49YAG,Scheduled Start,a0ZDD00000E8xQZ2AZ
+Otis Default Scheduling Policy;TimeSlot Designated Work for Shifts,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDD0000069zc7YAA,TimeSlot Designated Work for Shifts,a0ZDD00000E8xQa2AJ
+Otis Default Scheduling Policy;Service Appointment Visiting Hours,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDO000000UE48YAG,Service Appointment Visiting Hours,a0ZDD00000E8xQq2AJ
+Otis Default Scheduling Policy;Resource Availability,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDO000000UE4CYAW,Resource Availability,a0ZDD00000E8yyz2AB
