@@ -21,3 +21,7 @@ Emergency;Minimize Travel,a0aDO000000WB2AYAW,Emergency,a0cDO000000J4QEYA0,Minimi
 Otis Default Scheduling Policy;ASAP,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0cDO000000J4QDYA0,ASAP,40,a0YDD00000HrQ8M2AV
 Otis Default Scheduling Policy;Minimize Travel,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0cDO000000J4QEYA0,Minimize Travel,30,a0YDD00000HrQ8N2AV
 Otis Default Scheduling Policy;Preferred Service Resource,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0cDO000000J4QCYA0,Preferred Service Resource,30,a0YDD00000HrQDg2AN
+Otis In-Day Scheduling Policy;ASAP,a0aDD00000BAcp9YAD,Otis In-Day Scheduling Policy,a0cDO000000J4QDYA0,ASAP,50,a0YDD00000HrQMx2AN
+Otis In-Day Scheduling Policy;Minimize Travel,a0aDD00000BAcp9YAD,Otis In-Day Scheduling Policy,a0cDO000000J4QEYA0,Minimize Travel,10,a0YDD00000HrQMy2AN
+Otis In-Day Scheduling Policy;Preferred Service Resource,a0aDD00000BAcp9YAD,Otis In-Day Scheduling Policy,a0cDO000000J4QCYA0,Preferred Service Resource,40,a0YDD00000HrQN22AN
+Otis Emergency Scheduling Policy;ASAP,a0aDD00000BAcpEYAT,Otis Emergency Scheduling Policy,a0cDO000000J4QDYA0,ASAP,100,a0YDD00000HrQN82AN
