@@ -5,3 +5,5 @@ AlwaysCommit,false,"High level of priority. When in conflict with Maintenance WO
 AlwaysCommit,false,Less resources with a re-evaluation of work order priorities.,false,,false,a0aDO000000WB2DYAW,Limited Resource
 AlwaysCommit,false,This policy balances great customer service with travel minimization. Appointments are graded first by the customer\'s selection of a preferred employee and by the ability to provide the service as soon as possible. Travel minimization is considered as a second priority.,true,,false,a0aDO000000WB2EYAW,Customer First
 AlwaysCommit,false,,false,,false,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy
+AlwaysCommit,true,,false,,false,a0aDD00000BAcp9YAD,Otis In-Day Scheduling Policy
+AlwaysCommit,true,,false,,false,a0aDD00000BAcpEYAT,Otis Emergency Scheduling Policy
