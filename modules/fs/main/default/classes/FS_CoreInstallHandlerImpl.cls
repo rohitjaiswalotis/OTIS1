@@ -21,7 +21,7 @@ global without sharing class FS_CoreInstallHandlerImpl implements CoreInstallHan
 	
 	global void afterUpgrade(Map<String, Object> context) {
 		
-	}// this is a test class
+	}
 	
 	
 }
