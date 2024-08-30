@@ -52,6 +52,12 @@
 			"query": "SELECT Id, Name, Category__c, Department__c, Description__c FROM NintyNineCodeMappings__c",
 			"operation": "Upsert",
 			"externalId": "Name"
+		},
+		
+		{
+			"query": "SELECT Id, MasterLabel, DeveloperName, Description FROM Skill",
+			"operation": "Upsert",
+			"externalId": "DeveloperName"
 		}
 		
 	]
