@@ -24,6 +24,22 @@ STEPS_RUNNER_UTIL=$0;
 
 ########################## FUNCTIONS (BEGIN)
 
+warn() {
+    echo "$@" 1>&2
+}
+
+
+error() {
+    echo "$@" 1>&2
+}
+
+
+fail() {
+    error "$@"
+    exit -1
+}
+
+
 function usage() { 
     echo "Usage: $0 -d <scriptDir> -a <orgAlis> -w <workingDir> [-u <username>] [-p <password>] [-r <url>] [-n <stepName>] [-o <outputDir>]" 1>&2;
 }
@@ -165,6 +181,120 @@ function resolveDynamicEnvVarsInFiles {
 }
 
 
+# get sf org details
+function getOrgDetails {
+	
+	local sfOrgAlias="$1";
+	
+	local retryAttempts=${2:-$STEP_MAX_RETRY_ATTEMPTS}
+	local retryDelay=${3:-$STEP_RETRY_DELAY}
+	
+	local retryCounter=0;
+	
+	local backupErrorExitMode;
+	
+	# backup current error switcher value and disable exit on error
+	[ -o errexit ] && backupErrorExitMode='set -e' || backupErrorExitMode='set +e'; set +e
+	
+	
+	while true; do 
+		
+		sfOrgDetails=$(sf org display -o "$sfOrgAlias" --verbose --json | jq -r ".result // empty" || true);
+		sfOrgId=$(echo "$sfOrgDetails" | jq -r '.id // empty');
+		
+		# success
+		if [[ ${sfOrgId:+1} ]]; then
+			break;
+			
+		# failure
+		else
+			
+			warn "ERROR: Get org details for alias '$sfOrgAlias'!"
+			
+			# retry if not run out of attempts
+			if [[ $retryCounter -lt $retryAttempts ]]; then
+				
+				retryCounter=$(( $retryCounter + 1 ));
+				warn "Retrying get org details after failure in ${retryDelay} seconds (attempt ${retryCounter}/${retryAttempts})..."
+				sleep $retryDelay;
+				
+			# run out of retry attempts: exit with error code
+			else
+				
+				fail "ERROR: Run out of retry attempts (max=${retryAttempts})"
+				
+			fi
+			
+		fi
+		
+	done
+	
+	# restore 'exit on error' flag state
+	eval "$backupErrorExitMode"
+	
+	# print result back to be parsed by caller
+	echo "$sfOrgDetails"
+	
+}
+
+
+# get advanced sf org details (query via soql to grap org name, instance name, namespace, 'is sandbox' etc.)
+function getAdvancedOrgDetails {
+	
+	local sfOrgAlias="$1";
+	
+	local retryAttempts=${2:-$STEP_MAX_RETRY_ATTEMPTS}
+	local retryDelay=${3:-$STEP_RETRY_DELAY}
+	
+	local retryCounter=0;
+	
+	local backupErrorExitMode;
+	
+	# backup current error switcher value and disable exit on error
+	[ -o errexit ] && backupErrorExitMode='set -e' || backupErrorExitMode='set +e'; set +e
+	
+	
+	while true; do 
+		
+		sfOrgDetails=$(sf data query -o "$sfOrgAlias" -q "SELECT Id, Name, InstanceName, IsSandbox, NamespacePrefix, OrganizationType, TrialExpirationDate FROM Organization LIMIT 1" --json | jq -r ".result.records[0] // empty" || true);
+		sfOrgId=$(echo "$sfOrgDetails" | jq -r '.Id // empty');
+		
+		# success
+		if [[ ${sfOrgId:+1} ]]; then
+			break;
+			
+		# failure
+		else
+			
+			warn "ERROR: Get advanced org details for alias '$sfOrgAlias'!"
+			
+			# retry if not run out of attempts
+			if [[ $retryCounter -lt $retryAttempts ]]; then
+				
+				retryCounter=$(( $retryCounter + 1 ));
+				warn "Retrying get advanced org details after failure in ${retryDelay} seconds (attempt ${retryCounter}/${retryAttempts})..."
+				sleep $retryDelay;
+				
+			# run out of retry attempts: exit with error code
+			else
+				
+				fail "ERROR: Run out of retry attempts (max=${retryAttempts})"
+				
+			fi
+			
+		fi
+		
+	done
+	
+	# restore 'exit on error' flag state
+	eval "$backupErrorExitMode"
+	
+	# print result back to be parsed by caller
+	echo "$sfOrgDetails"
+	
+}
+
+
 ########################## FUNCTIONS (END)
 
 
@@ -249,6 +379,64 @@ ls -la $PARAM_STEPS_DIR
 
 
 cp -rf ${PARAM_STEPS_DIR}/. ${PARAM_SCRIPT_SANDBOX_DIR}/ || true # to suppress error when source and dest dirs are actually the same, i.e. in-place transformation/execution
+
+
+# grab info re orgs and define as global variables
+
+if [[ ${PARAM_ORG_ALIAS:+1} ]]; then
+	
+	sfOrgDetails=$(getOrgDetails "$PARAM_ORG_ALIAS");
+	
+	export SF_SR_VAR_SYSTEM_ORG_ID="$(echo "$sfOrgDetails" | jq -r '.id // empty')";
+	export SF_SR_VAR_SYSTEM_ORG_INSTANCE_URL="$(echo "$sfOrgDetails" | jq -r '.instanceUrl // empty')";
+	export SF_SR_VAR_SYSTEM_ORG_DOMAIN="$(echo "$sfOrgDetails" | jq -r '.instanceUrl // empty' | cut -d'/' -f3)";
+	export SF_SR_VAR_SYSTEM_ORG_USERNAME="$(echo "$sfOrgDetails" | jq -r '.username // empty')";
+	export SF_SR_VAR_SYSTEM_ORG_API_VERSION="$(echo "$sfOrgDetails" | jq -r '.apiVersion // empty')";
+	export SF_SR_VAR_SYSTEM_ORG_API_VERSION_MAJOR="$(echo "$sfOrgDetails" | jq -r '.apiVersion // empty' | cut -d "." -f1)";
+	
+	
+	sfAdvancedOrgDetails=$(getAdvancedOrgDetails "$PARAM_ORG_ALIAS");
+	
+	export SF_SR_VAR_SYSTEM_ORG_NAME="$(echo "$sfAdvancedOrgDetails" | jq -r '.Name // empty')";
+	export SF_SR_VAR_SYSTEM_ORG_INSTANCE_NAME="$(echo "$sfAdvancedOrgDetails" | jq -r '.InstanceName // empty')";
+	export SF_SR_VAR_SYSTEM_ORG_IS_SANDBOX="$(echo "$sfAdvancedOrgDetails" | jq -r '.IsSandbox // empty')";
+	export SF_SR_VAR_SYSTEM_ORG_NAMESPACE="$(echo "$sfAdvancedOrgDetails" | jq -r '.NamespacePrefix // empty')";
+	export SF_SR_VAR_SYSTEM_ORG_EDITION="$(echo "$sfAdvancedOrgDetails" | jq -r '.OrganizationType // empty')";
+	export SF_SR_VAR_SYSTEM_ORG_TRIAL_EXPIRATION_DATE="$(echo "$sfAdvancedOrgDetails" | jq -r '.TrialExpirationDate // empty')";
+	
+	
+	unset sfOrgDetails
+	unset sfAdvancedOrgDetails
+	
+fi
+
+
+if [[ ${PARAM_ORG2_ALIAS:+1} ]]; then
+	
+	sfOrgDetails=$(getOrgDetails "$PARAM_ORG2_ALIAS");
+	
+	export SF_SR_VAR_SYSTEM_ORG2_ID="$(echo "$sfOrgDetails" | jq -r '.id // empty')";
+	export SF_SR_VAR_SYSTEM_ORG2_INSTANCE_URL="$(echo "$sfOrgDetails" | jq -r '.instanceUrl // empty')";
+	export SF_SR_VAR_SYSTEM_ORG2_DOMAIN="$(echo "$sfOrgDetails" | jq -r '.instanceUrl // empty' | cut -d'/' -f3)";
+	export SF_SR_VAR_SYSTEM_ORG2_USERNAME="$(echo "$sfOrgDetails" | jq -r '.username // empty')";
+	export SF_SR_VAR_SYSTEM_ORG2_API_VERSION="$(echo "$sfOrgDetails" | jq -r '.apiVersion // empty')";
+	export SF_SR_VAR_SYSTEM_ORG2_API_VERSION_MAJOR="$(echo "$sfOrgDetails" | jq -r '.apiVersion // empty' | cut -d "." -f1)";
+	
+	
+	sfAdvancedOrgDetails=$(getAdvancedOrgDetails "$PARAM_ORG2_ALIAS");
+	
+	export SF_SR_VAR_SYSTEM_ORG2_NAME="$(echo "$sfAdvancedOrgDetails" | jq -r '.Name // empty')";
+	export SF_SR_VAR_SYSTEM_ORG2_INSTANCE_NAME="$(echo "$sfAdvancedOrgDetails" | jq -r '.InstanceName // empty')";
+	export SF_SR_VAR_SYSTEM_ORG2_IS_SANDBOX="$(echo "$sfAdvancedOrgDetails" | jq -r '.IsSandbox // empty')";
+	export SF_SR_VAR_SYSTEM_ORG2_NAMESPACE="$(echo "$sfAdvancedOrgDetails" | jq -r '.NamespacePrefix // empty')";
+	export SF_SR_VAR_SYSTEM_ORG2_EDITION="$(echo "$sfAdvancedOrgDetails" | jq -r '.OrganizationType // empty')";
+	export SF_SR_VAR_SYSTEM_ORG2_TRIAL_EXPIRATION_DATE="$(echo "$sfAdvancedOrgDetails" | jq -r '.TrialExpirationDate // empty')";
+	
+	
+	unset sfOrgDetails
+	unset sfAdvancedOrgDetails
+	
+fi
 
 
 globalScriptProperties="${PARAM_SCRIPT_SANDBOX_DIR}/.script.properties";
@@ -518,52 +706,18 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
     
     # grab org auth info: access token and instance url
     if [[ ${PARAM_ORG_ALIAS:+1} ]]; then
-        
-		orgAuthInfoMaxRetryAttempts=$stepRetryAttempts;
-		orgAuthInfoRetryDelay=$stepRetryDelay;
-		orgAuthInfoRetryCounter=0;
 		
-		# backup current error switcher value and disable exit on error
-		[ -o errexit ] && orgAuthInfo_backup_errexit='set -e' || orgAuthInfo_backup_errexit='set +e'; set +e
+		sfOrgDetails=$(getOrgDetails "$PARAM_ORG_ALIAS");
 		
-		while true; do 
-			
-			sfOrgDetails=$(sf org display --target-org "$PARAM_ORG_ALIAS" --verbose --json || true);
-			sfAccessToken=$(echo "$sfOrgDetails" | jq -r '.result.accessToken // empty');
-			sfInstanceUrl=$(echo "$sfOrgDetails" | jq -r '.result.instanceUrl // empty');
-			sfDomain=$(echo "$sfInstanceUrl" | cut -d'/' -f3);
-			
-			# success
-			if [[ ${sfAccessToken:+1} && ${sfInstanceUrl:+1} ]]; then
-				break;
-				
-			# failure
-			else
-				
-				echo "ERROR: Get org auth info!"
-				
-				# retry if not run out of attempts
-				if [[ $orgAuthInfoRetryCounter -lt $orgAuthInfoMaxRetryAttempts ]]; then
-					
-					orgAuthInfoRetryCounter=$(( $orgAuthInfoRetryCounter + 1 ));
-					echo "Retrying get org auth info after failure in ${orgAuthInfoRetryDelay} seconds (attempt ${orgAuthInfoRetryCounter}/${orgAuthInfoMaxRetryAttempts})..."
-					sleep $orgAuthInfoRetryDelay;
-					
-				# run out of retry attempts: exit with error code
-				else
-					
-					echo "ERROR: Run out of retry attempts (max=${orgAuthInfoMaxRetryAttempts})"
-					exit -1;
-					
-				fi
-				
-			fi
-			
-		done
+		sfAccessToken=$(echo "$sfOrgDetails" | jq -r '.accessToken // empty');
+		sfInstanceUrl=$(echo "$sfOrgDetails" | jq -r '.instanceUrl // empty');
+		sfDomain=$(echo "$sfInstanceUrl" | cut -d'/' -f3);
 		
-		# restore 'exit on error' flag state
-		eval "$orgAuthInfo_backup_errexit"
-        
+		# failure
+		if [[ ! ${sfAccessToken:+1} || ! ${sfInstanceUrl:+1} ]]; then
+			fail "ERROR: Get org auth info for '$PARAM_ORG_ALIAS'!"
+		fi
+		
         # set target org as the main org
         sfTargetOrgAlias="$PARAM_ORG_ALIAS"
         sfTargetOrgAccessToken="$sfAccessToken"
@@ -573,55 +727,21 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
     fi
     
     
-    # grab optinal org2 auth info: access token and instance url
+    # grab optional org2 auth info: access token and instance url
     if [[ ${PARAM_ORG2_ALIAS:+1} ]]; then
-        
-		org2AuthInfoMaxRetryAttempts=$stepRetryAttempts;
-		org2AuthInfoRetryDelay=$stepRetryDelay;
-		org2AuthInfoRetryCounter=0;
+
+		sfOrgDetails2=$(getOrgDetails "$PARAM_ORG2_ALIAS");
 		
-		# backup current error switcher value and disable exit on error
-		[ -o errexit ] && org2AuthInfo_backup_errexit='set -e' || org2AuthInfo_backup_errexit='set +e'; set +e
+		sfAccessToken2=$(echo "$sfOrgDetails2" | jq -r '.accessToken // empty');
+		sfInstanceUrl2=$(echo "$sfOrgDetails2" | jq -r '.instanceUrl // empty');
+		sfDomain2=$(echo "$sfInstanceUrl2" | cut -d'/' -f3);
 		
-		while true; do
-			
-			sfOrgDetails2=$(sf org display --target-org "$PARAM_ORG2_ALIAS" --verbose --json || true);
-			sfAccessToken2=$(echo "$sfOrgDetails2" | jq -r '.result.accessToken // empty');
-			sfInstanceUrl2=$(echo "$sfOrgDetails2" | jq -r '.result.instanceUrl // empty');
-			sfDomain2=$(echo "$sfInstanceUrl2" | cut -d'/' -f3);
-			
-			# success
-			if [[ ${sfAccessToken2:+1} && ${sfInstanceUrl2:+1} ]]; then
-				break;
-				
-			# failure
-			else
-				
-				echo "ERROR: Get org2 auth info!"
-				
-				# retry if not run out of attempts
-				if [[ $org2AuthInfoRetryCounter -lt $org2AuthInfoMaxRetryAttempts ]]; then
-					
-					org2AuthInfoRetryCounter=$(( $org2AuthInfoRetryCounter + 1 ));
-					echo "Retrying get org2 auth info after failure in ${org2AuthInfoRetryDelay} seconds (attempt ${org2AuthInfoRetryCounter}/${org2AuthInfoMaxRetryAttempts})..."
-					sleep $org2AuthInfoRetryDelay;
-					
-				# run out of retry attempts: exit with error code
-				else
-					
-					echo "ERROR: Run out of retry attempts (max=${org2AuthInfoMaxRetryAttempts})"
-					exit -1;
-					
-				fi
-				
-			fi
-			
-		done
+		# failure
+		if [[ ! ${sfAccessToken2:+1} || ! ${sfInstanceUrl2:+1} ]]; then
+			fail "ERROR: Get org auth info for '$PARAM_ORG2_ALIAS'!"
+		fi
 		
-		# restore 'exit on error' flag state
-		eval "$org2AuthInfo_backup_errexit"
-        
-        # check if org2 has been requested as target org for one-org steps (e.g. metadata deployment, apex execution etc.)
+		# check if org2 has been requested as target org for one-org steps (e.g. metadata deployment, apex execution etc.)
         if [[ "${sfTargetOrg,,}" =~ ^secondary$ ]] ; then
             
             sfTargetOrgAlias="$PARAM_ORG2_ALIAS"
@@ -630,7 +750,7 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 			sfTargetOrgDomain="$sfDomain2"
             
         fi
-        
+		
     fi
     
     
@@ -657,12 +777,14 @@ for file in ${PARAM_SCRIPT_SANDBOX_DIR}/${PARAM_STEP_TO_RUN}; do
 				# DON'T use '--purgeondelete' option here - it doesn't work in production
 				# Error (1): INVALID_OPERATION: purgeOnDelete option can only be used on a non-active org
 				sf force mdapi deploy --deploydir="$file" --target-org="$sfTargetOrgAlias" --ignorewarnings --api-version="$SF_API_VERSION" -w 1000 --verbose; metaStepResultCode=$?;
+				#sf project deploy start --metadata-dir="$file" -o "$sfTargetOrgAlias" --ignore-conflicts --ignore-warnings --api-version="$SF_API_VERSION" -w 1000 --verbose; metaStepResultCode=$?;
 				
 			else
 				
 				echo "Deploying metadata in source format..."
 				
 				sf force source deploy --sourcepath="$file" --target-org="$sfTargetOrgAlias" --ignorewarnings --api-version="$SF_API_VERSION" -w 1000 --verbose; metaStepResultCode=$?;
+				#sf project deploy start -d "$file" -o "$sfTargetOrgAlias" --ignore-conflicts --ignore-warnings --api-version="$SF_API_VERSION" -w 1000 --verbose; metaStepResultCode=$?;
 				
 			fi
 			
