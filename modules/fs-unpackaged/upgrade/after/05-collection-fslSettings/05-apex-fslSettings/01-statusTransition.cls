@@ -5,6 +5,14 @@ Map<String, FSL.StatusTransition> transitionsToRemoveRegistry =
 			new FSL.StatusTransition(
 				'Onsite',
 				'Canceled'
+			),
+			new FSL.StatusTransition(
+				'Enroute',
+				'Dispatched'
+			),
+			new FSL.StatusTransition(
+				'Onsite',
+				'Dispatched'
 			)
 		}
 	)
