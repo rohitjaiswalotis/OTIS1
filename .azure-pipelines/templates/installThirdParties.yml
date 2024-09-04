@@ -57,24 +57,6 @@ steps:
     enableDebugMode: ${{ parameters.enableDebugMode }}
 
 
-# install Salesforce Maps
-
-- template: installThirdParty.yml
-  parameters:
-    packageAlias: Salesforce Maps
-    ${{ if contains(parameters.targetOrgUsername, '@') }}:
-      targetOrgUrl: ${{ parameters.targetOrgUrl }}
-      targetOrgUsername: ${{ parameters.targetOrgUsername }}
-      targetOrgPassword: ${{ parameters.targetOrgPassword }}
-    ${{ if not( eq(parameters.targetOrgToken, 'none') ) }}:
-      targetOrgUrl: ${{ parameters.targetOrgUrl }}
-      targetOrgToken: ${{ parameters.targetOrgToken }}
-    ${{ if not( eq(parameters.targetOrgAuthFilePath, 'none') ) }}:
-      targetOrgAuthFilePath: ${{ parameters.targetOrgAuthFilePath }}
-    continueOnError: ${{ parameters.continueOnError }}
-    enableDebugMode: ${{ parameters.enableDebugMode }}
-
-
 # install Salesforce Field Service App
 
 - template: installThirdParty.yml
