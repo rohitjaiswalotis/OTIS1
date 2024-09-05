@@ -5,7 +5,7 @@
         <description>This decision will check whether  the related work Oder&apos;s record type is maintenance or not</description>
         <name>Check_For_Maintenance</name>
         <label>Check For Maintenance</label>
-        <locationX>473</locationX>
+        <locationX>611</locationX>
         <locationY>276</locationY>
         <defaultConnectorLabel>Not maintenance</defaultConnectorLabel>
         <rules>
@@ -27,45 +27,17 @@
     <decisions>
         <name>Condition_Check</name>
         <label>Condition Check</label>
-        <locationX>275</locationX>
+        <locationX>380</locationX>
         <locationY>384</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Till_Now_SA_Is_Not_Complete</name>
-            <conditionLogic>1 AND (2 OR 3 OR 4) AND 5 AND 6</conditionLogic>
+            <conditionLogic>1 AND 2</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Status</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <stringValue>Onsite</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Status</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Completed</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Status</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Cannot Complete</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Status</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Canceled</stringValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.AppxSAEndTime__c</leftValueReference>
-                <operator>LessThan</operator>
-                <rightValue>
-                    <elementReference>CurrentTime</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
@@ -79,6 +51,28 @@
                 <targetReference>Udate_WO_Safety_Check</targetReference>
             </connector>
             <label>Till Now SA Is Not Complete</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Receipient_Is_Null</name>
+        <label>Receipient Is Null</label>
+        <locationX>182</locationX>
+        <locationY>708</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Not_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ServiceTerritory.FieldSupervisor__r.RelatedRecordId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SendCustomNotificationToMaintenanceSupervisor</targetReference>
+            </connector>
+            <label>Not Null</label>
         </rules>
     </decisions>
     <description>This version of the flow will filter Related Work orders record type ( with Custom Settings)
@@ -126,7 +120,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C
         <expression>{!$Record.DueDate}+{!SLATime}</expression>
     </formulas>
     <interviewLabel>Service Appointment Flow {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Service Appointment Flow</label>
+    <label>SA flow - Safety check update flow</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -149,7 +143,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C
     <recordUpdates>
         <name>Udate_WO_Safety_Check</name>
         <label>Udate WO Safety Check</label>
-        <locationX>143</locationX>
+        <locationX>182</locationX>
         <locationY>492</locationY>
         <connector>
             <targetReference>Update_Gantt_Icon_on_SA</targetReference>
@@ -171,10 +165,10 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C
     <recordUpdates>
         <name>Update_Gantt_Icon_on_SA</name>
         <label>Update Gantt Icon on SA</label>
-        <locationX>143</locationX>
+        <locationX>182</locationX>
         <locationY>600</locationY>
         <connector>
-            <targetReference>SendCustomNotificationToMaintenanceSupervisor</targetReference>
+            <targetReference>Receipient_Is_Null</targetReference>
         </connector>
         <inputAssignments>
             <field>FSL__GanttIcon__c</field>
@@ -185,7 +179,7 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>50</locationX>
+        <locationX>72</locationX>
         <locationY>0</locationY>
         <object>ServiceAppointment</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
@@ -206,8 +200,8 @@ WITH fs_initial_ETA GOT REPLACED WITH naa&apos;s INITIAL_eTA__C
     <subflows>
         <name>SendCustomNotificationToMaintenanceSupervisor</name>
         <label>SendCustomNotificationToMaintenanceSupervisor</label>
-        <locationX>143</locationX>
-        <locationY>708</locationY>
+        <locationX>50</locationX>
+        <locationY>816</locationY>
         <flowName>SendCustomNotification</flowName>
         <inputAssignments>
             <name>CustomNotificationTypeName</name>
