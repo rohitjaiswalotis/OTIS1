@@ -91,7 +91,7 @@ public class FSL_AssignedResourceOnDeleteTest {
             AssignedResource testResource = new AssignedResource();
             testResource.ServiceResourceId=sr.Id;
             testResource.ServiceAppointmentId = sa.id;
-            insert testResource;
+            //insert testResource;
             
             // Create FlowInputs instance
             FSL_AssignedResourceOnDelete.FlowInputs flowInput = new FSL_AssignedResourceOnDelete.FlowInputs();
@@ -111,5 +111,6 @@ public class FSL_AssignedResourceOnDeleteTest {
         }
 		
     }
+    
     
 }

@@ -387,22 +387,22 @@ if [[ ${PARAM_ORG_ALIAS:+1} ]]; then
 	
 	sfOrgDetails=$(getOrgDetails "$PARAM_ORG_ALIAS");
 	
-	export SF_SR_VAR_SYSTEM_ORG_ID="$(echo "$sfOrgDetails" | jq -r '.id // empty')";
-	export SF_SR_VAR_SYSTEM_ORG_INSTANCE_URL="$(echo "$sfOrgDetails" | jq -r '.instanceUrl // empty')";
-	export SF_SR_VAR_SYSTEM_ORG_DOMAIN="$(echo "$sfOrgDetails" | jq -r '.instanceUrl // empty' | cut -d'/' -f3)";
-	export SF_SR_VAR_SYSTEM_ORG_USERNAME="$(echo "$sfOrgDetails" | jq -r '.username // empty')";
-	export SF_SR_VAR_SYSTEM_ORG_API_VERSION="$(echo "$sfOrgDetails" | jq -r '.apiVersion // empty')";
-	export SF_SR_VAR_SYSTEM_ORG_API_VERSION_MAJOR="$(echo "$sfOrgDetails" | jq -r '.apiVersion // empty' | cut -d "." -f1)";
+	export SF_SR_VAR_SYSTEM_ORG_ID="${SF_SR_VAR_SYSTEM_ORG_ID:-"$(echo "$sfOrgDetails" | jq -r '.id // empty')"}";
+	export SF_SR_VAR_SYSTEM_ORG_INSTANCE_URL="${SF_SR_VAR_SYSTEM_ORG_INSTANCE_URL:-"$(echo "$sfOrgDetails" | jq -r '.instanceUrl // empty')"}";
+	export SF_SR_VAR_SYSTEM_ORG_DOMAIN="${SF_SR_VAR_SYSTEM_ORG_DOMAIN:-"$(echo "$sfOrgDetails" | jq -r '.instanceUrl // empty' | cut -d'/' -f3)"}";
+	export SF_SR_VAR_SYSTEM_ORG_USERNAME="${SF_SR_VAR_SYSTEM_ORG_USERNAME:-"$(echo "$sfOrgDetails" | jq -r '.username // empty')"}";
+	export SF_SR_VAR_SYSTEM_ORG_API_VERSION="${SF_SR_VAR_SYSTEM_ORG_API_VERSION:-"$(echo "$sfOrgDetails" | jq -r '.apiVersion // empty')"}";
+	export SF_SR_VAR_SYSTEM_ORG_API_VERSION_MAJOR="${SF_SR_VAR_SYSTEM_ORG_API_VERSION_MAJOR:-"$(echo "$sfOrgDetails" | jq -r '.apiVersion // empty' | cut -d "." -f1)"}";
 	
 	
 	sfAdvancedOrgDetails=$(getAdvancedOrgDetails "$PARAM_ORG_ALIAS");
 	
-	export SF_SR_VAR_SYSTEM_ORG_NAME="$(echo "$sfAdvancedOrgDetails" | jq -r '.Name // empty')";
-	export SF_SR_VAR_SYSTEM_ORG_INSTANCE_NAME="$(echo "$sfAdvancedOrgDetails" | jq -r '.InstanceName // empty')";
-	export SF_SR_VAR_SYSTEM_ORG_IS_SANDBOX="$(echo "$sfAdvancedOrgDetails" | jq -r '.IsSandbox // empty')";
-	export SF_SR_VAR_SYSTEM_ORG_NAMESPACE="$(echo "$sfAdvancedOrgDetails" | jq -r '.NamespacePrefix // empty')";
-	export SF_SR_VAR_SYSTEM_ORG_EDITION="$(echo "$sfAdvancedOrgDetails" | jq -r '.OrganizationType // empty')";
-	export SF_SR_VAR_SYSTEM_ORG_TRIAL_EXPIRATION_DATE="$(echo "$sfAdvancedOrgDetails" | jq -r '.TrialExpirationDate // empty')";
+	export SF_SR_VAR_SYSTEM_ORG_NAME="${SF_SR_VAR_SYSTEM_ORG_NAME:-"$(echo "$sfAdvancedOrgDetails" | jq -r '.Name // empty')"}";
+	export SF_SR_VAR_SYSTEM_ORG_INSTANCE_NAME="${SF_SR_VAR_SYSTEM_ORG_INSTANCE_NAME:-"$(echo "$sfAdvancedOrgDetails" | jq -r '.InstanceName // empty')"}";
+	export SF_SR_VAR_SYSTEM_ORG_IS_SANDBOX="${SF_SR_VAR_SYSTEM_ORG_IS_SANDBOX:-"$(echo "$sfAdvancedOrgDetails" | jq -r '.IsSandbox // empty')"}";
+	export SF_SR_VAR_SYSTEM_ORG_NAMESPACE="${SF_SR_VAR_SYSTEM_ORG_NAMESPACE:-"$(echo "$sfAdvancedOrgDetails" | jq -r '.NamespacePrefix // empty')"}";
+	export SF_SR_VAR_SYSTEM_ORG_EDITION="${SF_SR_VAR_SYSTEM_ORG_EDITION:-"$(echo "$sfAdvancedOrgDetails" | jq -r '.OrganizationType // empty')"}";
+	export SF_SR_VAR_SYSTEM_ORG_TRIAL_EXPIRATION_DATE="${SF_SR_VAR_SYSTEM_ORG_TRIAL_EXPIRATION_DATE:-"$(echo "$sfAdvancedOrgDetails" | jq -r '.TrialExpirationDate // empty')"}";
 	
 	
 	unset sfOrgDetails
@@ -415,22 +415,22 @@ if [[ ${PARAM_ORG2_ALIAS:+1} ]]; then
 	
 	sfOrgDetails=$(getOrgDetails "$PARAM_ORG2_ALIAS");
 	
-	export SF_SR_VAR_SYSTEM_ORG2_ID="$(echo "$sfOrgDetails" | jq -r '.id // empty')";
-	export SF_SR_VAR_SYSTEM_ORG2_INSTANCE_URL="$(echo "$sfOrgDetails" | jq -r '.instanceUrl // empty')";
-	export SF_SR_VAR_SYSTEM_ORG2_DOMAIN="$(echo "$sfOrgDetails" | jq -r '.instanceUrl // empty' | cut -d'/' -f3)";
-	export SF_SR_VAR_SYSTEM_ORG2_USERNAME="$(echo "$sfOrgDetails" | jq -r '.username // empty')";
-	export SF_SR_VAR_SYSTEM_ORG2_API_VERSION="$(echo "$sfOrgDetails" | jq -r '.apiVersion // empty')";
-	export SF_SR_VAR_SYSTEM_ORG2_API_VERSION_MAJOR="$(echo "$sfOrgDetails" | jq -r '.apiVersion // empty' | cut -d "." -f1)";
+	export SF_SR_VAR_SYSTEM_ORG2_ID="${SF_SR_VAR_SYSTEM_ORG2_ID:-"$(echo "$sfOrgDetails" | jq -r '.id // empty')"}";
+	export SF_SR_VAR_SYSTEM_ORG2_INSTANCE_URL="${SF_SR_VAR_SYSTEM_ORG2_INSTANCE_URL:-"$(echo "$sfOrgDetails" | jq -r '.instanceUrl // empty')"}";
+	export SF_SR_VAR_SYSTEM_ORG2_DOMAIN="${SF_SR_VAR_SYSTEM_ORG2_DOMAIN:-"$(echo "$sfOrgDetails" | jq -r '.instanceUrl // empty' | cut -d'/' -f3)"}";
+	export SF_SR_VAR_SYSTEM_ORG2_USERNAME="${SF_SR_VAR_SYSTEM_ORG2_USERNAME:-"$(echo "$sfOrgDetails" | jq -r '.username // empty')"}";
+	export SF_SR_VAR_SYSTEM_ORG2_API_VERSION="${SF_SR_VAR_SYSTEM_ORG2_API_VERSION:-"$(echo "$sfOrgDetails" | jq -r '.apiVersion // empty')"}";
+	export SF_SR_VAR_SYSTEM_ORG2_API_VERSION_MAJOR="${SF_SR_VAR_SYSTEM_ORG2_API_VERSION_MAJOR:-"$(echo "$sfOrgDetails" | jq -r '.apiVersion // empty' | cut -d "." -f1)"}";
 	
 	
 	sfAdvancedOrgDetails=$(getAdvancedOrgDetails "$PARAM_ORG2_ALIAS");
 	
-	export SF_SR_VAR_SYSTEM_ORG2_NAME="$(echo "$sfAdvancedOrgDetails" | jq -r '.Name // empty')";
-	export SF_SR_VAR_SYSTEM_ORG2_INSTANCE_NAME="$(echo "$sfAdvancedOrgDetails" | jq -r '.InstanceName // empty')";
-	export SF_SR_VAR_SYSTEM_ORG2_IS_SANDBOX="$(echo "$sfAdvancedOrgDetails" | jq -r '.IsSandbox // empty')";
-	export SF_SR_VAR_SYSTEM_ORG2_NAMESPACE="$(echo "$sfAdvancedOrgDetails" | jq -r '.NamespacePrefix // empty')";
-	export SF_SR_VAR_SYSTEM_ORG2_EDITION="$(echo "$sfAdvancedOrgDetails" | jq -r '.OrganizationType // empty')";
-	export SF_SR_VAR_SYSTEM_ORG2_TRIAL_EXPIRATION_DATE="$(echo "$sfAdvancedOrgDetails" | jq -r '.TrialExpirationDate // empty')";
+	export SF_SR_VAR_SYSTEM_ORG2_NAME="${SF_SR_VAR_SYSTEM_ORG2_NAME:-"$(echo "$sfAdvancedOrgDetails" | jq -r '.Name // empty')"}";
+	export SF_SR_VAR_SYSTEM_ORG2_INSTANCE_NAME="${SF_SR_VAR_SYSTEM_ORG2_INSTANCE_NAME:-"$(echo "$sfAdvancedOrgDetails" | jq -r '.InstanceName // empty')"}";
+	export SF_SR_VAR_SYSTEM_ORG2_IS_SANDBOX="${SF_SR_VAR_SYSTEM_ORG2_IS_SANDBOX:-"$(echo "$sfAdvancedOrgDetails" | jq -r '.IsSandbox // empty')"}";
+	export SF_SR_VAR_SYSTEM_ORG2_NAMESPACE="${SF_SR_VAR_SYSTEM_ORG2_NAMESPACE:-"$(echo "$sfAdvancedOrgDetails" | jq -r '.NamespacePrefix // empty')"}";
+	export SF_SR_VAR_SYSTEM_ORG2_EDITION="${SF_SR_VAR_SYSTEM_ORG2_EDITION:-"$(echo "$sfAdvancedOrgDetails" | jq -r '.OrganizationType // empty')"}";
+	export SF_SR_VAR_SYSTEM_ORG2_TRIAL_EXPIRATION_DATE="${SF_SR_VAR_SYSTEM_ORG2_TRIAL_EXPIRATION_DATE:-"$(echo "$sfAdvancedOrgDetails" | jq -r '.TrialExpirationDate // empty')"}";
 	
 	
 	unset sfOrgDetails

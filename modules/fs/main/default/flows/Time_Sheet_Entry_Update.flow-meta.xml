@@ -1158,12 +1158,6 @@
             </value>
         </filters>
         <inputAssignments>
-            <field>EndTime</field>
-            <value>
-                <elementReference>End_Time</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>Multiplier_Type__c</field>
             <value>
                 <elementReference>Multiplier_Type</elementReference>
@@ -1173,12 +1167,6 @@
             <field>Multiplier_Values__c</field>
             <value>
                 <elementReference>UpdateTSEMultiplier</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>StartTime</field>
-            <value>
-                <elementReference>Start_Time</elementReference>
             </value>
         </inputAssignments>
         <object>TimeSheetEntry</object>
@@ -1225,7 +1213,6 @@
             <dataType>String</dataType>
             <fieldText>Time Sheet Entry Type</fieldText>
             <fieldType>DropdownBox</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -1233,7 +1220,6 @@
             <dataType>DateTime</dataType>
             <fieldText>Start Time</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -1241,7 +1227,6 @@
             <dataType>DateTime</dataType>
             <fieldText>End Time</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -1250,7 +1235,6 @@
             <dataType>String</dataType>
             <fieldText>Multiplier Type</fieldText>
             <fieldType>RadioButtons</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -1273,7 +1257,6 @@
             <dataType>Number</dataType>
             <fieldText>Multiplier Value</fieldText>
             <fieldType>RadioButtons</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <scale>1</scale>
         </fields>
@@ -1302,7 +1285,6 @@
             <dataType>String</dataType>
             <fieldText>Time Sheet Entry Records</fieldText>
             <fieldType>RadioButtons</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -1340,26 +1322,14 @@
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>Start_Time</name>
-            <dataType>DateTime</dataType>
-            <defaultValue>
-                <elementReference>TimeRecordData.StartTime</elementReference>
-            </defaultValue>
-            <fieldText>Start Time</fieldText>
-            <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>false</isRequired>
+            <name>Start_Times_TSE</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Start Time: &lt;/strong&gt;{!TimeRecordData.StartTime}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>End_Time</name>
-            <dataType>DateTime</dataType>
-            <defaultValue>
-                <elementReference>TimeRecordData.EndTime</elementReference>
-            </defaultValue>
-            <fieldText>End Time</fieldText>
-            <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>false</isRequired>
+            <name>End_Time_TSE</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;End Time: &lt;/strong&gt;{!TimeRecordData.EndTime}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
             <name>Multiplier_Type</name>
@@ -1370,7 +1340,6 @@
             </defaultValue>
             <fieldText>Multiplier Type</fieldText>
             <fieldType>RadioButtons</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -1379,7 +1348,6 @@
             <dataType>Number</dataType>
             <fieldText>Multiplier Values</fieldText>
             <fieldType>RadioButtons</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
             <scale>1</scale>
         </fields>
@@ -1391,7 +1359,6 @@
             </defaultValue>
             <fieldText>Split TSE</fieldText>
             <fieldType>InputField</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <fields>
