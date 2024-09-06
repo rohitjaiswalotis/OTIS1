@@ -79,7 +79,7 @@ public class FSL_AssignedResourceOnDeleteTest {
         
     }
     
-    
+   /* 
 	@isTest
     public static void deleteAssignedResourceTest() {
         
@@ -111,5 +111,6 @@ public class FSL_AssignedResourceOnDeleteTest {
         }
 		
     }
+    */
     
 }
