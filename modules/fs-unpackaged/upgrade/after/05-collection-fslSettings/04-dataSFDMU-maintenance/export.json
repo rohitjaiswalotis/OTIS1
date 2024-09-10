@@ -45,7 +45,7 @@
 		{
 			"query": "SELECT Id, Name, FSL__Criterias__c, FSL__Days_after_horizon__c, FSL__Days_before_horizon__c, FSL__Description__c, FSL__Displayed_Fields__c, FSL__Hidden__c, FSL__List_only_appointments_on_the_gantt__c, FSL__Logic__c, FSL__Public__c, FSL__Selected_Statuses__c FROM FSL__Gantt_Filter__c",
 			"operation": "Upsert",
-			"externalId": "Name;FSL__Displayed_Fields__c;FSL__Criterias__c;FSL__Logic__c"
+			"externalId": "Name"
 		},
 		
 		{
