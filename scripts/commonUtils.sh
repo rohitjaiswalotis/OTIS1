@@ -112,3 +112,42 @@ function parseJavaPropertiesToMap {
 }
 
 
+# retry until success or run out of attempts
+function retryToSucceed {
+	
+	local maxNumberOfAttempts=${PARAM_UTILS_MAX_ATTEMPTS:-100}
+	local delayInSecBetweenAttempts=${PARAM_UTILS_DELAY_IN_SEC:-5}
+	
+	local currentAttempt=1;
+	local resultCode=0
+	
+	
+    until [[ $currentAttempt -gt $maxNumberOfAttempts ]]; do
+		
+		"$@"
+		resultCode=$?
+		
+		# success
+		if [[ $resultCode == 0 ]]; then
+			break
+		fi
+		
+		echo "Failure executing '$*' ($currentAttempt/$maxNumberOfAttempts). Retrying in $delayInSecBetweenAttempts sec..." 1>&2
+		sleep "$delayInSecBetweenAttempts"
+		
+		currentAttempt=$(( currentAttempt + 1 ))
+		delayInSecBetweenAttempts=$(( delayInSecBetweenAttempts * 40 / 30 ))
+		
+    done
+	
+	
+    if [[ $resultCode != 0 ]]; then
+		echo "ERROR: Run out of $maxNumberOfAttempts retried attempts! ($*)" 1>&2
+    fi
+	
+	
+    return $resultCode;
+	
+}
+
+

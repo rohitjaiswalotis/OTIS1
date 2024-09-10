@@ -326,7 +326,7 @@ steps:
           git config --global user.name "BuildService"
           git config --global user.email "pipeline.package.fs@otis.com"
           git tag -a "$FS_PACKAGE_VERSION_TAG_NAME" -m "Field Service Package Version: $FS_PACKAGE_VERSION_NUMBER"
-          git push origin "$FS_PACKAGE_VERSION_TAG_NAME"
+          retryToSucceed git push origin "$FS_PACKAGE_VERSION_TAG_NAME"
           
           # update package version with just created tag
           echo "Updating package version '$FS_PACKAGE_VERSION_NUMBER' ($FS_PACKAGE_VERSION_ID) with just created tag '$FS_PACKAGE_VERSION_TAG_NAME'..."
@@ -343,22 +343,22 @@ steps:
           # create extra tag to track latest snapshot of the package version for current branch
           
           # first copy latest tag into prev (suppressing errors if prev doesn't exit for first time run)
-          git push -f origin "$FS_PACKAGE_LATEST_VERSION_ON_BRANCH_TAG_NAME":refs/tags/"$FS_PACKAGE_PREV_VERSION_ON_BRANCH_TAG_NAME" || true
+          retryToSucceed git push -f origin "$FS_PACKAGE_LATEST_VERSION_ON_BRANCH_TAG_NAME":refs/tags/"$FS_PACKAGE_PREV_VERSION_ON_BRANCH_TAG_NAME" || true
           
           # then re-create latest tag with current commit and version
           git tag -fa "$FS_PACKAGE_LATEST_VERSION_ON_BRANCH_TAG_NAME" -m "Tag Ref: $FS_PACKAGE_VERSION_TAG_NAME"
-          git push -f origin "tags/$FS_PACKAGE_LATEST_VERSION_ON_BRANCH_TAG_NAME"
+          retryToSucceed git push -f origin "tags/$FS_PACKAGE_LATEST_VERSION_ON_BRANCH_TAG_NAME"
           
           
           # create extra tag to track latest snapshot of the package version that passed validation for current branch
           if [[ ! "${{ parameters.skipValidation }}" =~ ^[Tt]rue$ ]] ; then
             
             # first copy latest tag into prev (suppressing errors if prev doesn't exit for first time run)
-            git push -f origin "$FS_PACKAGE_LATEST_VALID_VERSION_ON_BRANCH_TAG_NAME":refs/tags/"$FS_PACKAGE_PREV_VALID_VERSION_ON_BRANCH_TAG_NAME" || true
+            retryToSucceed git push -f origin "$FS_PACKAGE_LATEST_VALID_VERSION_ON_BRANCH_TAG_NAME":refs/tags/"$FS_PACKAGE_PREV_VALID_VERSION_ON_BRANCH_TAG_NAME" || true
             
             # then re-create latest tag with current commit and version
             git tag -fa "$FS_PACKAGE_LATEST_VALID_VERSION_ON_BRANCH_TAG_NAME" -m "Tag Ref: $FS_PACKAGE_VERSION_TAG_NAME"
-            git push -f origin "tags/$FS_PACKAGE_LATEST_VALID_VERSION_ON_BRANCH_TAG_NAME"
+            retryToSucceed git push -f origin "tags/$FS_PACKAGE_LATEST_VALID_VERSION_ON_BRANCH_TAG_NAME"
             
           fi
           
