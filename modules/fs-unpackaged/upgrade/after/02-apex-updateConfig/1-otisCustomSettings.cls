@@ -38,6 +38,10 @@ if (workTypeId == null) {
 		otisSettings.ImageUploadLimitInSA__c ?? 3
 	;
 	
+	otisSettings.Optimizer_Finish_Date__c = 
+		otisSettings.Optimizer_Finish_Date__c ?? 3
+	;
+	
 	upsert otisSettings;
 	
 }

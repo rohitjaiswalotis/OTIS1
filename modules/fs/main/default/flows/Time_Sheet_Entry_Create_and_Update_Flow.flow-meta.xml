@@ -378,6 +378,13 @@
                     <stringValue>Approved</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Not_Submitted_Approved_Error</targetReference>
             </connector>

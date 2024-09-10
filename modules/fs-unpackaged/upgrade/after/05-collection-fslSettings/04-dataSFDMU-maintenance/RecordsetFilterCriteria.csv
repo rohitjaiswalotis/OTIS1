@@ -1,0 +1,5 @@
+$$Name$SourceObject$FilteredObject$IsActive,CustomLogic,Description,FilteredObject,Id,IsActive,LogicalOperator,Name,SourceObject
+Maintenance Designated Time;Shift;ServiceAppointment;true,,,ServiceAppointment,0hrDF000000KyjLYAS,true,AND,Maintenance Designated Time,Shift
+OpenOrder Designated time;Shift;ServiceAppointment;true,,,ServiceAppointment,0hrDF000000KyjMYAS,true,AND,OpenOrder Designated time,Shift
+Service Request Designated Time;Shift;ServiceAppointment;true,,,ServiceAppointment,0hrDF000000KyjGYAS,true,AND,Service Request Designated Time,Shift
+Repair Designated Time;Shift;ServiceAppointment;true,,,ServiceAppointment,0hrDF000000KyjQYAS,true,AND,Repair Designated Time,Shift
