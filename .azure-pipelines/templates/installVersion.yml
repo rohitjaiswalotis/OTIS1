@@ -135,6 +135,7 @@ steps:
         echo "##vso[task.setvariable variable=FS_PACKAGE_VERSION_ID]${FS_PACKAGE_VERSION_ID}"
         
   displayName: 'Assign Field Service package version id'
+  continueOnError: false
   
 
 
@@ -152,6 +153,7 @@ steps:
           echo "##vso[task.setvariable variable=TARGET_ORG_PASSWORD]${{ parameters.targetOrgPassword }}"
           
     displayName: 'Assign Target Org creds'
+    continueOnError: false
 
 
 - ${{ if not( eq(parameters.targetOrgAuthFilePath, 'none') ) }}:
@@ -165,6 +167,7 @@ steps:
           echo "##vso[task.setvariable variable=TARGET_ORG_AUTH_FILE]${{ parameters.targetOrgAuthFilePath }}"
           
     displayName: 'Assign Target Org auth file path'
+    continueOnError: false
 
 
 - ${{ if not( eq(parameters.targetOrgToken, 'none') ) }}:
@@ -181,6 +184,7 @@ steps:
           echo "##vso[task.setvariable variable=TARGET_ORG_TOKEN]${{ parameters.targetOrgToken }}"
           
     displayName: 'Assign Target Org token'
+    continueOnError: false
 
 
 
@@ -306,7 +310,7 @@ steps:
         fi
         
   displayName: 'Authorize into Target Org'
-  condition: ne(lower(variables['INSTALL_PACKAGE_EARLY_EXIT']), 'true')
+  condition: and(succeeded(), ne(lower(variables['INSTALL_PACKAGE_EARLY_EXIT']), 'true'))
   continueOnError: false
   timeoutInMinutes: 30
   env:
@@ -419,7 +423,7 @@ steps:
         
         
   displayName: 'Check installed Version into Target Org'
-  condition: ne(lower(variables['INSTALL_PACKAGE_EARLY_EXIT']), 'true')
+  condition: and(succeeded(), ne(lower(variables['INSTALL_PACKAGE_EARLY_EXIT']), 'true'))
   continueOnError: false
   timeoutInMinutes: 30
   env:
@@ -472,7 +476,7 @@ steps:
         
         
   displayName: 'Install Version Dependencies into Target Org'
-  condition: ne(lower(variables['INSTALL_PACKAGE_EARLY_EXIT']), 'true')
+  condition: and(succeeded(), ne(lower(variables['INSTALL_PACKAGE_EARLY_EXIT']), 'true'))
   continueOnError: false
   timeoutInMinutes: 360
   env:
@@ -690,7 +694,7 @@ steps:
         
         
   displayName: 'Install/Upgrade Version into Target Org'
-  condition: ne(lower(variables['INSTALL_PACKAGE_EARLY_EXIT']), 'true')
+  condition: and(succeeded(), ne(lower(variables['INSTALL_PACKAGE_EARLY_EXIT']), 'true'))
   continueOnError: false
   timeoutInMinutes: 360
   env:
@@ -727,7 +731,7 @@ steps:
         
         
   displayName: 'Get Dependencies of installed Version'
-  condition: ne(lower(variables['INSTALL_PACKAGE_EARLY_EXIT']), 'true')
+  condition: and(succeeded(), ne(lower(variables['INSTALL_PACKAGE_EARLY_EXIT']), 'true'))
   continueOnError: false
   timeoutInMinutes: 30
   env:
