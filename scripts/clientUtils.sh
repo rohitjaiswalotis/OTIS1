@@ -333,10 +333,10 @@ function installPackageDependencies {
 		
 		if [[ $validateStatusCode -eq 107 ]]; then
 			echo "Same package version as $versionId is already installed: no further actions re dependencies installation to be taken."
-			exit 0;
+			return 0;
 		elif [[ $validateStatusCode -eq 108 ]]; then
 			echo "More recent package version than $versionId is already installed: no further actions re dependencies installation to be taken."
-			exit 0;
+			return 0;
 		else
 			echo "Package version $versionId validation has failed: no further actions re dependencies installation to be taken."
 			return 114;
@@ -520,7 +520,7 @@ function installPackageDependencies {
 					if [[ ! ${dependencyVersionTag:+1} ]]; then
 						echo "Pipeline '$specialInstallPipeline': status=$AZ_INSTALL_PIPELINE_STATUS result=$AZ_INSTALL_PIPELINE_RESULT"
 						echo "ERROR: Cannot get related tag for package '$dependencyPackageName' version with id ${dependencyVersionId}!"
-						exit -1
+						return -1
 					fi
 					
 					# differentiate between tag/branch and commit SHA to trigger install pipeline at
@@ -556,7 +556,7 @@ function installPackageDependencies {
 					
 					if [[ ! ${AZ_INSTALL_PIPELINE_RUN_ID:+1} || $AZ_INSTALL_PIPELINE_TRIGGER_CODE -ne 0 ]]; then
 						echo "ERROR: Cannot trigger pipeline '$specialInstallPipeline' to install package '$dependencyPackageName'."
-						exit -1
+						return -1
 					fi
 					
 					# generate web link to triggered install pipeline from pieces
@@ -588,7 +588,7 @@ function installPackageDependencies {
 						echo $AZ_INSTALL_PIPELINE_RUN_DETAILS_RESPONSE
 						echo "Pipeline '$specialInstallPipeline': status=$AZ_INSTALL_PIPELINE_STATUS result=$AZ_INSTALL_PIPELINE_RESULT"
 						echo "ERROR: Pipeline '$specialInstallPipeline' to install package '$dependencyPackageName' has failed."
-						exit -1
+						return -1
 					fi
 					
 				else
@@ -664,7 +664,7 @@ function escapeJson {
 		
 		echo "Usage: $0 <textToEscape>";
 		
-		exit -1;
+		return -1;
 		
 	fi
 	
