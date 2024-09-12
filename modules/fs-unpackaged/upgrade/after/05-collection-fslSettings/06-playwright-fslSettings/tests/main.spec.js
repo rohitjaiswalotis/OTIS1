@@ -7,6 +7,49 @@ const utils = require(basePath + "/scripts/playwright/utils");
 
 
 
+test('Global Actions -> Appointment Booking', async ({ basePage, baseUrl }) => {
+	
+	await utils.openSettings(basePage, baseUrl);
+	
+	const frame = utils.getMainFrame(basePage);
+	
+	await utils.switchToSettingsMenu(frame, "Global Actions");
+	
+	await utils.switchToSettingsTab(frame, "APPOINTMENT BOOKING");
+	
+	
+	await utils.selectPicklistSettingByLabel(frame, "Default scheduling policy", "Otis Default Scheduling Policy");
+	
+	// FSL Winter 25 specific setting
+	await utils.checkOptionalBooleanSetting(frame, "Automatically search for scheduling options");
+	
+	
+	await utils.clickSaveSettingButton(frame);
+	
+});
+
+
+
+test('Global Actions -> Emergency Wizard', async ({ basePage, baseUrl }) => {
+	
+	await utils.openSettings(basePage, baseUrl);
+	
+	const frame = utils.getMainFrame(basePage);
+	
+	await utils.switchToSettingsMenu(frame, "Global Actions");
+	
+	await utils.switchToSettingsTab(frame, "EMERGENCY WIZARD");
+	
+	
+	await utils.selectPicklistSettingByLabel(frame, "Emergency scheduling policy", "Otis Emergency Scheduling Policy");
+	
+	
+	await utils.clickSaveSettingButton(frame);
+	
+});
+
+
+
 test('Scheduling -> General Logic', async ({ basePage, baseUrl }) => {
 	
 	const GENERAL_LOGIC_PINNED_STATUSES = new utils.CaseInsensitiveSet(
@@ -66,6 +109,9 @@ test('Scheduling -> General Logic', async ({ basePage, baseUrl }) => {
 	}
 	
 	
+	await utils.uncheckBooleanSetting(frame, "Use the Visiting Hours object’s time zone when an appointment has visiting hours");
+	await utils.uncheckBooleanSetting(frame, "Generate activity reports and retrieve optimization request files");
+	
 	await utils.uncheckBooleanSetting(frame, "Use 1-100 priority scale");
 	
 	
@@ -86,7 +132,55 @@ test('Scheduling -> Routing', async ({ basePage, baseUrl }) => {
 	await utils.switchToSettingsTab(frame, "Routing");
 	
 	
+	// checkboxes should be set in this precised order due - they are dependendant
+	await utils.uncheckBooleanSetting(frame, "Enable Point-to-Point Predictive Routing");
+	await utils.checkBooleanSetting(frame, "Enable Street Level Routing");
+	await utils.uncheckOptionalBooleanSetting(frame, "Enable Predictive Travel for optimization services");
+	
 	await utils.selectPicklistSettingByLabel(frame, "Travel speed unit", "MPH");
+	
+	
+	await utils.clickSaveSettingButton(frame);
+	
+});
+
+
+
+test('Dispatcher Console UI -> Gantt Configurations', async ({ basePage, baseUrl }) => {
+	
+	await utils.openSettings(basePage, baseUrl);
+	
+	const frame = utils.getMainFrame(basePage);
+	
+	await utils.switchToSettingsMenu(frame, "Dispatcher Console UI");
+	
+	await utils.switchToSettingsTab(frame, "Gantt Configurations");
+	
+	await utils.selectPicklistSettingByLabel(frame, "Default scheduling policy", "Otis Default Scheduling Policy");
+	
+	await utils.checkBooleanSetting(frame, "Show secondary Service Territory Members on Gantt chart");
+	
+	
+	await utils.clickSaveSettingButton(frame);
+	
+});
+
+
+
+test('Optimization -> Logic', async ({ basePage, baseUrl }) => {
+	
+	await utils.openSettings(basePage, baseUrl);
+	
+	const frame = utils.getMainFrame(basePage);
+	
+	await utils.switchToSettingsMenu(frame, "Optimization");
+	
+	await utils.switchToSettingsTab(frame, "Logic");
+	
+	
+	await utils.uncheckBooleanSetting(frame, "Enable sharing for Optimization request");
+	
+	await utils.selectPicklistSettingByLabel(frame, "Global optimization run time per service appointment", "Medium");
 	
 	
 	await utils.clickSaveSettingButton(frame);

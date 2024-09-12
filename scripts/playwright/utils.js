@@ -100,7 +100,7 @@ export const checkBooleanSetting = async (root, labelPositive, labelNegative) =>
 }
 
 
-export const checkOptinalBooleanSetting = async (root, labelPositive, labelNegative) => {
+export const checkOptionalBooleanSetting = async (root, labelPositive, labelNegative) => {
 	
 	if (await getBooleanSettingLocator(root, labelPositive, labelNegative).isVisible()) {
 		
@@ -139,7 +139,7 @@ export const uncheckBooleanSetting = async (root, labelPositive, labelNegative) 
 }
 
 
-export const uncheckOptinalBooleanSetting = async (root, labelPositive, labelNegative) => {
+export const uncheckOptionalBooleanSetting = async (root, labelPositive, labelNegative) => {
 	
 	if (await getBooleanSettingLocator(root, labelPositive, labelNegative).isVisible()) {
 		
