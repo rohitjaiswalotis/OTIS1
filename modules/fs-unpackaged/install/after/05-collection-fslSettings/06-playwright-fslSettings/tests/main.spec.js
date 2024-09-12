@@ -77,7 +77,7 @@ test('Global Actions -> Appointment Booking', async ({ basePage, baseUrl }) => {
 	
 	await utils.switchToSettingsTab(frame, "APPOINTMENT BOOKING");
 	
-	await utils.selectPicklistSettingByLabel(frame, "Default scheduling policy", "Customer First");
+	await utils.selectPicklistSettingByLabel(frame, "Default scheduling policy", "Otis Default Scheduling Policy");
 	
 	// TODO - set operating hours based on localization domain: NAA vs EMEA
 	//await utils.selectPicklistSettingByLabel(frame, "Default operating hours", "America/New York");
@@ -96,6 +96,9 @@ test('Global Actions -> Appointment Booking', async ({ basePage, baseUrl }) => {
 	await utils.uncheckBooleanSetting(frame, "Pin three highest graded time slots to the top");
 	await utils.checkBooleanSetting(frame, "Open extended view by default");
 	
+	// FSL Winter 25 specific setting
+	await utils.checkOptionalBooleanSetting(frame, "Automatically search for scheduling options");
+	
 	
 	await utils.clickSaveSettingButton(frame);
 	
@@ -113,7 +116,7 @@ test('Global Actions -> Emergency Wizard', async ({ basePage, baseUrl }) => {
 	
 	await utils.switchToSettingsTab(frame, "EMERGENCY WIZARD");
 	
-	await utils.selectPicklistSettingByLabel(frame, "Emergency scheduling policy", "Emergency");
+	await utils.selectPicklistSettingByLabel(frame, "Emergency scheduling policy", "Otis Emergency Scheduling Policy");
 	
 	await utils.fillSetting(frame, "Last known location validity", 20);
 	await utils.fillSetting(frame, "Ideal availability grade", 30);
@@ -198,6 +201,10 @@ test('Scheduling -> General Logic', async ({ basePage, baseUrl }) => {
 		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
 		
 	}
+	
+	
+	await utils.uncheckBooleanSetting(frame, "Use the Visiting Hours object’s time zone when an appointment has visiting hours");
+	await utils.uncheckBooleanSetting(frame, "Generate activity reports and retrieve optimization request files");
 	
 	
 	await utils.selectPicklistSettingByLabel(frame, "Work Order Priority Field", "None");
@@ -297,7 +304,7 @@ test('Scheduling -> Routing', async ({ basePage, baseUrl }) => {
 	// checkboxes should be set in this precised order due - they are dependendant
 	await utils.uncheckBooleanSetting(frame, "Enable Point-to-Point Predictive Routing");
 	await utils.checkBooleanSetting(frame, "Enable Street Level Routing");
-	await utils.uncheckOptinalBooleanSetting(frame, "Enable Predictive Travel for optimization services");
+	await utils.uncheckOptionalBooleanSetting(frame, "Enable Predictive Travel for optimization services");
 	
 	await utils.checkBooleanSetting(frame, "Calculate travel and breaks");
 	
@@ -324,6 +331,8 @@ test('Dispatcher Console UI -> Gantt Configurations', async ({ basePage, baseUrl
 	await utils.switchToSettingsMenu(frame, "Dispatcher Console UI");
 	
 	await utils.switchToSettingsTab(frame, "Gantt Configurations");
+	
+	await utils.selectPicklistSettingByLabel(frame, "Default scheduling policy", "Otis Default Scheduling Policy");
 	
 	await utils.checkBooleanSetting(frame, "Show secondary Service Territory Members on Gantt chart");
 	
@@ -379,7 +388,7 @@ test('Optimization -> Logic', async ({ basePage, baseUrl }) => {
 	await utils.checkBooleanSetting(frame, "Mark optimization requests failed when failing due to org customizations");
 	await utils.uncheckBooleanSetting(frame, "Enable sharing for Optimization request");
 	
-	await utils.selectPicklistSettingByLabel(frame, "Optimization run time per service appointment", "High");
+	await utils.selectPicklistSettingByLabel(frame, "Global optimization run time per service appointment", "Medium");
 	
 	
 	// 'Global Optimization' section
