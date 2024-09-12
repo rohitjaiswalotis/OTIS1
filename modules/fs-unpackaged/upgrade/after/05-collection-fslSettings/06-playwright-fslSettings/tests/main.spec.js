@@ -70,6 +70,8 @@ test('Scheduling -> General Logic', async ({ basePage, baseUrl }) => {
 	
 	await utils.uncheckBooleanSetting(frame, "Activate Approval confirmation on resource absences");
 	
+	await utils.setRadio(frame, "Sliding and reshuffling", false);
+	
 	
 	// 'Scheduling Logic' section
 	{
