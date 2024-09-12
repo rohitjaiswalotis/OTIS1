@@ -175,7 +175,7 @@ export const fillSetting = async (root, label, value) => {
 }
 
 
-export const setCheckboxes = async (root, labels) => {
+export const setCheckboxes = async (root, labels, exactMatch = true) => {
 	
 	for (const label of labels) {
 		
@@ -183,7 +183,7 @@ export const setCheckboxes = async (root, labels) => {
 			"checkbox", 
 			{ 
 				name: label, 
-				exact: true 
+				exact: exactMatch 
 			}
 		).check(
 			{
@@ -228,9 +228,9 @@ export const setCheckboxesInGroup = async (root, container, { resetAll = true, l
 }
 
 
-export const setRadio = async (root, label) => {
+export const setRadio = async (root, label, exactMatch = true) => {
 	
-	await root.getByRole("radio", { name: label, exact: true }).check({ force: true });
+	await root.getByRole("radio", { name: label, exact: exactMatch }).check({ force: true });
 	
 }
 
@@ -293,9 +293,9 @@ export const clickLink = async (root, label) => {
 }
 
 
-export const clickCombobox = async (root, label) => {
+export const clickCombobox = async (root, label, exactMatch = true) => {
 	
-	await root.getByRole("combobox", { name: label, exact: true }).click({ force: true });
+	await root.getByRole("combobox", { name: label, exact: exactMatch }).click({ force: true });
 	
 }
 
@@ -314,16 +314,16 @@ export const waitForLabel = async (root, label) => {
 }
 
 
-export const clickByText = async (root, text) => {
+export const clickByText = async (root, text, exactMatch = true) => {
 	
-	await root.getByText(text, { exact: true }).click({ force: true });
+	await root.getByText(text, { exact: exactMatch }).click({ force: true });
 	
 }
 
 
-export const clickByTitle = async (root, text) => {
+export const clickByTitle = async (root, text, exactMatch = true) => {
 	
-	await root.getByTitle(text, { exact: true }).click({ force: true });
+	await root.getByTitle(text, { exact: exactMatch }).click({ force: true });
 	
 }
 
