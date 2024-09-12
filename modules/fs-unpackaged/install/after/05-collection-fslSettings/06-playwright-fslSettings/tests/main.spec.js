@@ -164,6 +164,8 @@ test('Scheduling -> General Logic', async ({ basePage, baseUrl }) => {
 	await utils.checkBooleanSetting(frame, "Avoid aerial calculation upon callout DML exception");
 	await utils.uncheckBooleanSetting(frame, "Respect secondary STM operating hours");
 	
+	await utils.setRadio(frame, "Sliding and reshuffling", false);
+	
 	
 	// 'Scheduling Logic' section
 	{
