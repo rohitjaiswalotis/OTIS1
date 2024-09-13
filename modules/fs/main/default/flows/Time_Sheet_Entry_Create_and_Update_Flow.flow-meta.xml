@@ -147,6 +147,16 @@
         </connector>
     </assignments>
     <customErrors>
+        <name>Approved_Error</name>
+        <label>Approved Error</label>
+        <locationX>314</locationX>
+        <locationY>539</locationY>
+        <customErrorMessages>
+            <errorMessage>You cannot modify the Timesheet as it is already Approved.</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <customErrors>
         <name>Display_Error</name>
         <label>Display Error</label>
         <locationX>578</locationX>
@@ -173,6 +183,16 @@
         <locationY>1595</locationY>
         <customErrorMessages>
             <errorMessage>You cannot adjust the time sheet entry as multiple time sheet entries are getting affected by your adjustment. Please make sure the change only impact predecessor and successor time sheet entry only</errorMessage>
+            <isFieldError>false</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <customErrors>
+        <name>Not_Submitted_Error</name>
+        <label>Not Submitted Error</label>
+        <locationX>50</locationX>
+        <locationY>539</locationY>
+        <customErrorMessages>
+            <errorMessage>You cannot modify the Timesheet as it is not yet Submitted.</errorMessage>
             <isFieldError>false</isFieldError>
         </customErrorMessages>
     </customErrors>
