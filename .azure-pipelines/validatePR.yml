@@ -214,7 +214,8 @@ stages:
                       
                       bash $(stepsRunnerUtil) -d "$(rulesValidationScript)" -w "$(pwd)"
                       
-                      sf force source deploy -p $(packageBaseDir) -u "$validationOrgAlias" --checkonly --testlevel "${TARGET_ORG_TEST_LEVEL}" --junit --verbose --coverageformatters cobertura -w 1000
+                      #sf force source deploy -p $(packageBaseDir) -u "$validationOrgAlias" --checkonly --testlevel "${TARGET_ORG_TEST_LEVEL}" --junit --verbose --coverageformatters cobertura -w 1000
+                      sf project deploy start -d "$(packageBaseDir)" -o "$validationOrgAlias" --dry-run --ignore-conflicts --ignore-warnings --test-level="${TARGET_ORG_TEST_LEVEL}" --junit --coverage-formatters="cobertura" --concise -w 1000
                       
                   displayName: Validate Changes against Org
                   

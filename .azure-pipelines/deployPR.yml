@@ -213,17 +213,20 @@ stages:
                           
                           if [[ "$DX_DEPLOY_STATUS_CODE" == "0" ]]; then
                             echo "Running destructive operation before deploy into $(OrgAliasDevFS)..."
-                            sf force source deploy -u $(OrgAliasDevFS) --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --predestructivechanges="destruct/destructiveChangesPre.xml" -w 1000 --verbose 2>&1 | tee $DEPLOYMENT_LOG_FILE; DX_DEPLOY_STATUS_CODE=${PIPESTATUS[0]};
+                            #sf force source deploy -u $(OrgAliasDevFS) --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --predestructivechanges="destruct/destructiveChangesPre.xml" -w 1000 --verbose 2>&1 | tee $DEPLOYMENT_LOG_FILE; DX_DEPLOY_STATUS_CODE=${PIPESTATUS[0]};
+                            sf project deploy start -o "$(OrgAliasDevFS)" --ignore-conflicts --ignore-warnings --ignore-errors --purge-on-delete --manifest="destruct/package.xml" --pre-destructive-changes="destruct/destructiveChangesPre.xml" -w 1000 --verbose 2>&1 | tee $DEPLOYMENT_LOG_FILE; DX_DEPLOY_STATUS_CODE=${PIPESTATUS[0]};
                           fi
                           
                           if [[ "$DX_DEPLOY_STATUS_CODE" == "0" ]]; then
                             echo "Actually deploying artifacts into $(OrgAliasDevFS)..."
-                            sf force source deploy --sourcepath="$(packageBaseDir)" -u $(OrgAliasDevFS) --testlevel "$TARGET_ORG_TEST_LEVEL" --junit --coverageformatters cobertura --ignorewarnings -w 1000 --verbose 2>&1 | tee $DEPLOYMENT_LOG_FILE; DX_DEPLOY_STATUS_CODE=${PIPESTATUS[0]};
+                            #sf force source deploy --sourcepath="$(packageBaseDir)" -u $(OrgAliasDevFS) --testlevel "$TARGET_ORG_TEST_LEVEL" --junit --coverageformatters cobertura --ignorewarnings -w 1000 --verbose 2>&1 | tee $DEPLOYMENT_LOG_FILE; DX_DEPLOY_STATUS_CODE=${PIPESTATUS[0]};
+                            sf project deploy start -d "$(packageBaseDir)" -o "$(OrgAliasDevFS)" --ignore-conflicts --ignore-warnings --test-level="$TARGET_ORG_TEST_LEVEL" --junit --coverage-formatters="cobertura" --concise -w 1000 2>&1 | tee $DEPLOYMENT_LOG_FILE; DX_DEPLOY_STATUS_CODE=${PIPESTATUS[0]};
                           fi
                           
                           if [[ "$DX_DEPLOY_STATUS_CODE" == "0" ]]; then
                             echo "Running destructive operation after deploy into $(OrgAliasDevFS)..."
-                            sf force source deploy -u $(OrgAliasDevFS) --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --postdestructivechanges="destruct/destructiveChangesPost.xml" -w 1000 --verbose 2>&1 | tee $DEPLOYMENT_LOG_FILE; DX_DEPLOY_STATUS_CODE=${PIPESTATUS[0]};
+                            #sf force source deploy -u $(OrgAliasDevFS) --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --postdestructivechanges="destruct/destructiveChangesPost.xml" -w 1000 --verbose 2>&1 | tee $DEPLOYMENT_LOG_FILE; DX_DEPLOY_STATUS_CODE=${PIPESTATUS[0]};
+                            sf project deploy start -o "$(OrgAliasDevFS)" --ignore-conflicts --ignore-warnings --ignore-errors --purge-on-delete --manifest="destruct/package.xml" --post-destructive-changes="destruct/destructiveChangesPost.xml" -w 1000 --verbose 2>&1 | tee $DEPLOYMENT_LOG_FILE; DX_DEPLOY_STATUS_CODE=${PIPESTATUS[0]};
                           fi
                           
                           # successful deployment - exit from retry loop
