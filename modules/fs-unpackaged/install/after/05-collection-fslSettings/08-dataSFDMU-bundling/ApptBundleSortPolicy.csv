@@ -1,0 +1,4 @@
+$$Name$BundlePolicy.Name,BundlePolicy.$$Name$FilterCriteria.Name,BundlePolicyId,Id,Name,SortDirection,SortFieldName,SortOrder,SortType
+Priority;Default Bundle Policy,Default Bundle Policy;Bundle Validation for Maintenance Designations,7sTDD0000008OP12AM,0lUDD0000008OKL2A2,Priority,Ascending,ServiceAppointment.FS_SA_Priority__c,1,SortWithinaBundle
+Earliest Start Permitted;Default Bundle Policy,Default Bundle Policy;Bundle Validation for Maintenance Designations,7sTDD0000008OP12AM,0lUDD0000008OKG2A2,Earliest Start Permitted,Ascending,ServiceAppointment.EarliestStartTime,3,SortWithinaBundle
+Arrival Window Start;Default Bundle Policy,Default Bundle Policy;Bundle Validation for Maintenance Designations,7sTDD0000008OP12AM,0lUDD0000008OKB2A2,Arrival Window Start,Ascending,ServiceAppointment.ArrivalWindowStartTime,2,SortWithinaBundle
