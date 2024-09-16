@@ -61,4 +61,6 @@ sf force data record update --sobject AppExtension --where "AppExtensionName='Cr
 # update "Time Sheet Entry Update" app extension with installation url
 sf force data record update --sobject AppExtension --where "AppExtensionName='Time Sheet Entry Update'" --values "InstallationUrl='/flow/Time_Sheet_Entry_Update'" --target-org "$PARAM_ORG_ALIAS" --json || true
 
+# update "Add Expenses" app extension with new name and label
+sf force data record update --sobject AppExtension --where "AppExtensionName='Add Expenses' AppExtensionLabel='Add Expenses'" --values "AppExtensionName='Add/Delete Expenses' AppExtensionLabel='Add/Delete Expenses'" --target-org "$PARAM_ORG_ALIAS" --json || true
 
