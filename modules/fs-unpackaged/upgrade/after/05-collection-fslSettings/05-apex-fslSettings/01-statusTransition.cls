@@ -13,6 +13,10 @@ Map<String, FSL.StatusTransition> transitionsToRemoveRegistry =
 			new FSL.StatusTransition(
 				'Onsite',
 				'Dispatched'
+			),
+			new FSL.StatusTransition(
+				'Onsite',
+				'None'
 			)
 		}
 	)
