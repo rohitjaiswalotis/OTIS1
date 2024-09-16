@@ -6,7 +6,7 @@
       "package": "OTIS Field Service",
       "versionName": "Patch Release $CONF_PROP_UTC_DATE_HUMAN",
       "versionDescription": "OTIS Field Service",
-      "versionNumber": "2.0.3.NEXT",
+      "versionNumber": "2.0.4.NEXT",
       "definitionFile": "config/core/shape.json",
       "dependencies": [
         {
@@ -17,7 +17,7 @@
         },
         {
           "package": "OTIS Global CC Core",
-          "versionNumber": "2.0.3.LATEST",
+          "versionNumber": "2.0.4.LATEST",
           "branch": "master-patch"
         },
         {
@@ -60,9 +60,10 @@
     "Salesforce Field Service App@1.55": "04tHq000000lsw7IAA",
     "OTIS Global CC Core": "0HoDn000000TNCsKAO",
     "OTIS Field Service": "0HoDn000000TNHeKAO",
-    "released.latest": "04tQO0000001NllYAE",
+    "released.latest": "04tQO0000001Ym1YAE",
     "OTIS Field Service@2.0": "04tQO00000014JJYAY",
-    "OTIS Field Service@2.0.2": "04tQO0000001NllYAE"
+    "OTIS Field Service@2.0.2": "04tQO0000001NllYAE",
+    "OTIS Field Service@2.0.3": "04tQO0000001Ym1YAE"
   },
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
