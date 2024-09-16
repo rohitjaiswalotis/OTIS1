@@ -19,6 +19,13 @@
                 <elementReference>Restart_Date</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>LatestUnitShutdownLog.BackInServiceDateTime__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Restart_Date</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Update_Shutdown_Restart_Time</targetReference>
         </connector>
@@ -265,7 +272,7 @@
             <fieldText>Reason</fieldText>
             <fieldType>LargeTextArea</fieldType>
             <helpText>&lt;p&gt;Give a Reason&lt;/p&gt;</helpText>
-             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>false</isRequired>
         </fields>
         <nextOrFinishButtonLabel>Save</nextOrFinishButtonLabel>
