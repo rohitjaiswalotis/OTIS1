@@ -1,0 +1,53 @@
+{
+	
+	"allOrNone": false,
+	
+	"createTargetCSVFiles": true,
+	
+	"objects": [
+		
+		{
+			"query": "SELECT Id, Name, Description, IsActive, SourceObject, FilteredObject, LogicalOperator, Customlogic FROM RecordSetFilterCriteria",
+			"operation": "Upsert",
+			"externalId": "Name;SourceObject;FilteredObject;IsActive"
+		},
+		
+		{
+			"query": "SELECT Id, RecordsetFilterCriteriaRuleNumber, RecordsetFilterCriteriaId, CriteriaField, Operator, Value, Type, FirstOccurrence, LastOccurrence, Frequency, Index, NextOccurrenceField, UsageRateField, UsageRateUnit FROM RecordsetFilterCriteriaRule",
+			"operation": "Upsert",
+			"externalId": "CriteriaField;Operator;Value;Type;RecordsetFilterCriteria.Name;RecordsetFilterCriteria.SourceObject;RecordsetFilterCriteria.FilteredObject;RecordsetFilterCriteria.IsActive"
+		},
+		
+		{
+			"query": "SELECT Id, Name, AddToBundleStatuses, DoesAddTravelTime, MemberStatusesNotToPropagate, BundleStatusesToPropagate, CriteriaForAutoUnbundlingId, RemoveFromBundleStatuses, StatusOnRemovalFromBundle, StatusesNotToUpdateOnUnbundle FROM ApptBundleConfig",
+			"operation": "Upsert",
+			"externalId": "Name;CriteriaForAutoUnbundling.Name"
+		},
+		
+		{
+			"query": "SELECT Id, Name, CanAllowSchleDepndInBundle, IsAutomaticBundling, BundleEndTimeFieldName, BundleStartTimeFieldName, ConstantTimeValue, FilterCriteriaId, LimitAmountOfBundleMembers, LimitDurationOfBundle, IsManualBundling, Priority, IsTimeCalcByBundleDurationFld FROM ApptBundlePolicy",
+			"operation": "Upsert",
+			"externalId": "Name;FilterCriteria.Name"
+		},
+		
+		{
+			"query": "SELECT Id, Name, SortDirection, SortFieldName, SortOrder, SortType, BundlePolicyId FROM ApptBundleSortPolicy",
+			"operation": "Upsert",
+			"externalId": "Name;BundlePolicy.Name"
+		},
+		
+		{
+			"query": "SELECT Id, Name, BundlePolicyId, DoesAllowEmpty, IsRestrictByDateOnly, DoesRestrictAutomaticMode, DoesRestrictManualMode, RestrictionFieldName FROM ApptBundleRestrictPolicy",
+			"operation": "Upsert",
+			"externalId": "Name;BundlePolicy.Name"
+		},
+		
+		{
+			"query": "SELECT Id, Name, BundlePolicyId, BundleMemberAddiFieldName, ShouldUpdateOnCreationOnly, AggregationAction, AggregationFieldType, AggregationOrder, DoesAllowDuplicateStrings, BundleFieldName, DateValue, ConstantValue, DownscaleSortDirection, MaxBundleDuration, FilterCriteriaId, BundleMemberFieldName FROM ApptBundleAggrPolicy",
+			"operation": "Upsert",
+			"externalId": "Name;BundlePolicy.Name"
+		}
+		
+	]
+	
+}
