@@ -42,6 +42,7 @@
             </value>
         </inputParameters>
         <nameSegment>customNotificationAction</nameSegment>
+        <offset>0</offset>
         <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
@@ -83,6 +84,7 @@
             </value>
         </inputParameters>
         <nameSegment>customNotificationAction</nameSegment>
+        <offset>0</offset>
         <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>59.0</apiVersion>
@@ -897,7 +899,7 @@
         </rules>
         <rules>
             <name>Created_or_Updated_by_User_Boomi_Integration</name>
-            <conditionLogic>or</conditionLogic>
+            <conditionLogic>(1 OR 2 OR 3 OR 4) AND 5</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.CreatedById</leftValueReference>
                 <operator>EqualTo</operator>
@@ -924,6 +926,13 @@
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <elementReference>Get_Boomi_Integration_User.Id</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>IsNeww</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
