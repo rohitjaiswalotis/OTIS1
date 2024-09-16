@@ -146,7 +146,7 @@
             <targetReference>Add_TSE_Record_to_TSECollection</targetReference>
         </connector>
     </assignments>
-    <customErrors>
+     <customErrors>
         <name>Approved_Error</name>
         <label>Approved Error</label>
         <locationX>314</locationX>
@@ -386,6 +386,13 @@
                 <operator>NotEqualTo</operator>
                 <rightValue>
                     <stringValue>Submitted</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
