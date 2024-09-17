@@ -21,13 +21,13 @@
 		{
 			"query": "SELECT Id, Name, AddToBundleStatuses, DoesAddTravelTime, MemberStatusesNotToPropagate, BundleStatusesToPropagate, CriteriaForAutoUnbundlingId, RemoveFromBundleStatuses, StatusOnRemovalFromBundle, StatusesNotToUpdateOnUnbundle FROM ApptBundleConfig",
 			"operation": "Upsert",
-			"externalId": "Name;CriteriaForAutoUnbundling.Name"
+			"externalId": "Name"
 		},
 		
 		{
 			"query": "SELECT Id, Name, CanAllowSchleDepndInBundle, IsAutomaticBundling, BundleEndTimeFieldName, BundleStartTimeFieldName, ConstantTimeValue, FilterCriteriaId, LimitAmountOfBundleMembers, LimitDurationOfBundle, IsManualBundling, Priority, IsTimeCalcByBundleDurationFld FROM ApptBundlePolicy",
 			"operation": "Upsert",
-			"externalId": "Name;FilterCriteria.Name"
+			"externalId": "Name"
 		},
 		
 		{
