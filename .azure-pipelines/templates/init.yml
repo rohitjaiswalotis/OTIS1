@@ -52,6 +52,14 @@ steps:
 
 
 - bash: |
+        
+        export SF_DISABLE_SOURCE_MEMBER_POLLING="true"
+        echo "##vso[task.setvariable variable=SF_DISABLE_SOURCE_MEMBER_POLLING]$SF_DISABLE_SOURCE_MEMBER_POLLING"
+        
+  displayName: 'Global Config'
+
+
+- bash: |
         echo "Tracing system variables..."
         echo "BUILD_REASON=$BUILD_REASON"
   

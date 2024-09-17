@@ -228,11 +228,13 @@ steps:
         
         if [[ "${DEPLOYMENT_ACTION_TYPE}" =~ ^validateOnly$ ]] ; then
           
-          sf force source deploy --sourcepath="$(packageBaseDir)" -u "targetOrg" --checkonly --testlevel=NoTestRun --ignorewarnings -w 1000 --verbose
+          #sf force source deploy --sourcepath="$(packageBaseDir)" -u "targetOrg" --checkonly --testlevel=NoTestRun --ignorewarnings -w 1000 --verbose
+          sf project deploy start -d "$(packageBaseDir)" -o "targetOrg" --dry-run --ignore-conflicts --ignore-warnings --test-level="NoTestRun" --concise -w 1000
           
         elif [[ "${DEPLOYMENT_ACTION_TYPE}" =~ ^validateWithTests$ ]] ; then
           
-          sf force source deploy --sourcepath="$(packageBaseDir)" -u "targetOrg" --checkonly --testlevel=RunLocalTests --ignorewarnings -w 1000 --verbose
+          #sf force source deploy --sourcepath="$(packageBaseDir)" -u "targetOrg" --checkonly --testlevel=RunLocalTests --ignorewarnings -w 1000 --verbose
+          sf project deploy start -d "$(packageBaseDir)" -o "targetOrg" --dry-run --ignore-conflicts --ignore-warnings --test-level="RunLocalTests" --concise -w 1000
           
         else
           
@@ -272,12 +274,15 @@ steps:
           
           # COMMENTED FOR NOW: pre-destruct: run destructive operation before deploy
           #sf force source deploy -u "targetOrg" --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --predestructivechanges="destruct/destructiveChangesPre.xml" -w 1000 --verbose
+          #sf project deploy start -o "targetOrg" --ignore-conflicts --ignore-warnings --ignore-errors --purge-on-delete --manifest="destruct/package.xml" --pre-destructive-changes="destruct/destructiveChangesPre.xml" -w 1000 --verbose
           
           # actual deployment
-          sf force source deploy --sourcepath="$(packageBaseDir)" -u "targetOrg" --ignorewarnings -w 1000 --verbose
+          #sf force source deploy --sourcepath="$(packageBaseDir)" -u "targetOrg" --ignorewarnings -w 1000 --verbose
+          sf project deploy start -d "$(packageBaseDir)" -o "targetOrg" --ignore-conflicts --ignore-warnings --concise -w 1000
           
           # COMMENTED FOR NOW: post-destruct: run destructive operation after deploy
           #sf force source deploy -u "targetOrg" --ignorewarnings --ignoreerrors --purgeondelete --manifest="destruct/package.xml" --postdestructivechanges="destruct/destructiveChangesPost.xml" -w 1000 --verbose
+          #sf project deploy start -o "targetOrg" --ignore-conflicts --ignore-warnings --ignore-errors --purge-on-delete --manifest="destruct/package.xml" --post-destructive-changes="destruct/destructiveChangesPost.xml" -w 1000 --verbose
           
           
           if [[ "${{ parameters.actionPhase }}" =~ ^after$ || "${{ parameters.actionPhase }}" =~ ^both$ ]] ; then

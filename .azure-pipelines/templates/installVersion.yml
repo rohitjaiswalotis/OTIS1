@@ -334,9 +334,11 @@ steps:
         
         
         # read version details by id to get version number
-        FS_PACKAGE_VERSION_INFO=$(sf data query --use-tooling-api --target-org="targetOrg" -q "SELECT Id, Name, MajorVersion, MinorVersion, PatchVersion, BuildNumber, SubscriberPackageId, ReleaseState, IsBeta FROM SubscriberPackageVersion WHERE Id='$FS_PACKAGE_VERSION_ID'" --json | jq -r ".result.records[0] // empty");
         
         echo "Reading package version details by '$FS_PACKAGE_VERSION_ID' id to get version number..."
+        
+        FS_PACKAGE_VERSION_INFO=$(sf data query --use-tooling-api --target-org="targetOrg" -q "SELECT Id, Name, MajorVersion, MinorVersion, PatchVersion, BuildNumber, SubscriberPackageId, ReleaseState, IsBeta FROM SubscriberPackageVersion WHERE Id='$FS_PACKAGE_VERSION_ID'" --json | jq -r ".result.records[0] // empty" || true);
+        
         
         FS_PACKAGE_VERSION_MAJOR=$(echo $FS_PACKAGE_VERSION_INFO | jq -r ".MajorVersion // empty" || true);
         FS_PACKAGE_VERSION_MINOR=$(echo $FS_PACKAGE_VERSION_INFO | jq -r ".MinorVersion // empty" || true);
@@ -346,11 +348,32 @@ steps:
         
         echo "Parsed package version number: $FS_PACKAGE_VERSION_NUMBER"
         
+        FS_PACKAGE_VERSION_NAME=$(echo $FS_PACKAGE_VERSION_INFO | jq -r ".Name // empty" || true);
+        
+        FS_PACKAGE_ID=$(echo $FS_PACKAGE_VERSION_INFO | jq -r ".SubscriberPackageId // empty" || true);
+        
+        
+        # read package details by id to get name and namespace
+        
+        echo "Reading package details by '$FS_PACKAGE_ID' id to get name and namespace..."
+        
+        FS_PACKAGE_INFO=$(sf data query --use-tooling-api --target-org="targetOrg" -q "SELECT Id, Name, NamespacePrefix, IsPackageValid, Description FROM SubscriberPackage WHERE Id='$FS_PACKAGE_ID'" --json | jq -r ".result.records[0] // empty" || true);
+        
+        FS_PACKAGE_NAME=$(echo $FS_PACKAGE_INFO | jq -r ".Name // empty" || true);
+        FS_PACKAGE_NAMESPACE=$(echo $FS_PACKAGE_INFO | jq -r ".NamespacePrefix // empty" || true);
+        
+        
         echo "##vso[task.setvariable variable=FS_PACKAGE_VERSION_MAJOR]$FS_PACKAGE_VERSION_MAJOR"
         echo "##vso[task.setvariable variable=FS_PACKAGE_VERSION_MINOR]$FS_PACKAGE_VERSION_MINOR"
         echo "##vso[task.setvariable variable=FS_PACKAGE_VERSION_PATCH]$FS_PACKAGE_VERSION_PATCH"
         echo "##vso[task.setvariable variable=FS_PACKAGE_VERSION_BUILD]$FS_PACKAGE_VERSION_BUILD"
         echo "##vso[task.setvariable variable=FS_PACKAGE_VERSION_NUMBER]$FS_PACKAGE_VERSION_NUMBER"
+        
+        echo "##vso[task.setvariable variable=FS_PACKAGE_VERSION_NAME]$FS_PACKAGE_VERSION_NAME"
+        
+        echo "##vso[task.setvariable variable=FS_PACKAGE_ID]$FS_PACKAGE_ID"
+        echo "##vso[task.setvariable variable=FS_PACKAGE_NAME]$FS_PACKAGE_NAME"
+        echo "##vso[task.setvariable variable=FS_PACKAGE_NAMESPACE]$FS_PACKAGE_NAMESPACE"
         
         
         # get packages installed into target org
@@ -373,7 +396,7 @@ steps:
         FS_PACKAGE_ORIGINAL_VERSION_ID=$(echo "$FS_PACKAGE_ORIGINAL_VERSION_DETAILS" | jq -r ".SubscriberPackageVersionId // empty");
         
         # early exit if version validation is enabled and package version with exact same id has already been installed
-        if [[ "$(enableVersionComparison)" =~ ^[Tt]rue$ && ${FS_PACKAGE_ORIGINAL_VERSION_DETAILS:+1} ]]; then
+        if [[ "$(enableVersionComparison)" =~ ^[Tt]rue$ && ${FS_PACKAGE_ORIGINAL_VERSION_ID:+1} ]]; then
           
           if [[ "${FS_PACKAGE_ORIGINAL_VERSION_ID::15}" == "${FS_PACKAGE_VERSION_ID::15}" ]]; then
             
@@ -388,8 +411,40 @@ steps:
           
         fi
         
-        echo "##vso[task.setvariable variable=FS_PACKAGE_ORIGINAL_VERSION_DETAILS]$FS_PACKAGE_ORIGINAL_VERSION_DETAILS"
-        echo "##vso[task.setvariable variable=FS_PACKAGE_ORIGINAL_VERSION_ID]$FS_PACKAGE_ORIGINAL_VERSION_ID"
+        
+        if [[ ${FS_PACKAGE_ORIGINAL_VERSION_DETAILS:+1} ]]; then
+          
+          # parse original version details
+          
+          FS_PACKAGE_ORIGINAL_VERSION_NUMBER="$(echo "$FS_PACKAGE_ORIGINAL_VERSION_DETAILS" | jq -r ".SubscriberPackageVersionNumber // empty" || true)";
+          
+          FS_PACKAGE_ORIGINAL_VERSION_MAJOR=$((`echo $FS_PACKAGE_ORIGINAL_VERSION_NUMBER | cut -d"." -f1`));
+          FS_PACKAGE_ORIGINAL_VERSION_MINOR=$((`echo $FS_PACKAGE_ORIGINAL_VERSION_NUMBER | cut -d"." -f2`));
+          FS_PACKAGE_ORIGINAL_VERSION_PATCH=$((`echo $FS_PACKAGE_ORIGINAL_VERSION_NUMBER | cut -d"." -f3`));
+          FS_PACKAGE_ORIGINAL_VERSION_BUILD=$((`echo $FS_PACKAGE_ORIGINAL_VERSION_NUMBER | cut -d"." -f4`));
+          
+          FS_PACKAGE_ORIGINAL_VERSION_NAME="$(echo "$FS_PACKAGE_ORIGINAL_VERSION_DETAILS" | jq -r ".SubscriberPackageVersionName // empty" || true)";
+          FS_PACKAGE_ORIGINAL_ID="$(echo "$FS_PACKAGE_ORIGINAL_VERSION_DETAILS" | jq -r ".SubscriberPackageId // empty" || true)";
+          FS_PACKAGE_ORIGINAL_NAME="$(echo "$FS_PACKAGE_ORIGINAL_VERSION_DETAILS" | jq -r ".SubscriberPackageName // empty" || true)";
+          FS_PACKAGE_ORIGINAL_NAMESPACE="$(echo "$FS_PACKAGE_ORIGINAL_VERSION_DETAILS" | jq -r ".SubscriberPackageNamespace // empty" || true)";
+          
+          
+          # set original version details to pass to next steps
+          
+          echo "##vso[task.setvariable variable=FS_PACKAGE_ORIGINAL_VERSION_ID]$FS_PACKAGE_ORIGINAL_VERSION_ID"
+          echo "##vso[task.setvariable variable=FS_PACKAGE_ORIGINAL_VERSION_NUMBER]$FS_PACKAGE_ORIGINAL_VERSION_NUMBER"
+          echo "##vso[task.setvariable variable=FS_PACKAGE_ORIGINAL_VERSION_MAJOR]$FS_PACKAGE_ORIGINAL_VERSION_MAJOR"
+          echo "##vso[task.setvariable variable=FS_PACKAGE_ORIGINAL_VERSION_MINOR]$FS_PACKAGE_ORIGINAL_VERSION_MINOR"
+          echo "##vso[task.setvariable variable=FS_PACKAGE_ORIGINAL_VERSION_PATCH]$FS_PACKAGE_ORIGINAL_VERSION_PATCH"
+          echo "##vso[task.setvariable variable=FS_PACKAGE_ORIGINAL_VERSION_BUILD]$FS_PACKAGE_ORIGINAL_VERSION_BUILD"
+          
+          echo "##vso[task.setvariable variable=FS_PACKAGE_ORIGINAL_VERSION_NAME]$FS_PACKAGE_ORIGINAL_VERSION_NAME"
+          
+          echo "##vso[task.setvariable variable=FS_PACKAGE_ORIGINAL_ID]$FS_PACKAGE_ORIGINAL_ID"
+          echo "##vso[task.setvariable variable=FS_PACKAGE_ORIGINAL_NAME]$FS_PACKAGE_ORIGINAL_NAME"
+          echo "##vso[task.setvariable variable=FS_PACKAGE_ORIGINAL_NAMESPACE]$FS_PACKAGE_ORIGINAL_NAMESPACE"
+          
+        fi
         
         
         echo "Authorizing to dev hub..."
@@ -502,13 +557,10 @@ steps:
         # evaluate action type in case of auto mode
         if [[ "${{ parameters.installationMode }}" =~ ^auto$ ]] ; then
           
-          if [[ ${FS_PACKAGE_ORIGINAL_VERSION_DETAILS:+1} ]]; then
+          if [[ ${FS_PACKAGE_ORIGINAL_VERSION_NUMBER:+1} ]]; then
             
             echo "Field Service package is already present in target org. Going with upgrade flow..."
             PACKAGE_ACTION_TYPE="upgrade"
-            
-            # grab already installed version number
-            FS_PACKAGE_ORIGINAL_VERSION_NUMBER=$(echo "$FS_PACKAGE_ORIGINAL_VERSION_DETAILS" | jq -r ".SubscriberPackageVersionNumber");
             
             echo "Upgrading '$(fsPackageName)' package version $FS_PACKAGE_VERSION_NUMBER ($FS_PACKAGE_VERSION_ID) on top of '$FS_PACKAGE_ORIGINAL_VERSION_NUMBER'..."
             
@@ -536,10 +588,32 @@ steps:
           export SF_SR_VAR_GLOBAL_LOCALIZATION_DOMAIN="${{parameters.localizationDomain}}";
         fi
         
-        export SF_SR_VAR_GLOBAL_VERSION_NUMBER="$FS_PACKAGE_VERSION_NUMBER"
-        export SF_SR_VAR_GLOBAL_VERSION_MAJOR="$FS_PACKAGE_VERSION_MAJOR"
-        export SF_SR_VAR_GLOBAL_VERSION_MINOR="$FS_PACKAGE_VERSION_MINOR"
-        export SF_SR_VAR_GLOBAL_VERSION_PATCH="$FS_PACKAGE_VERSION_PATCH"
+        export SF_SR_VAR_GLOBAL_OLD_VERSION_ID="$FS_PACKAGE_ORIGINAL_VERSION_ID"
+        export SF_SR_VAR_GLOBAL_OLD_VERSION_NUMBER="$FS_PACKAGE_ORIGINAL_VERSION_NUMBER"
+        export SF_SR_VAR_GLOBAL_OLD_VERSION_MAJOR="$FS_PACKAGE_ORIGINAL_VERSION_MAJOR"
+        export SF_SR_VAR_GLOBAL_OLD_VERSION_MINOR="$FS_PACKAGE_ORIGINAL_VERSION_MINOR"
+        export SF_SR_VAR_GLOBAL_OLD_VERSION_PATCH="$FS_PACKAGE_ORIGINAL_VERSION_PATCH"
+        export SF_SR_VAR_GLOBAL_OLD_VERSION_BUILD="$FS_PACKAGE_ORIGINAL_VERSION_BUILD"
+        
+        export SF_SR_VAR_GLOBAL_OLD_VERSION_NAME="$FS_PACKAGE_ORIGINAL_VERSION_NAME"
+        
+        export SF_SR_VAR_GLOBAL_OLD_PACKAGE_ID="$FS_PACKAGE_ORIGINAL_ID"
+        export SF_SR_VAR_GLOBAL_OLD_PACKAGE_NAME="$FS_PACKAGE_ORIGINAL_NAME"
+        export SF_SR_VAR_GLOBAL_OLD_PACKAGE_NAMESPACE="$FS_PACKAGE_ORIGINAL_NAMESPACE"
+        
+        
+        export SF_SR_VAR_GLOBAL_NEW_VERSION_ID="$FS_PACKAGE_VERSION_ID"
+        export SF_SR_VAR_GLOBAL_NEW_VERSION_NUMBER="$FS_PACKAGE_VERSION_NUMBER"
+        export SF_SR_VAR_GLOBAL_NEW_VERSION_MAJOR="$FS_PACKAGE_VERSION_MAJOR"
+        export SF_SR_VAR_GLOBAL_NEW_VERSION_MINOR="$FS_PACKAGE_VERSION_MINOR"
+        export SF_SR_VAR_GLOBAL_NEW_VERSION_PATCH="$FS_PACKAGE_VERSION_PATCH"
+        export SF_SR_VAR_GLOBAL_NEW_VERSION_BUILD="$FS_PACKAGE_VERSION_BUILD"
+        
+        export SF_SR_VAR_GLOBAL_NEW_VERSION_NAME="$FS_PACKAGE_VERSION_NAME"
+        
+        export SF_SR_VAR_GLOBAL_NEW_PACKAGE_ID="$FS_PACKAGE_ID"
+        export SF_SR_VAR_GLOBAL_NEW_PACKAGE_NAME="$FS_PACKAGE_NAME"
+        export SF_SR_VAR_GLOBAL_NEW_PACKAGE_NAMESPACE="$FS_PACKAGE_NAMESPACE"
         
         
         # transforming script params (if provided)

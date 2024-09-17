@@ -9,7 +9,7 @@ Mechanic Location;ServiceResource;Otis Layers,2023-12-19T17:22:06.000+0000,a2EDG
   ""enabled"" : ""false"",
   ""border"" : ""#16325C"",
   ""affectVisibility"" : ""true""
-}",FROM ServiceResource WHERE Id != '' AND (JobTitle__c = 'Repair Mechanic' OR JobTitle__c = 'Service Mechanic'),1,ZT2V30TwYQVIqs0/vD1tyw==,1 min,0,,5000,,asc,,,Name,,,,,,,Name,WDSupervisorName__c,ServiceCrewId,JobTitle__c,,,,,Mechanic Location
+}",FROM ServiceResource WHERE Id != '' AND (JobTitle__c = 'Repair Mechanic' OR JobTitle__c = 'Service Mechanic'),1,ZT2V30TwYQVIqs0/vD1tyw==,1 min,0,,5000,,asc,,,Name,,,,,,,Name,WDSupervisorName__c,JobTitle__c,,,,,,Mechanic Location
 S1 Dispatched Service Appointments;ServiceAppointment;Otis Layers,2023-12-19T16:46:12.000+0000,a2EDG000001mjRA2AY,"{""operator"":""AND"",""event"":""all"",""task"":""all""}","{
   ""isPolyline"" : ""false"",
   ""waypointsAfter"" : null,

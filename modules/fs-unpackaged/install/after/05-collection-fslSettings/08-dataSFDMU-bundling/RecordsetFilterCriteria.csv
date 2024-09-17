@@ -1,0 +1,3 @@
+$$Name$SourceObject$FilteredObject$IsActive,CustomLogic,Description,FilteredObject,Id,IsActive,LogicalOperator,Name,SourceObject
+Bundle Validation for Maintenance Designations;ApptBundlePolicy;ServiceAppointment;true,,,ServiceAppointment,0hrDD0000004CCRYA2,true,AND,Bundle Validation for Maintenance Designations,ApptBundlePolicy
+Bundle Dispatch Record Set Filter Criteria;ApptBundleConfig;ServiceAppointment;true,1 AND 2,,ServiceAppointment,0hrDD0000004CC2YAM,true,AND,Bundle Dispatch Record Set Filter Criteria,ApptBundleConfig
