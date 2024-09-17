@@ -1,3 +1,3 @@
-$$Name$BundlePolicy.Name,BundlePolicy.$$Name$FilterCriteria.Name,BundlePolicyId,DoesAllowEmpty,DoesRestrictAutomaticMode,DoesRestrictManualMode,Id,IsRestrictByDateOnly,Name,RestrictionFieldName
-Unit restriction policy;Default Bundle Policy,Default Bundle Policy;Bundle Validation for Maintenance Designations,7sTDD0000008OP12AM,false,true,true,6KPDD0000008OJm4AM,false,Unit restriction policy,ServiceAppointment.Unit__c
-Maintenance Designation;Default Bundle Policy,Default Bundle Policy;Bundle Validation for Maintenance Designations,7sTDD0000008OP12AM,false,true,true,6KPDD0000008OJh4AM,false,Maintenance Designation,ServiceAppointment.FS_MaintenanceDesignation__c
+$$Name$BundlePolicy.Name,BundlePolicy.Name,BundlePolicyId,DoesAllowEmpty,DoesRestrictAutomaticMode,DoesRestrictManualMode,Id,IsRestrictByDateOnly,Name,RestrictionFieldName
+Unit restriction policy;Default Bundle Policy,Default Bundle Policy,7sTDD0000008OP12AM,false,true,true,6KPDD0000008OJm4AM,false,Unit restriction policy,ServiceAppointment.Unit__c
+Maintenance Designation;Default Bundle Policy,Default Bundle Policy,7sTDD0000008OP12AM,false,true,true,6KPDD0000008OJh4AM,false,Maintenance Designation,ServiceAppointment.FS_MaintenanceDesignation__c
