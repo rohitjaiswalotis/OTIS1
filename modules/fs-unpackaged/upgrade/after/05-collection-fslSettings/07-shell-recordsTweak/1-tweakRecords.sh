@@ -54,6 +54,9 @@ sf force data record delete --sobject AppExtension --where "AppExtensionName='Se
 # delete "Create/Update the Resource Absence" app extension (if any)
 sf force data record delete --sobject AppExtension --where "AppExtensionName='Create/Update the Resource Absence' AppExtensionLabel='Create/Update the Resource Absence'" --target-org "$PARAM_ORG_ALIAS" --json || true
 
+# delete "Time Sheet Entry Update" app extension (if any)
+sf force data record delete --sobject AppExtension --where "AppExtensionName='Time Sheet Entry Update' AppExtensionLabel='Update Time Sheet Entry'" --target-org "$PARAM_ORG_ALIAS" --json || true
+
 
 # update "Create_WO_for_Repair_Detection" app extension to align ScopedToObjectTypes
 sf force data record update --sobject AppExtension --where "AppExtensionName='Create_WO_for_Repair_Detection'" --values "ScopedToObjectTypes='WorkOrder'" --target-org "$PARAM_ORG_ALIAS" --json || true
