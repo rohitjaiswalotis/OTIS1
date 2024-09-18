@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <assignments>
-        <name>Assign_Multiplier_value_for_other_multiplier_Type</name>
-        <label>Assign Multiplier value for other multiplier Type</label>
-        <locationX>1106</locationX>
-        <locationY>2978</locationY>
+        <name>Assign_Multiplier_Type</name>
+        <label>Assign Multiplier Type</label>
+        <locationX>314</locationX>
+        <locationY>2270</locationY>
         <assignmentItems>
-            <assignToReference>multiplierfornewTSE</assignToReference>
+            <assignToReference>MultiplierType</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Multiplier_Value</elementReference>
+                <elementReference>Multiplier_Type</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -17,15 +17,15 @@
         </connector>
     </assignments>
     <assignments>
-        <name>Assign_Multiplier_value_for_Reg</name>
-        <label>Assign Multiplier value for Reg</label>
-        <locationX>842</locationX>
-        <locationY>2870</locationY>
+        <name>Assign_Multiplier_Type1</name>
+        <label>Assign Multiplier Type</label>
+        <locationX>578</locationX>
+        <locationY>2270</locationY>
         <assignmentItems>
-            <assignToReference>multiplierfornewTSE</assignToReference>
+            <assignToReference>MultiplierType</assignToReference>
             <operator>Assign</operator>
             <value>
-                <numberValue>1.0</numberValue>
+                <elementReference>Copy_1_of_Multiplier_Type</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -35,8 +35,8 @@
     <assignments>
         <name>Assign_Start_and_End_Date</name>
         <label>Assign Start and End Date</label>
-        <locationX>1238</locationX>
-        <locationY>2546</locationY>
+        <locationX>1106</locationX>
+        <locationY>1730</locationY>
         <assignmentItems>
             <assignToReference>startDate</assignToReference>
             <operator>Assign</operator>
@@ -58,97 +58,31 @@
     <assignments>
         <name>Assign_temp_variables</name>
         <label>Assign temp variables</label>
-        <locationX>2272</locationX>
-        <locationY>1646</locationY>
+        <locationX>2228</locationX>
+        <locationY>998</locationY>
         <assignmentItems>
             <assignToReference>tempDate</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>loopTSE.CreatedDate</elementReference>
+                <elementReference>TimeRecordData.CreatedDate</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>tempstarttime</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>loopTSE.StartTime</elementReference>
+                <elementReference>TimeRecordData.StartTime</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>check_TSE_createddate</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Assign_update_TSE_multiplier_Value</name>
-        <label>Assign update TSE multiplier Value</label>
-        <locationX>2690</locationX>
-        <locationY>1430</locationY>
-        <assignmentItems>
-            <assignToReference>UpdateTSEMultiplier</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <numberValue>1.0</numberValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Update_the_Time_Sheet_Entry</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Assignment_3</name>
-        <label>Assignment 3</label>
-        <locationX>50</locationX>
-        <locationY>1214</locationY>
-        <assignmentItems>
-            <assignToReference>errorMessage3</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>For Reg, Multiplier value cannot be other than 1.0 </stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>errorMessage5</assignToReference>
-            <operator>Assign</operator>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>errorMessage8</assignToReference>
-            <operator>Assign</operator>
-        </assignmentItems>
-        <connector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Update_Time_Sheets_Entry</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Assignment_8</name>
-        <label>Assignment 8</label>
-        <locationX>314</locationX>
-        <locationY>1214</locationY>
-        <assignmentItems>
-            <assignToReference>errorMessage8</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Please select Multiplier Value.</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>errorMessage5</assignToReference>
-            <operator>Assign</operator>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>errorMessage3</assignToReference>
-            <operator>Assign</operator>
-        </assignmentItems>
-        <connector>
-            <isGoTo>true</isGoTo>
-            <targetReference>Update_Time_Sheets_Entry</targetReference>
+            <targetReference>Copy_1_of_check_TSE_createddate</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Assignment_9</name>
         <label>Assignment 9</label>
-        <locationX>2063</locationX>
-        <locationY>1322</locationY>
+        <locationX>2228</locationX>
+        <locationY>890</locationY>
         <assignmentItems>
             <assignToReference>newdate</assignToReference>
             <operator>Assign</operator>
@@ -171,46 +105,30 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Decision_7</targetReference>
+            <targetReference>Assign_temp_variables</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>Copy_1_of_Assign_update_TSE_multiplier_Value</name>
-        <label>Copy 1 of Assign update TSE multiplier Value</label>
-        <locationX>2954</locationX>
-        <locationY>1430</locationY>
+        <name>Copy_1_of_Copy_1_of_Assign_Multiplier_Type</name>
+        <label>Assign Multiplier Type</label>
+        <locationX>1106</locationX>
+        <locationY>2162</locationY>
         <assignmentItems>
-            <assignToReference>UpdateTSEMultiplier</assignToReference>
+            <assignToReference>MultiplierType</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Multiplier_Values</elementReference>
+                <elementReference>Copy_1_of_Copy_1_of_Multiplier_Type</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Update_the_Time_Sheet_Entry</targetReference>
+            <targetReference>Copy_1_of_Create_Time_Sheet_Entry</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>Copy_1_of_Copy_1_of_createddate</name>
-        <label>Copy 1 of Copy 1 of createddate</label>
-        <locationX>2052</locationX>
-        <locationY>1970</locationY>
-        <assignmentItems>
-            <assignToReference>maxStartTime</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>tempstarttime</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>loop_over_all_records</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Copy_1_of_createddate</name>
-        <label>Copy 1 of createddate</label>
-        <locationX>1788</locationX>
-        <locationY>1970</locationY>
+        <name>createddate</name>
+        <label>createddate</label>
+        <locationX>1502</locationX>
+        <locationY>1322</locationY>
         <assignmentItems>
             <assignToReference>minStarttime</assignToReference>
             <operator>Assign</operator>
@@ -219,14 +137,30 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>loop_over_all_records</targetReference>
+            <targetReference>Checking_the_Date</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>createddate1</name>
+        <label>createddate</label>
+        <locationX>1766</locationX>
+        <locationY>1322</locationY>
+        <assignmentItems>
+            <assignToReference>maxStartTime</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>tempstarttime</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Checking_the_Date</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Error_Message_1</name>
         <label>Error Message 1</label>
-        <locationX>1370</locationX>
-        <locationY>2762</locationY>
+        <locationX>1634</locationX>
+        <locationY>1946</locationY>
         <assignmentItems>
             <assignToReference>errorMessage1</assignToReference>
             <operator>Assign</operator>
@@ -242,8 +176,8 @@
     <assignments>
         <name>Error_Message_2</name>
         <label>Error Message 2</label>
-        <locationX>1634</locationX>
-        <locationY>2762</locationY>
+        <locationX>1898</locationX>
+        <locationY>1946</locationY>
         <assignmentItems>
             <assignToReference>ErrorMessage2</assignToReference>
             <operator>Assign</operator>
@@ -259,8 +193,8 @@
     <assignments>
         <name>Error_Message_4</name>
         <label>Error Message 4</label>
-        <locationX>578</locationX>
-        <locationY>2762</locationY>
+        <locationX>50</locationX>
+        <locationY>1946</locationY>
         <assignmentItems>
             <assignToReference>errorMessage4</assignToReference>
             <operator>Assign</operator>
@@ -298,11 +232,51 @@
         </value>
     </choices>
     <choices>
-        <name>Reg</name>
-        <choiceText>Reg</choiceText>
+        <name>OT10</name>
+        <choiceText>&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 11.36px; font-family: Helvetica; color: rgb(0, 0, 0);&quot;&gt;OT-1.0&lt;/span&gt;</choiceText>
         <dataType>String</dataType>
         <value>
-            <stringValue>Regular</stringValue>
+            <stringValue>OT-1.0</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>OT15</name>
+        <choiceText>&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Arial, Helvetica, sans-serif; font-size: 11.36px;&quot;&gt;OT-1.5&lt;/span&gt;</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>OT-1.5</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>OT17</name>
+        <choiceText>OT-1.7</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>OT-1.7</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>OT20</name>
+        <choiceText>&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11.36px; background-color: rgb(255, 255, 255);&quot;&gt;OT-2.0&lt;/span&gt;</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>OT-2.0</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Reg</name>
+        <choiceText>&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 11.36px; font-family: Helvetica; color: rgb(0, 0, 0);&quot;&gt;Reg-1.0&lt;/span&gt;</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Reg-1.0</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>Reg1</name>
+        <choiceText>&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Arial, Helvetica, sans-serif; font-size: 11.36px;&quot;&gt;Reg-1.0&lt;/span&gt;</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Reg-1.0</stringValue>
         </value>
     </choices>
     <choices>
@@ -332,10 +306,10 @@
     <decisions>
         <name>check_min_start_time</name>
         <label>check min start time</label>
-        <locationX>2052</locationX>
-        <locationY>1862</locationY>
+        <locationX>1766</locationX>
+        <locationY>1214</locationY>
         <defaultConnector>
-            <targetReference>loop_over_all_records</targetReference>
+            <targetReference>Checking_the_Date</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -349,7 +323,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Copy_1_of_createddate</targetReference>
+                <targetReference>createddate</targetReference>
             </connector>
             <label>if minstartime is lessthan starttime</label>
         </rules>
@@ -364,69 +338,16 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Copy_1_of_Copy_1_of_createddate</targetReference>
+                <targetReference>createddate1</targetReference>
             </connector>
             <label>if maxstartime is greaterthan starttime</label>
         </rules>
     </decisions>
     <decisions>
-        <name>check_Multiplier_Type</name>
-        <label>check Multiplier Type</label>
-        <locationX>974</locationX>
-        <locationY>2762</locationY>
-        <defaultConnector>
-            <targetReference>Create_Time_Sheet_Entrys</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>If_Reg_is_selected</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Multiplier_Types_TSE</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <elementReference>Reg</elementReference>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Assign_Multiplier_value_for_Reg</targetReference>
-            </connector>
-            <label>If Reg is selected</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>check_TSE_createddate</name>
-        <label>check TSE createddate</label>
-        <locationX>2272</locationX>
-        <locationY>1754</locationY>
-        <defaultConnector>
-            <targetReference>loop_over_all_records</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>check_createddate_of_TSE</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>tempDate</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <elementReference>newdate</elementReference>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>check_min_start_time</targetReference>
-            </connector>
-            <label>check createddate of TSE</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>Checking_Split_TSE</name>
         <label>Checking Split TSE</label>
-        <locationX>2442</locationX>
-        <locationY>1214</locationY>
-        <defaultConnector>
-            <targetReference>Copy_1_of_check_Multiplier_Type</targetReference>
-        </defaultConnector>
+        <locationX>2591</locationX>
+        <locationY>782</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>True</name>
@@ -447,8 +368,8 @@
     <decisions>
         <name>Checking_the_Date</name>
         <label>Checking the Date</label>
-        <locationX>1700</locationX>
-        <locationY>2330</locationY>
+        <locationX>1766</locationX>
+        <locationY>1514</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Outcome_1_of_Checking_the_Date</name>
@@ -474,71 +395,10 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Checking_the_Multiplier_Value</name>
-        <label>Checking the Multiplier Value</label>
-        <locationX>1246</locationX>
-        <locationY>1106</locationY>
-        <defaultConnector>
-            <targetReference>Checking_Split_TSE</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Checking_the_Multiplier_Type</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Multiplier_Type</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <elementReference>Reg</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Multiplier_Values</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <numberValue>1.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Multiplier_Values</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Assignment_3</targetReference>
-            </connector>
-            <label>Checking the Multiplier Type</label>
-        </rules>
-        <rules>
-            <name>Select_Multiplier_Value</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Multiplier_Type</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <elementReference>OT</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Multiplier_Values</leftValueReference>
-                <operator>IsNull</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Assignment_8</targetReference>
-            </connector>
-            <label>Select Multiplier Value</label>
-        </rules>
-    </decisions>
-    <decisions>
         <name>Checking_the_Start_Time_of_the_TSE</name>
         <label>Checking the Start Time of the TSE</label>
-        <locationX>1238</locationX>
-        <locationY>2654</locationY>
+        <locationX>1106</locationX>
+        <locationY>1838</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Start_Date_Should_be_same_as_Selected_TSE_Date</name>
@@ -580,7 +440,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>check_Multiplier_Type</targetReference>
+                <targetReference>If_Canada</targetReference>
             </connector>
             <label>if anyone condition is true</label>
         </rules>
@@ -630,50 +490,99 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Copy_1_of_check_Multiplier_Type</name>
-        <label>Copy 1 of check Multiplier Type</label>
-        <locationX>2822</locationX>
-        <locationY>1322</locationY>
-        <defaultConnector>
-            <targetReference>Copy_1_of_Assign_update_TSE_multiplier_Value</targetReference>
-        </defaultConnector>
+        <name>Copy_1_of_check_TSE_createddate</name>
+        <label>Copy 1 of check TSE createddate</label>
+        <locationX>2228</locationX>
+        <locationY>1106</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>If_Reg_is_selected_for_Update</name>
+            <name>Copy_1_of_check_createddate_of_TSE</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Multiplier_Type</leftValueReference>
+                <leftValueReference>tempDate</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>Reg</elementReference>
+                    <elementReference>newdate</elementReference>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Assign_update_TSE_multiplier_Value</targetReference>
+                <targetReference>check_min_start_time</targetReference>
             </connector>
-            <label>If Reg is selected for Update</label>
+            <label>Copy 1 of check createddate of TSE</label>
         </rules>
     </decisions>
     <decisions>
-        <name>Decision_7</name>
-        <label>Decision 7</label>
-        <locationX>2063</locationX>
-        <locationY>1430</locationY>
+        <name>If_Canada</name>
+        <label>If Canada</label>
+        <locationX>974</locationX>
+        <locationY>1946</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
-            <name>Outcome_1_of_Decision_7</name>
+            <name>Check_for_Canada</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>TimeSheetEntryRecord</leftValueReference>
-                <operator>IsNull</operator>
+                <leftValueReference>Country</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <booleanValue>false</booleanValue>
+                    <stringValue>Canada</stringValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>loop_over_all_records</targetReference>
+                <targetReference>If_work_travel</targetReference>
             </connector>
-            <label>Outcome 1 of Decision 7</label>
+            <label>Check for Canada</label>
+        </rules>
+        <rules>
+            <name>Check_for_US</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Country</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>US</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Time_Sheet_Entry3</targetReference>
+            </connector>
+            <label>Check for US</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>If_work_travel</name>
+        <label>If work/travel</label>
+        <locationX>578</locationX>
+        <locationY>2054</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>If_work</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Time_Sheet_Entry_Type1</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Work</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Time_Sheet_Entry1</targetReference>
+            </connector>
+            <label>If work</label>
+        </rules>
+        <rules>
+            <name>If_travel</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Time_Sheet_Entry_Type1</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Travel</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Time_Sheet_Entry2</targetReference>
+            </connector>
+            <label>If travel</label>
         </rules>
     </decisions>
     <description>This flow is part of these US #925621, #999267, which is used to update and create Time Sheet Entries.</description>
@@ -684,21 +593,6 @@
         <displayField>MultiplierValue__c</displayField>
         <object>OTIS_Pay_Multiplier_Setting__mdt</object>
         <valueField>MultiplierValue__c</valueField>
-    </dynamicChoiceSets>
-    <dynamicChoiceSets>
-        <name>multiplerType</name>
-        <dataType>String</dataType>
-        <displayField>Label</displayField>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>TypeOfMultiplier__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>Get_Meta_Data</elementReference>
-            </value>
-        </filters>
-        <object>OTIS_Pay_Multiplier_Setting__mdt</object>
-        <valueField>Id</valueField>
     </dynamicChoiceSets>
     <dynamicChoiceSets>
         <name>multiplerTypes</name>
@@ -774,44 +668,6 @@
         <valueField>MultiplierValue__c</valueField>
     </dynamicChoiceSets>
     <dynamicChoiceSets>
-        <name>multiplierRecordNew</name>
-        <dataType>Number</dataType>
-        <displayField>MultiplierValue__c</displayField>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Company__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>unitRecordData.FS_UnitCompany__c</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>OfficeCode__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>unitRecordData.BranchCode__c</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>TimeEntryType__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>Time_Sheet_Entry_Type</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>TypeOfMultiplier__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>Multiplier_Types_TSE</elementReference>
-            </value>
-        </filters>
-        <object>OTIS_Pay_Multiplier_Setting__mdt</object>
-        <sortField>MultiplierValue__c</sortField>
-        <sortOrder>Asc</sortOrder>
-        <valueField>MultiplierValue__c</valueField>
-    </dynamicChoiceSets>
-    <dynamicChoiceSets>
         <name>multiplierValue</name>
         <collectionReference>metaDataValue</collectionReference>
         <dataType>Number</dataType>
@@ -825,16 +681,40 @@
         <displayField>TimeSheetEntryNumber</displayField>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>WorkOrderId</field>
+            <field>TimeSheetId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>WorkOrderRecord.Id</elementReference>
+                <elementReference>TimeSheetId</elementReference>
             </value>
         </filters>
         <object>TimeSheetEntry</object>
+        <outputAssignments>
+            <assignToReference>SelectedTSECreatedDate</assignToReference>
+            <field>CreatedDate</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>SelectedTSEEndDate</assignToReference>
+            <field>EndTime</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>SelectedTSEStartdate</assignToReference>
+            <field>StartTime</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>SelectedTSEName</assignToReference>
+            <field>TimeSheetEntryNumber</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>SelectedTSEType</assignToReference>
+            <field>Type</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>SelectedTSEWOId</assignToReference>
+            <field>WorkOrderId</field>
+        </outputAssignments>
         <sortField>TimeSheetEntryNumber</sortField>
         <sortOrder>Asc</sortOrder>
-        <valueField>TimeSheetEntryNumber</valueField>
+        <valueField>Id</valueField>
     </dynamicChoiceSets>
     <dynamicChoiceSets>
         <name>TimeSheetEntryType</name>
@@ -844,24 +724,17 @@
         <picklistField>Time_Entry_Type__c</picklistField>
         <picklistObject>TimeSheetEntry</picklistObject>
     </dynamicChoiceSets>
+    <dynamicChoiceSets>
+        <name>Type</name>
+        <dataType>Picklist</dataType>
+        <displayField xsi:nil="true"/>
+        <object xsi:nil="true"/>
+        <picklistField>Type</picklistField>
+        <picklistObject>TimeSheetEntry</picklistObject>
+    </dynamicChoiceSets>
     <environments>Default</environments>
     <interviewLabel>Time Sheet Entry Update {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Time Sheet Entry Update</label>
-    <loops>
-        <name>loop_over_all_records</name>
-        <label>loop over all records</label>
-        <locationX>1700</locationX>
-        <locationY>1538</locationY>
-        <assignNextValueToReference>loopTSE</assignNextValueToReference>
-        <collectionReference>TimeSheetEntryRecord</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>Assign_temp_variables</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>Checking_the_Date</targetReference>
-        </noMoreValuesConnector>
-    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -883,9 +756,9 @@
     <processType>FieldServiceMobile</processType>
     <recordCreates>
         <name>Copy_1_of_Create_Time_Sheet_Entry</name>
-        <label>Copy 1 of Create Time Sheet Entry</label>
+        <label>Create Time Sheet Entry</label>
         <locationX>974</locationX>
-        <locationY>3170</locationY>
+        <locationY>2546</locationY>
         <assignRecordIdToReference>SplitTSEID</assignRecordIdToReference>
         <inputAssignments>
             <field>EndTime</field>
@@ -896,13 +769,7 @@
         <inputAssignments>
             <field>Multiplier_Type__c</field>
             <value>
-                <elementReference>Multiplier_Types_TSE</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Multiplier_Values__c</field>
-            <value>
-                <elementReference>multiplierfornewTSE</elementReference>
+                <elementReference>MultiplierType</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -914,97 +781,54 @@
         <inputAssignments>
             <field>TimeSheetId</field>
             <value>
-                <elementReference>Timesheet.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Time_Entry_Type__c</field>
-            <value>
-                <elementReference>Time_Sheet_Entry_Type</elementReference>
+                <elementReference>TimeRecordData.TimeSheetId</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
             <field>WorkOrderId</field>
             <value>
-                <elementReference>ServiceAppointmentRecord.ParentRecordId</elementReference>
+                <elementReference>TimeRecordData.WorkOrderId</elementReference>
+            </value>
+        </inputAssignments>
+	<inputAssignments>
+            <field>Type</field>
+            <value>
+                <elementReference>Time_Sheet_Entry_Type1</elementReference>
             </value>
         </inputAssignments>
         <object>TimeSheetEntry</object>
     </recordCreates>
     <recordLookups>
-        <name>Get_Meta_Data</name>
-        <label>Get Meta Data</label>
-        <locationX>1246</locationX>
-        <locationY>890</locationY>
+        <name>Get_Office</name>
+        <label>Get Office</label>
+        <locationX>2591</locationX>
+        <locationY>566</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Update_Time_Sheets_Entry</targetReference>
+            <targetReference>Copy_1_of_Update_Time_Sheet_Entry</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
-            <field>OfficeCode__c</field>
+            <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>unitRecordData.BranchCode__c</elementReference>
+                <elementReference>Serviceresoruceoffice</elementReference>
             </value>
         </filters>
-        <filters>
-            <field>Company__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>unitRecordData.FS_UnitCompany__c</elementReference>
-            </value>
-        </filters>
-        <object>OTIS_Pay_Multiplier_Setting__mdt</object>
-        <outputReference>metaDataValues</outputReference>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>TypeOfMultiplier__c</queriedFields>
-        <queriedFields>MultiplierValue__c</queriedFields>
-        <queriedFields>TimeEntryType__c</queriedFields>
+        <object>Branch__c</object>
+        <outputAssignments>
+            <assignToReference>Country</assignToReference>
+            <field>Country__c</field>
+        </outputAssignments>
     </recordLookups>
     <recordLookups>
-        <name>Get_Record_of_Time_Sheet_Entry</name>
-        <label>Get Record of Time Sheet Entry</label>
-        <locationX>1246</locationX>
-        <locationY>674</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Get_Unit_Record</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>TimeSheetEntryNumber</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>Time_Sheet_Entry_Records</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>WorkOrderId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>WorkOrderRecord.Id</elementReference>
-            </value>
-        </filters>
-        <object>TimeSheetEntry</object>
-        <outputReference>TimeRecordData</outputReference>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>StartTime</queriedFields>
-        <queriedFields>EndTime</queriedFields>
-        <queriedFields>Multiplier_Type__c</queriedFields>
-        <queriedFields>Multiplier_Values__c</queriedFields>
-        <queriedFields>TimeSheetEntryNumber</queriedFields>
-        <queriedFields>Time_Entry_Type__c</queriedFields>
-        <queriedFields>CreatedDate</queriedFields>
-    </recordLookups>
-    <recordLookups>
-        <name>Get_Service_Appointment_Record</name>
-        <label>Get Service Appointment Record</label>
-        <locationX>1246</locationX>
+        <name>Get_Selected_TSE_Records</name>
+        <label>Get Selected TSE Records</label>
+        <locationX>2591</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Work_Order</targetReference>
+            <targetReference>Get_Time_Sheet_Record</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -1014,168 +838,145 @@
                 <elementReference>Id</elementReference>
             </value>
         </filters>
-        <object>ServiceAppointment</object>
-        <outputReference>ServiceAppointmentRecord</outputReference>
+        <object>TimeSheetEntry</object>
+        <outputReference>TimeRecordData</outputReference>
         <queriedFields>Id</queriedFields>
-        <queriedFields>Unit__c</queriedFields>
-        <queriedFields>AssignedServiceResource__c</queriedFields>
-        <queriedFields>ParentRecordId</queriedFields>
-        <queriedFields>AppointmentNumber</queriedFields>
+        <queriedFields>StartTime</queriedFields>
+        <queriedFields>EndTime</queriedFields>
+        <queriedFields>TimeSheetEntryNumber</queriedFields>
+        <queriedFields>Type</queriedFields>
+        <queriedFields>WorkOrderId</queriedFields>
+        <queriedFields>CreatedDate</queriedFields>
+        <queriedFields>TimeSheetId</queriedFields>
     </recordLookups>
     <recordLookups>
-        <name>Get_Time_sheetId_from_Assigned_Resource</name>
-        <label>Get Time sheetId from Assigned Resource</label>
-        <locationX>1246</locationX>
+        <name>Get_Service_resource</name>
+        <label>Get Service resource</label>
+        <locationX>2591</locationX>
         <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Display_the_Time_Sheet_Entry_Records</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>ServiceResourceId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>ServiceAppointmentRecord.AssignedServiceResource__c</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>Status</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>New</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>StartDate</field>
-            <operator>LessThanOrEqualTo</operator>
-            <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>EndDate</field>
-            <operator>GreaterThanOrEqualTo</operator>
-            <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
-            </value>
-        </filters>
-        <object>TimeSheet</object>
-        <outputReference>Timesheet</outputReference>
-        <queriedFields>Id</queriedFields>
-        <sortField>CreatedDate</sortField>
-        <sortOrder>Desc</sortOrder>
-    </recordLookups>
-    <recordLookups>
-        <name>Get_Timesheet_Entry_Records</name>
-        <label>Get Timesheet Entry Records</label>
-        <locationX>1246</locationX>
-        <locationY>350</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Get_Time_sheetId_from_Assigned_Resource</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>WorkOrderId</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>WorkOrderRecord.Id</elementReference>
-            </value>
-        </filters>
-        <object>TimeSheetEntry</object>
-        <outputReference>TimeSheetEntryRecord</outputReference>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>TimeSheetEntryNumber</queriedFields>
-        <queriedFields>StartTime</queriedFields>
-        <queriedFields>EndTime</queriedFields>
-        <queriedFields>Multiplier_Values__c</queriedFields>
-        <queriedFields>Multiplier_Type__c</queriedFields>
-        <queriedFields>CreatedDate</queriedFields>
-    </recordLookups>
-    <recordLookups>
-        <name>Get_Unit_Record</name>
-        <label>Get Unit Record</label>
-        <locationX>1246</locationX>
-        <locationY>782</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Get_Meta_Data</targetReference>
+            <targetReference>Get_Office</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>ServiceAppointmentRecord.Unit__c</elementReference>
+                <elementReference>ServiceResource</elementReference>
             </value>
         </filters>
-        <object>Asset</object>
-        <outputReference>unitRecordData</outputReference>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>BranchCode__c</queriedFields>
-        <queriedFields>FS_UnitCompany__c</queriedFields>
+        <object>ServiceResource</object>
+        <outputAssignments>
+            <assignToReference>Serviceresoruceoffice</assignToReference>
+            <field>Branch__c</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Time_Sheet_Record</name>
+        <label>Get Time Sheet Record</label>
+        <locationX>2591</locationX>
+        <locationY>242</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Work_Order</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>TimeRecordData.TimeSheetId</elementReference>
+            </value>
+        </filters>
+        <object>TimeSheet</object>
+        <outputAssignments>
+            <assignToReference>ServiceResource</assignToReference>
+            <field>ServiceResourceId</field>
+        </outputAssignments>
     </recordLookups>
     <recordLookups>
         <name>Get_Work_Order</name>
         <label>Get Work Order</label>
-        <locationX>1246</locationX>
-        <locationY>242</locationY>
+        <locationX>2591</locationX>
+        <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Timesheet_Entry_Records</targetReference>
+            <targetReference>Get_Service_resource</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>ServiceAppointmentRecord.ParentRecordId</elementReference>
+                <elementReference>TimeRecordData.WorkOrderId</elementReference>
             </value>
         </filters>
         <object>WorkOrder</object>
-        <outputReference>WorkOrderRecord</outputReference>
-        <queriedFields>Id</queriedFields>
+        <outputAssignments>
+            <assignToReference>TSEWorkOrderNumber</assignToReference>
+            <field>WorkOrderNumber</field>
+        </outputAssignments>
     </recordLookups>
-    <recordUpdates>
-        <name>Update_the_Time_Sheet_Entry</name>
-        <label>Update the Time Sheet Entry</label>
-        <locationX>2822</locationX>
-        <locationY>1622</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>TimeSheetEntryNumber</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>Time_Sheet_Entry_Records</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>TimeRecordData.Id</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Multiplier_Type__c</field>
-            <value>
-                <elementReference>Multiplier_Type</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Multiplier_Values__c</field>
-            <value>
-                <elementReference>UpdateTSEMultiplier</elementReference>
-            </value>
-        </inputAssignments>
-        <object>TimeSheetEntry</object>
-    </recordUpdates>
+    <screens>
+        <name>Copy_1_of_Update_Time_Sheet_Entry</name>
+        <label>Update Time Sheet Entry</label>
+        <locationX>2591</locationX>
+        <locationY>674</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Checking_Split_TSE</targetReference>
+        </connector>
+        <fields>
+            <name>UpdateTSE</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Split Time Sheet Entry&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Work_Order</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Work Order: &lt;/strong&gt;{!TSEWorkOrderNumber}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>TimeSheetEntryNumber</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Name: &lt;/strong&gt;{!TimeRecordData.TimeSheetEntryNumber}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>timeSheetEntryTime</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Time Sheet Entry Type: &lt;/strong&gt;{!TimeRecordData.Type}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Start_Times_TSE</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;&lt;/span&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;﻿Start Time: &lt;/strong&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;{!TimeRecordData.StartTime}&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>End_Time_TSE</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;End Time: &lt;/strong&gt;{!TimeRecordData.EndTime}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Split_TSE</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
+            <fieldText>Split TSE</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
     <screens>
         <name>Create_Time_Sheet_Entry</name>
         <label>Create Time Sheet Entry</label>
-        <locationX>1238</locationX>
-        <locationY>2438</locationY>
+        <locationX>1106</locationX>
+        <locationY>1622</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1188,28 +989,13 @@
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>errorMsg</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0);&quot;&gt;{!errorMessage1}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <name>WorkOrder</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Work Order: &lt;/strong&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;{!TimeSheetEntryTSE.WorkOrderId}&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>errorMessages</name>
-            <fieldText>&lt;p&gt;&lt;strong&gt;{!ErrorMessage2}&lt;/strong&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>errMsg4</name>
-            <fieldText>&lt;p&gt;&lt;strong&gt;{!errorMessage4}&lt;/strong&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>Copy_1_of_serviceAppointment</name>
-            <fieldText>&lt;p&gt;&lt;strong&gt;Service Appointment:&lt;/strong&gt; {!serviceAppointmentData.AppointmentNumber}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>Time_Sheet_Entry_Type</name>
-            <choiceReferences>TimeSheetEntryType</choiceReferences>
+            <name>Time_Sheet_Entry_Type1</name>
+            <choiceReferences>Type</choiceReferences>
             <dataType>String</dataType>
             <fieldText>Time Sheet Entry Type</fieldText>
             <fieldType>DropdownBox</fieldType>
@@ -1230,163 +1016,111 @@
             <isRequired>true</isRequired>
         </fields>
         <fields>
-            <name>Multiplier_Types_TSE</name>
-            <choiceReferences>multiplerTypes</choiceReferences>
-            <dataType>String</dataType>
-            <fieldText>Multiplier Type</fieldText>
-            <fieldType>RadioButtons</fieldType>
-            <isRequired>true</isRequired>
+            <name>errorMsg</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0);&quot;&gt;{!errorMessage1}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>errorMessages</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;{!ErrorMessage2}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>errMsg4</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;{!errorMessage4}&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>Create_Time_Sheet_Entrys</name>
+        <name>Create_Time_Sheet_Entry1</name>
         <label>Create Time Sheet Entry</label>
-        <locationX>1106</locationX>
-        <locationY>2870</locationY>
+        <locationX>314</locationX>
+        <locationY>2162</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Assign_Multiplier_value_for_other_multiplier_Type</targetReference>
+            <targetReference>Assign_Multiplier_Type</targetReference>
         </connector>
-        <fields>
-            <name>Multiplier_Value</name>
-            <choiceReferences>multiplierRecordNew</choiceReferences>
-            <dataType>Number</dataType>
-            <fieldText>Multiplier Value</fieldText>
-            <fieldType>RadioButtons</fieldType>
-            <isRequired>true</isRequired>
-            <scale>1</scale>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
-        <name>Display_the_Time_Sheet_Entry_Records</name>
-        <label>Display the Time Sheet Entry Records</label>
-        <locationX>1246</locationX>
-        <locationY>566</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <connector>
-            <targetReference>Get_Record_of_Time_Sheet_Entry</targetReference>
-        </connector>
-        <fields>
-            <name>Display</name>
-            <fieldText>&lt;p&gt;Please select one of the following timesheet entry:&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>Time_Sheet_Entry_Records</name>
-            <choiceReferences>timeSheetEntrySet</choiceReferences>
-            <dataType>String</dataType>
-            <fieldText>Time Sheet Entry Records</fieldText>
-            <fieldType>RadioButtons</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
-        <name>Update_Time_Sheets_Entry</name>
-        <label>Update Time Sheet Entry</label>
-        <locationX>1246</locationX>
-        <locationY>998</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <connector>
-            <targetReference>Checking_the_Multiplier_Value</targetReference>
-        </connector>
-        <fields>
-            <name>UpdateTSE</name>
-            <fieldText>&lt;p&gt;&lt;strong&gt;Update Time Sheet Entry&lt;/strong&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>serviceAppointment</name>
-            <fieldText>&lt;p&gt;&lt;strong&gt;Service Appointment:&lt;/strong&gt; {!ServiceAppointmentRecord.AppointmentNumber}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>TimeSheetEntryNumber</name>
-            <fieldText>&lt;p&gt;&lt;strong&gt;Name: &lt;/strong&gt;{!TimeRecordData.TimeSheetEntryNumber}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>timeSheetEntryTime</name>
-            <fieldText>&lt;p&gt;&lt;strong&gt;Time Sheet Entry Type: &lt;/strong&gt;{!TimeRecordData.Time_Entry_Type__c}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>Start_Times_TSE</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;Start Time: &lt;/strong&gt;{!TimeRecordData.StartTime}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>End_Time_TSE</name>
-            <fieldText>&lt;p&gt;&lt;strong&gt;End Time: &lt;/strong&gt;{!TimeRecordData.EndTime}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
         <fields>
             <name>Multiplier_Type</name>
-            <choiceReferences>multiplerTypes</choiceReferences>
+            <choiceReferences>Reg1</choiceReferences>
+            <choiceReferences>OT15</choiceReferences>
+            <choiceReferences>OT20</choiceReferences>
             <dataType>String</dataType>
-            <defaultValue>
-                <elementReference>TimeRecordData.Multiplier_Type__c</elementReference>
-            </defaultValue>
             <fieldText>Multiplier Type</fieldText>
-            <fieldType>RadioButtons</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>Multiplier_Values</name>
-            <choiceReferences>multiplierRecord</choiceReferences>
-            <dataType>Number</dataType>
-            <fieldText>Multiplier Values</fieldText>
-            <fieldType>RadioButtons</fieldType>
+            <fieldType>DropdownBox</fieldType>
             <isRequired>false</isRequired>
-            <scale>1</scale>
-        </fields>
-        <fields>
-            <name>Split_TSE</name>
-            <dataType>Boolean</dataType>
-            <defaultValue>
-                <booleanValue>false</booleanValue>
-            </defaultValue>
-            <fieldText>Split TSE</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>ErrorMessage</name>
-            <fieldText>&lt;p&gt;&lt;strong&gt;{!errorMessage3}&lt;/strong&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>errorMessageForOT</name>
-            <fieldText>&lt;p&gt;&lt;strong&gt;{!errorMessage5}&lt;/strong&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>errorMesg8</name>
-            <fieldText>&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0);&quot;&gt;{!errorMessage8}&lt;/strong&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Create_Time_Sheet_Entry2</name>
+        <label>Create Time Sheet Entry</label>
+        <locationX>578</locationX>
+        <locationY>2162</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Assign_Multiplier_Type1</targetReference>
+        </connector>
+        <fields>
+            <name>Copy_1_of_Multiplier_Type</name>
+            <choiceReferences>Reg1</choiceReferences>
+            <choiceReferences>OT10</choiceReferences>
+            <choiceReferences>OT15</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Multiplier Type</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Create_Time_Sheet_Entry3</name>
+        <label>Create Time Sheet Entry</label>
+        <locationX>1106</locationX>
+        <locationY>2054</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Copy_1_of_Copy_1_of_Assign_Multiplier_Type</targetReference>
+        </connector>
+        <fields>
+            <name>Copy_1_of_Copy_1_of_Multiplier_Type</name>
+            <choiceReferences>Reg1</choiceReferences>
+            <choiceReferences>OT15</choiceReferences>
+            <choiceReferences>OT17</choiceReferences>
+            <choiceReferences>OT20</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Multiplier Type</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>1120</locationX>
+        <locationX>2465</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Service_Appointment_Record</targetReference>
+            <targetReference>Get_Selected_TSE_Records</targetReference>
         </connector>
     </start>
     <status>Active</status>
+    <variables>
+        <name>Country</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>EndDate</name>
         <dataType>Date</dataType>
@@ -1536,8 +1270,57 @@
         <scale>1</scale>
     </variables>
     <variables>
+        <name>MultiplierType</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>newdate</name>
         <dataType>Date</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>SelectedTSECreatedDate</name>
+        <dataType>DateTime</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>SelectedTSEEndDate</name>
+        <dataType>DateTime</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>SelectedTSEName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>SelectedTSEStartdate</name>
+        <dataType>DateTime</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>SelectedTSEType</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>SelectedTSEWOId</name>
+        <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
@@ -1560,6 +1343,20 @@
     </variables>
     <variables>
         <name>serviceRecordData</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Serviceresoruceoffice</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>ServiceResource</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
@@ -1641,6 +1438,13 @@
         <objectType>TimeSheetEntry</objectType>
     </variables>
     <variables>
+        <name>TimeSheetId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>TSE1</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -1663,6 +1467,13 @@
         <objectType>TimeSheetEntry</objectType>
     </variables>
     <variables>
+        <name>TSEWorkOrderNumber</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>unitRecordData</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
@@ -1677,6 +1488,13 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <scale>1</scale>
+    </variables>
+    <variables>
+        <name>Work</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>WorkOrderRecord</name>
