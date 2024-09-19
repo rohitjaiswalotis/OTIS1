@@ -42,11 +42,6 @@ if (workTypeId == null) {
 		otisSettings.Optimizer_Finish_Date__c ?? 2
 	;
 	
-	// TODO - remove when changes are propagated to most of the orgs
-	if (otisSettings.Optimizer_Finish_Date__c == 3) {
-		otisSettings.Optimizer_Finish_Date__c = 2;
-	}
-	
 	upsert otisSettings;
 	
 }
