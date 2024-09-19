@@ -39,7 +39,7 @@ if (workTypeId == null) {
 	;
 	
 	otisSettings.Optimizer_Finish_Date__c = 
-		otisSettings.Optimizer_Finish_Date__c ?? 3
+		otisSettings.Optimizer_Finish_Date__c ?? 2
 	;
 	
 	upsert otisSettings;
