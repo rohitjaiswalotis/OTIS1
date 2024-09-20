@@ -52,13 +52,16 @@ if [[ -d "${LOCAL_CURRENT_STEP_DIR}/entitlementProcesses" && "$(ls -A "${LOCAL_C
 		
 		# query info re latest entitlement version
 		
-		entitlementVersionInfo="$(sf data query --target-org "$PARAM_ORG_ALIAS" -q "SELECT Id, Name, NameNorm, IsActive, VersionMaster, VersionNumber, IsVersionDefault, SObjectType, StartDateField FROM SlaProcess WHERE Name='$entitlementName' ORDER BY VersionNumber DESC LIMIT 1" --json | jq -r ".result.records[0] // empty")"
-		entitlementVersionMaster="$(echo "$entitlementVersionInfo" | jq -r ".VersionMaster // empty")"
-		entitlementVersionNumber="$(echo "$entitlementVersionInfo" | jq -r ".VersionNumber // empty")"
+		entitlementNamedVersionInfo="$(sf data query --target-org "$PARAM_ORG_ALIAS" -q "SELECT Id, Name, NameNorm, IsActive, VersionMaster, VersionNumber, IsVersionDefault, SObjectType, StartDateField FROM SlaProcess WHERE Name='$entitlementName' ORDER BY VersionNumber DESC LIMIT 1" --json | jq -r ".result.records[0] // empty")"
+		entitlementVersionMaster="$(echo "$entitlementNamedVersionInfo" | jq -r ".VersionMaster // empty")"
 		
 		
 		# inject version master (if any)
 		if [[ ${entitlementVersionMaster:+1} ]]; then
+			
+			# query for latest version number in scope of current master version
+			entitlementLatestVersionInfo="$(sf data query --target-org "$PARAM_ORG_ALIAS" -q "SELECT Id, Name, NameNorm, IsActive, VersionMaster, VersionNumber, IsVersionDefault, SObjectType, StartDateField FROM SlaProcess WHERE VersionMaster='$entitlementVersionMaster' ORDER BY VersionNumber DESC LIMIT 1" --json | jq -r ".result.records[0] // empty")"
+			entitlementVersionNumber="$(echo "$entitlementLatestVersionInfo" | jq -r ".VersionNumber // empty")"
 			
 			# remove existent version master (if any)
 			xmlstarlet ed --inplace --delete "/*[local-name()='EntitlementProcess']/*[local-name()='versionMaster']" "$entitlementItem"
