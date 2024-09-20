@@ -64,15 +64,15 @@ if [[ -d "${LOCAL_CURRENT_STEP_DIR}/entitlementProcesses" && "$(ls -A "${LOCAL_C
 		# inject version master (if any)
 		if [[ ${entitlementVersionMaster:+1} ]]; then
 			
-			# query for latest version number in scope of current master version
-			entitlementLatestVersionInfo="$(sf data query --target-org "$PARAM_ORG_ALIAS" -q "SELECT Id, Name, NameNorm, IsActive, VersionMaster, VersionNumber, IsVersionDefault, SObjectType, StartDateField FROM SlaProcess WHERE VersionMaster='$entitlementVersionMaster' ORDER BY VersionNumber DESC LIMIT 1" --json | jq -r ".result.records[0] // empty")"
-			entitlementVersionNumber="$(echo "$entitlementLatestVersionInfo" | jq -r ".VersionNumber // empty")"
-			
 			# remove existent version master (if any)
 			xmlstarlet ed --inplace --delete "/*[local-name()='EntitlementProcess']/*[local-name()='versionMaster']" "$entitlementItem"
 			
 			# add new version master
 			xmlstarlet ed --inplace -s "/*[local-name()='EntitlementProcess']" -t elem -n versionMaster -v "$entitlementVersionMaster" "$entitlementItem"
+			
+			# query for latest version number in scope of current master version
+			entitlementLatestVersionInfo="$(sf data query --target-org "$PARAM_ORG_ALIAS" -q "SELECT Id, Name, NameNorm, IsActive, VersionMaster, VersionNumber, IsVersionDefault, SObjectType, StartDateField FROM SlaProcess WHERE VersionMaster='$entitlementVersionMaster' ORDER BY VersionNumber DESC LIMIT 1" --json | jq -r ".result.records[0] // empty")"
+			entitlementVersionNumber="$(echo "$entitlementLatestVersionInfo" | jq -r ".VersionNumber // empty")"
 			
 			
 			if [[ ${entitlementVersionNumber:+1} ]]; then
@@ -85,6 +85,14 @@ if [[ -d "${LOCAL_CURRENT_STEP_DIR}/entitlementProcesses" && "$(ls -A "${LOCAL_C
 				
 				echo "HERE IS MODIFIED ENTITLEMENT FILE!!!"
 				cat "${LOCAL_CURRENT_STEP_DIR}/entitlementProcesses/${entitlementNameFromFileName}_v${entitlementVersionNumber}.entitlementProcess-meta.xml"
+				
+			fi
+			
+			
+			if [[ ! ${entitlementNameFromFileContent:+1} ]]; then
+				
+				# add entitlement name into file
+				xmlstarlet ed --inplace -s "/*[local-name()='EntitlementProcess']" -t elem -n name -v "$entitlementNameFromFileName" "$entitlementItem"
 				
 			fi
 			
