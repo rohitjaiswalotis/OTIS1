@@ -75,6 +75,14 @@ if [[ -d "${LOCAL_CURRENT_STEP_DIR}/entitlementProcesses" && "$(ls -A "${LOCAL_C
 			entitlementVersionNumber="$(echo "$entitlementLatestVersionInfo" | jq -r ".VersionNumber // empty")"
 			
 			
+			if [[ ! ${entitlementNameFromFileContent:+1} ]]; then
+				
+				# add entitlement name into file
+				xmlstarlet ed --inplace -s "/*[local-name()='EntitlementProcess']" -t elem -n name -v "$entitlementNameFromFileName" "$entitlementItem"
+				
+			fi
+			
+			
 			if [[ ${entitlementVersionNumber:+1} ]]; then
 				
 				# add new version number
@@ -85,14 +93,6 @@ if [[ -d "${LOCAL_CURRENT_STEP_DIR}/entitlementProcesses" && "$(ls -A "${LOCAL_C
 				
 				echo "Enriched entitlement file ${entitlementItem}:"
 				cat "${LOCAL_CURRENT_STEP_DIR}/entitlementProcesses/${entitlementNameFromFileName}_v${entitlementVersionNumber}.entitlementProcess-meta.xml"
-				
-			fi
-			
-			
-			if [[ ! ${entitlementNameFromFileContent:+1} ]]; then
-				
-				# add entitlement name into file
-				xmlstarlet ed --inplace -s "/*[local-name()='EntitlementProcess']" -t elem -n name -v "$entitlementNameFromFileName" "$entitlementItem"
 				
 			fi
 			
