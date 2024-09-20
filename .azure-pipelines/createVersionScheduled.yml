@@ -21,12 +21,12 @@ schedules:
     - dev-jpn
   always: false
 
-- cron: '0 2 * * *'
-  displayName: Nightly Field Service Global Release Package Version Build
-  branches:
-    include:
-    - master
-  always: false
+#- cron: '0 2 * * *'
+#  displayName: Nightly Field Service Global Release Package Version Build
+#  branches:
+#    include:
+#    - master
+#  always: false
 
 - cron: '0 3 * * *'
   displayName: Nightly Field Service Global Patch Package Version Build
