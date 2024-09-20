@@ -50,9 +50,14 @@ if [[ -d "${LOCAL_CURRENT_STEP_DIR}/entitlementProcesses" && "$(ls -A "${LOCAL_C
 		entitlementName=${entitlementName:-${entitlementNameFromFileContent:-$entitlementNameFromFileName}}
 		echo "Evaluated entitlement name: $entitlementName"
 		
+		
+		# extract sobject type from entitlement file (if any)
+		entitlementSObjectType="$(xmlstarlet sel -t -v "//*[local-name()='EntitlementProcess']/*[local-name()='SObjectType']/text()" "$entitlementItem" || true)"
+		
+		
 		# query info re latest entitlement version
 		
-		entitlementNamedVersionInfo="$(sf data query --target-org "$PARAM_ORG_ALIAS" -q "SELECT Id, Name, NameNorm, IsActive, VersionMaster, VersionNumber, IsVersionDefault, SObjectType, StartDateField FROM SlaProcess WHERE Name='$entitlementName' ORDER BY VersionNumber DESC LIMIT 1" --json | jq -r ".result.records[0] // empty")"
+		entitlementNamedVersionInfo="$(sf data query --target-org "$PARAM_ORG_ALIAS" -q "SELECT Id, Name, NameNorm, IsActive, VersionMaster, VersionNumber, IsVersionDefault, SObjectType, StartDateField FROM SlaProcess WHERE Name='$entitlementName' AND SObjectType='$entitlementSObjectType' ORDER BY VersionNumber DESC LIMIT 1" --json | jq -r ".result.records[0] // empty")"
 		entitlementVersionMaster="$(echo "$entitlementNamedVersionInfo" | jq -r ".VersionMaster // empty")"
 		
 		
