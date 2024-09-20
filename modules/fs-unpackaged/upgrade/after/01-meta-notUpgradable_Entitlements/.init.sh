@@ -72,6 +72,9 @@ if [[ -d "${LOCAL_CURRENT_STEP_DIR}/entitlementProcesses" && "$(ls -A "${LOCAL_C
 			
 			if [[ ${entitlementVersionNumber:+1} ]]; then
 				
+				# add new version number
+				xmlstarlet ed --inplace -s "/*[local-name()='EntitlementProcess']" -t elem -n versionNumber -v "$entitlementVersionNumber" "$entitlementItem"
+				
 				mv -f "$entitlementItem" "${LOCAL_CURRENT_STEP_DIR}/entitlementProcesses/${entitlementNameFromFileName}_v${entitlementVersionNumber}.entitlementProcess-meta.xml"
 				echo mv -f "$entitlementItem" "${LOCAL_CURRENT_STEP_DIR}/entitlementProcesses/${entitlementNameFromFileName}_v${entitlementVersionNumber}.entitlementProcess-meta.xml"
 				
