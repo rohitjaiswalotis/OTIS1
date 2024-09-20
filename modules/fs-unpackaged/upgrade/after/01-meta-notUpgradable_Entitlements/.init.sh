@@ -83,7 +83,7 @@ if [[ -d "${LOCAL_CURRENT_STEP_DIR}/entitlementProcesses" && "$(ls -A "${LOCAL_C
 				mv -f "$entitlementItem" "${LOCAL_CURRENT_STEP_DIR}/entitlementProcesses/${entitlementNameFromFileName}_v${entitlementVersionNumber}.entitlementProcess-meta.xml"
 				echo mv -f "$entitlementItem" "${LOCAL_CURRENT_STEP_DIR}/entitlementProcesses/${entitlementNameFromFileName}_v${entitlementVersionNumber}.entitlementProcess-meta.xml"
 				
-				echo "HERE IS MODIFIED ENTITLEMENT FILE!!!"
+				echo "Enriched entitlement file ${entitlementItem}:"
 				cat "${LOCAL_CURRENT_STEP_DIR}/entitlementProcesses/${entitlementNameFromFileName}_v${entitlementVersionNumber}.entitlementProcess-meta.xml"
 				
 			fi
