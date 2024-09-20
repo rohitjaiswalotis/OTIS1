@@ -84,6 +84,9 @@ if [[ -d "${LOCAL_CURRENT_STEP_DIR}/entitlementProcesses" && "$(ls -A "${LOCAL_C
 			
 			if [[ ${entitlementVersionNumber:+1} ]]; then
 				
+				# remove existent version number (if any)
+				xmlstarlet ed --inplace --delete "/*[local-name()='EntitlementProcess']/*[local-name()='versionNumber']" "$entitlementItem"
+				
 				# add new version number
 				xmlstarlet ed --inplace -s "/*[local-name()='EntitlementProcess']" -t elem -n versionNumber -v "$entitlementVersionNumber" "$entitlementItem"
 				
