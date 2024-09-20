@@ -35,7 +35,6 @@ if [[ -d "${LOCAL_CURRENT_STEP_DIR}/entitlementProcesses" && "$(ls -A "${LOCAL_C
 		echo "Processing entitlement ${entitlementItem}..."
 		
 		if [[ -d "$entitlementItem" || ! "${entitlementItem}" =~ ^.*\.entitlementProcess-meta\.xml$ ]]; then
-			#rm -rf "$entitlementItem"
 			continue;
 		fi
 		
