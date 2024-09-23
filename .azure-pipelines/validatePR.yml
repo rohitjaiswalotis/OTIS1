@@ -43,8 +43,6 @@ stages:
       
       displayName: 'Unit testing'
       
-      lockBehavior: runLatest
-      
       jobs:
           
           - job : UnitTests
