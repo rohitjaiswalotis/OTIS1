@@ -48,6 +48,8 @@
             <label>Change SA Status</label>
         </rules>
     </decisions>
+    <description>This scheduled action is executed whenever the SA is Auto-Rejected to update SA Status to None.
+21/09/2024 - Adding update of FS_NotAccepted__C checkbox to true up SA Update for bug#1113554.</description>
     <environments>Default</environments>
     <interviewLabel>(FS) Scheduled Action for Service Request Auto Rejection: After Save {!$Flow.CurrentDateTime}</interviewLabel>
     <label>(FS) Scheduled Action for Service Request Auto Rejection: After Save</label>
@@ -134,6 +136,12 @@
         <locationY>792</locationY>
         <inputAssignments>
             <field>FS_DeferralDateTime__c</field>
+        </inputAssignments>
+        <inputAssignments>
+            <field>FS_NotAccepted__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
         </inputAssignments>
         <inputAssignments>
             <field>Status</field>
