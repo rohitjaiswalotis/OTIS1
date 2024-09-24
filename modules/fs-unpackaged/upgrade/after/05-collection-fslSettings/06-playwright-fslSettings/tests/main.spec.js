@@ -173,6 +173,40 @@ test('Dispatcher Console UI -> Gantt Configurations', async ({ basePage, baseUrl
 
 test('Optimization -> Logic', async ({ basePage, baseUrl }) => {
 	
+	const GLOBAL_OPTIMIZATION_PINNED_STATUSES = new utils.CaseInsensitiveSet(
+		[ 
+			"Accepted",
+			"Enroute",
+			"Onsite",
+			"Canceled",
+			"Cannot Complete",
+			"Completed"
+		]
+	);
+	
+	const INDAY_OPTIMIZATION_PINNED_STATUSES = new utils.CaseInsensitiveSet(
+		[ 
+			"Accepted",
+			"Enroute",
+			"Onsite",
+			"Canceled",
+			"Cannot Complete",
+			"Completed"
+		]
+	);
+	
+	const RESOURCE_OPTIMIZATION_PINNED_STATUSES = new utils.CaseInsensitiveSet(
+		[ 
+			"Accepted",
+			"Enroute",
+			"Onsite",
+			"Canceled",
+			"Cannot Complete",
+			"Completed"
+		]
+	);
+	
+	
 	await utils.openSettings(basePage, baseUrl);
 	
 	const frame = utils.getMainFrame(basePage);
@@ -181,10 +215,140 @@ test('Optimization -> Logic', async ({ basePage, baseUrl }) => {
 	
 	await utils.switchToSettingsTab(frame, "Logic");
 	
-	
+	await utils.checkBooleanSetting(frame, "Enable optimization overlaps prevention");
+	await utils.checkBooleanSetting(frame, "Mark optimization requests failed when failing due to org customizations");
 	await utils.uncheckBooleanSetting(frame, "Enable sharing for Optimization request");
 	
 	await utils.selectPicklistSettingByLabel(frame, "Global optimization run time per service appointment", "Medium");
+	
+	
+	// 'Global Optimization' section
+	{
+		
+		const globalOptimizationSection = (
+			frame
+			.locator("optimization-logic")
+			.locator(".guarded-optimization-container")
+			.filter({ 
+				has: frame.locator(".optimization-title").filter({
+					hasText: "Global Optimization"
+				})
+			})
+		);
+		
+		await globalOptimizationSection.waitFor();
+		
+		
+		const multiselectComponentContainer = globalOptimizationSection.locator(".multiselect-component-container");
+		
+		// clear all selected options first
+		await multiselectComponentContainer.waitFor();
+		const selectedOptionsLocator = multiselectComponentContainer.locator(".multiselect-pillars-container .multiselect-pillar");
+		
+		for (const selectedOptionLocator of await selectedOptionsLocator.all()) {
+			if (await selectedOptionLocator.isVisible()) {
+				await selectedOptionLocator.click();
+			}
+		}
+		
+		// open drop down to select statuses
+		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
+		
+		// select statuses
+		for (const statusToPin of GLOBAL_OPTIMIZATION_PINNED_STATUSES) {
+			await multiselectComponentContainer.locator("ul li").filter({ hasText: statusToPin }).dispatchEvent("click");
+		}
+		
+		// close drop down to select statuses
+		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
+		
+	}
+	
+	
+	// 'In-Day Optimization' section
+	{
+		
+		const inDayOptimizationSection = (
+			frame
+			.locator("optimization-logic")
+			.locator(".guarded-optimization-container")
+			.filter({ 
+				has: frame.locator(".optimization-title").filter({
+					hasText: "In-Day Optimization"
+				})
+			})
+		);
+		
+		await inDayOptimizationSection.waitFor();
+		
+		
+		const multiselectComponentContainer = inDayOptimizationSection.locator(".multiselect-component-container");
+		
+		// clear all selected options first
+		await multiselectComponentContainer.waitFor();
+		const selectedOptionsLocator = multiselectComponentContainer.locator(".multiselect-pillars-container .multiselect-pillar");
+		
+		for (const selectedOptionLocator of await selectedOptionsLocator.all()) {
+			if (await selectedOptionLocator.isVisible()) {
+				await selectedOptionLocator.click();
+			}
+		}
+		
+		// open drop down to select status
+		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
+		
+		// select statuses
+		for (const statusToPin of INDAY_OPTIMIZATION_PINNED_STATUSES) {
+			await multiselectComponentContainer.locator("ul li").filter({ hasText: statusToPin }).dispatchEvent("click");
+		}
+		
+		// close drop down to select statuses
+		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
+		
+	}
+	
+	
+	// 'Resource Schedule Optimization' section
+	{
+		
+		const resourceScheduleOptimizationSection = (
+			frame
+			.locator("optimization-logic")
+			.locator(".guarded-optimization-container")
+			.filter({ 
+				has: frame.locator(".optimization-title").filter({
+					hasText: "Resource Schedule Optimization"
+				})
+			})
+		);
+		
+		await resourceScheduleOptimizationSection.waitFor();
+		
+		
+		const multiselectComponentContainer = resourceScheduleOptimizationSection.locator(".multiselect-component-container");
+		
+		// clear all selected options first
+		await multiselectComponentContainer.waitFor();
+		const selectedOptionsLocator = multiselectComponentContainer.locator(".multiselect-pillars-container .multiselect-pillar");
+		
+		for (const selectedOptionLocator of await selectedOptionsLocator.all()) {
+			if (await selectedOptionLocator.isVisible()) {
+				await selectedOptionLocator.click();
+			}
+		}
+		
+		// open drop down to select status
+		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
+		
+		// select statuses
+		for (const statusToPin of RESOURCE_OPTIMIZATION_PINNED_STATUSES) {
+			await multiselectComponentContainer.locator("ul li").filter({ hasText: statusToPin }).dispatchEvent("click");
+		}
+		
+		// close drop down to select statuses
+		await multiselectComponentContainer.locator(".multi-dropdown-button").dispatchEvent("click");
+		
+	}
 	
 	
 	await utils.clickSaveSettingButton(frame);

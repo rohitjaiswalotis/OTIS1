@@ -351,7 +351,8 @@ test('Optimization -> Logic', async ({ basePage, baseUrl }) => {
 	
 	const GLOBAL_OPTIMIZATION_PINNED_STATUSES = new utils.CaseInsensitiveSet(
 		[ 
-			"Enroute", 
+			"Accepted",
+			"Enroute",
 			"Onsite",
 			"Canceled",
 			"Cannot Complete",
@@ -361,7 +362,8 @@ test('Optimization -> Logic', async ({ basePage, baseUrl }) => {
 	
 	const INDAY_OPTIMIZATION_PINNED_STATUSES = new utils.CaseInsensitiveSet(
 		[ 
-			"Enroute", 
+			"Accepted",
+			"Enroute",
 			"Onsite",
 			"Canceled",
 			"Cannot Complete",
@@ -371,7 +373,8 @@ test('Optimization -> Logic', async ({ basePage, baseUrl }) => {
 	
 	const RESOURCE_OPTIMIZATION_PINNED_STATUSES = new utils.CaseInsensitiveSet(
 		[ 
-			"Enroute", 
+			"Accepted",
+			"Enroute",
 			"Onsite",
 			"Canceled",
 			"Cannot Complete",
