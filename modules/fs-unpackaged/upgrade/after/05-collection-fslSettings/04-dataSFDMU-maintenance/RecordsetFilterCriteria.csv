@@ -1,9 +1,9 @@
 $$Name$SourceObject$FilteredObject$IsActive,CustomLogic,Description,FilteredObject,Id,IsActive,LogicalOperator,Name,SourceObject
-Maintenance Designated Time;Shift;ServiceAppointment;true,,,ServiceAppointment,0hrDF000000KyjLYAS,true,AND,Maintenance Designated Time,Shift
-OpenOrder Designated time;Shift;ServiceAppointment;true,,,ServiceAppointment,0hrDF000000KyjMYAS,true,AND,OpenOrder Designated time,Shift
-Repair Designated Time;Shift;ServiceAppointment;true,,,ServiceAppointment,0hrDF000000KyjQYAS,true,AND,Repair Designated Time,Shift
+Maintenance Designated Time for Shift;Shift;ServiceAppointment;true,,,ServiceAppointment,0hrDF000000KyjLYAS,true,AND,Maintenance Designated Time for Shift,Shift
+OpenOrder Designated time for Shift;Shift;ServiceAppointment;true,,,ServiceAppointment,0hrDF000000KyjMYAS,true,AND,OpenOrder Designated time for Shift,Shift
+Repair Designated Time for Shift;Shift;ServiceAppointment;true,,,ServiceAppointment,0hrDF000000KyjQYAS,true,AND,Repair Designated Time for Shift,Shift
 OpenOrder Designated time For TimeSlots;TimeSlot;ServiceAppointment;true,,,ServiceAppointment,0hrDD0000004CBiYAM,true,AND,OpenOrder Designated time For TimeSlots,TimeSlot
 Maintenance Designated Time For TimeSlots;TimeSlot;ServiceAppointment;true,,,ServiceAppointment,0hrDD0000004CBYYA2,true,AND,Maintenance Designated Time For TimeSlots,TimeSlot
 Repair Designated Time For TimeSlots;TimeSlot;ServiceAppointment;true,,,ServiceAppointment,0hrDD0000004CBnYAM,true,AND,Repair Designated Time For TimeSlots,TimeSlot
 Service Request Designated Time For TimeSlots;TimeSlot;ServiceAppointment;true,,,ServiceAppointment,0hrDD0000004CBxYAM,true,AND,Service Request Designated Time For TimeSlots,TimeSlot
-Service Request Designated Time;Shift;ServiceAppointment;true,,,ServiceAppointment,0hrDD0000004CC7YAM,true,AND,Service Request Designated Time,Shift
+Service Request Designated Time for Shift;Shift;ServiceAppointment;true,,,ServiceAppointment,0hrDD0000004CC7YAM,true,AND,Service Request Designated Time for Shift,Shift

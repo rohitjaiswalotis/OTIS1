@@ -20,7 +20,7 @@ List<maps__MarkerLayer__c> layersToUpdate = [
 ];
 
 
-// early exit - no lyaers to update found
+// early exit - no layers to update found
 if (layersToUpdate == null || layersToUpdate.isEmpty()) {
 	return;
 }
