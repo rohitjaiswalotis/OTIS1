@@ -111,6 +111,7 @@
         <queriedFields>Comments__c</queriedFields>
         <queriedFields>Fixed_Issue__c</queriedFields>
         <queriedFields>Urgent__c</queriedFields>
+        <queriedFields>UnitStatusOnSiteDeparture__c</queriedFields>
     </recordLookups>
     <recordLookups>
         <name>get_SA_records</name>
