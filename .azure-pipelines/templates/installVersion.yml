@@ -763,10 +763,6 @@ steps:
         fi
         
         
-        # send success notif re package version install
-        curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Installed Packages:**<pre style=\"font-size:10px\">'"$(escapeJson "$DX_LIST_INSTALLED_PACKAGES_RESPONSE")"'<\/pre> **Version Dependencies:**<pre>'"$(escapeJson "${FS_PACKAGE_VERSION_DEPENDENCIES// /&nbsp;}")"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifSuccessUrls)
-        
-        
   displayName: 'Install/Upgrade Version into Target Org'
   condition: and(succeeded(), ne(lower(variables['INSTALL_PACKAGE_EARLY_EXIT']), 'true'))
   continueOnError: false
@@ -776,7 +772,7 @@ steps:
 
 
 
-# get installed version dependencies
+# send notification
 - bash: |
         
         # enable "debug" mode
@@ -803,8 +799,11 @@ steps:
         FS_PACKAGE_VERSION_DEPENDENCIES=$(npx -p sf-package-inspector@$(packageInspectorVersion) sf-package-inspect --orgAlias="targetOrg" --command="list-deps" --versionId="$FS_PACKAGE_VERSION_ID" --apiVersion="$(sfApiVersion)" || echo "unknown")
         echo "$FS_PACKAGE_VERSION_DEPENDENCIES"
         
+        # send success notif re package version install
+        curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Installed Packages:**<pre style=\"font-size:10px\">'"$(escapeJson "$DX_LIST_INSTALLED_PACKAGES_RESPONSE")"'<\/pre> **Version Dependencies:**<pre>'"$(escapeJson "${FS_PACKAGE_VERSION_DEPENDENCIES// /&nbsp;}")"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifSuccessUrls)
         
-  displayName: 'Get Dependencies of installed Version'
+        
+  displayName: 'Send Notif re Version Installation'
   condition: and(succeeded(), ne(lower(variables['INSTALL_PACKAGE_EARLY_EXIT']), 'true'))
   continueOnError: false
   timeoutInMinutes: 30
