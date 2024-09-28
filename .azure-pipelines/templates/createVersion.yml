@@ -264,7 +264,7 @@ steps:
           
           DX_ERROR_MESSAGE_ESCAPED=$(escapeJson "$DX_ERROR_MESSAGE");
           
-          curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; '"$NOTIFICATION_ICON"' **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version creation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)! <pre>'"${DX_ERROR_MESSAGE_ESCAPED:-unknown error}"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifErrorUrls)
+          curl --retry 7 --retry-all-errors -H 'Content-Type: application/json' -d '{"text": "&#x26D4; '"$NOTIFICATION_ICON"' **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version creation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)! <pre>'"${DX_ERROR_MESSAGE_ESCAPED:-unknown error}"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifErrorUrls)
           
           exit 1
           
@@ -377,7 +377,7 @@ steps:
         
         
         # send success notif re package version creation
-        curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; '"$NOTIFICATION_ICON"' **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version creation `'"$FS_PACKAGE_VERSION_NUMBER"'` [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)!\n\n**Version Details:**<pre>'"$(escapeJson "${FS_PACKAGE_VERSION_DETAILS// /&nbsp;}")"'<\/pre> **Version Dependencies:**<pre>'"$(escapeJson "${FS_PACKAGE_VERSION_DEPENDENCIES// /&nbsp;}")"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifSuccessUrls)
+        curl --retry 7 --retry-all-errors -H 'Content-Type: application/json' -d '{"text": "&#x2705; '"$NOTIFICATION_ICON"' **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version creation `'"$FS_PACKAGE_VERSION_NUMBER"'` [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) by $(Build.RequestedFor)!\n\n**Version Details:**<pre>'"$(escapeJson "${FS_PACKAGE_VERSION_DETAILS// /&nbsp;}")"'<\/pre> **Version Dependencies:**<pre>'"$(escapeJson "${FS_PACKAGE_VERSION_DEPENDENCIES// /&nbsp;}")"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifSuccessUrls)
         
         
   displayName: 'Create Field Service package version'
