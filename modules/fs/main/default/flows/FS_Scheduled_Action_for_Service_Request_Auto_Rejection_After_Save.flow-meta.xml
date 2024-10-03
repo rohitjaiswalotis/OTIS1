@@ -162,9 +162,9 @@
                 <targetReference>Check_SA_status</targetReference>
             </connector>
             <label>Check For Deferral Date Time On SA</label>
-            <offsetNumber>0</offsetNumber>
-            <offsetUnit>Minutes</offsetUnit>
-            <recordField>FS_DeferralDateTime__c</recordField>
+            <offsetNumber>-1</offsetNumber>
+            <offsetUnit>Hours</offsetUnit>
+            <recordField>SchedStartTime</recordField>
             <timeSource>RecordField</timeSource>
         </scheduledPaths>
         <triggerType>RecordAfterSave</triggerType>
