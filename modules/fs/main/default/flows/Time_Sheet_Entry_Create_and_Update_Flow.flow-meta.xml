@@ -184,31 +184,6 @@
             <targetReference>Add_TSE_Record_to_TSECollection</targetReference>
         </connector>
     </assignments>
-    <decisions>
-        <name>Check_Email</name>
-        <label>Check Email</label>
-        <locationX>864</locationX>
-        <locationY>863</locationY>
-        <defaultConnector>
-            <targetReference>Check_Update_Record_Validation</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>Email_is_present</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>mechEmail</leftValueReference>
-                <operator>IsBlank</operator>
-                <rightValue>
-                    <booleanValue>false</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Send_Email_to_Mech</targetReference>
-            </connector>
-            <label>Email is present</label>
-        </rules>
-    </decisions>
     <customErrors>
         <name>Approved_Error</name>
         <label>Approved Error</label>
@@ -259,6 +234,31 @@
             <isFieldError>false</isFieldError>
         </customErrorMessages>
     </customErrors>
+    <decisions>
+        <name>Check_Email</name>
+        <label>Check Email</label>
+        <locationX>864</locationX>
+        <locationY>863</locationY>
+        <defaultConnector>
+            <targetReference>Check_Update_Record_Validation</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Email_is_present</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>mechEmail</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Email_to_Mech</targetReference>
+            </connector>
+            <label>Email is present</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>Check_Record_Is_New_or_Old</name>
         <label>Check Record Is New or Old</label>
