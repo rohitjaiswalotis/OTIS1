@@ -12,6 +12,13 @@
                 <stringValue>Accepted</stringValue>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>serviceAppointmentRec.Accepted_Date_Time__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>CurrentDateTime</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Update_Accept_Status</targetReference>
         </connector>
