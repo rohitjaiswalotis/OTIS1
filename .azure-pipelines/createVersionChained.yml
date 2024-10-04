@@ -28,7 +28,7 @@ parameters:
   type: string
   default: none
 
-- name: skipValidation
+- name: skipValidation2
   displayName: Skip validation for package?
   type: boolean
   default: false
@@ -103,7 +103,7 @@ stages:
                   envProfile: 'release'
                 ${{ else }}:
                   envProfile: ${{ parameters.envProfile }}
-                skipValidation: ${{ parameters.skipValidation }}
+                skipValidation: ${{ parameters.skipValidation2 }}
                 versionName: ${{ parameters.versionName }}
                 versionNumber: ${{ parameters.versionNumber }}
                 versionDescription: ${{ parameters.versionDescription }}
