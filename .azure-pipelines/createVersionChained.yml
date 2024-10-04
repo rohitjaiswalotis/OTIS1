@@ -13,11 +13,9 @@ variables:
 
 parameters:
 
-
 - name: boom
   displayName: boom
   type: string
-  default: testValue
 
 
 stages:
@@ -29,9 +27,9 @@ stages:
       
       jobs:
           
-          - job: CreatePackageVersion
+          - job: CreatePackageVersion2
             
-            displayName: 'Create Package Version'                         
+            displayName: 'Create Package Version2'                         
             
             timeoutInMinutes: 0
             
