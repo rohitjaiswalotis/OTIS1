@@ -6,78 +6,18 @@ trigger: none
 pr: none
 
 
+variables:
+  
+  - template: templates/variables.yml
+
+
 parameters:
 
 
 - name: boom
-  displayName: Environment profile
+  displayName: boom
   type: string
-  default: default
-  
-- name: envProfile
-  displayName: Environment profile
-  type: string
-  default: default
-
-- name: versionName
-  displayName: Package version name
-  type: string
-  default: none
-
-- name: versionNumber
-  displayName: Package version number
-  type: string
-  default: none
-
-- name: versionDescription
-  displayName: Package version description
-  type: string
-  default: none
-
-- name: skipValidation2
-  displayName: Skip validation for package?
-  type: boolean
-  default: false
-
-- name: branchMarker
-  displayName: Branch marker for package
-  type: string
-  default: default
-
-- name: createTag
-  displayName: Create tag for version?
-  type: boolean
-  default: true
-
-- name: promoteVersion
-  displayName: Promote package version?
-  type: boolean
-  default: false
-
-- name: shouldNotifySubscribers
-  displayName: Notify Subscribers?
-  type: boolean
-  default: true
-
-- name: numberOfRetries
-  displayName: Number of Retries
-  type: number
-  default: 1
-
-- name: savePackageDumpAsArtifact
-  displayName: Save Package Dump as Artifact?
-  type: boolean
-  default: false
-
-- name: enableDebugMode
-  displayName: Debug Mode?
-  type: boolean
-  default: false
-
-
-variables:
-  
-  - template: templates/variables.yml
+  default: testValue
 
 
 stages:
@@ -100,45 +40,5 @@ stages:
             
             steps:
             
-            - template: templates/init.yml
-            
-            
-            - template: templates/createVersion.yml
-              parameters:
-                ${{ if and(eq(parameters.envProfile, 'default'), eq(variables['Build.SourceBranchName'], 'master')) }}:
-                  envProfile: 'release'
-                ${{ else }}:
-                  envProfile: ${{ parameters.envProfile }}
-                skipValidation: ${{ parameters.skipValidation2 }}
-                versionName: ${{ parameters.versionName }}
-                versionNumber: ${{ parameters.versionNumber }}
-                versionDescription: ${{ parameters.versionDescription }}
-                ${{ if eq(parameters.branchMarker, 'default') }}:
-                  branchMarker: ${{ variables['Build.SourceBranchName'] }}
-                ${{ elseif not( eq(parameters.branchMarker, 'none') ) }}:
-                  branchMarker: ${{ parameters.branchMarker }}
-                createTag: ${{ parameters.createTag }}
-                numberOfRetries: ${{ parameters.numberOfRetries }}
-                savePackageDumpAsArtifact: ${{ parameters.savePackageDumpAsArtifact }}
-                enableDebugMode: ${{ parameters.enableDebugMode }}
-                
-              
-            - ${{ if eq(parameters.promoteVersion, true) }}:
-              
-              - template: templates/promoteVersion.yml
-                parameters:
-                  enableDebugMode: ${{ parameters.enableDebugMode }}
-              
-              
-            - ${{ if eq(parameters.shouldNotifySubscribers, true) }}:
-              
-              - template: templates/notifySubscribers.yml
-                parameters:
-                  ${{ if eq(variables['Build.SourceBranchName'], 'dev') }}:
-                    subscribers: $(subs_pkgVersion_Chained_FsDev)
-                  ${{ elseif eq(variables['Build.SourceBranchName'], 'master') }}:
-                    subscribers: $(subs_pkgVersion_Chained_FsRelease)
-                  active: $(enableSubsPkgVersion)
-                  enableDebugMode: ${{ parameters.enableDebugMode }}
-              
+            - template: templates/init.yml            
             
