@@ -166,7 +166,7 @@ steps:
                     
                     notifyRetryCounter=$(( $notifyRetryCounter + 1 ));
                     
-                    echo "Retrying package install after temporarily failure in ${notifyRetryDelay} seconds (attempt ${notifyRetryCounter}/${notifyMaxRetryAttempts})..."
+                    echo "Retrying subscriber pipeline triggering after failure in ${notifyRetryDelay} seconds (attempt ${notifyRetryCounter}/${notifyMaxRetryAttempts})..."
                     
                     sleep $notifyRetryDelay;
                     
