@@ -547,8 +547,8 @@ function installPackageDependencies {
 					fi
 					
 					
-					triggerInstallMaxRetryAttempts=$(NOTIFYRETRYNUMBER); triggerInstallMaxRetryAttempts=${triggerInstallMaxRetryAttempts:-5}
-					triggerInstallRetryDelay=$(NOTIFYRETRYTIMEOUT); triggerInstallRetryDelay=${triggerInstallRetryDelay:-60}
+					triggerInstallMaxRetryAttempts=${NOTIFYRETRYNUMBER:-5};
+					triggerInstallRetryDelay=${NOTIFYRETRYTIMEOUT:-60};
 					triggerInstallRetryCounter=0;
 					
 					while true; do 
