@@ -44,7 +44,6 @@ Otis Default Scheduling Policy;Required Service Resource,a0aDD00000BAcaWYAT,Otis
 Otis Default Scheduling Policy;Scheduled Start,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDO000000UE49YAG,Scheduled Start,a0ZDD00000E8xQZ2AZ
 Otis Default Scheduling Policy;TimeSlot Designated Work for Shifts,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDD0000069zc7YAA,TimeSlot Designated Work for Shifts,a0ZDD00000E8xQa2AJ
 Otis Default Scheduling Policy;Service Appointment Visiting Hours,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDO000000UE48YAG,Service Appointment Visiting Hours,a0ZDD00000E8xQq2AJ
-Otis Default Scheduling Policy;Resource Availability,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDO000000UE4CYAW,Resource Availability,a0ZDD00000E8yyz2AB
 Otis In-Day Scheduling Policy;TimeSlot Designated Work for Shifts,a0aDD00000BAcp9YAD,Otis In-Day Scheduling Policy,a0nDD0000069zc7YAA,TimeSlot Designated Work for Shifts,a0ZDD00000E91Ha2AJ
 Otis In-Day Scheduling Policy;Working Territories,a0aDD00000BAcp9YAD,Otis In-Day Scheduling Policy,a0nDO000000UE3zYAG,Working Territories,a0ZDD00000E91Hb2AJ
 Otis In-Day Scheduling Policy;Earliest Start Permitted,a0aDD00000BAcp9YAD,Otis In-Day Scheduling Policy,a0nDO000000UE4EYAW,Earliest Start Permitted,a0ZDD00000E91Gw2AJ
@@ -54,14 +53,21 @@ Otis In-Day Scheduling Policy;Required Service Resource,a0aDD00000BAcp9YAD,Otis 
 Otis In-Day Scheduling Policy;Scheduled End,a0aDD00000BAcp9YAD,Otis In-Day Scheduling Policy,a0nDO000000UE4BYAW,Scheduled End,a0ZDD00000E91HQ2AZ
 Otis In-Day Scheduling Policy;Excluded Resources,a0aDD00000BAcp9YAD,Otis In-Day Scheduling Policy,a0nDO000000UE3xYAG,Excluded Resources,a0ZDD00000E91HB2AZ
 Otis In-Day Scheduling Policy;Service Appointment Visiting Hours,a0aDD00000BAcp9YAD,Otis In-Day Scheduling Policy,a0nDO000000UE48YAG,Service Appointment Visiting Hours,a0ZDD00000E91HV2AZ
-Otis In-Day Scheduling Policy;Resource Availability w/o travel + 60min,a0aDD00000BAcp9YAD,Otis In-Day Scheduling Policy,a0nDD0000069tPQYAY,Resource Availability w/o travel + 60min,a0ZDD00000E92he2AB
+Otis In-Day Scheduling Policy;Resource Availability w/o travel + 60min,a0aDD00000BAcp9YAD,Otis In-Day Scheduling Policy,a0nDD000006A0ONYA0,Resource Availability w/o travel + 60min,a0ZDD00000E92he2AB
 Otis In-Day Scheduling Policy;Active Resources,a0aDD00000BAcp9YAD,Otis In-Day Scheduling Policy,a0nDO000000UE42YAG,Active Resources,a0ZDD00000E91H62AJ
 Otis In-Day Scheduling Policy;Scheduled Start,a0aDD00000BAcp9YAD,Otis In-Day Scheduling Policy,a0nDO000000UE49YAG,Scheduled Start,a0ZDD00000E91H72AJ
 Otis Emergency Scheduling Policy;Active Resources,a0aDD00000BAcpEYAT,Otis Emergency Scheduling Policy,a0nDO000000UE42YAG,Active Resources,a0ZDD00000E91Hc2AJ
 Otis Emergency Scheduling Policy;Working Territories,a0aDD00000BAcpEYAT,Otis Emergency Scheduling Policy,a0nDO000000UE3zYAG,Working Territories,a0ZDD00000E91Hk2AJ
 Otis Emergency Scheduling Policy;Earliest Start Permitted,a0aDD00000BAcpEYAT,Otis Emergency Scheduling Policy,a0nDO000000UE4EYAW,Earliest Start Permitted,a0ZDD00000E91H12AJ
 Otis Emergency Scheduling Policy;Due Date,a0aDD00000BAcpEYAT,Otis Emergency Scheduling Policy,a0nDO000000UE4DYAW,Due Date,a0ZDD00000E91H22AJ
-Otis Emergency Scheduling Policy;Resource Availability w/o travel + 60min,a0aDD00000BAcpEYAT,Otis Emergency Scheduling Policy,a0nDD0000069tPQYAY,Resource Availability w/o travel + 60min,a0ZDD00000E92hZ2AR
-Otis Emergency Scheduling Policy;Match Skills,a0aDD00000BAcpEYAT,Otis Emergency Scheduling Policy,a0nDO000000UE45YAG,Match Skills,a0ZDD00000E91Hf2AJ
+Otis Emergency Scheduling Policy;Resource Availability w/o travel + 60min,a0aDD00000BAcpEYAT,Otis Emergency Scheduling Policy,a0nDD000006A0ONYA0,Resource Availability w/o travel + 60min,a0ZDD00000E92hZ2AR
 Otis Emergency Scheduling Policy;Required Service Resource,a0aDD00000BAcpEYAT,Otis Emergency Scheduling Policy,a0nDO000000UE47YAG,Required Service Resource,a0ZDD00000E91HC2AZ
 Otis Emergency Scheduling Policy;TimeSlot Designated Work for Shifts,a0aDD00000BAcpEYAT,Otis Emergency Scheduling Policy,a0nDD0000069zc7YAA,TimeSlot Designated Work for Shifts,a0ZDD00000E91HD2AZ
+Otis Emergency Scheduling Policy;Resource Availability w/o travel + 30min break,a0aDD00000BAcpEYAT,Otis Emergency Scheduling Policy,a0nDD000006A0NoYAK,Resource Availability w/o travel + 30min break,a0ZDD00000E95bI2AR
+Otis Default Scheduling Policy;Resource Availability w/o travel + 30min break,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDD000006A0NoYAK,Resource Availability w/o travel + 30min break,a0ZDD00000E95b82AB
+Otis In-Day Scheduling Policy;Resource Availability w/o travel + 30min break,a0aDD00000BAcp9YAD,Otis In-Day Scheduling Policy,a0nDD000006A0NoYAK,Resource Availability w/o travel + 30min break,a0ZDD00000E95bD2AR
+Reduce Travel;Resource Availability w/o travel + 60min break,a0aDO000000WB2BYAW,Reduce Travel,a0nDD0000069tPQYAY,Resource Availability w/o travel + 60min break,a0ZDD00000E8S912AF
+Emergency;Resource Availability w/o travel + 60min break,a0aDO000000WB2AYAW,Emergency,a0nDD0000069tPQYAY,Resource Availability w/o travel + 60min break,a0ZDD00000E937Z2AR
+Otis Emergency Scheduling Policy;Resource Availability w/o travel + 60min break,a0aDD00000BAcpEYAT,Otis Emergency Scheduling Policy,a0nDD0000069tPQYAY,Resource Availability w/o travel + 60min break,a0ZDD00000E92hZ2AR
+Otis In-Day Scheduling Policy;Resource Availability w/o travel + 60min break,a0aDD00000BAcp9YAD,Otis In-Day Scheduling Policy,a0nDD0000069tPQYAY,Resource Availability w/o travel + 60min break,a0ZDD00000E92he2AB
+Otis Default Scheduling Policy;Resource Availability w/o travel + 60min break,a0aDD00000BAcaWYAT,Otis Default Scheduling Policy,a0nDD0000069tPQYAY,Resource Availability w/o travel + 60min break,a0ZDD00000E92hU2AR

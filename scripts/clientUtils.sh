@@ -546,13 +546,46 @@ function installPackageDependencies {
 						scriptParams=$(escapeJson "${scriptParams}")
 					fi
 					
-					# trigger package version install pipeline
-					AZ_INSTALL_PIPELINE_TRIGGER_RESPONSE=$(eval "az pipelines run --organization \"$organization\" --project \"$project\" $AZ_INSTALL_PIPELINE_CHECKOUT --name=\"$specialInstallPipelineName\" $AZ_INSTALL_PIPELINE_FOLDER_PATH --parameters \"versionId=$dependencyVersionId\" \"localizationDomain=$localizationDomain\" \"targetOrgUrl=${serverurl}\" \"targetOrgUsername=${username}\" \"targetOrgPassword=${password}\" \"targetOrgAuthFileName=${authFile}\" \"targetOrgToken=${token}\" \"autoInstallDependencies=true\" \"installationMode=$installationMode\" \"compileScope=$compileScope\" \"upgradeType=$upgradeType\" \"actionPhase=$actionPhase\" \"scriptParams=$scriptParams\""); AZ_INSTALL_PIPELINE_TRIGGER_CODE=$?;
-					echo $AZ_INSTALL_PIPELINE_TRIGGER_RESPONSE
 					
-					# grab pipeline run id from response
-					AZ_INSTALL_PIPELINE_RUN_ID=$(echo $AZ_INSTALL_PIPELINE_TRIGGER_RESPONSE | jq -r ".id");
-					echo "Install Pipeline Run Id: $AZ_INSTALL_PIPELINE_RUN_ID"
+					triggerInstallMaxRetryAttempts=${NOTIFYRETRYNUMBER:-5};
+					triggerInstallRetryDelay=${NOTIFYRETRYTIMEOUT:-60};
+					triggerInstallRetryCounter=0;
+					
+					while true; do 
+						
+						# trigger package version install pipeline
+						AZ_INSTALL_PIPELINE_TRIGGER_RESPONSE=$(eval "az pipelines run --organization \"$organization\" --project \"$project\" $AZ_INSTALL_PIPELINE_CHECKOUT --name=\"$specialInstallPipelineName\" $AZ_INSTALL_PIPELINE_FOLDER_PATH --parameters \"versionId=$dependencyVersionId\" \"localizationDomain=$localizationDomain\" \"targetOrgUrl=${serverurl}\" \"targetOrgUsername=${username}\" \"targetOrgPassword=${password}\" \"targetOrgAuthFileName=${authFile}\" \"targetOrgToken=${token}\" \"autoInstallDependencies=true\" \"installationMode=$installationMode\" \"compileScope=$compileScope\" \"upgradeType=$upgradeType\" \"actionPhase=$actionPhase\" \"scriptParams=$scriptParams\""); AZ_INSTALL_PIPELINE_TRIGGER_CODE=$?;
+						echo $AZ_INSTALL_PIPELINE_TRIGGER_RESPONSE
+						
+						# grab pipeline run id from response
+						AZ_INSTALL_PIPELINE_RUN_ID=$(echo $AZ_INSTALL_PIPELINE_TRIGGER_RESPONSE | jq -r ".id");
+						echo "Install Pipeline Run Id: $AZ_INSTALL_PIPELINE_RUN_ID"
+						
+						
+						# success - exit from retry loop
+						if [[ ${AZ_INSTALL_PIPELINE_RUN_ID:+1} && $AZ_INSTALL_PIPELINE_TRIGGER_CODE -eq 0 ]]; then
+							break;
+						fi
+						
+						
+						# retry if not run out of attempts
+						if [[ $triggerInstallRetryCounter -lt $triggerInstallMaxRetryAttempts ]]; then
+							
+							triggerInstallRetryCounter=$(( $triggerInstallRetryCounter + 1 ));
+							
+							echo "Retrying package install after failure in ${triggerInstallRetryDelay} seconds (attempt ${triggerInstallRetryCounter}/${triggerInstallMaxRetryAttempts})..."
+							
+							sleep $triggerInstallRetryDelay;
+							
+						else
+							
+							echo "ERROR: Run out of retry attempts (max=${triggerInstallMaxRetryAttempts})"
+							break;
+							
+						fi
+						
+					done
+					
 					
 					if [[ ! ${AZ_INSTALL_PIPELINE_RUN_ID:+1} || $AZ_INSTALL_PIPELINE_TRIGGER_CODE -ne 0 ]]; then
 						echo "ERROR: Cannot trigger pipeline '$specialInstallPipeline' to install package '$dependencyPackageName'."

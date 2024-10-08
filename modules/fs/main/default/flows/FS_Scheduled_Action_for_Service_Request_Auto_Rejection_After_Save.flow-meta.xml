@@ -2,9 +2,34 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>61.0</apiVersion>
     <decisions>
+        <name>Check_if_Resource_is_present_or_Not</name>
+        <label>Check if Resource is present or Not</label>
+        <locationX>297</locationX>
+        <locationY>492</locationY>
+        <defaultConnector>
+            <targetReference>Update_SA</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>RP_is_Present</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Resource_Preference</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_RP_if_not_Present</targetReference>
+            </connector>
+            <label>RP is Present</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Check_SA_status</name>
         <label>Check SA status</label>
-        <locationX>374</locationX>
+        <locationX>451</locationX>
         <locationY>276</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -18,17 +43,14 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Update_SA</targetReference>
+                <targetReference>Get_Resource_Preference</targetReference>
             </connector>
             <label>Change SA Status</label>
         </rules>
     </decisions>
+    <description>This scheduled action is executed whenever the SA is Auto-Rejected to update SA Status to None.
+21/09/2024 - Adding update of FS_NotAccepted__C checkbox to true up SA Update for bug#1113554.</description>
     <environments>Default</environments>
-    <formulas>
-        <name>IsNew</name>
-        <dataType>Boolean</dataType>
-        <expression>ISNEW()</expression>
-    </formulas>
     <interviewLabel>(FS) Scheduled Action for Service Request Auto Rejection: After Save {!$Flow.CurrentDateTime}</interviewLabel>
     <label>(FS) Scheduled Action for Service Request Auto Rejection: After Save</label>
     <processMetadataValues>
@@ -50,13 +72,76 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Create_RP_if_not_Present</name>
+        <label>Create RP if not Present</label>
+        <locationX>165</locationX>
+        <locationY>600</locationY>
+        <connector>
+            <targetReference>Update_SA</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>PreferenceType</field>
+            <value>
+                <stringValue>Excluded</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RelatedRecordId</field>
+            <value>
+                <elementReference>$Record.ParentRecordId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ServiceResourceId</field>
+            <value>
+                <elementReference>$Record.AssignedServiceResource__r.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>ResourcePreference</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <name>Get_Resource_Preference</name>
+        <label>Get Resource Preference</label>
+        <locationX>297</locationX>
+        <locationY>384</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_if_Resource_is_present_or_Not</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>RelatedRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.WorkOrder__r.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>ServiceResourceId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AssignedServiceResource__r.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ResourcePreference</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <recordUpdates>
         <name>Update_SA</name>
         <label>Update SA</label>
-        <locationX>242</locationX>
-        <locationY>384</locationY>
+        <locationX>297</locationX>
+        <locationY>792</locationY>
         <inputAssignments>
             <field>FS_DeferralDateTime__c</field>
+        </inputAssignments>
+        <inputAssignments>
+            <field>FS_NotAccepted__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
         </inputAssignments>
         <inputAssignments>
             <field>Status</field>

@@ -468,6 +468,8 @@ steps:
           if [[ ${FS_PACKAGE_ORIGINAL_VERSION_TAG:+1} ]]; then
             
             FS_PACKAGE_MERGED_COMMMIT_MESSAGES=$(git log -100 --merges --date-order --pretty="format:%ai (%an) %s" ${FS_PACKAGE_ORIGINAL_VERSION_TAG}..HEAD || true);
+            FS_PACKAGE_MERGED_COMMMIT_MESSAGES="${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}"
+            FS_PACKAGE_MERGED_COMMMIT_MESSAGES="$(echo "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES//$'\n'/@eol@}")"
             
             echo "##vso[task.setvariable variable=FS_PACKAGE_ORIGINAL_VERSION_TAG]$FS_PACKAGE_ORIGINAL_VERSION_TAG"
             echo "##vso[task.setvariable variable=FS_PACKAGE_MERGED_COMMMIT_MESSAGES]$FS_PACKAGE_MERGED_COMMMIT_MESSAGES"
@@ -523,7 +525,7 @@ steps:
           # early exit - error when installing dependencies for package into target org
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
             echo "ERROR: Cannot install dependencies for $(fsPackageName) package $FS_PACKAGE_VERSION_NUMBER ($FS_PACKAGE_VERSION_ID) into target org as '$TARGET_ORG_USERNAME' user!"
-            curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') dependencies installation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifErrorUrls)
+            curl --retry 7 --retry-all-errors -H 'Content-Type: application/json' -d '{"text": "&#x26D4; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') dependencies installation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES//@eol@/$'\n'}")"'<\/pre>"}' $(notifErrorUrls)
             exit 1
           fi
           
@@ -647,7 +649,7 @@ steps:
           # early exit - error when executing before install scripts against target org
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
             echo "ERROR: Cannot execute before install scripts for $(fsPackageName) package $FS_PACKAGE_VERSION_NUMBER ($FS_PACKAGE_VERSION_ID) against target org as '$TARGET_ORG_USERNAME' user!"
-            curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') before install scripts [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) against `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifErrorUrls)
+            curl --retry 7 --retry-all-errors -H 'Content-Type: application/json' -d '{"text": "&#x26D4; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') before install scripts [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) against `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES//@eol@/$'\n'}")"'<\/pre>"}' $(notifErrorUrls)
             exit 1
           fi
           
@@ -667,7 +669,7 @@ steps:
           DX_LIST_INSTALLED_PACKAGES_RESPONSE=$(sf package installed list --target-org="targetOrg");
           echo "$DX_LIST_INSTALLED_PACKAGES_RESPONSE"
           
-          curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - dependencies for package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Installed Packages:**<pre style=\"font-size:10px\">'"$(escapeJson "$DX_LIST_INSTALLED_PACKAGES_RESPONSE")"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifSuccessUrls)
+          curl --retry 7 --retry-all-errors -H 'Content-Type: application/json' -d '{"text": "&#x2705; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - dependencies for package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Installed Packages:**<pre style=\"font-size:10px\">'"$(escapeJson "$DX_LIST_INSTALLED_PACKAGES_RESPONSE")"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES//@eol@/$'\n'}")"'<\/pre>"}' $(notifSuccessUrls)
           
           echo "Early exit after successfully installing dependencies, since no package version installation has been requested."
           
@@ -736,7 +738,7 @@ steps:
           
           DX_INSTALL_ERROR_MESSAGE_ESCAPED=$(escapeJson "$DX_INSTALL_ERROR_MESSAGE");
           
-          curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)! <pre>'"${DX_INSTALL_ERROR_MESSAGE_ESCAPED:-unknown error}"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifErrorUrls)
+          curl --retry 7 --retry-all-errors -H 'Content-Type: application/json' -d '{"text": "&#x26D4; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)! <pre>'"${DX_INSTALL_ERROR_MESSAGE_ESCAPED:-unknown error}"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES//@eol@/$'\n'}")"'<\/pre>"}' $(notifErrorUrls)
           
           exit 1;
           
@@ -752,7 +754,7 @@ steps:
           # early exit - error when executing after install scripts against target org
           if [[ "$DX_STATUS_CODE" != "0" ]]; then
             echo "ERROR: Cannot execute after install scripts for $(fsPackageName) package $FS_PACKAGE_VERSION_NUMBER ($FS_PACKAGE_VERSION_ID) against target org as '$TARGET_ORG_USERNAME' user!"
-            curl -H 'Content-Type: application/json' -d '{"text": "&#x26D4; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') after install scripts [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) against `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifErrorUrls)
+            curl --retry 7 --retry-all-errors -H 'Content-Type: application/json' -d '{"text": "&#x26D4; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') after install scripts [failure]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) against `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES//@eol@/$'\n'}")"'<\/pre>"}' $(notifErrorUrls)
             exit 1
           fi
           
@@ -761,10 +763,6 @@ steps:
           echo "Skipped post-$PACKAGE_ACTION_TYPE steps."
           
         fi
-        
-        
-        # send success notif re package version install
-        curl -H 'Content-Type: application/json' -d '{"text": "&#x2705; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Installed Packages:**<pre style=\"font-size:10px\">'"$(escapeJson "$DX_LIST_INSTALLED_PACKAGES_RESPONSE")"'<\/pre> **Version Dependencies:**<pre>'"$(escapeJson "${FS_PACKAGE_VERSION_DEPENDENCIES// /&nbsp;}")"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES:-unknown}")"'<\/pre>"}' $(notifSuccessUrls)
         
         
   displayName: 'Install/Upgrade Version into Target Org'
@@ -776,7 +774,7 @@ steps:
 
 
 
-# get installed version dependencies
+# send notification
 - bash: |
         
         # enable "debug" mode
@@ -803,8 +801,11 @@ steps:
         FS_PACKAGE_VERSION_DEPENDENCIES=$(npx -p sf-package-inspector@$(packageInspectorVersion) sf-package-inspect --orgAlias="targetOrg" --command="list-deps" --versionId="$FS_PACKAGE_VERSION_ID" --apiVersion="$(sfApiVersion)" || echo "unknown")
         echo "$FS_PACKAGE_VERSION_DEPENDENCIES"
         
+        # send success notif re package version install
+        curl --retry 7 --retry-all-errors -H 'Content-Type: application/json' -d '{"text": "&#x2705; &#x1F4E5; **$(fsPackageName)** `$(Build.SourceBranchName)` ($(Build.Reason)) - package version `'"$FS_PACKAGE_VERSION_NUMBER"'` ('$FS_PACKAGE_VERSION_ID') installation [success]($(System.TeamFoundationCollectionUri)$(System.TeamProjectId)/_build/results?buildId=$(Build.BuildId)) into `'${TARGET_ORG_USERNAME##*.}'` org as user `'${TARGET_ORG_USERNAME:-unknown}'` by $(Build.RequestedFor)!\n\n**Installed Packages:**<pre style=\"font-size:10px\">'"$(escapeJson "$DX_LIST_INSTALLED_PACKAGES_RESPONSE")"'<\/pre> **Version Dependencies:**<pre>'"$(escapeJson "${FS_PACKAGE_VERSION_DEPENDENCIES// /&nbsp;}")"'<\/pre>\n\n**Merged PRs:**<pre>'"$(escapeJson "${FS_PACKAGE_MERGED_COMMMIT_MESSAGES//@eol@/$'\n'}")"'<\/pre>"}' $(notifSuccessUrls)
         
-  displayName: 'Get Dependencies of installed Version'
+        
+  displayName: 'Send Notif re Version Installation'
   condition: and(succeeded(), ne(lower(variables['INSTALL_PACKAGE_EARLY_EXIT']), 'true'))
   continueOnError: false
   timeoutInMinutes: 30

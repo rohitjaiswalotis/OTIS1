@@ -1,11 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Send_Email_to_Mech</name>
+        <label>Send Email to Mech</label>
+        <locationX>732</locationX>
+        <locationY>971</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>Check_Update_Record_Validation</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>mechEmail</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <elementReference>EmailSubjectTemplate</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>EmailBodyTemplate</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
     <apiVersion>58.0</apiVersion>
     <assignments>
         <name>Add_Timesheet_Id_to_List</name>
         <label>Add Timesheet Id to List</label>
         <locationX>2206</locationX>
-        <locationY>863</locationY>
+        <locationY>1763</locationY>
         <assignmentItems>
             <assignToReference>TimesheetIds</assignToReference>
             <operator>Add</operator>
@@ -21,7 +59,7 @@
         <name>Add_TSE_Record_to_TSECollection</name>
         <label>Add TSE Record to TSECollection</label>
         <locationX>2470</locationX>
-        <locationY>1895</locationY>
+        <locationY>2795</locationY>
         <assignmentItems>
             <assignToReference>TSERecordCollection</assignToReference>
             <operator>Add</operator>
@@ -37,7 +75,7 @@
         <name>Assign_Overlapped_Timesheet_Entry_Count</name>
         <label>Assign Overlapped Timesheet Entry Count</label>
         <locationX>2118</locationX>
-        <locationY>1163</locationY>
+        <locationY>2063</locationY>
         <assignmentItems>
             <assignToReference>OverlappedTSECount</assignToReference>
             <operator>AssignCount</operator>
@@ -53,7 +91,7 @@
         <name>Copy_1_of_TimeSheet_Record_Assignment</name>
         <label>TimeSheet Record Assignment</label>
         <locationX>2074</locationX>
-        <locationY>1595</locationY>
+        <locationY>2495</locationY>
         <assignmentItems>
             <assignToReference>TimeSheetEntryRecord.Id</assignToReference>
             <operator>Assign</operator>
@@ -90,7 +128,7 @@
         <name>Copy_3_of_TimeSheet_Record_Assignment</name>
         <label>TimeSheet Record Assignment</label>
         <locationX>2338</locationX>
-        <locationY>1595</locationY>
+        <locationY>2495</locationY>
         <assignmentItems>
             <assignToReference>TimeSheetEntryRecord.Id</assignToReference>
             <operator>Assign</operator>
@@ -127,7 +165,7 @@
         <name>TimeSheet_Record_Assignment_1</name>
         <label>TimeSheet Record Assignment</label>
         <locationX>2602</locationX>
-        <locationY>1595</locationY>
+        <locationY>2495</locationY>
         <assignmentItems>
             <assignToReference>TimeSheetEntryRecord.Id</assignToReference>
             <operator>Assign</operator>
@@ -146,7 +184,7 @@
             <targetReference>Add_TSE_Record_to_TSECollection</targetReference>
         </connector>
     </assignments>
-     <customErrors>
+    <customErrors>
         <name>Approved_Error</name>
         <label>Approved Error</label>
         <locationX>314</locationX>
@@ -197,10 +235,35 @@
         </customErrorMessages>
     </customErrors>
     <decisions>
+        <name>Check_Email</name>
+        <label>Check Email</label>
+        <locationX>864</locationX>
+        <locationY>863</locationY>
+        <defaultConnector>
+            <targetReference>Check_Update_Record_Validation</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Email_is_present</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>mechEmail</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Send_Email_to_Mech</targetReference>
+            </connector>
+            <label>Email is present</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Check_Record_Is_New_or_Old</name>
         <label>Check Record Is New or Old</label>
         <locationX>2316</locationX>
-        <locationY>539</locationY>
+        <locationY>1439</locationY>
         <defaultConnectorLabel>Default</defaultConnectorLabel>
         <rules>
             <name>If_Old_New_with_Start_EndTime_Change</name>
@@ -243,7 +306,7 @@
         <name>Check_Record_Overlapping</name>
         <label>Check Record  Overlapping</label>
         <locationX>2118</locationX>
-        <locationY>1271</locationY>
+        <locationY>2171</locationY>
         <defaultConnector>
             <isGoTo>true</isGoTo>
             <targetReference>Multiple_TSE_Error</targetReference>
@@ -269,7 +332,7 @@
         <name>Check_StartTime_Overlapped</name>
         <label>Check StartTime Overlapped</label>
         <locationX>2470</locationX>
-        <locationY>1487</locationY>
+        <locationY>2387</locationY>
         <defaultConnector>
             <targetReference>Multiple_TSE_Error</targetReference>
         </defaultConnector>
@@ -359,7 +422,7 @@
         <name>Check_Update_Record_Validation</name>
         <label>Check Update Record Validation</label>
         <locationX>1183</locationX>
-        <locationY>431</locationY>
+        <locationY>1331</locationY>
         <defaultConnector>
             <targetReference>Check_Record_Is_New_or_Old</targetReference>
         </defaultConnector>
@@ -481,6 +544,91 @@
             <label>If New End Time is greater than Previous End time</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Is_TSE_Updated</name>
+        <label>Is TSE Updated?</label>
+        <locationX>1018</locationX>
+        <locationY>539</locationY>
+        <defaultConnector>
+            <targetReference>Check_Update_Record_Validation</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Yes_Updated</name>
+            <conditionLogic>(1 OR 2 OR 3 OR 4 OR 5) AND 6</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.PayCode__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Adjust_Hours__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Adjust_Mins__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Multiplier_Type__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Code99__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Profile.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Field Service Supervisor</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Timesheet</targetReference>
+            </connector>
+            <label>Yes Updated</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>TS_Status_Submitted</name>
+        <label>TS Status Submitted?</label>
+        <locationX>1183</locationX>
+        <locationY>431</locationY>
+        <defaultConnector>
+            <targetReference>Check_Update_Record_Validation</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Submitted</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Submitted</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Is_TSE_Updated</targetReference>
+            </connector>
+            <label>Submitted</label>
+        </rules>
+    </decisions>
     <description>This FLow will restrict to modify once time sheet entry is submited.</description>
     <environments>Default</environments>
     <formulas>
@@ -516,7 +664,7 @@
         <name>Overlapped_TSE_Loop</name>
         <label>Overlapped TSE Loop</label>
         <locationX>1986</locationX>
-        <locationY>1379</locationY>
+        <locationY>2279</locationY>
         <collectionReference>Get_Overlapped_TimeSheetEntry</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -530,7 +678,7 @@
         <name>Timesheet_Record_Loop</name>
         <label>Timesheet Record Loop</label>
         <locationX>2118</locationX>
-        <locationY>755</locationY>
+        <locationY>1655</locationY>
         <collectionReference>Get_Timesheet_Record</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -566,7 +714,7 @@
         <locationY>323</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Check_Update_Record_Validation</targetReference>
+            <targetReference>TS_Status_Submitted</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -584,7 +732,7 @@
         <name>Get_Overlapped_TimeSheetEntry</name>
         <label>Get Overlapped TimeSheetEntry</label>
         <locationX>2118</locationX>
-        <locationY>1055</locationY>
+        <locationY>1955</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Assign_Overlapped_Timesheet_Entry_Count</targetReference>
@@ -665,10 +813,58 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
+        <name>Get_Service_Resource</name>
+        <label>Get Service Resource</label>
+        <locationX>864</locationX>
+        <locationY>755</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Check_Email</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Timesheet.ServiceResourceId</elementReference>
+            </value>
+        </filters>
+        <object>ServiceResource</object>
+        <outputAssignments>
+            <assignToReference>mechName</assignToReference>
+            <field>Name</field>
+        </outputAssignments>
+        <outputAssignments>
+            <assignToReference>mechEmail</assignToReference>
+            <field>PrimaryEmail__c</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Timesheet</name>
+        <label>Get Timesheet</label>
+        <locationX>864</locationX>
+        <locationY>647</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Service_Resource</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.TimeSheet.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>TimeSheet</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Timesheet_Record</name>
         <label>Get Timesheet Record</label>
         <locationX>2118</locationX>
-        <locationY>647</locationY>
+        <locationY>1547</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Timesheet_Record_Loop</targetReference>
@@ -703,7 +899,7 @@
         <name>Update_Overlapped_TSE</name>
         <label>Update Overlapped TSE</label>
         <locationX>1986</locationX>
-        <locationY>2087</locationY>
+        <locationY>2987</locationY>
         <inputReference>TSERecordCollection</inputReference>
     </recordUpdates>
     <start>
@@ -732,6 +928,30 @@
         <triggerType>RecordAfterSave</triggerType>
     </start>
     <status>Active</status>
+    <textTemplates>
+        <name>EmailBodyTemplate</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Arial, Helvetica, sans-serif; font-size: 11.36px; background-color: rgb(255, 255, 255);&quot;&gt;Hello {!mechName},&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Arial, Helvetica, sans-serif; font-size: 11.36px; background-color: rgb(255, 255, 255);&quot;&gt;Your Timesheet #{!Get_Timesheet.TimeSheetNumber} with timesheet entry #{!$Record.TimeSheetEntryNumber} has been modified by {!$User.FirstName} Supervisor.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Arial, Helvetica, sans-serif; font-size: 11.36px; background-color: rgb(255, 255, 255);&quot;&gt;Thank you&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Arial, Helvetica, sans-serif; font-size: 11.36px; background-color: rgb(255, 255, 255);&quot;&gt;Team OTIS&lt;/span&gt;&lt;/p&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>EmailSubjectTemplate</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Timesheet has been modified.</text>
+    </textTemplates>
+    <variables>
+        <name>mechEmail</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>mechName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>OverlappedETCount</name>
         <dataType>Number</dataType>
