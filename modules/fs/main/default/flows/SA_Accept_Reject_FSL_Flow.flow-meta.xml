@@ -19,7 +19,7 @@
     <assignments>
         <name>Assign_Rejected_Status</name>
         <label>Assign Rejected Status</label>
-        <locationX>2492</locationX>
+        <locationX>1964</locationX>
         <locationY>1214</locationY>
         <assignmentItems>
             <assignToReference>serviceAppointmentRec.Status</assignToReference>
@@ -64,7 +64,7 @@
     <decisions>
         <name>Accepted_OR_Rejected</name>
         <label>Accepted OR Rejected</label>
-        <locationX>2558</locationX>
+        <locationX>2030</locationX>
         <locationY>1106</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -137,7 +137,7 @@
     <decisions>
         <name>rec_type_check</name>
         <label>rec type check</label>
-        <locationX>1931</locationX>
+        <locationX>1535</locationX>
         <locationY>674</locationY>
         <defaultConnector>
             <targetReference>Get_Related_Account</targetReference>
@@ -162,7 +162,7 @@
     <decisions>
         <name>Rejection_Paths</name>
         <label>Rejection Paths</label>
-        <locationX>2492</locationX>
+        <locationX>1964</locationX>
         <locationY>1430</locationY>
         <defaultConnector>
             <targetReference>AR_Check</targetReference>
@@ -202,7 +202,7 @@
     <decisions>
         <name>SA_Status_Check</name>
         <label>SA Status Check</label>
-        <locationX>3812</locationX>
+        <locationX>3020</locationX>
         <locationY>890</locationY>
         <defaultConnector>
             <targetReference>SA_already_accepted</targetReference>
@@ -285,7 +285,7 @@
     <recordCreates>
         <name>ResourcePreference</name>
         <label>ResourcePreference</label>
-        <locationX>2690</locationX>
+        <locationX>1898</locationX>
         <locationY>1646</locationY>
         <assignRecordIdToReference>resourceVariable</assignRecordIdToReference>
         <connector>
@@ -327,7 +327,7 @@
     <recordLookups>
         <name>Get_Full_WO</name>
         <label>Get Full WO</label>
-        <locationX>1931</locationX>
+        <locationX>1535</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -348,7 +348,7 @@
     <recordLookups>
         <name>Get_RecordType</name>
         <label>Get RecordType</label>
-        <locationX>1931</locationX>
+        <locationX>1535</locationX>
         <locationY>566</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -371,7 +371,7 @@
     <recordLookups>
         <name>Get_Related_Account</name>
         <label>Get Related Account</label>
-        <locationX>3812</locationX>
+        <locationX>3020</locationX>
         <locationY>782</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -393,7 +393,7 @@
     <recordLookups>
         <name>Get_SA_Records</name>
         <label>Get SA Records</label>
-        <locationX>1931</locationX>
+        <locationX>1535</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -423,7 +423,7 @@
     <recordLookups>
         <name>get_serviceResource</name>
         <label>get serviceResource</label>
-        <locationX>1931</locationX>
+        <locationX>1535</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -469,7 +469,7 @@
     <recordLookups>
         <name>get_WO</name>
         <label>get WO</label>
-        <locationX>1931</locationX>
+        <locationX>1535</locationX>
         <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -515,7 +515,7 @@
     <recordLookups>
         <name>Scheduling_Policy</name>
         <label>Scheduling Policy</label>
-        <locationX>2690</locationX>
+        <locationX>1898</locationX>
         <locationY>1538</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -561,7 +561,7 @@
     <recordUpdates>
         <name>AR_Check</name>
         <label>AR Check</label>
-        <locationX>4010</locationX>
+        <locationX>2954</locationX>
         <locationY>1538</locationY>
         <connector>
             <targetReference>Update_SAToRejected</targetReference>
@@ -629,7 +629,7 @@
     <recordUpdates>
         <name>Update_SA</name>
         <label>Update SA</label>
-        <locationX>2690</locationX>
+        <locationX>1898</locationX>
         <locationY>1862</locationY>
         <faultConnector>
             <targetReference>Copy_2_of_Error_Screen</targetReference>
@@ -662,7 +662,7 @@
     <recordUpdates>
         <name>Update_SAToRejected</name>
         <label>Update SA To Rejected</label>
-        <locationX>4010</locationX>
+        <locationX>2954</locationX>
         <locationY>1646</locationY>
         <faultConnector>
             <targetReference>Copy_4_of_Error_Screen</targetReference>
@@ -686,7 +686,7 @@
     <recordUpdates>
         <name>Update_WO</name>
         <label>Update WO</label>
-        <locationX>2690</locationX>
+        <locationX>1898</locationX>
         <locationY>1754</locationY>
         <connector>
             <targetReference>Update_SA</targetReference>
@@ -738,7 +738,7 @@
     <screens>
         <name>Accept_OR_Reject</name>
         <label>Accept OR Reject</label>
-        <locationX>2558</locationX>
+        <locationX>2030</locationX>
         <locationY>998</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -771,7 +771,7 @@
     <screens>
         <name>Copy_1_of_Error_Screen</name>
         <label>Copy 1 of Error Screen</label>
-        <locationX>3218</locationX>
+        <locationX>2426</locationX>
         <locationY>1862</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -787,7 +787,7 @@
     <screens>
         <name>Copy_2_of_Error_Screen</name>
         <label>Copy 2 of Error Screen</label>
-        <locationX>2954</locationX>
+        <locationX>2162</locationX>
         <locationY>1970</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -803,7 +803,7 @@
     <screens>
         <name>Copy_4_of_Error_Screen</name>
         <label>Copy 4 of Error Screen</label>
-        <locationX>4274</locationX>
+        <locationX>3218</locationX>
         <locationY>1754</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -819,7 +819,7 @@
     <screens>
         <name>Copy_5_of_Error_Screen</name>
         <label>Copy 5 of Error Screen</label>
-        <locationX>4538</locationX>
+        <locationX>3482</locationX>
         <locationY>1646</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -883,7 +883,7 @@
     <screens>
         <name>Error_Screen</name>
         <label>Error Screen</label>
-        <locationX>3482</locationX>
+        <locationX>2690</locationX>
         <locationY>1754</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -923,7 +923,7 @@
     <screens>
         <name>Rejection_Reason</name>
         <label>Rejection Reason</label>
-        <locationX>2492</locationX>
+        <locationX>1964</locationX>
         <locationY>1322</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -936,7 +936,7 @@
             <choiceReferences>GivetoSupervisor</choiceReferences>
             <choiceReferences>Reschedule1</choiceReferences>
             <dataType>String</dataType>
-            <fieldText>Rejection reasons test</fieldText>
+            <fieldText>Rejection reasons</fieldText>
             <fieldType>DropdownBox</fieldType>
             <isRequired>true</isRequired>
         </fields>
@@ -946,7 +946,7 @@
     <screens>
         <name>SA_already_accepted</name>
         <label>SA already accepted.</label>
-        <locationX>5066</locationX>
+        <locationX>4010</locationX>
         <locationY>998</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -976,7 +976,7 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>1805</locationX>
+        <locationX>1409</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_SA_Records</targetReference>
