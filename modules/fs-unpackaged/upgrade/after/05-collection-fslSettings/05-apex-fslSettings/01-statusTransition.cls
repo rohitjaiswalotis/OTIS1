@@ -32,6 +32,10 @@ Map<String, FSL.StatusTransition> transitionsToAddRegistry =
 			new FSL.StatusTransition(
 				'Enroute',
 				'Cannot Complete'
+			),
+			new FSL.StatusTransition(
+				'Accepted',
+				'Onsite'
 			)
 		}
 	)
