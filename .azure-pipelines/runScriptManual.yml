@@ -81,6 +81,11 @@ parameters:
   type: boolean
   default: false
 
+- name: nextCallback
+  displayName: Variable name with next callback
+  type: string
+  default: none
+
 - name: enableDebugMode
   displayName: Debug Mode?
   type: boolean
@@ -158,5 +163,12 @@ stages:
                 
                 saveFolderAsArtifact: ${{ parameters.saveFolderAsArtifact }}
                 enableDebugMode: ${{ parameters.enableDebugMode }}
+              
+            
+            - ${{ if not( eq(parameters.nextCallback, 'none') ) }}:
+              
+              - template: templates/notifySubscribers.yml
+                parameters:
+                  subscribers: $(${{parameters.nextCallback}})
 
 
