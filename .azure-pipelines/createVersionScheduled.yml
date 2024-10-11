@@ -93,6 +93,11 @@ parameters:
   type: boolean
   default: false
 
+- name: nextCallback
+  displayName: Variable name with next callback
+  type: string
+  default: none
+
 - name: enableDebugMode
   displayName: Debug Mode?
   type: boolean
@@ -160,7 +165,9 @@ stages:
               
               - template: templates/notifySubscribers.yml
                 parameters:
-                  ${{ if eq(variables['Build.SourceBranchName'], 'dev-jpn') }}:
+                  ${{ if not( eq(parameters.nextCallback, 'none') ) }}:
+                    subscribers: $(${{parameters.nextCallback}})
+                  ${{ elseif eq(variables['Build.SourceBranchName'], 'dev-jpn') }}:
                     subscribers: $(subs_pkgVersion_FsJpn)
                   ${{ elseif eq(variables['Build.SourceBranchName'], 'dev') }}:
                     subscribers: $(subs_pkgVersion_FsDev)
@@ -170,5 +177,5 @@ stages:
                     subscribers: $(subs_pkgVersion_FsPatch)
                   active: $(enableSubsPkgVersion)
                   enableDebugMode: ${{ parameters.enableDebugMode }}
-              
-            
+
+
