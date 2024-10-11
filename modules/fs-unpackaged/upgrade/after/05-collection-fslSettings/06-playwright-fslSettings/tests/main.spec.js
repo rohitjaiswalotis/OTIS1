@@ -6,6 +6,28 @@ const { test, expect } = require(basePath + "/scripts/playwright/setup");
 const utils = require(basePath + "/scripts/playwright/utils");
 
 
+const APPS_TO_SET_CUSTOM_ATTRIBUTES = [ 
+	{
+		"name": "Salesforce Field Service for Android",
+		"attributes": [
+			{
+				"name": "EXCLUDE_RESOURCE_ABSENCE_TYPES",
+				"value": "\"Break\""
+			}
+		]
+	},
+	{
+		"name": "Salesforce Field Service for iOS",
+		"attributes": [
+			{
+				"name": "EXCLUDE_RESOURCE_ABSENCE_TYPES",
+				"value": "\"Break\""
+			}
+		]
+	}
+];
+
+
 
 test('Global Actions -> Appointment Booking', async ({ basePage, baseUrl }) => {
 	
@@ -407,5 +429,105 @@ test('Sharing -> Scheduled Jobs', async ({ basePage, baseUrl }) => {
 	await utils.clickSaveSettingButton(frame);
 	
 });
+
+
+
+for (
+	const appToSetCustomAttributes
+	of 
+	APPS_TO_SET_CUSTOM_ATTRIBUTES
+) {
+	
+	for (
+		const appAttributeToSet
+		of
+		appToSetCustomAttributes.attributes
+	) {
+		
+		test(`Setup -> App Manager -> Set Custom Attribute ${appAttributeToSet.name} for ${appToSetCustomAttributes.name} connected app`, async ({ basePage, baseUrl }) => {
+			
+			await basePage.goto(baseUrl + '/lightning/setup/NavigationMenus/home');
+			
+			const appsTable = basePage
+				.locator("table")
+				.filter({ has: basePage.getByText("Developer Name") });
+				
+			await appsTable
+				.getByRole("row")
+				.last()
+				.click({ force: true });
+			
+			await appsTable
+				.getByRole("row")
+				.filter({ hasText: appToSetCustomAttributes.name })
+				.getByRole('button')
+				.click({ force: true });
+			
+			await utils.clickMenuItem(basePage, "Manage");
+			
+			
+			let frame = basePage.frameLocator("iframe[tabindex='0'][title^='Connected App']");
+			
+			// wait for custom attributes table to be loaded
+			const customAttributesTableLocator = frame
+				.locator("table")
+				.filter({ has: frame.getByText("Attribute key") });
+				
+			await customAttributesTableLocator.waitFor();
+			
+			// check if custom attribute already exists
+			const targetCustomAttributesRowLocator = customAttributesTableLocator
+				.locator("tr")
+				.filter({ has: frame.getByText(appAttributeToSet.name, { exact: true }) });
+			
+			let doesCustomAttributeExist = await targetCustomAttributesRowLocator.isVisible();
+			
+			if (doesCustomAttributeExist === true) {
+				
+				console.log(`[${appToSetCustomAttributes.name}]: Custom attribute ${appAttributeToSet.name} exists - checking for its value...`);
+				
+				await utils.clickLink(targetCustomAttributesRowLocator, "Edit");
+				
+			} else {
+				
+				console.log(`[${appToSetCustomAttributes.name}]: Custom attribute ${appAttributeToSet.name} doesn't exist - creating new one...`);
+				
+				await frame.locator("input[title^='New Custom Attribute']").click({ force: true });
+				
+			}
+			
+			
+			frame = basePage.frameLocator("iframe[tabindex='0'][title*='Attribute']");
+			
+			const customAttributeNameInputLocator = frame.getByLabel("Attribute key");
+			const customAttributeValueInputLocator = frame.locator("textarea[name='value']");
+			
+			// grab current attribute value from new/edit form
+			const customAttributeValue = await customAttributeValueInputLocator.inputValue();
+			
+			// check if attribute value needs to be updated
+			if (customAttributeValue === appAttributeToSet.value) {
+				
+				console.log(`[${appToSetCustomAttributes.name}]: Custom attribute ${appAttributeToSet.name} already has value ${appAttributeToSet.value} - nothing to do here.`);
+				
+			// create/update attribute value
+			} else {
+				
+				await customAttributeNameInputLocator.fill(appAttributeToSet.name);
+				await customAttributeValueInputLocator.fill(appAttributeToSet.value);
+				
+				await utils.clickButton(frame, "Save");
+				
+				await customAttributesTableLocator.waitFor();
+				
+				console.log(`[${appToSetCustomAttributes.name}]: Custom attribute ${appAttributeToSet.name} has been set to ${appAttributeToSet.value}.`);
+				
+			}
+			
+		});
+		
+	}
+	
+}
 
 
