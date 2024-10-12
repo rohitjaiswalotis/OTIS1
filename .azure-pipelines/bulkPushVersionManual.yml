@@ -169,12 +169,7 @@ stages:
       runTestsAfterAsConcurrent: ${{ parameters.runTestsAfterAsConcurrent }}
       
       shouldRunAqaTests: ${{ parameters.shouldRunAqaTests }}
-    
-    
-  - ${{ if not( eq(parameters.nextCallback, 'none') ) }}:
-    
-    - template: templates/notifySubscribers.yml
-      parameters:
-        subscribers: $(${{parameters.nextCallback}})
+      
+      nextCallback: ${{ parameters.nextCallback }}
 
 
