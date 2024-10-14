@@ -315,6 +315,13 @@
         <object>ResourcePreference</object>
     </recordCreates>
     <recordDeletes>
+        <name>Copy_1_of_Delete_Assigned_Resource</name>
+        <label>Copy 1 of Delete Assigned Resource</label>
+        <locationX>1898</locationX>
+        <locationY>1970</locationY>
+        <inputReference>getAssigenedSR</inputReference>
+    </recordDeletes>
+    <recordDeletes>
         <name>Delete_Assigned_Resource</name>
         <label>Delete Assigned Resource</label>
         <locationX>1106</locationX>
@@ -631,6 +638,9 @@
         <label>Update SA</label>
         <locationX>1898</locationX>
         <locationY>1862</locationY>
+        <connector>
+            <targetReference>Copy_1_of_Delete_Assigned_Resource</targetReference>
+        </connector>
         <faultConnector>
             <targetReference>Copy_2_of_Error_Screen</targetReference>
         </faultConnector>
