@@ -8,6 +8,9 @@ import com.toolset.validator.Validator;
 
 public class FlexiPageValidator implements Validator {
 	
+	//public static final def NOT_SUPPORTED_SYNTAX_MARKER_REGEX = /(?i)<\s*value\s*>@@@/;
+	public static final def NOT_SUPPORTED_SYNTAX_MARKER_REGEX = null;
+	
 	private File flexiPagesDir;
 	private String customPrefix;
 	private Set<String> exclusions;
@@ -48,10 +51,6 @@ public class FlexiPageValidator implements Validator {
 	
 	public List<String> validate() {
 		
-		if (!this.customPrefix) {
-			return;
-		}
-		
 		String normalizedCustomPrefix = BundleHelper.normalize(this.customPrefix);
 		List<String> errors = [];
 		
@@ -61,17 +60,37 @@ public class FlexiPageValidator implements Validator {
 			
 			def normalizedPageName = BundleHelper.normalize(flexiPageName) - ~/^\./;
 			
-			if (
-				// ignore excluded pages
-				normalizedPageName in this.exclusions 
-				|| 
-				// ignore correctly prefixed pages
-				normalizedPageName.startsWith(normalizedCustomPrefix)
-			) {
-				return;
+			// check if page is prefixed
+			if (normalizedCustomPrefix) {
+				
+				if (
+					// page is not prefixed
+					!
+					normalizedPageName.startsWith(normalizedCustomPrefix)
+					&&
+					// page is not among excluded from validation
+					! 
+					(normalizedPageName in this.exclusions) 
+
+				) {
+					errors << "Flexi Page '${flexiPageName}' should start with '${this.customPrefix}' custom prefix.";
+				}
+				
 			}
 			
-			errors << "Flexi Page '${flexiPageName}' should start with '${this.customPrefix}' custom prefix."
+			
+			// check if page contains not supported syntax
+			if (NOT_SUPPORTED_SYNTAX_MARKER_REGEX) {
+				
+				if (
+					BundleHelper.readFile(flexiPageFile) 
+					=~ 
+					NOT_SUPPORTED_SYNTAX_MARKER_REGEX
+				) {
+					errors << "Flexi Page '${flexiPageName}' contains unsupported syntax caught by the regex: ${NOT_SUPPORTED_SYNTAX_MARKER_REGEX}";
+				}
+				
+			}
 			
 		}
 		
