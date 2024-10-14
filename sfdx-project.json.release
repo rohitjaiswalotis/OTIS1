@@ -65,13 +65,13 @@
   },
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "61.0",
+  "sourceApiVersion": "62.0",
   
   "customScope": {
     "name": "",
     "name_commented": "FS",
     "minApi" : "49.0",
-    "maxApi" : "61.0",
+    "maxApi" : "62.0",
     "exclusions": {
       "classes": [],
       "objects": [],
