@@ -1,2 +1,2 @@
-"Id","IsDispatchNotification"
-"$SF_SR_VAR_MOBILE_SETTING_ID",false
+"Id","IsDispatchNotification","QuickStatusChangeFlowName"
+"$SF_SR_VAR_MOBILE_SETTING_ID",false,"FSL_Quick_SA_Status_Change"
