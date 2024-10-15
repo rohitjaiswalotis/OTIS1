@@ -24,7 +24,7 @@
         <apexClass>FSL__TerritoryBasedRestRequest</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-    <description>Permissions to access data needed for optimization, automatic scheduling, and service appointment bundling.(Licenseless Migration)</description>
+    <description>Permissions to access data needed for optimization, automatic scheduling, and service appointment bundling.(Licenseless)</description>
     <fieldPermissions>
         <editable>false</editable>
         <field>ApptBundleAggrDurDnscale.MaxReduction</field>
