@@ -124,7 +124,7 @@
     <formulas>
         <name>shutdowndatetime</name>
         <dataType>DateTime</dataType>
-        <expression>{!$Record.Unit_ShutDown_DateTime_Rollup__c}</expression>
+        <expression>{!get_Shutdown_log_details.StartTime}</expression>
     </formulas>
     <interviewLabel>Shutdown {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Shutdown notification to supervisor</label>
