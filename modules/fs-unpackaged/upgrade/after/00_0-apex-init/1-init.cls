@@ -12,7 +12,8 @@ Map<String, Object> propToValue =
 	new Map<String, Object> {
 		'SF_SR_VAR_GLOBAL_ORG_ID_18'							=>		org.Id,
 		'SF_SR_VAR_GLOBAL_ORG_ID_15'							=>		org.Id?.toString().left(15),
-		'SF_SR_VAR_GLOBAL_IS_SANDBOX'							=>		org.IsSandbox
+		'SF_SR_VAR_GLOBAL_IS_SANDBOX'							=>		org.IsSandbox,
+		'SF_SR_VAR_GLOBAL_FS_INTEGRATION_PS_DESCRIPTION'		=> 		[ SELECT Id, Description FROM PermissionSet WHERE Name = 'sfdc_fieldservice' AND NamespacePrefix = 'sfdcInternalInt' ]?.Description
 	}
 ;
 
