@@ -102,7 +102,7 @@
         <name>Duty_Roster_check</name>
         <label>Duty Roster check</label>
         <locationX>974</locationX>
-        <locationY>1862</locationY>
+        <locationY>1970</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_Update_SA</targetReference>
         </defaultConnector>
@@ -179,7 +179,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Route_Coverage_Records</targetReference>
+                <targetReference>Scheduling_Policy_Rechedule</targetReference>
             </connector>
             <label>Reschedule</label>
         </rules>
@@ -325,7 +325,7 @@
         <name>Delete_Assigned_Resource</name>
         <label>Delete Assigned Resource</label>
         <locationX>1106</locationX>
-        <locationY>2078</locationY>
+        <locationY>2186</locationY>
         <faultConnector>
             <targetReference>Copy_7_of_Error_Screen</targetReference>
         </faultConnector>
@@ -454,7 +454,7 @@
         <name>Get_units_of_Route</name>
         <label>Get units of Route</label>
         <locationX>974</locationX>
-        <locationY>1754</locationY>
+        <locationY>1862</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Duty_Roster_check</targetReference>
@@ -500,7 +500,7 @@
         <name>Route_Coverage_Records</name>
         <label>Route Coverage Records</label>
         <locationX>974</locationX>
-        <locationY>1538</locationY>
+        <locationY>1646</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>ShiftPattenEntries</targetReference>
@@ -543,10 +543,33 @@
         </outputAssignments>
     </recordLookups>
     <recordLookups>
+        <name>Scheduling_Policy_Rechedule</name>
+        <label>Scheduling Policy Reschedule</label>
+        <locationX>974</locationX>
+        <locationY>1538</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Route_Coverage_Records</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>Contains</operator>
+            <value>
+                <stringValue>Customer First</stringValue>
+            </value>
+        </filters>
+        <object>FSL__Scheduling_Policy__c</object>
+        <outputAssignments>
+            <assignToReference>schedulingPolicy</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordLookups>
         <name>ShiftPattenEntries</name>
         <label>ShiftPattenEntries</label>
         <locationX>974</locationX>
-        <locationY>1646</locationY>
+        <locationY>1754</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_units_of_Route</targetReference>
@@ -603,7 +626,7 @@
         <name>Copy_1_of_Update_SA</name>
         <label>Update SA To None</label>
         <locationX>1106</locationX>
-        <locationY>1970</locationY>
+        <locationY>2078</locationY>
         <connector>
             <targetReference>Delete_Assigned_Resource</targetReference>
         </connector>
@@ -620,6 +643,18 @@
         </filters>
         <inputAssignments>
             <field>AssignedServiceResource__c</field>
+        </inputAssignments>
+        <inputAssignments>
+            <field>FSL__Auto_Schedule__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>FSL__Scheduling_Policy_Used__c</field>
+            <value>
+                <elementReference>schedulingPolicy</elementReference>
+            </value>
         </inputAssignments>
         <object>ServiceAppointment</object>
     </recordUpdates>
@@ -773,6 +808,7 @@
             <dataType>String</dataType>
             <fieldText>Accept/Reject</fieldText>
             <fieldType>RadioButtons</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
@@ -846,7 +882,7 @@
         <name>Copy_6_of_Error_Screen</name>
         <label>Copy 6 of Error Screen</label>
         <locationX>1634</locationX>
-        <locationY>2078</locationY>
+        <locationY>2186</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -862,7 +898,7 @@
         <name>Copy_7_of_Error_Screen</name>
         <label>Copy 7 of Error Screen</label>
         <locationX>1370</locationX>
-        <locationY>2186</locationY>
+        <locationY>2294</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -948,6 +984,7 @@
             <dataType>String</dataType>
             <fieldText>Rejection reasons</fieldText>
             <fieldType>DropdownBox</fieldType>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
