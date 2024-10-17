@@ -533,7 +533,7 @@
             <field>Name</field>
             <operator>Contains</operator>
             <value>
-                <stringValue>Customer First</stringValue>
+                <stringValue>Otis Default Scheduling Policy</stringValue>
             </value>
         </filters>
         <object>FSL__Scheduling_Policy__c</object>
@@ -556,7 +556,7 @@
             <field>Name</field>
             <operator>Contains</operator>
             <value>
-                <stringValue>Customer First</stringValue>
+                <stringValue>Otis Default Scheduling Policy</stringValue>
             </value>
         </filters>
         <object>FSL__Scheduling_Policy__c</object>
