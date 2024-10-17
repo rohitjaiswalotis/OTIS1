@@ -14,7 +14,8 @@ Map<String, Object> propToValue =
 		'SF_SR_VAR_GLOBAL_ORG_ID_15'							=>		org.Id?.toString().left(15),
 		'SF_SR_VAR_GLOBAL_IS_SANDBOX'							=>		org.IsSandbox,
 		'SF_SR_VAR_GLOBAL_ADMIN_PROFILE_ID'						=>		[ SELECT Id FROM Profile WHERE Name = 'System Administrator' ]?.Id,
-		'SF_SR_VAR_GLOBAL_FS_SV_PROFILE_ID'						=>		[ SELECT Id FROM Profile WHERE Name = 'Field Service Supervisor' ]?.Id
+		'SF_SR_VAR_GLOBAL_FS_SV_PROFILE_ID'						=>		[ SELECT Id FROM Profile WHERE Name = 'Field Service Supervisor' ]?.Id,
+		'SF_SR_VAR_GLOBAL_FS_INTEGRATION_PS_DESCRIPTION'		=> 		[ SELECT Id, Description FROM PermissionSet WHERE Name = 'sfdc_fieldservice' AND NamespacePrefix = 'sfdcInternalInt' ]?.Description
 	}
 ;
 
