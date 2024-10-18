@@ -375,6 +375,53 @@ test('Dispatcher Console UI -> Gantt Configurations', async ({ basePage, baseUrl
 
 
 
+test('Dispatcher Console UI -> Custom Actions', async ({ basePage, baseUrl }) => {
+	
+	const ACTION_NAME = "Assign Shift Coverage For Selected Horizon";
+	const ACTION_TYPE = "Apex Class";
+	const ACTION_CLASS = "FSL_CreateShiftformutlipledays";
+	const ACTION_PERMISSION = "Schedule";
+	
+	await utils.openSettings(basePage, baseUrl);
+	
+	const frame = utils.getMainFrame(basePage);
+	
+	await utils.switchToSettingsMenu(frame, "Dispatcher Console UI");
+	
+	await utils.switchToSettingsTab(frame, "Custom Actions");
+	
+	// select Resources category
+	await frame.getByText("Action Category", { exact: true }).locator('..').getByText("Resources").click();
+	
+	const activeActionsHeaderLocator = frame.getByText("Active Actions", { exact: true });
+	
+	const newActionButtonLocator = activeActionsHeaderLocator.locator('..').getByText("New Action");
+	await newActionButtonLocator.waitFor();
+	
+	// early exit if action with such name already exists
+	if (await activeActionsHeaderLocator.locator('..').getByText(ACTION_NAME, { exact: true }).isVisible()) {
+		console.log(`Action named ${ACTION_NAME} is already present - nothing to do here!`);
+		return;
+	}
+	
+	await newActionButtonLocator.click();
+	
+	await frame.getByText("Label in Dispatcher Console", { exact: true }).locator('..').getByRole("textbox").fill(ACTION_NAME);
+	
+	await frame.getByText("Action Type", { exact: true }).locator('..').getByLabel(ACTION_TYPE).check();
+	
+	await frame.getByText("Class", { exact: true }).locator('..').getByRole("combobox").selectOption(ACTION_CLASS);
+	
+	await frame.getByText("Required Custom Permission", { exact: false }).locator('..').getByRole("combobox").selectOption({ label: ACTION_PERMISSION });
+	
+	//await frame.locator('.CA-iconsContainer').locator('svg').nth(2).click({ force: true });
+	
+	await utils.clickSaveSettingButton(frame);
+	
+});
+
+
+
 test('Optimization -> Logic', async ({ basePage, baseUrl }) => {
 	
 	const GLOBAL_OPTIMIZATION_PINNED_STATUSES = new utils.CaseInsensitiveSet(
