@@ -4,7 +4,7 @@
         <name>Assign_Accept_Status</name>
         <label>Assign Accept Status</label>
         <locationX>314</locationX>
-        <locationY>1322</locationY>
+        <locationY>1430</locationY>
         <assignmentItems>
             <assignToReference>serviceAppointmentRec.Status</assignToReference>
             <operator>Assign</operator>
@@ -19,8 +19,8 @@
     <assignments>
         <name>Assign_Rejected_Status</name>
         <label>Assign Rejected Status</label>
-        <locationX>1964</locationX>
-        <locationY>1214</locationY>
+        <locationX>2052</locationX>
+        <locationY>1322</locationY>
         <assignmentItems>
             <assignToReference>serviceAppointmentRec.Status</assignToReference>
             <operator>Assign</operator>
@@ -64,8 +64,8 @@
     <decisions>
         <name>Accepted_OR_Rejected</name>
         <label>Accepted OR Rejected</label>
-        <locationX>2030</locationX>
-        <locationY>1106</locationY>
+        <locationX>2118</locationX>
+        <locationY>1214</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>Accepted</name>
@@ -102,7 +102,7 @@
         <name>Duty_Roster_check</name>
         <label>Duty Roster check</label>
         <locationX>974</locationX>
-        <locationY>1970</locationY>
+        <locationY>2078</locationY>
         <defaultConnector>
             <targetReference>Copy_1_of_Update_SA</targetReference>
         </defaultConnector>
@@ -135,10 +135,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Null_Check_Resource_Preference</name>
+        <label>Null Check Resource Preference</label>
+        <locationX>2162</locationX>
+        <locationY>1754</locationY>
+        <defaultConnector>
+            <targetReference>Update_WO</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Not_Null</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>resourcePreferenceRecord</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Resource_Preference</targetReference>
+            </connector>
+            <label>Not Null</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>rec_type_check</name>
         <label>rec type check</label>
-        <locationX>1535</locationX>
-        <locationY>674</locationY>
+        <locationX>1601</locationX>
+        <locationY>782</locationY>
         <defaultConnector>
             <targetReference>Get_Related_Account</targetReference>
         </defaultConnector>
@@ -162,8 +187,8 @@
     <decisions>
         <name>Rejection_Paths</name>
         <label>Rejection Paths</label>
-        <locationX>1964</locationX>
-        <locationY>1430</locationY>
+        <locationX>2052</locationX>
+        <locationY>1538</locationY>
         <defaultConnector>
             <targetReference>AR_Check</targetReference>
         </defaultConnector>
@@ -202,8 +227,8 @@
     <decisions>
         <name>SA_Status_Check</name>
         <label>SA Status Check</label>
-        <locationX>3020</locationX>
-        <locationY>890</locationY>
+        <locationX>3152</locationX>
+        <locationY>998</locationY>
         <defaultConnector>
             <targetReference>SA_already_accepted</targetReference>
         </defaultConnector>
@@ -282,50 +307,18 @@
         </value>
     </processMetadataValues>
     <processType>FieldServiceMobile</processType>
-    <recordCreates>
-        <name>ResourcePreference</name>
-        <label>ResourcePreference</label>
-        <locationX>1898</locationX>
-        <locationY>1646</locationY>
-        <assignRecordIdToReference>resourceVariable</assignRecordIdToReference>
-        <connector>
-            <targetReference>Update_WO</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>Error_Screen</targetReference>
-        </faultConnector>
-        <inputAssignments>
-            <field>PreferenceType</field>
-            <value>
-                <stringValue>Excluded</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>RelatedRecordId</field>
-            <value>
-                <elementReference>ParentWO.Id</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>ServiceResourceId</field>
-            <value>
-                <elementReference>getAssigenedSR.ServiceResourceId</elementReference>
-            </value>
-        </inputAssignments>
-        <object>ResourcePreference</object>
-    </recordCreates>
     <recordDeletes>
         <name>Copy_1_of_Delete_Assigned_Resource</name>
         <label>Copy 1 of Delete Assigned Resource</label>
-        <locationX>1898</locationX>
-        <locationY>1970</locationY>
+        <locationX>2162</locationX>
+        <locationY>2510</locationY>
         <inputReference>getAssigenedSR</inputReference>
     </recordDeletes>
     <recordDeletes>
         <name>Delete_Assigned_Resource</name>
         <label>Delete Assigned Resource</label>
         <locationX>1106</locationX>
-        <locationY>2186</locationY>
+        <locationY>2294</locationY>
         <faultConnector>
             <targetReference>Copy_7_of_Error_Screen</targetReference>
         </faultConnector>
@@ -334,7 +327,7 @@
     <recordLookups>
         <name>Get_Full_WO</name>
         <label>Get Full WO</label>
-        <locationX>1535</locationX>
+        <locationX>1601</locationX>
         <locationY>350</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -355,8 +348,8 @@
     <recordLookups>
         <name>Get_RecordType</name>
         <label>Get RecordType</label>
-        <locationX>1535</locationX>
-        <locationY>566</locationY>
+        <locationX>1601</locationX>
+        <locationY>674</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>rec_type_check</targetReference>
@@ -378,8 +371,8 @@
     <recordLookups>
         <name>Get_Related_Account</name>
         <label>Get Related Account</label>
-        <locationX>3020</locationX>
-        <locationY>782</locationY>
+        <locationX>3152</locationX>
+        <locationY>890</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>SA_Status_Check</targetReference>
@@ -398,9 +391,38 @@
         <queriedFields>AccountGroupCode__c</queriedFields>
     </recordLookups>
     <recordLookups>
+        <name>Get_Resource_Preference</name>
+        <label>Get Resource Preference</label>
+        <locationX>1601</locationX>
+        <locationY>566</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_RecordType</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>RelatedRecordId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>serviceAppointmentRec.ParentRecordId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>ServiceResourceId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>getAssigenedSR.ServiceResourceId</elementReference>
+            </value>
+        </filters>
+        <object>ResourcePreference</object>
+        <outputReference>resourcePreferenceRecord</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>PreferenceType</queriedFields>
+    </recordLookups>
+    <recordLookups>
         <name>Get_SA_Records</name>
         <label>Get SA Records</label>
-        <locationX>1535</locationX>
+        <locationX>1601</locationX>
         <locationY>134</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -430,7 +452,7 @@
     <recordLookups>
         <name>get_serviceResource</name>
         <label>get serviceResource</label>
-        <locationX>1535</locationX>
+        <locationX>1601</locationX>
         <locationY>242</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -454,7 +476,7 @@
         <name>Get_units_of_Route</name>
         <label>Get units of Route</label>
         <locationX>974</locationX>
-        <locationY>1862</locationY>
+        <locationY>1970</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Duty_Roster_check</targetReference>
@@ -476,11 +498,11 @@
     <recordLookups>
         <name>get_WO</name>
         <label>get WO</label>
-        <locationX>1535</locationX>
+        <locationX>1601</locationX>
         <locationY>458</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_RecordType</targetReference>
+            <targetReference>Get_Resource_Preference</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -500,7 +522,7 @@
         <name>Route_Coverage_Records</name>
         <label>Route Coverage Records</label>
         <locationX>974</locationX>
-        <locationY>1646</locationY>
+        <locationY>1754</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>ShiftPattenEntries</targetReference>
@@ -522,11 +544,11 @@
     <recordLookups>
         <name>Scheduling_Policy</name>
         <label>Scheduling Policy</label>
-        <locationX>1898</locationX>
-        <locationY>1538</locationY>
+        <locationX>2162</locationX>
+        <locationY>1646</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>ResourcePreference</targetReference>
+            <targetReference>Null_Check_Resource_Preference</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -546,7 +568,7 @@
         <name>Scheduling_Policy_Rechedule</name>
         <label>Scheduling Policy Reschedule</label>
         <locationX>974</locationX>
-        <locationY>1538</locationY>
+        <locationY>1646</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Route_Coverage_Records</targetReference>
@@ -569,7 +591,7 @@
         <name>ShiftPattenEntries</name>
         <label>ShiftPattenEntries</label>
         <locationX>974</locationX>
-        <locationY>1754</locationY>
+        <locationY>1862</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_units_of_Route</targetReference>
@@ -591,8 +613,8 @@
     <recordUpdates>
         <name>AR_Check</name>
         <label>AR Check</label>
-        <locationX>2954</locationX>
-        <locationY>1538</locationY>
+        <locationX>3130</locationX>
+        <locationY>1646</locationY>
         <connector>
             <targetReference>Update_SAToRejected</targetReference>
         </connector>
@@ -626,7 +648,7 @@
         <name>Copy_1_of_Update_SA</name>
         <label>Update SA To None</label>
         <locationX>1106</locationX>
-        <locationY>2078</locationY>
+        <locationY>2186</locationY>
         <connector>
             <targetReference>Delete_Assigned_Resource</targetReference>
         </connector>
@@ -662,17 +684,44 @@
         <name>Update_Accept_Status</name>
         <label>Update Accept Status</label>
         <locationX>314</locationX>
-        <locationY>1430</locationY>
+        <locationY>1538</locationY>
         <faultConnector>
             <targetReference>Error_Message</targetReference>
         </faultConnector>
         <inputReference>serviceAppointmentRec</inputReference>
     </recordUpdates>
     <recordUpdates>
-        <name>Update_SA</name>
-        <label>Update SA</label>
+        <name>Update_Resource_Preference</name>
+        <label>Update Resource Preference</label>
         <locationX>1898</locationX>
         <locationY>1862</locationY>
+        <connector>
+            <targetReference>Update_WO</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Error_Screen</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>resourcePreferenceRecord.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>PreferenceType</field>
+            <value>
+                <stringValue>Excluded</stringValue>
+            </value>
+        </inputAssignments>
+        <object>ResourcePreference</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_SA</name>
+        <label>Update SA</label>
+        <locationX>2162</locationX>
+        <locationY>2402</locationY>
         <connector>
             <targetReference>Copy_1_of_Delete_Assigned_Resource</targetReference>
         </connector>
@@ -707,8 +756,8 @@
     <recordUpdates>
         <name>Update_SAToRejected</name>
         <label>Update SA To Rejected</label>
-        <locationX>2954</locationX>
-        <locationY>1646</locationY>
+        <locationX>3130</locationX>
+        <locationY>1754</locationY>
         <faultConnector>
             <targetReference>Copy_4_of_Error_Screen</targetReference>
         </faultConnector>
@@ -731,8 +780,8 @@
     <recordUpdates>
         <name>Update_WO</name>
         <label>Update WO</label>
-        <locationX>1898</locationX>
-        <locationY>1754</locationY>
+        <locationX>2162</locationX>
+        <locationY>2294</locationY>
         <connector>
             <targetReference>Update_SA</targetReference>
         </connector>
@@ -783,8 +832,8 @@
     <screens>
         <name>Accept_OR_Reject</name>
         <label>Accept OR Reject</label>
-        <locationX>2030</locationX>
-        <locationY>998</locationY>
+        <locationX>2118</locationX>
+        <locationY>1106</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -817,8 +866,8 @@
     <screens>
         <name>Copy_1_of_Error_Screen</name>
         <label>Copy 1 of Error Screen</label>
-        <locationX>2426</locationX>
-        <locationY>1862</locationY>
+        <locationX>2866</locationX>
+        <locationY>2402</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -833,8 +882,8 @@
     <screens>
         <name>Copy_2_of_Error_Screen</name>
         <label>Copy 2 of Error Screen</label>
-        <locationX>2162</locationX>
-        <locationY>1970</locationY>
+        <locationX>2602</locationX>
+        <locationY>2510</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -849,8 +898,8 @@
     <screens>
         <name>Copy_4_of_Error_Screen</name>
         <label>Copy 4 of Error Screen</label>
-        <locationX>3218</locationX>
-        <locationY>1754</locationY>
+        <locationX>3394</locationX>
+        <locationY>1862</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -865,8 +914,8 @@
     <screens>
         <name>Copy_5_of_Error_Screen</name>
         <label>Copy 5 of Error Screen</label>
-        <locationX>3482</locationX>
-        <locationY>1646</locationY>
+        <locationX>3658</locationX>
+        <locationY>1754</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -882,7 +931,7 @@
         <name>Copy_6_of_Error_Screen</name>
         <label>Copy 6 of Error Screen</label>
         <locationX>1634</locationX>
-        <locationY>2186</locationY>
+        <locationY>2294</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -898,7 +947,7 @@
         <name>Copy_7_of_Error_Screen</name>
         <label>Copy 7 of Error Screen</label>
         <locationX>1370</locationX>
-        <locationY>2294</locationY>
+        <locationY>2402</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -914,7 +963,7 @@
         <name>Error_Message</name>
         <label>Error Message</label>
         <locationX>578</locationX>
-        <locationY>1538</locationY>
+        <locationY>1646</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -929,8 +978,8 @@
     <screens>
         <name>Error_Screen</name>
         <label>Error Screen</label>
-        <locationX>2690</locationX>
-        <locationY>1754</locationY>
+        <locationX>2162</locationX>
+        <locationY>1970</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -946,7 +995,7 @@
         <name>Provide_Initial_ETA</name>
         <label>Provide Initial ETA</label>
         <locationX>314</locationX>
-        <locationY>1214</locationY>
+        <locationY>1322</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -969,8 +1018,8 @@
     <screens>
         <name>Rejection_Reason</name>
         <label>Rejection Reason</label>
-        <locationX>1964</locationX>
-        <locationY>1322</locationY>
+        <locationX>2052</locationX>
+        <locationY>1430</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -982,6 +1031,7 @@
             <choiceReferences>GivetoSupervisor</choiceReferences>
             <choiceReferences>Reschedule1</choiceReferences>
             <dataType>String</dataType>
+            <defaultSelectedChoiceReference>Reschedule1</defaultSelectedChoiceReference>
             <fieldText>Rejection reasons</fieldText>
             <fieldType>DropdownBox</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -993,8 +1043,8 @@
     <screens>
         <name>SA_already_accepted</name>
         <label>SA already accepted.</label>
-        <locationX>4010</locationX>
-        <locationY>998</locationY>
+        <locationX>4186</locationX>
+        <locationY>1106</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1010,7 +1060,7 @@
         <name>test2</name>
         <label>test</label>
         <locationX>50</locationX>
-        <locationY>782</locationY>
+        <locationY>890</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1023,7 +1073,7 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>1409</locationX>
+        <locationX>1475</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_SA_Records</targetReference>
@@ -1125,6 +1175,14 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>resourcePreferenceRecord</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ResourcePreference</objectType>
     </variables>
     <variables>
         <name>resourceVariable</name>
