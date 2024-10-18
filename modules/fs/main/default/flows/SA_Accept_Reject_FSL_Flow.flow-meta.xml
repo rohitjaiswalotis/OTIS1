@@ -243,6 +243,13 @@
                     <stringValue>Dispatched</stringValue>
                 </rightValue>
             </conditions>
+            <conditions>
+                <leftValueReference>serviceAppointmentRec.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Accepted</stringValue>
+                </rightValue>
+            </conditions>
             <connector>
                 <targetReference>Accept_OR_Reject</targetReference>
             </connector>
