@@ -1031,6 +1031,7 @@
             <choiceReferences>GivetoSupervisor</choiceReferences>
             <choiceReferences>Reschedule1</choiceReferences>
             <dataType>String</dataType>
+            <defaultSelectedChoiceReference>Reschedule1</defaultSelectedChoiceReference>
             <fieldText>Rejection reasons</fieldText>
             <fieldType>DropdownBox</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
